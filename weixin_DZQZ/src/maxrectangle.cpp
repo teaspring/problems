@@ -1,10 +1,8 @@
 /*
  * question on July31
  * problem1: input an integer array of a bar figure, find the maximum rectangle
- * Aug04, O(n^3) algorithm; updated, 40 min 
  * 
- * problem2: input a grid(2-d table), 1 is white and 0 is black, find the maximum while rectangle
- * Aug04, additional 30min to fix two bugs
+ * problem2: input a grid(2-d table), 1 is white and 0 is black, find the maximum white rectangle
  * */
 #include "../preliminary.h"
 #include <stack>

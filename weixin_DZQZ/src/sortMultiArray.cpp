@@ -108,12 +108,14 @@ int main(int argc, char* argv[]){
 	string str;
 	while(getline(cin, str)){
 		if(str.size()==0)	break;
-		int INF = 0x00ff;
-		int* array = new int[INF]();
+		int* array = new int[str.size()]();
 		int length = splitStr2IntArray(str,array);
 		outputArray(array, length);
 		sortQuartArray(array, length);
 		outputArray(array, length);
+		
+		delete[] array;
+		array = 0;
 	}
 }
 
