@@ -197,5 +197,9 @@ int main(int agrc, char* argv[]){
 		delete[] pWords;
 		pWords = 0;
 	}
+	delete[] pNum;
+	pNum = 0;
+	delete[] pTSNum;
+	pTSNum = 0;
 	return 0;
 }

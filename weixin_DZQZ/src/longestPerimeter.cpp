@@ -2,7 +2,6 @@
  * question on Aug11 
  * given n length, among the 3 which can construct a triangle, find the longest triangle perimeter
  * how to judge a triangle, three edges a>b, a>c, then b+c>a
- * O(nlgn)+O(n)=O(nlgn)
  * */
 
 #include "../header/preliminary.h"
@@ -30,7 +29,7 @@ void quickSort(int* arr, int N){	//sort in descending
 	quickSort(p+1, q-p);	
 }
 
-
+// time O(nlgn), space O(1)
 int longestTriPerimeter(int* arr, int N, int& a, int& b, int& c){
 	if(N<3)	return 0;
 	quickSort(arr, N);
@@ -50,14 +49,17 @@ int longestTriPerimeter(int* arr, int N, int& a, int& b, int& c){
 
 int main(int argc, char* argv[]){
 	string str;
-	while(getline(cin, str)){		
-		if(str.size()==0)	break;
+	while(1){		
+		if(getline(cin, str) == 0 || str.empty())
+		  break;
 		int* arr = new int[str.size()]();
 		int leng = splitStr2IntArray(str, arr);	
 		int a=0,b=0,c=0;
 		int res = longestTriPerimeter(arr, leng, a,b,c);
 		printf("longest perimeter is %d, edges are %d,%d,%d\n", res, a,b,c);
-		delete arr;
+		
+		delete[] arr;
+		arr = 0;
 	}
 	return 0;
 }

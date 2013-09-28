@@ -87,7 +87,9 @@ int main(int argc, char* argv[]){
 		  printf("%d ", pay[i]);
 		printf("\n");
 		delete[] arr;
-		arr=0;
+		arr = 0;
+		delete[] pay;
+		pay = 0;
 	}
 		
 	return 0;

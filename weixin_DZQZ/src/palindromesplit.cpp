@@ -65,11 +65,13 @@ int splitpalindrome02(const string& str){
     }
 	int res = minCount[n-1];
 	printf("minCount[] is ");
-    for(int i=0;i<n;i++)
-	  printf("%d ", minCount[i]);
+    for(int i=0;i<n;i++){
+		printf("%d ", minCount[i]);
+	}
 	printf("\n");
 	output02(str, ppLength, minCount, n-1,n);
 	printf("\n");
+	
 	delete[] minCount;
     minCount = 0;
     for(int i=0;i<n;i++){
@@ -78,6 +80,7 @@ int splitpalindrome02(const string& str){
 	}
 	delete[] ppLength;
 	ppLength =0;
+	
 	return res;
 }
 

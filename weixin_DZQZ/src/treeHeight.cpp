@@ -2,7 +2,8 @@
  * question on Aug27
  * input: int arr[n].all nodes reside in a tree, unnecessary to be binary tree. arr[i] means parent node of node i.arr[root]==-1.
  * output: tree height
- * case1:
+ * 
+ * test data:
  * 11,2,3,-1,3,2,7,2,9,4,4,1
  *					3
  *				   / \
@@ -16,10 +17,10 @@
  * */
 #include "../header/preliminary.h"
 
-int setNodeDist(int* distArr, int* parArr, int n, int i){		//as extra array to save node distance to root, recursive has no repeat
+int setNodeDist(int* distArr, int* parArr, int n, int i){	//use extra array to save node distance to root, recursion has no duplicate
 	if(i>=n)	return 0;
 	if(parArr[i] == -1){
-		distArr[i] = 1;
+		distArr[i] = 1;				//root is considered as depth 1
 	}else{
 		if(distArr[i] == 0)
 			distArr[i] = setNodeDist(distArr, parArr, n, parArr[i]) + 1;		  
@@ -57,4 +58,3 @@ int main(int argc, char* argv[]){
 	}
 	return 0;
 }
-

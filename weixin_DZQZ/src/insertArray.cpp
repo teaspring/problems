@@ -21,26 +21,26 @@ void swaparray(int* pA, int* pB, int N){
   for(int i=0;i<N;i++)
     myswap<int>(pA+i, pB+i);
 }
+
 /*
- *baseed on binary-swap,  time O(n*lgn)
+ * inspired by binary-swap,  time O(n*lgn), recurse
  * */
 void insertarray(int* src, int length){
   if(length<4 || length%2 == 1){
-	printf("invalid input array\n");
-	return;
+	  return;
   }
   int half = length/2;
   int quart = half/2;
-  if(half%2==1){
-    swaparray(src+quart, src+half, quart+1);
-    insertarray(src,half-1);
-    insertarray(src+half+1, half-1);
-    myswap(src+half-1, src+half);
+  if(half%2 == 1){
+	  swaparray(src+quart, src+half, quart+1);
+	  insertarray(src,half-1);
+	  insertarray(src+half+1, half-1);
+	  myswap(src+half-1, src+half);
   }
   else{
-    swaparray(src+quart, src+half, quart);
-    insertarray(src, half);
-    insertarray(src+half, half);
+	  swaparray(src+quart, src+half, quart);
+	  insertarray(src, half);
+	  insertarray(src+half, half);
   }
 }
 
@@ -51,16 +51,21 @@ void outputarray(int* src, int N){
 }
 
 int main(int i, char* argv[]){
-  const int INF = 0x00ff;
   string str;
-  int arr[INF/2];
-  while(getline(cin, str)){
-    if(str.empty())    break;
-    memset(arr, 0, sizeof(arr));
-	int leng = splitStr2IntArray(str, arr);
-    insertarray(arr, leng);
-    outputarray(arr, leng);
-    str.clear();
+  while(1){
+	  if(getline(cin, str) == 0 || str.empty())
+		break;
+	  int* arr = new int[str.size()]();
+	  int leng = splitStr2IntArray(str, arr);
+	  if(leng<4 || leng%2 == 1){
+		  printf("invalid input array\n");
+	  }else{
+		  insertarray(arr, leng);
+		  outputarray(arr, leng);
+	  }
+	  
+	  delete[] arr;
+	  arr = 0;
   }
   return 0;
 }

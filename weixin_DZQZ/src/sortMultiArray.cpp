@@ -39,8 +39,10 @@ void sortTriArray(int* arr, int N){
 	}
 }
 
+/*
+ * mapping 1->2, 2->3, 3->5, all three are prime
+ * */
 void sortOutputPrimeTriArray(int* arr, int N){
-	//mapping 1->2, 2->3, 3->5
 	long multi = 1;
 	for(int i=0;i<N;i++){
 		if(arr[i] == 1)
@@ -68,8 +70,7 @@ void sortOutputPrimeTriArray(int* arr, int N){
 
 /*
  * once round of quick sort
- * move all elements equal to pivot to beginning of array
- * return length of pivot
+ * move all elements equal to pivot to head of array
  * */
 int myQuickSort(int* arr, int N, int pivot){	//arr has element of ==pivot and >pivot
 	if(N<1) return 0;
@@ -81,7 +82,7 @@ int myQuickSort(int* arr, int N, int pivot){	//arr has element of ==pivot and >p
 		}
 		left++;
 		myswap(left, cur);
-		cur++;									//potential bug!
+		cur++;
 	}
 	return left-arr+1;
 }
@@ -89,7 +90,7 @@ int myQuickSort(int* arr, int N, int pivot){	//arr has element of ==pivot and >p
 /*
  * idea of quick sort, apply multi rounds of quick sort
  * */
-void sortQuartArray(int* arr, int N){	//array of {1,2,3,4}
+void sortQuartArray(int* arr, int N){	//array of element of {1,2,3,4}
 	int *src = arr;
 	for(int i=1;i<4;i++){				//elements of {1,2,3,4}, sort by 1,2,3 seperately
 		int leng = myQuickSort(src, N, i);
@@ -106,8 +107,9 @@ void outputArray(int* arr, int N){
 
 int main(int argc, char* argv[]){
 	string str;
-	while(getline(cin, str)){
-		if(str.size()==0)	break;
+	while(1){
+		if(getline(cin, str)==0 || str.empty())	
+		  break;
 		int* array = new int[str.size()]();
 		int length = splitStr2IntArray(str,array);
 		outputArray(array, length);
@@ -117,5 +119,6 @@ int main(int argc, char* argv[]){
 		delete[] array;
 		array = 0;
 	}
+	return 0;
 }
 

@@ -46,16 +46,11 @@ void findCellNode(int x1, int y1, int x2, int y2){
     int rev = 0;
     if((x1-x2) * (y1-y2) > 0)
 		rev = 1;                    //x1>x2,y1>y2 or x1<x2,y1<y2
-    if(rev){
-		printf("[%d, %d]", xLow + xDist/d, yLow + yDist/d);
-    }else{
-		printf("[%d, %d]", xLow + xDist/d, yHigh - yDist/d);
-    }
-    for(int i=2;i<d;i++){
+    for(int i=1;i<d;i++){
         if(rev){
-            printf(",[%d, %d]",	xLow + xDist/d * i, yLow + yDist/d * i);
+            printf("[%d,%d]  ",	xLow + xDist/d * i, yLow + yDist/d * i);
         }else{
-            printf(",[%d, %d]", xLow + xDist/d * i, yHigh - yDist/d * i);
+            printf("[%d,%d]  ", xLow + xDist/d * i, yHigh - yDist/d * i);
         }
     }
     printf("\n");

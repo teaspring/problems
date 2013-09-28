@@ -153,7 +153,7 @@ char* maxpalindrome_4(const string& str){
 	pMix = 0;
 	delete[] p;
 	p=0;
-	return res;
+	return res;				//external user must delete the dynamic allocated object
 }
 
 int main(int agc, char* argv[]){
@@ -167,6 +167,8 @@ int main(int agc, char* argv[]){
 		printf("method3: the max palindrome is %s\n", res3.c_str());
 		char* cstr = maxpalindrome_4(str);
 		printf("method4: the max palindrome is %s\n", cstr);
+		delete[] cstr;
+		cstr = 0;
 	}
 	return 0;
 }

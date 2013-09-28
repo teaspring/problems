@@ -2,7 +2,7 @@
 * my own question inspired by "longest arithmetic array"
 * find longest ascending/descending subarray in array
 * 
-* test case:
+* test data:
 * 1 2 -1 3 0 4 1 5
 * 1 2 1 2 0 2 2 2 -1 -2
 */
@@ -20,10 +20,10 @@ int longestDesArray(int *arr, int n, int asc, int& end){
     for(int i=1;i<n;++i){
 		int j = i-1;
 		while(j>=0){
-			if(((asc && arr[i] >= arr[j]) || (!asc && arr[i] <= arr[j]))
+			if(((asc && arr[i] >= arr[j]) || (!asc && arr[i] <= arr[j]))	// equation belongs to ascending/descending
 				&& plength[i] < plength[j]+1){
 				plength[i] = plength[j]+1;
-				if(plength[i] > res){			//have found current longest ascending/descending array 
+				if(plength[i] > res){			//longest ascending/descending array till now.its size increases by 1 mostly, break is OK  
 					res = plength[i];
 					end = i;
 					break;
@@ -40,17 +40,18 @@ int longestDesArray(int *arr, int n, int asc, int& end){
 int main(int argc, char* argv[]){
     string str;
     while(1){
-    if(getline(cin, str) == 0 || str.empty())
-        break;
-    int *arr = new int[str.size()]();
-    int n = splitStr2IntArray(str, arr);
-    int e = 0;
-    int leng = longestDesArray(arr, n, 1, e);
-    printf("the longest ascending sub array is %d, ends at [%d]\n", leng, e);
-    leng = longestDesArray(arr, n, 0, e);
-    printf("the longest descending sub array is %d, ends at [%d]\n", leng, e);
-    delete[] arr;
-    arr = 0;   
+		if(getline(cin, str) == 0 || str.empty())
+			break;
+		int *arr = new int[str.size()]();
+		int n = splitStr2IntArray(str, arr);
+		int e = 0;
+		int leng = longestDesArray(arr, n, 1, e);
+		printf("the longest ascending sub array is %d, ends at [%d]\n", leng, e);
+		leng = longestDesArray(arr, n, 0, e);
+		printf("the longest descending sub array is %d, ends at [%d]\n", leng, e);
+		
+		delete[] arr;
+		arr = 0;   
     }
     return 0;
 }

@@ -1,6 +1,7 @@
-/******************maxSequence.cpp**********************/
-/*problem1: 
- * one array of all 0 and 1, calculate the longest sequence which has the same count of 0 and 1
+/* 
+ * question on Jul 19: 
+ * one array of all 0 and 1, calculate the longest sequence with the same counts of 0 and 1
+ * 
  * test data:
  * 1 1 1 1 0 0 0 0    returns 8
  * 1 1 1 1 0 0 0 1    returns 6
@@ -27,8 +28,7 @@ int longestBalanceSequence(int arr[], int N){
 }
 
 /*
- * target sequence may begin inside the array
- * qestion: does it achieve O(n)?
+ * no limit of the sequence beginning from where
  * */
 int longestBalanceSequenceExt(int* arr, int N){
 	int* subSum = new int[N]();	
@@ -44,18 +44,23 @@ int longestBalanceSequenceExt(int* arr, int N){
 		if(j==cur)	continue;
 		if((j-cur) > longest)	longest=(j-cur);		
 	}
+	delete[] subSum;
+	subSum = 0;
 	return longest;
 }
 
 int main(int argc, char* argv[]){
-	const int INF = 20;
 	string str;
-	while(getline(cin, str)){
-		if(str.size()==0) break;
-		int* arr = new int[INF]();
+	while(1){
+		if(getline(cin, str)==0 || str.empty()) 
+		  break;
+		int* arr = new int[str.size()]();
 		int len = splitStr2IntArray(str, arr);
 		int res = longestBalanceSequenceExt(arr, len);
-		printf("the longest balance sequence length is %d\n", res);		
+		printf("the longest balance sequence length is %d\n", res);
+
+		delete[] arr;
+		arr = 0;
 	}
 	return 0;
 }

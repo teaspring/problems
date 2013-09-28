@@ -26,9 +26,11 @@ void generate3(int n){
 			++i5;
 		}
 	}
+	printf("\n");
+	
 	delete[] arr;
 	arr = 0;
-	printf("\n");
+	return;
 }
 
 /*

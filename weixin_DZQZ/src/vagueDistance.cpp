@@ -1,4 +1,3 @@
-/*****************calculate vague distance between two 1/0 string*********************/
 /*
  * question on Aug15.
  * input is serials of {1,0}, e.g.1111, 1000, 101, 1101. every two serial compare, the vague distance is the left serial lengths sum excluding common sequences of two serial.

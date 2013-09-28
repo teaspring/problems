@@ -87,7 +87,7 @@ int main(int argc, char* argv[]){
 	int N = 0;
     while(1){
 		string str1;
-        if(getline(cin, str1)!= 0 )        //remember: if following code use getline(cin,..), here must use it too
+        if(getline(cin, str1) != 0 )        //note: if following code use getline(cin,..), here it must be used as well
            N = atoi(str1.c_str());
         if(N < 2) break;
         int* px = new int[N]();
@@ -95,7 +95,7 @@ int main(int argc, char* argv[]){
         for(int i=0;i<N;++i){
 			string str;
             if(getline(cin, str) != 0){
-               string::size_type pos = 0;
+               size_t pos = 0;
 			   px[i] = parse1stInt(str, pos);
 			   py[i] = parse1stInt(str, pos);
 			}
