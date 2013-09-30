@@ -5,7 +5,7 @@
 #include <string>
 #include <cctype>	
 #include <iostream>
-#include "math.h""
+#include "math.h"
 
 using namespace std;
 
@@ -63,8 +63,9 @@ int splitStr2IntArrayExt(string& str, int *array){
 /*
 * time O(lgm) to get index m == lgn
 */
-int getindex(int num, int e =10){
-    int m=1, pre_m=0, t=e, pre_t=1;
+int getindex(int num, int& t, int e =10){
+    int m=1, pre_m=0, pre_t=1;
+    t=e;
     while(num/t < 1 || num/t > 9){
         if(num/t > 9){
             pre_t = t;
