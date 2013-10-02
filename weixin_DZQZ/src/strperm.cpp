@@ -26,7 +26,7 @@ void quicksort(T* arr, int n){		//sort in ascending
             ++p;
             myswap<T>(p, q);
         }
-		++q;
+        ++q;
     }
     ++p;
     myswap<T>(p, q);
@@ -75,15 +75,15 @@ void perm(T* src, int count){
 
 template<typename T>
 int mycmp(T* arrA, T* arrB, int n){
-	for(int i=0;i<n;i++){
+    for(int i=0;i<n;i++){
         if(arrA[i] == arrB[i])
-		  continue;
-		else if(arrA[i] > arrB[i])
-		  return 1;
-		else
-		  return -1;
-	}
-	return 0;
+	    continue;
+        else if(arrA[i] > arrB[i])
+	    return 1;
+        else
+	    return -1;
+    }
+    return 0;
 }
 
 /*
@@ -91,14 +91,14 @@ int mycmp(T* arrA, T* arrB, int n){
  * */
 bool substrmatch_1(char* srcA, char* srcB){
     int m = strlen(srcB);
-	char* cstrB = new char[m+1];
-	memset(cstrB, 0, sizeof(char)*(m+1));
-	strcpy(cstrB, srcB);
-	cstrB[m] = '\0';
+    char* cstrB = new char[m+1];
+    memset(cstrB, 0, sizeof(char)*(m+1));
+    strcpy(cstrB, srcB);
+    cstrB[m] = '\0';
 
     quicksort<char>(cstrB, m);
     bool res = false;
-	if(strstr(srcA, cstrB) != NULL)
+    if(strstr(srcA, cstrB) != NULL)
         return true;
     while(1){								    //get permutation of cstrB, check if it exists in cstrA
         int j = m-1;
@@ -114,11 +114,11 @@ bool substrmatch_1(char* srcA, char* srcB){
         quicksort<char>(cstrB+j, m-j);		//here needs sort the src[j:count] instead of just iteration
         if(strstr(srcA, cstrB) != NULL){	    //strstr() is time O(m) factually
             res = true;
-			break;
-		}
+            break;
+        }
     }
-	delete[] cstrB;
-	cstrB = 0;
+    delete[] cstrB;
+    cstrB = 0;
     return res;
 }
 
@@ -128,40 +128,40 @@ bool substrmatch_1(char* srcA, char* srcB){
  * */
 bool substrmatch_2(char* srcA, char* srcB){
     int n = strlen(srcA), m = strlen(srcB);
-	char* cstrA = new char[n+1];
-	memset(cstrA, 0, sizeof(char)*(n+1));
-	strcpy(cstrA, srcA);
+    char* cstrA = new char[n+1];
+    memset(cstrA, 0, sizeof(char)*(n+1));
+    strcpy(cstrA, srcA);
 	
-	char* cstrB = new char[m+1];
-	memset(cstrB, 0, sizeof(char)*(m+1));
-	strcpy(cstrB, srcB);
+    char* cstrB = new char[m+1];
+    memset(cstrB, 0, sizeof(char)*(m+1));
+    strcpy(cstrB, srcB);
 
-	quicksort(cstrB, m);
-	quicksort(cstrA, m);
-	bool res = false;
-	int s = 0;
-	while(1){
+    quicksort(cstrB, m);
+    quicksort(cstrA, m);
+    bool res = false;
+    int s = 0;
+    while(1){
         if(mycmp<char>(cstrA+s, cstrB, m) == 0){				//compare string, time O(m)
             res = true;
-			break;
-	    }
-		s++;
-		if(s > n-m)		break;
-		int i=0;
-		for(;i<m-1 && cstrA[s+i] <= cstrA[s+m-1];i++);
-		if(i<m-1){
-		    char tmp = cstrA[s+m-1];
-            for(int j=s+m-1; j>i;j--)
-			  cstrA[s+j] = cstrA[s+j-1];
-			cstrA[s+i] = tmp;
-		}
+	    break;
 	}
+        s++;
+        if(s > n-m)		break;
+        int i=0;
+        for(;i<m-1 && cstrA[s+i] <= cstrA[s+m-1];i++);
+        if(i<m-1){
+            char tmp = cstrA[s+m-1];
+            for(int j=s+m-1; j>i;j--)
+                cstrA[s+j] = cstrA[s+j-1];
+	    cstrA[s+i] = tmp;
+	}
+    }
 	
-	delete[] cstrA;
-	cstrA = 0;
-	delete[] cstrB;
-	cstrB = 0;
-	return res;
+    delete[] cstrA;
+    cstrA = 0;
+    delete[] cstrB;
+    cstrB = 0;
+    return res;
 }
 
 int main(int argc, char* argv[]){
