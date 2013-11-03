@@ -16,10 +16,10 @@ using namespace std;
 
 template<typename T>
 void myswap(T* pa, T* pb){
-	T tmp = *pb;
-	*pb = *pa;
-	*pa = tmp;
-	tmp = 0;
+    T tmp = *pb;
+    *pb = *pa;
+    *pa = tmp;
+    tmp = 0;
 }
 
 void quickSortXY(int* px, int* py, int N){    //quick sort the px and py based on py ascending
@@ -53,8 +53,8 @@ int LAS(int* px, int* py, int n){
     }
     printf("\n");
 
-    int s1 = px[n-1], s2=0xffff;		  //two optional start
-    int l = 1;							  //O(n) iterate the array
+    int s1 = px[n-1], s2=0xffff;          //two optional start
+    int l = 1;                              //O(n) iterate the array
     for(int i=n-2; i>=0; --i){
         if(py[i] < s1){
             s2 = s1;
@@ -79,28 +79,28 @@ int parse1stInt(const string& str, string::size_type& pos){
     cstr[pos-s] = '\0';
     int res = atoi(cstr);
     delete[] cstr;
-	cstr = 0;
+    cstr = 0;
     return res;
 }
 
 int main(int argc, char* argv[]){
-	int N = 0;
+    int N = 0;
     while(1){
-		string str1;
+        string str1;
         if(getline(cin, str1) != 0 )        //note: if following code use getline(cin,..), here it must be used as well
            N = atoi(str1.c_str());
         if(N < 2) break;
         int* px = new int[N]();
         int* py = new int[N]();                   
         for(int i=0;i<N;++i){
-			string str;
+            string str;
             if(getline(cin, str) != 0){
                size_t pos = 0;
-			   px[i] = parse1stInt(str, pos);
-			   py[i] = parse1stInt(str, pos);
-			}
+               px[i] = parse1stInt(str, pos);
+               py[i] = parse1stInt(str, pos);
+            }
         }                   
-		int res = LAS(px, py, N);
+        int res = LAS(px, py, N);
         printf("the longest ascending sequence length is %d\n", res);
         delete[] px;
         px=0;

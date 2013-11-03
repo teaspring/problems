@@ -21,12 +21,12 @@ int minsubarray1(int* arr, int n, int s, int& start){
         for(int i=0;i<=n-l;++i){
             arrsum[i] += arr[l+i-1];       
             if(arrsum[i] > s){
-		start = i;
-		minleng = l;
-		break;
-	    }          
-	}
-	if(minleng>0)    break;
+        start = i;
+        minleng = l;
+        break;
+        }          
+    }
+    if(minleng>0)    break;
     }
     delete[] arrsum;
     arrsum = 0;
@@ -39,29 +39,29 @@ int minsubarray1(int* arr, int n, int s, int& start){
  * */
 int minsubarray2(int *arr, int n, int s, int& start){
     if(arr[0] > s){
-    	start = 0;
-	return 1;
+        start = 0;
+    return 1;
     }
     int minleng = n;
     int *arrsum = new int[n]();
     arrsum[0] = arr[0];
     for(int i=1;i<n;++i)
-	arrsum[i] = arrsum[i-1] + arr[i];
+    arrsum[i] = arrsum[i-1] + arr[i];
     for(int i=0;i<n;++i){
-	if(arrsum[i] <= s)
-	    continue;
-	int v=0, u=i;
-	while(u<=i && v<u){               //bi-search, O(lgn);edge case v==u-1
-	    int m = (u+v)/2;
-	    if(arrsum[i]-arrsum[m] > s){  //for edge case v==u-1, v==m, so v must be m+1 for next iterate
-		if(minleng > i-m){
-		    minleng = i-m;
-		    start = m+1;
-		}       
-		v = m+1;                  //this bi-search looks tricky
-	    }else
-		u = m;                    //u never equals to m(u>v), so u set m can be next iterate
-	}
+    if(arrsum[i] <= s)
+        continue;
+    int v=0, u=i;
+    while(u<=i && v<u){               //bi-search, O(lgn);edge case v==u-1
+        int m = (u+v)/2;
+        if(arrsum[i]-arrsum[m] > s){  //for edge case v==u-1, v==m, so v must be m+1 for next iterate
+        if(minleng > i-m){
+            minleng = i-m;
+            start = m+1;
+        }       
+        v = m+1;                  //this bi-search looks tricky
+        }else
+        u = m;                    //u never equals to m(u>v), so u set m can be next iterate
+    }
     }
     delete[] arrsum;
     arrsum = 0;
@@ -79,15 +79,15 @@ int minsubarray3(int *arr, int n, int s, int& start){
     do{
         while(j<n-1 && sj-si <= s){
             ++j;
-	    sj += arr[j];
+        sj += arr[j];
         }
         while(i<j && sj-si > s){
-	    if(minleng > j-i){
-	        minleng = j-i;
-		start = i+1;
-	    }
-	    ++i;
-	    si += arr[i];   
+        if(minleng > j-i){
+            minleng = j-i;
+        start = i+1;
+        }
+        ++i;
+        si += arr[i];   
         }
         if(j==n-1)    break;
     }while(j<n);
@@ -97,31 +97,31 @@ int minsubarray3(int *arr, int n, int s, int& start){
 int main(int argc, char* argv[]){
     string str;
     while(1){
-	if(getline(cin, str) == 0 || str.empty())
-	    break;
-	int *arr = new int[str.size()]();
-	int n = splitStr2IntArray(str, arr);
-	getline(cin, str);
-	int s = atoi(str.c_str());
-	int b = 0, subleng = 0;
-	subleng = minsubarray1(arr, n, s, b);
-	printf("minsubarray1(): the min subarray with sum greater than %d begins at [%d] with length of %d\n",
-		s, b, subleng);
-		
-	b = 0;
-	subleng = 0;
-	subleng = minsubarray2(arr, n, s, b);
-	printf("minsubarray2(): the min subarray with sum greater than %d begins at [%d] with length of %d\n",
-		s, b, subleng);
-		
-	b = 0;
-	subleng = 0;
-	subleng = minsubarray3(arr, n, s, b);
-	printf("minsubarray3(): the min subarray with sum greater than %d begins at [%d] with length of %d\n",
-		s, b, subleng);
+    if(getline(cin, str) == 0 || str.empty())
+        break;
+    int *arr = new int[str.size()]();
+    int n = splitStr2IntArray(str, arr);
+    getline(cin, str);
+    int s = atoi(str.c_str());
+    int b = 0, subleng = 0;
+    subleng = minsubarray1(arr, n, s, b);
+    printf("minsubarray1(): the min subarray with sum greater than %d begins at [%d] with length of %d\n",
+        s, b, subleng);
+        
+    b = 0;
+    subleng = 0;
+    subleng = minsubarray2(arr, n, s, b);
+    printf("minsubarray2(): the min subarray with sum greater than %d begins at [%d] with length of %d\n",
+        s, b, subleng);
+        
+    b = 0;
+    subleng = 0;
+    subleng = minsubarray3(arr, n, s, b);
+    printf("minsubarray3(): the min subarray with sum greater than %d begins at [%d] with length of %d\n",
+        s, b, subleng);
 
-	delete[] arr;
-	arr = 0;
+    delete[] arr;
+    arr = 0;
     }
     return 0;
 }

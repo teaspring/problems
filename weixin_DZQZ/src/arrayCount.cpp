@@ -18,9 +18,9 @@
  * time O(n), space O(1)
  * a little hard to read
  * */
-void negativeCount(int* arr, const int& n){		
+void negativeCount(int* arr, const int& n){        
     for(int i=0;i<n;++i){
-        if(arr[i] <= 0)    continue;			//set arr[i] negative to be occurance count
+        if(arr[i] <= 0)    continue;            //set arr[i] negative to be occurance count
         int j = arr[i];
         while(j <= n && arr[j-1] > 0){                           
             if(arr[j-1] != j){                           
@@ -38,9 +38,9 @@ void negativeCount(int* arr, const int& n){
         }       
     }
     
-    for(int i=0;i<n;++i){			  //output
+    for(int i=0;i<n;++i){              //output
         printf("negativeCount(): integer {%d} appears %d times\n", 
-                i+1,				//be careful
+                i+1,                //be careful
                 0-arr[i]);
     }
 }
@@ -55,10 +55,10 @@ void residualCount(int *arr, const int& n){
     for(int i=0;i<n;++i){
         arr[arr[i]/(n+1) - 1] += 1;
     }
-    for(int i=0;i<n;++i){			  //output
+    for(int i=0;i<n;++i){              //output
         printf("residualCount(): integer {%d} appears %d times\n", 
-		i+1,			
-		arr[i] % (n+1));
+        i+1,            
+        arr[i] % (n+1));
     }
 }
 
@@ -68,40 +68,40 @@ void residualCount(int *arr, const int& n){
  * */
 void multipleCount(int *arr, const int& n){
     for(int i=0;i<n;i++){
-    	arr[arr[i]%(n+1) - 1] += (n+1);
+        arr[arr[i]%(n+1) - 1] += (n+1);
     }
-    for(int i=0;i<n;++i){			  //output
+    for(int i=0;i<n;++i){              //output
         printf("multipleCount(): integer {%d} appears %d times\n", 
                 i+1,
-		arr[i]/(n+1));
+        arr[i]/(n+1));
     }
 }
 
 int main(int argc, char* argv[]){
     string str;
     while(1){
-    	if(getline(cin, str) == 0 || str.empty())
-    	    break;
-	int* arr = new int[str.size()](); 
-	int n = splitStr2IntArray(str, arr);
-	int *arr1 = new int[n]();
-	int *arr2 = new int[n]();
-	for(int i=0;i<n;++i){
-	    arr1[i] = arr[i];
-	    arr2[i] = arr[i];
-	}
-	
-	negativeCount(arr, n);
-	residualCount(arr1, n);
-	multipleCount(arr2, n);
-	
-	delete[] arr;
-	arr = 0;
-	delete[] arr1;
-	arr1 = 0;
-	delete[] arr2;
-	arr2 = 0;
-	str.clear();
+        if(getline(cin, str) == 0 || str.empty())
+            break;
+    int* arr = new int[str.size()](); 
+    int n = splitStr2IntArray(str, arr);
+    int *arr1 = new int[n]();
+    int *arr2 = new int[n]();
+    for(int i=0;i<n;++i){
+        arr1[i] = arr[i];
+        arr2[i] = arr[i];
+    }
+    
+    negativeCount(arr, n);
+    residualCount(arr1, n);
+    multipleCount(arr2, n);
+    
+    delete[] arr;
+    arr = 0;
+    delete[] arr1;
+    arr1 = 0;
+    delete[] arr2;
+    arr2 = 0;
+    str.clear();
     }
     return 0;
 }

@@ -4,7 +4,7 @@
 * output [a1,b1,a2,b2,...an,bn]
 *
 * test data:
-* 1,2,3,4,5,6,7,8		(n/2 is even)
+* 1,2,3,4,5,6,7,8        (n/2 is even)
 * 1,2,3,4,5,6,7,8,9,10  (n/2 is odd)
 **/
 #include "../header/preliminary.h"
@@ -27,20 +27,20 @@ void swaparray(int* pA, int* pB, int N){
  * */
 void insertarray(int* src, int length){
   if(length<4 || length%2 == 1){
-	  return;
+      return;
   }
   int half = length/2;
   int quart = half/2;
   if(half%2 == 1){
-	  swaparray(src+quart, src+half, quart+1);
-	  insertarray(src,half-1);
-	  insertarray(src+half+1, half-1);
-	  myswap(src+half-1, src+half);
+      swaparray(src+quart, src+half, quart+1);
+      insertarray(src,half-1);
+      insertarray(src+half+1, half-1);
+      myswap(src+half-1, src+half);
   }
   else{
-	  swaparray(src+quart, src+half, quart);
-	  insertarray(src, half);
-	  insertarray(src+half, half);
+      swaparray(src+quart, src+half, quart);
+      insertarray(src, half);
+      insertarray(src+half, half);
   }
 }
 
@@ -53,19 +53,19 @@ void outputarray(int* src, int N){
 int main(int i, char* argv[]){
   string str;
   while(1){
-	  if(getline(cin, str) == 0 || str.empty())
-		break;
-	  int* arr = new int[str.size()]();
-	  int leng = splitStr2IntArray(str, arr);
-	  if(leng<4 || leng%2 == 1){
-		  printf("invalid input array\n");
-	  }else{
-		  insertarray(arr, leng);
-		  outputarray(arr, leng);
-	  }
-	  
-	  delete[] arr;
-	  arr = 0;
+      if(getline(cin, str) == 0 || str.empty())
+        break;
+      int* arr = new int[str.size()]();
+      int leng = splitStr2IntArray(str, arr);
+      if(leng<4 || leng%2 == 1){
+          printf("invalid input array\n");
+      }else{
+          insertarray(arr, leng);
+          outputarray(arr, leng);
+      }
+      
+      delete[] arr;
+      arr = 0;
   }
   return 0;
 }
