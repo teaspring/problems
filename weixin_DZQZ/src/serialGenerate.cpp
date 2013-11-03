@@ -16,7 +16,6 @@ void generate3(int n){
         m = (x2<x5) ? x2:x5;
         arr[i] = m;
         printf("%d,", m);
-        
         if(x2==m){            
             x2 = arr[i2]*2;
             ++i2;

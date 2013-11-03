@@ -25,9 +25,9 @@ void sortTriArray(int* arr, int N){
     int *p1=arr, *p2=0, *p3=arr+N-1;
     while(p3 > p2){
         while(p1<arr+N && (*p1)==1)
-        p1++;
+            p1++;
         while(p3>=arr && (*p3)==3)
-        p3--;
+            p3--;
         p2 = p1;
         while(p2<arr+N && (*p2)==2)
             p2++;
@@ -46,7 +46,7 @@ void sortOutputPrimeTriArray(int* arr, int N){
     long multi = 1;
     for(int i=0;i<N;i++){
         if(arr[i] == 1)
-        multi *= 2;
+            multi *= 2;
         else if(arr[i] == 2)
             multi *= 3;
         else if(arr[i] == 3)
@@ -73,13 +73,13 @@ void sortOutputPrimeTriArray(int* arr, int N){
  * move all elements equal to pivot to head of array
  * */
 int myQuickSort(int* arr, int N, int pivot){    //arr has element of ==pivot and >pivot
-    if(N<1) return 0;
+    if(N<1)    return 0;
     int *left=arr-1, *cur=arr;
     while(cur<arr+N){
         if(*cur>pivot){
             cur++;
             continue;
-    }
+        }
         left++;
         myswap(left, cur);
         cur++;

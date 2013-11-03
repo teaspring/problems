@@ -77,11 +77,11 @@ template<typename T>
 int mycmp(T* arrA, T* arrB, int n){
     for(int i=0;i<n;i++){
         if(arrA[i] == arrB[i])
-        continue;
+            continue;
         else if(arrA[i] > arrB[i])
-        return 1;
+            return 1;
         else
-        return -1;
+            return -1;
     }
     return 0;
 }
@@ -143,8 +143,8 @@ bool substrmatch_2(char* srcA, char* srcB){
     while(1){
         if(mycmp<char>(cstrA+s, cstrB, m) == 0){                //compare string, time O(m)
             res = true;
-        break;
-    }
+            break;
+        }
         s++;
         if(s > n-m)        break;
         int i=0;
@@ -153,8 +153,8 @@ bool substrmatch_2(char* srcA, char* srcB){
             char tmp = cstrA[s+m-1];
             for(int j=s+m-1; j>i;j--)
                 cstrA[s+j] = cstrA[s+j-1];
-        cstrA[s+i] = tmp;
-    }
+            cstrA[s+i] = tmp;
+        }
     }
     
     delete[] cstrA;

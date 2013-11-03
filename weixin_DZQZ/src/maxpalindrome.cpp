@@ -13,7 +13,7 @@
  * */
 bool ispalindrome(const string& src, int end, int length){
     if(length > (int)src.size() || length < 1
-    || end >= (int)src.size() || end < 0)
+       || end >= (int)src.size() || end < 0)
       return false;
     int v = end - length+1, u = end;
     while(v<= u && src[v] == src[u]){
@@ -61,8 +61,7 @@ string maxpalindrome_2(const string& str){
     for(int i=1;i<n;i++){
         int v=i-1, u=i+1;                //substr of odd char counts 
         cmpwing(str, v, u, b, maxlength);
-
-        v=i-1, u=i;                        //substr of even char counts
+        v=i-1, u=i;                      //substr of even char counts
         cmpwing(str, v, u, b, maxlength);
     }
     return str.substr(b, maxlength);
@@ -122,8 +121,8 @@ char* maxpalindrome_4(const string& str){
           pMix[i] = '#';
     }
     int* p = new int[2*n+1]();
-    p[0] = 1;                        //radius of palindrome with center at [i], including center
-    int id=0;                        //center of the max palindrome till now
+    p[0] = 1;                       //radius of palindrome with center at [i], including center
+    int id=0;                       //center of the max palindrome till now
     int mx = id + p[id];            //edge of the max palindrome, outside palindrome
     for(int i=1;i<2*n+1;i++){
         if(mx > i)

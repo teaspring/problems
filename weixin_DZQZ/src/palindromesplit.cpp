@@ -19,7 +19,7 @@ void output02(const string& str, int** ppLength, int* pCount, int k, int n){    
     if(pCount[k] > 1){
         for(;i>=0;i--){
             if(pCount[i] == pCount[k]-1 && ppLength[k][k-i] == 1){
-            output02(str, ppLength, pCount, i, n);
+                output02(str, ppLength, pCount, i, n);
                 break;
             }
         }
@@ -52,16 +52,16 @@ int splitpalindrome02(const string& str){
             if(str[pos] == str[b]){ 
                 if(pos-b<3 || ( pos-b > 2 && ppLength[pos-1][pos-1-b] == 1)){
                     ppLength[pos][pos-b+1] = 1;
-            if(b==0)
-                minCount[pos] = 1;
+                    if(b==0)
+                        minCount[pos] = 1;
                     else if(minCount[pos] > minCount[b-1]+1)
-                minCount[pos] = minCount[b-1]+1;                    
+                        minCount[pos] = minCount[b-1]+1;                    
+                }
+            }
         }
-        }
-    }
-    if(minCount[pos] == pos+1)        //minCount[i] never updated, so it should be following [i-1]
-        minCount[pos] = minCount[pos-1] + 1;
-    ++pos;
+        if(minCount[pos] == pos+1)        //minCount[i] never updated, so it should be following [i-1]
+            minCount[pos] = minCount[pos-1] + 1;
+        ++pos;
     }
     int res = minCount[n-1];
     printf("minCount[] is ");
@@ -76,20 +76,19 @@ int splitpalindrome02(const string& str){
     minCount = 0;
     for(int i=0;i<n;i++){
         delete[] ppLength[i];
-    ppLength[i] = 0;
+        ppLength[i] = 0;
     }
     delete[] ppLength;
-    ppLength =0;
-    
+    ppLength =0;    
     return res;
 }
 
 int main(int argc, char* argv[]){
     string str;
     while(1){
-    if(getline(cin, str) == 0 || str.empty())
-        break;
-    splitpalindrome02(str);
+        if(getline(cin, str) == 0 || str.empty())
+            break;
+        splitpalindrome02(str);
     }
     return 0;
 }

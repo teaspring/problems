@@ -16,14 +16,14 @@ int longestDesArray(int *arr, int n, int asc, int& end){
     int res=1;
     int *plength = new int[n]();
     for(int i=0;i<n;++i)
-        plength[i] = 1;
+      plength[i] = 1;
     for(int i=1;i<n;++i){
         int j = i-1;
         while(j>=0){
             if(((asc && arr[i] >= arr[j]) || (!asc && arr[i] <= arr[j]))    // equation belongs to ascending/descending
                 && plength[i] < plength[j]+1){
                 plength[i] = plength[j]+1;
-                if(plength[i] > res){            //longest ascending/descending array till now.its size increases by 1 mostly, break is OK  
+                if(plength[i] > res){       //longest ascending/descending array till now.its size increases by 1 mostly, break is OK  
                     res = plength[i];
                     end = i;
                     break;
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
     string str;
     while(1){
         if(getline(cin, str) == 0 || str.empty())
-            break;
+          break;
         int *arr = new int[str.size()]();
         int n = splitStr2IntArray(str, arr);
         int e = 0;

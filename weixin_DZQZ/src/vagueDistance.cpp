@@ -106,7 +106,7 @@ void bitTrie::insertStr(const string& str){
  * */
 bitNode* bitTrie::insertNode(char c, bitNode *parent){
     bitNode* curr = 0;
-    if(c == '1'){                            //potential bug!
+    if(c == '1'){                            //
         if(parent->left == 0){
             parent->left = new bitNode(c, parent);
             parent->lDepth += 1;
@@ -140,7 +140,7 @@ void bitTrie::updateAncestorDepth(bitNode *pNode){
         int greater = curr->lDepth > curr->rDepth ? curr->lDepth : curr->rDepth;
         if(curr == par->left){
             if(par->lDepth < greater+1)
-                par->lDepth = greater+1;
+              par->lDepth = greater+1;
         }else{
             if(par->rDepth < greater+1)
               par->rDepth = greater+1;

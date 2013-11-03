@@ -76,8 +76,9 @@ int getLeastCutPay(int* arr, int N, int *resArr){
 
 int main(int argc, char* argv[]){
     string str;
-    while(getline(cin, str)!=0){
-        if(str.size()==0)    break;
+    while(1){
+        if(getline(cin, str)==0 || str.empty())
+          break;
         int *arr = new int[str.size()]();
         int leng = splitStr2IntArray(str, arr);
         int *pay = new int[leng-1]();
@@ -90,7 +91,6 @@ int main(int argc, char* argv[]){
         arr = 0;
         delete[] pay;
         pay = 0;
-    }
-        
+    }        
     return 0;
 }

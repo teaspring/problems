@@ -22,8 +22,8 @@ int reversedigit(int x){
     int y = x;
     while(y != 0){
         r *= 10;
-    r += y % 10;
-    y /= 10;
+        r += y % 10;
+        y /= 10;
     }
     return r;
 }
@@ -40,13 +40,13 @@ int getBrotherNum(int x){
     }
     if(h==0)    return 0;
     int rev = y % b;
-    y = y  - rev + reversedigit(rev);            //reverse the low range
+    y = y - rev + reversedigit(rev);            //reverse the low range
     
     int order = 1;
     l = y % 10;
     while(order <= b && h < l){                    //iterate the low range to find the least digit just greater than high digit
         order *= 10;
-    l = (y/order)%10;
+        l = (y/order)%10;
     }
     order /= 10;                    //get the digit just lower than l
     int s = (y / order) % 10;

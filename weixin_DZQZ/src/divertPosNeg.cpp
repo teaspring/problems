@@ -15,13 +15,15 @@
 
 void convertArray(int *arr, int n, int m, int tick){    //tick==1 for plus multiple m, 0 for mode m 
     if(tick){
-    for(int i=0;i<n;++i){
-        if(arr[i]>0)    arr[i] += i*m;
-        else        arr[i] -= i*m;
-    }
+        for(int i=0;i<n;++i){
+            if(arr[i]>0)
+              arr[i] += i*m;
+            else
+              arr[i] -= i*m;
+        }
     }else{
-    for(int i=0;i<n;++i)
-        arr[i] %= m;
+        for(int i=0;i<n;++i)
+            arr[i] %= m;
     }
 }
 
@@ -42,11 +44,11 @@ void myQuickSort(int *arr, int n, int m){    //sort in O(nlgn), compare by value
     int *p = arr-1, *q = arr;
     int t = *(arr + n-1);
     while(q < arr+n-1){
-    if(cmpResidual(t,*q,m)){        //t/m > (*q)/m
-        ++p;
-        mySwap<int>(p, q);
-    }
-    ++q;
+        if(cmpResidual(t,*q,m)){        //t/m > (*q)/m
+            ++p;
+            mySwap<int>(p, q);
+        }
+        ++q;
     }
     ++p;
     mySwap<int>(p,q);
@@ -61,11 +63,11 @@ void convertDivert(int *arr, int n){
         if(arr[i] < 0){
             negN += 1;
             if(mode < 0-arr[i])
-            mode = 0-arr[i];
-    }else{
-        if(mode < arr[i])
-        mode = arr[i];
-    }          
+                mode = 0-arr[i];
+        }else{
+            if(mode < arr[i])
+                mode = arr[i];
+        }          
     }
     mode += 1;                    //mode must be more than the greatest absolute value
     int posN = n - negN;
@@ -73,10 +75,10 @@ void convertDivert(int *arr, int n){
     int *p=arr-1, *q=arr;
     while(q<arr+n){
         if(*q<0){                //swap negetive to head
-        ++p;
-        mySwap<int>(p, q);
-    }
-    ++q;
+            ++p;
+            mySwap<int>(p, q);
+        }
+        ++q;
     }
     p = 0;
     q = 0;
@@ -94,20 +96,20 @@ void simpleDivert(int *arr, int n){
     int *dst = new int[n]();
     int ind = 0;
     for(int i=0;i<n;++i){
-    if(arr[i]<0){
-        dst[ind] = arr[i];
-        ++ind;
-    }
+        if(arr[i]<0){
+            dst[ind] = arr[i];
+            ++ind;
+        }
     }
     for(int i=0;i<n;++i){
         if(arr[i]>0){
-        dst[ind] = arr[i];
-        ++ind;
-    }
+            dst[ind] = arr[i];
+            ++ind;
+        }
     }
 
     for(int i=0;i<n;++i){                //out
-    printf("%d ", dst[i]);
+        printf("%d ", dst[i]);
     }
     printf("\n");
     delete[] dst;
@@ -118,14 +120,14 @@ int main(int argc, char* argv[]){
     string str;
     while(1){
         if(getline(cin, str) == 0 || str.empty())
-        break;
-    int *arr = new int[str.size()]();
-    int n = splitStr2IntArray(str, arr);
-    convertDivert(arr, n);
-    //simpleDivert(arr, n);
-    delete[] arr;
-    arr = 0;
-    str.clear();
+          break;
+        int *arr = new int[str.size()]();
+        int n = splitStr2IntArray(str, arr);
+        convertDivert(arr, n);
+        //simpleDivert(arr, n);
+        delete[] arr;
+        arr = 0;
+        str.clear();
     }
     return 0;
 }

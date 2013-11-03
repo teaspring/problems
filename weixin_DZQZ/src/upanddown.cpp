@@ -36,19 +36,18 @@ void bisearchUpDown(int* arr, int v, int u, int x){
 
     int phalfMinus = ((mid-v) - (arr[mid]-arr[v]))/2;
     int bhalfMinus = ((u-mid) - (arr[u]-arr[mid]))/2;    
-    if(x > arr[v] + u-v-(phalfMinus + bhalfMinus) 
-    || x < arr[v] - (phalfMinus + bhalfMinus)){            //exclusive adjustment must be done prior to half split
-    printf("Sorry, %d not appear in the array\n", x);
-    return;
+    if(x>arr[v] + u-v-(phalfMinus + bhalfMinus) 
+       || x < arr[v] - (phalfMinus + bhalfMinus)){            //exclusive adjustment must be done prior to half split
+        printf("Sorry, %d not appear in the array\n", x);
+        return;
     }
     if(!(phalfMinus == 0 && arr[mid]==x)        //exclude one case which spawn another unnecessary recurse
-    && x >= arr[v]-phalfMinus 
-    && x <= arr[v]+mid-v-phalfMinus){
+       && x >= arr[v]-phalfMinus 
+       && x <= arr[v]+mid-v-phalfMinus){
         bisearchUpDown(arr, v, mid-1, x);                //as we reduce either v or u to half the range, v<0 is an edge necessary to handle
     }
 
-    if(x >= arr[mid]-bhalfMinus 
-    && x <= arr[mid]+u-mid-bhalfMinus){
+    if(x >= arr[mid]-bhalfMinus && x <= arr[mid]+u-mid-bhalfMinus){
         bisearchUpDown(arr, mid+1, u, x);
     }
 }
@@ -65,12 +64,12 @@ void stepsearchUpDown(int* arr, int n, int x){
     int find = 0;
     while(curr > arr-1 && curr < arr+n){
         if(*curr == x){
-        ++find;
-        printf("appearance at arr[%d]\n", curr-arr);
-        curr += 1;
-    }else{
-        curr += myAbs(x - *curr);            
-    }        
+            ++find;
+            printf("appearance at arr[%d]\n", curr-arr);
+            curr += 1;
+        }else{
+            curr += myAbs(x - *curr);            
+        }        
     }
     if(find == 0)
         printf("Sorry, %d not appear in the array\n", x);
@@ -81,19 +80,19 @@ int main(int agrc, char* argv[]){
     string str;
     while(1){
         if(getline(cin, str)!=0 && str.size() == 0)
-        break;
-    int* arr = new int[str.size()]();
-    int n = splitStr2IntArray(str, arr);
-    getline(cin,str);
-    int x = atoi(str.c_str());
+            break;
+        int* arr = new int[str.size()]();
+        int n = splitStr2IntArray(str, arr);
+        getline(cin,str);
+        int x = atoi(str.c_str());
         
-    cout<<"bisearch result:"<<endl;
-    bisearchUpDown(arr, 0, n-1, x);
-    cout<<"stepsearch result:"<<endl;
-    stepsearchUpDown(arr, n, x);
+        cout<<"bisearch result:"<<endl;
+        bisearchUpDown(arr, 0, n-1, x);
+        cout<<"stepsearch result:"<<endl;
+        stepsearchUpDown(arr, n, x);
         
-    delete[] arr;
-    arr = 0;
+        delete[] arr;
+        arr = 0;
     }
     return 0;
 }
