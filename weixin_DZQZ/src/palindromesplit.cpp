@@ -1,6 +1,6 @@
 /*
-*question on Sep19
-*split a string to palindromes with least count
+* question on Sep19
+* split a string to palindromes with least cut
 *
 * test data:
 * aabaa, aabaa

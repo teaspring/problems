@@ -1,6 +1,6 @@
 /*
-* my own question inspired by "longest arithmetic array"
-* find longest ascending/descending subarray in array
+* my own question inspired by "longest arithmetic progression"
+* find length of longest ascending/descending subarray
 * 
 * test data:
 * 1 2 -1 3 0 4 1 5

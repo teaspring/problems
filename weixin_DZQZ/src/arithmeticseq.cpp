@@ -1,6 +1,6 @@
 /*
-* question on Sep05. it is a little complicated and be splited to some sub question
-* complete in 4 hours
+* question on Sep05. given a int array, search the longest arithmetic progression, either ascending or descending is OK
+* 
 * test case:
   1 2 3 4 5     ascending
   2 1 0 -1 -2     decending
@@ -96,7 +96,7 @@ int arithmeticLinear(int *arr, int n, int& end, int& step){
         for(int i=0;i<n;++i){
             stepCount[k][i] = new int[d+1]();    //allow step == 0
             for(int j=0;j<d+1;++j){    //stepCount[k][i][j] is the max arith progression length from arr[i] to arr[0], in step of j
-            stepCount[k][i][j] = 1;        //default length is 1
+                stepCount[k][i][j] = 1;        //default length is 1
             }
         }
     }
