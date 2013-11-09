@@ -12,15 +12,15 @@ using namespace std;
 
 class expreInter{
 public:
-	expreInter(string str):inStr(str),pos(0),ch(0){}
-	~expreInter(){}
-	void interpret();
+    expreInter(string str):inStr(str),pos(0),ch(0){}
+    ~expreInter(){}
+    void interpret();
 private:
-	int factor();
-	int term();
-	int expression();
+    int factor();
+    int term();
+    int expression();
 
-	string inStr;
-	size_t pos;
-	char ch;	
+    string inStr;
+    size_t pos;
+    char ch;    
 };

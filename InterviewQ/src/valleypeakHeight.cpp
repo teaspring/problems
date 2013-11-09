@@ -22,13 +22,13 @@ int maxValleyPeakHeight(int *arr, int n){
     int res = 0;
     int *p1 = arr, *p2 = arr+1;
     while(p2 < arr+n){
-		int step = *(p1+1) - *p1;
-		while(p2 < arr+n && (*p2-*(p2-1)) * step > 0){		//both positive or both negative
-			++p2;
-		}
-		int tmp = absolute(*(p2-1) - *p1);
-		if(tmp > res)	res = tmp;
-		p1 = p2-1;
+        int step = *(p1+1) - *p1;
+        while(p2 < arr+n && (*p2-*(p2-1)) * step > 0){        //both positive or both negative
+            ++p2;
+        }
+        int tmp = absolute(*(p2-1) - *p1);
+        if(tmp > res)    res = tmp;
+        p1 = p2-1;
     }
     p1 = 0;
     p2 = 0;   
@@ -38,15 +38,15 @@ int maxValleyPeakHeight(int *arr, int n){
 int main(int argc, char* argv[]){
     string str;
     while(1){
-		if(getline(cin, str) == 0 || str.empty())
-			break;
-		int *arr = new int[str.size()]();
-		int leng = splitStr2IntArray(str, arr);
-		int h = maxValleyPeakHeight(arr, leng);
-		printf("the max valley-peak height is %d\n", h);
-		delete[] arr;
-		arr = 0;
-		str.clear();
+        if(getline(cin, str) == 0 || str.empty())
+            break;
+        int *arr = new int[str.size()]();
+        int leng = splitStr2IntArray(str, arr);
+        int h = maxValleyPeakHeight(arr, leng);
+        printf("the max valley-peak height is %d\n", h);
+        delete[] arr;
+        arr = 0;
+        str.clear();
     }
     return 0;
 }

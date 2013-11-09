@@ -29,137 +29,137 @@ int extractNumbersToArray(char *str, int *numbers)
 }
 
 void logicrule::init(){
-	pos = 0;
-	size_t curr = 0;
-	while(pos < str.size()){
-		if(isspace(str[pos])){
-			++pos;
-			continue;
-		}
-		if(key.empty()){				//first parse the key
-			curr = pos;
-			while(pos < str.size() && str[pos] != ':')
-			  ++pos;
-			size_t end = pos-1;
-			while(isspace(str[end]))
-			  --end;
-			key = str.substr(curr, end+1-curr);
-			++pos;
-			continue;
-		}
-		if((str[pos] == 'a' && rules.size() > operands.size())
-			|| str[pos] == 'o'){
-			parseLogicOperand();
-			continue;
-		}
+    pos = 0;
+    size_t curr = 0;
+    while(pos < str.size()){
+        if(isspace(str[pos])){
+            ++pos;
+            continue;
+        }
+        if(key.empty()){                //first parse the key
+            curr = pos;
+            while(pos < str.size() && str[pos] != ':')
+              ++pos;
+            size_t end = pos-1;
+            while(isspace(str[end]))
+              --end;
+            key = str.substr(curr, end+1-curr);
+            ++pos;
+            continue;
+        }
+        if((str[pos] == 'a' && rules.size() > operands.size())
+            || str[pos] == 'o'){
+            parseLogicOperand();
+            continue;
+        }
 
-		if(str[pos]=='a' && rules.size()==operands.size()){
-			++pos;
-			continue;
-		}
-		if(str[pos] == '>' || str[pos] == '<' || str[pos] == '=')
-			parseCmpRule();
-	}
+        if(str[pos]=='a' && rules.size()==operands.size()){
+            ++pos;
+            continue;
+        }
+        if(str[pos] == '>' || str[pos] == '<' || str[pos] == '=')
+            parseCmpRule();
+    }
 }
 
 void logicrule::parseCmpRule(){
-	if(pos>=str.size())	return;
-	char ch = str[pos++];
-	while(pos<str.size() && !isdigit(str[pos]))
-	  ++pos;
-	size_t cur = pos;
-	while(pos<str.size() && isdigit(str[pos]))
-	  ++pos;
-	int inum = atoi(str.substr(cur, pos-cur).c_str());
-	switch (ch){
-		case '>':
-			rules.push_back(new mygreater(inum));
-			break;
-		case '<':
-			rules.push_back(new myless(inum));
-			break;
-		case '=':
-			rules.push_back(new myequal(inum));
-			break;
-		default:
-			break;
-	}
-	return;
+    if(pos>=str.size())    return;
+    char ch = str[pos++];
+    while(pos<str.size() && !isdigit(str[pos]))
+      ++pos;
+    size_t cur = pos;
+    while(pos<str.size() && isdigit(str[pos]))
+      ++pos;
+    int inum = atoi(str.substr(cur, pos-cur).c_str());
+    switch (ch){
+        case '>':
+            rules.push_back(new mygreater(inum));
+            break;
+        case '<':
+            rules.push_back(new myless(inum));
+            break;
+        case '=':
+            rules.push_back(new myequal(inum));
+            break;
+        default:
+            break;
+    }
+    return;
 }
 
 void logicrule::parseLogicOperand(){
-	char ch = str[pos];
-	while(pos<str.size() && !isspace(str[pos]))
-		++pos;
-	if(ch == 'a')
-		operands.push_back(1);					//and
-	else
-		operands.push_back(0);
-	return;	  
+    char ch = str[pos];
+    while(pos<str.size() && !isspace(str[pos]))
+        ++pos;
+    if(ch == 'a')
+        operands.push_back(1);                    //and
+    else
+        operands.push_back(0);
+    return;      
 }
 
 bool logicrule::evaluate(int a){
-	if(rules.empty())	return false;
-	vector<comparerule*>::iterator ruleIter = rules.begin();
-	vector<int>::iterator operandIter = operands.begin();
-	bool res = (*ruleIter)->evaluate(a);
-	ruleIter++;
-	while(ruleIter != rules.end() && operandIter != operands.end()){		//'and' precedence to 'or' is not implemented
-		if(*operandIter == 1)
-		  res &= (*ruleIter)->evaluate(a);
-		else
-		  res |= (*ruleIter)->evaluate(a);
-		
-		if((*operandIter == 1 && !res)
-		|| (*operandIter == 0 && res))
-		  break;
-		ruleIter++;
-		operandIter++;		  
-	}
-	return res;
+    if(rules.empty())    return false;
+    vector<comparerule*>::iterator ruleIter = rules.begin();
+    vector<int>::iterator operandIter = operands.begin();
+    bool res = (*ruleIter)->evaluate(a);
+    ruleIter++;
+    while(ruleIter != rules.end() && operandIter != operands.end()){        //'and' precedence to 'or' is not implemented
+        if(*operandIter == 1)
+          res &= (*ruleIter)->evaluate(a);
+        else
+          res |= (*ruleIter)->evaluate(a);
+        
+        if((*operandIter == 1 && !res)
+        || (*operandIter == 0 && res))
+          break;
+        ruleIter++;
+        operandIter++;          
+    }
+    return res;
 }
 
 void determineRules(int *numbers, int numberCount, string *rules, int ruleCount)
 {
     vector<logicrule*> logicrules;
-	for(int i=0;i<ruleCount;++i){
-		logicrules.push_back(new logicrule(rules[i]));
-	}
-	printf("output:");
-	for(int i=0;i<numberCount;++i){
-		int found = 0;
-		vector<logicrule*>::iterator iter = logicrules.begin();
-		while(iter != logicrules.end()){
-			if((*iter)->evaluate(numbers[i])){
-				printf("%s,", (*iter)->getkey());
-				found = 1;
-				break;
-			}
-			++iter;
-		}
-		if(found==0)
-		  printf("none,");
-	}
-	printf("\n");
-	for(size_t i =0;i<logicrules.size();++i){
-		delete logicrules[i];
-		logicrules[i] = 0;
-	}
+    for(int i=0;i<ruleCount;++i){
+        logicrules.push_back(new logicrule(rules[i]));
+    }
+    printf("output:");
+    for(int i=0;i<numberCount;++i){
+        int found = 0;
+        vector<logicrule*>::iterator iter = logicrules.begin();
+        while(iter != logicrules.end()){
+            if((*iter)->evaluate(numbers[i])){
+                printf("%s,", (*iter)->getkey());
+                found = 1;
+                break;
+            }
+            ++iter;
+        }
+        if(found==0)
+          printf("none,");
+    }
+    printf("\n");
+    for(size_t i =0;i<logicrules.size();++i){
+        delete logicrules[i];
+        logicrules[i] = 0;
+    }
 }
 
 int main(int argc, char ** argv)
 {
     string str;
-	getline(cin, str);
-	int* numbers = new int[str.size()]();
-	int ncount = splitStr2IntArray(str, numbers);
+    getline(cin, str);
+    int* numbers = new int[str.size()]();
+    int ncount = splitStr2IntArray(str, numbers);
     
-	string* rules = new string[10]();
-	str.clear();
-	int rcount = 0;
+    string* rules = new string[10]();
+    str.clear();
+    int rcount = 0;
     while(getline(cin, str)!= 0 && !str.empty()) {
         rules[rcount++] = str;
-		str.clear();
+        str.clear();
     }
     determineRules(numbers, ncount, rules, rcount);
     return 0;

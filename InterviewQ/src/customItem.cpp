@@ -62,11 +62,11 @@ int findAnotherMostItem(char orders[MaxOrder], int itemNo ){
 }
 
 int main(int argc, char* argv[]){
-	char arr[MaxOrder]={
-		'A','1','A','2','B','1','B','3','A','3',
-		'C','1','C','2','B','4','C','4','D','1',
-		'D','4','D','5','E','2','E','4','E','5'};
-	int res = findAnotherMostItem(arr, 1);
-	printf("%d",res);
-	return 0;
+    char arr[MaxOrder]={
+        'A','1','A','2','B','1','B','3','A','3',
+        'C','1','C','2','B','4','C','4','D','1',
+        'D','4','D','5','E','2','E','4','E','5'};
+    int res = findAnotherMostItem(arr, 1);
+    printf("%d",res);
+    return 0;
 }

@@ -67,7 +67,7 @@ void findZeroMove(int src[5][5], int dst[5][5], char* seq, const int length){
     printf("\n");
 }
 
-void sort(char arr[], int length){	//can sort two array in main function directly
+void sort(char arr[], int length){    //can sort two array in main function directly
     for(int k=0;k<length-1;k++)
         for(int s=k+1;s<length;s++){        //bug ever!!!
             if(arr[k] > arr[s]){

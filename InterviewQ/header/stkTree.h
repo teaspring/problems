@@ -10,36 +10,36 @@
 const int N = 4;
 struct stkArray{
     int stkSize;
-	int headIdx;
+    int headIdx;
     int stk[N];
     stkArray(int a[], int size=0):stkSize(size), headIdx(0){
         for(int i=0; i<N; i++)
             stk[i] = a[i];
     }
-	int top(){
-		return stk[headIdx];
-	}
-	void pop(){
-		headIdx++;
-		stkSize--;
-	}
-	void push(int idx){
-		if(headIdx==0) return;
-		headIdx--;
-		stkSize++;
-		if(idx != headIdx){
-			int tmp = stk[headIdx];
-			stk[headIdx] = stk[idx];
-			stk[idx] = tmp;
-		}
-	}
-	bool equalTo(stkArray* rhd){
-		if(this->stkSize != rhd->stkSize)
-		  return false;
-		int i=0;
-		for(;i<stkSize && this->stk[i+headIdx]==rhd->stk[i+headIdx];i++);
-		return i == stkSize;
-	}
+    int top(){
+        return stk[headIdx];
+    }
+    void pop(){
+        headIdx++;
+        stkSize--;
+    }
+    void push(int idx){
+        if(headIdx==0) return;
+        headIdx--;
+        stkSize++;
+        if(idx != headIdx){
+            int tmp = stk[headIdx];
+            stk[headIdx] = stk[idx];
+            stk[idx] = tmp;
+        }
+    }
+    bool equalTo(stkArray* rhd){
+        if(this->stkSize != rhd->stkSize)
+          return false;
+        int i=0;
+        for(;i<stkSize && this->stk[i+headIdx]==rhd->stk[i+headIdx];i++);
+        return i == stkSize;
+    }
 };
 
 /*

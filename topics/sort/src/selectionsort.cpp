@@ -10,7 +10,9 @@ void myswap(int& a, int& b){
     b = tmp;
 }
 
-//bubble method, O(n). excessive use of swap
+/*
+ * bubble method, time O(n^2), with excessive use of swap in each internal iteration
+ */
 int bubblesort(int* A, int n){
     int op = 0;
     for(int i=0; i<n-1; i++){        
@@ -26,7 +28,10 @@ int bubblesort(int* A, int n){
     return op;
 }
 
-/*inprovement is reduce operations of swap() to O(n). but its average efficiency is a little worse than insertionsort*/
+/*
+ * improvement is to reduce swap() to once in each internal iteration. 
+ * its average efficiency is a little worse than insertionsort
+ * */
 int selectionsort(int* A, int n){
     int op = 0;
     for (int i=0; i<n-1; i++){
@@ -47,7 +52,9 @@ int selectionsort(int* A, int n){
     return op;
 }
 
-/*basic insertion sort. avoid swap*/
+/*
+ * basic insertion sort. in internal iteration, stops till finding its correct postion. 
+ * */
 int insertionsort(int* A, int n){
     int op = 0;
     for(int i=1;i<n;i++){

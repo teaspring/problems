@@ -7,10 +7,10 @@
 char* calculateOperationSequence(int src[], int dst[], int length){
     int idx1=0, idx2=0, k=-1;   //k is top
     const int NN = 200;
-	int* stkArr = new int[NN]();
+    int* stkArr = new int[NN]();
     
-	char* path = new char[NN]();		//it must be dynamic array which resides in heap instead of function stack
-    memset(path,0,sizeof(char)*NN);	//so it will not be eliminated when function returns
+    char* path = new char[NN]();        //it must be dynamic array which resides in heap instead of function stack
+    memset(path,0,sizeof(char)*NN);    //so it will not be eliminated when function returns
     char* tmp = path;
 
     stkArr[++k] = src[idx1];        //push
@@ -37,33 +37,33 @@ char* calculateOperationSequence(int src[], int dst[], int length){
     }
 
     if(idx2<length){  
-	  memset(path, 0, sizeof(NN));
-	  sprintf(path, "%s","None");
-	}
-	delete[] stkArr;
-	stkArr = 0;
-	return path;
+      memset(path, 0, sizeof(NN));
+      sprintf(path, "%s","None");
+    }
+    delete[] stkArr;
+    stkArr = 0;
+    return path;
 }
 
 int main(int argc, char* argv[]){
-	char line[1000] = {0} ;
-	while(getInputLine(line,1000)){
-		int originalArray[30] = {0};
-		int originalArrayLength = splitAndConvert(line,originalArray);
-		if(originalArrayLength==0){
-			break;
-		}
+    char line[1000] = {0} ;
+    while(getInputLine(line,1000)){
+        int originalArray[30] = {0};
+        int originalArrayLength = splitAndConvert(line,originalArray);
+        if(originalArrayLength==0){
+            break;
+        }
 
-		getInputLine(line, 1000);
-		int resultArray[30] = {0};
-		int resultArrayLength = splitAndConvert(line,resultArray);
-		if(resultArrayLength==0){
-			break;
-		}
-		char* operationSequence = calculateOperationSequence(originalArray, resultArray, resultArrayLength);
-		cout<<operationSequence<<endl;
-		delete operationSequence;		//added by me 
-	}
-	return 0; 
+        getInputLine(line, 1000);
+        int resultArray[30] = {0};
+        int resultArrayLength = splitAndConvert(line,resultArray);
+        if(resultArrayLength==0){
+            break;
+        }
+        char* operationSequence = calculateOperationSequence(originalArray, resultArray, resultArrayLength);
+        cout<<operationSequence<<endl;
+        delete operationSequence;        //added by me 
+    }
+    return 0; 
 }
 
