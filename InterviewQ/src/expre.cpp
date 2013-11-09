@@ -153,7 +153,9 @@ int main(int argc, char* argv[]){
     string s;
     while(cin>>s){
         expreInter* myInter = new expreInter(s);
-        myInter->interpret();    
+        myInter->interpret();
+		delete myInter;
+		myInter=0;
     }
     return 0;
 }
