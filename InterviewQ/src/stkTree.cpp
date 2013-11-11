@@ -2,7 +2,7 @@
 //input: source {1,2,3}, target {2,1,3}; note: source array pop from left most, target array push from right
 //output: stack pop/push actions
 //
-#include "preliminary.h"
+#include "../header/preliminary.h"
 
 char* calculateOperationSequence(int src[], int dst[], int length){
     int idx1=0, idx2=0, k=-1;   //k is top

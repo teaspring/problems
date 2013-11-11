@@ -59,8 +59,8 @@ int rainwall02(int* arr, int n){
     int pl=0, pr=n-1;
     int maxl=arr[pl], maxr=arr[pr];
     int volume=0;
-    while(pr > pl){
-        if(maxl < maxr){
+    while(pr > pl){                    //avoid duplicate
+        if(maxl < maxr){            //move from the lower side wall, it ensures the wall can be height of water
             pl++;
             if(arr[pl] >= maxl){
                 maxl = arr[pl];

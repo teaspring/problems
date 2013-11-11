@@ -154,8 +154,8 @@ int main(int argc, char* argv[]){
     while(cin>>s){
         expreInter* myInter = new expreInter(s);
         myInter->interpret();
-		delete myInter;
-		myInter=0;
+        delete myInter;
+        myInter=0;
     }
     return 0;
 }

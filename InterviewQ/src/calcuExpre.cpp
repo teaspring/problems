@@ -1,6 +1,4 @@
-
 #include "../header/preliminary.h"
-
 using namespace std;
 
 /* 
@@ -14,8 +12,7 @@ using namespace std;
  * */
 void calcuEqualExam(int* inArr, int length, int target){
     char* operands = new char[length-1]();
-    for(int i=0;i<M;i++)        //reset
-      operands[M]=0;    
+    memset(operands, 0, sizeof(char)*(length-1));
     operands[0]='+';
     int idx=1;
     while(operands[0] != 0){
@@ -41,11 +38,11 @@ void calcuEqualExam(int* inArr, int length, int target){
         cout<<inArr[0];
         for(int i=0;i<length-1;i++)
           cout<<operands[i]<<inArr[i+1];
-        cout<<'='<<target;
+        cout<<'='<<target<<endl;
     }
     delete[] operands;
     operands = 0;
-    cout<<endl;
+    return;
 }
 
 
@@ -66,8 +63,16 @@ bool calcuEqual(int* arr, int length,  int sum, int i, char* path){    //for {7 
 }
 
 int main(int argc, char* argv[]){
-    const int M = 20;
-    int a[M] = {1,2,3,4,-2};        
-    int length = 5;
-    calcuEqualExam(a, length-1, a[length-1]);
+    string str;
+    while(1){
+        if(getline(cin, str)==0 || str.empty())
+          break;
+        int* arr = new int[str.size()]();
+        int n = splitStr2IntArray(str, arr);
+        calcuEqualExam(arr, n-1, arr[n-1]);
+
+        delete[] arr;
+        arr=0;
+    }
+    return 0;
 }

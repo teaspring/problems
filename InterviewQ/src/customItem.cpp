@@ -1,7 +1,8 @@
 /********************customItem.cpp**************************/
 /*
-* Custom Item problem, digraph
+* Custom Item problem. find what else item bought mostly by the customers who buys item1
 * input: {customA, item1, customA, item2, customB, item1, customA, item3...}, item1; output: item2
+* 
 * pesudo input: {A,1,A,2,B,1,A,2,B,2,A,3,C,1,D,2...}
 */
 #include "stdio.h"
@@ -29,12 +30,15 @@ void mergeArray(int src[MaxI], int plus[MaxI]){
 }
 
 int findAnotherMostItem(char orders[MaxOrder], int itemNo ){
-    char custs[MaxC];
-    int items[MaxI];   
-    int adjMtx[MaxC][MaxI];            //|Custom|*|Item|
+    char *custs = new char[MaxC]();
     memset(custs, 0, sizeof(char)*MaxC);
-    memset(items, 0, sizeof(int)*MaxI);
-    memset(adjMtx, 0, sizeof(int) * MaxC * MaxI);
+    int *items = new int[MaxI]();   
+    int **adjMtx= new int*[MaxC];            //|Custom|*|Item|
+    for(int i=0;i<MaxI;i++){
+        adjMtx[i] = new int[MaxI]();
+    }
+    int *mergeItem = new int[MaxI]();
+    memset(mergeItem, 0, sizeof(int) * MaxI);
 
     int cIdx = 0;
     int iIdx = 0;
@@ -46,8 +50,6 @@ int findAnotherMostItem(char orders[MaxOrder], int itemNo ){
     }
     cIdx = 0;
     iIdx = addArray<int>(items, itemNo);    //item to find
-    int mergeItem[MaxI];
-    memset(mergeItem, 0, sizeof(int) * MaxI);
     for(int i=0; i<MaxC; i++){
         if(adjMtx[i][iIdx] > 0)
             mergeArray(mergeItem, adjMtx[i]);
@@ -58,7 +60,22 @@ int findAnotherMostItem(char orders[MaxOrder], int itemNo ){
         if(mergeItem[maxI] < mergeItem[i])
             maxI = i;
     }
-    return items[maxI];   
+    int res = items[maxI];
+    
+    delete[] custs;
+    custs=0;
+    delete[] items;
+    items=0;
+    for(int i=0;i<MaxC;i++){
+        delete[] adjMtx[i];
+        adjMtx[i] = 0;
+    }
+    delete[] adjMtx;
+    adjMtx=0;
+    delete[] mergeItem;
+    mergeItem=0;
+
+    return res;   
 }
 
 int main(int argc, char* argv[]){
