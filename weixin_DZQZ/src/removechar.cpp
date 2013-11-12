@@ -8,6 +8,7 @@
 #include "../header/preliminary.h"
 
 /*
+ * solution: begin from remove 1st char, iterate from left to right, it is the one as head of first decending(str[i] > str[i+1])
  * time O(n*k), with some duplicate iteration
  * */
 string removechar01(const string& str, int k){
@@ -30,6 +31,7 @@ string removechar01(const string& str, int k){
 }
 
 /*
+ * based on previous solution, eliminate the duplicate
  * time O(n+k)
  * */
 void removechar02(string& str, int k){
