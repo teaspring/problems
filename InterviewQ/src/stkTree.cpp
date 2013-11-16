@@ -5,28 +5,28 @@
 #include "../header/preliminary.h"
 
 char* calculateOperationSequence(int src[], int dst[], int length){
-    int idx1=0, idx2=0, k=-1;   //k is top
+    int idx1=0, idx2=0, k=-1;            //k is top of array stack
     const int NN = 200;
-    int* stkArr = new int[NN]();
+    int* stkArr = new int[NN]();         //stack implementation of array
     
-    char* path = new char[NN]();        //it must be dynamic array which resides in heap instead of function stack
-    memset(path,0,sizeof(char)*NN);    //so it will not be eliminated when function returns
+    char* path = new char[NN];           //it must be dynamic array which resides in heap instead of function stack
+    memset(path,0,sizeof(char)*NN);      //so it will not be eliminated when function returns
     char* tmp = path;
 
-    stkArr[++k] = src[idx1];        //push
+    stkArr[++k] = src[idx1];             //push
     sprintf(tmp, "%s", "push");
     sprintf(tmp+4, "%d", src[idx1]);
     tmp+=5;
     idx1++;   
     while(idx2<length){
-        if(k>-1 && stkArr[k] == dst[idx2]){        //pop
+        if(k>-1 && stkArr[k] == dst[idx2]){     //pop
             stkArr[k--]=0;                   
             sprintf(tmp, "%s", "|pop");
             sprintf(tmp+4, "%d", dst[idx2]);
             tmp+=5;
             idx2++;
         }
-        else if(idx1<length){                    //push
+        else if(idx1<length){                   //push
             stkArr[++k] = src[idx1];
             sprintf(tmp, "%s", "|push");
             sprintf(tmp+5, "%d", src[idx1]);
@@ -37,7 +37,7 @@ char* calculateOperationSequence(int src[], int dst[], int length){
     }
 
     if(idx2<length){  
-      memset(path, 0, sizeof(NN));
+      memset(path, 0, sizeof(char)*NN);
       sprintf(path, "%s","None");
     }
     delete[] stkArr;

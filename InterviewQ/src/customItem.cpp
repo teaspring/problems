@@ -23,14 +23,14 @@ int addArray(T arr[MaxOrder], T c){    //add and find
     return i;            // now arr[i]==c
 }
 
-void mergeArray(int src[MaxI], int plus[MaxI]){
-    for(int i=0; i<MaxI; i++)
+void mergeArray(int* src, int* plus, int n){		//n is item count
+    for(int i=0; i<n; i++)
         src[i] += plus[i];
     return;
 }
 
-int findAnotherMostItem(char orders[MaxOrder], int itemNo ){
-    char *custs = new char[MaxC]();
+int findAnotherMostItem(char orders[MaxOrder], int itemNo){		//orders size is MaxOrder
+    char *custs = new char[MaxC];
     memset(custs, 0, sizeof(char)*MaxC);
     int *items = new int[MaxI]();   
     int **adjMtx= new int*[MaxC];            //|Custom|*|Item|
@@ -38,12 +38,11 @@ int findAnotherMostItem(char orders[MaxOrder], int itemNo ){
         adjMtx[i] = new int[MaxI]();
     }
     int *mergeItem = new int[MaxI]();
-    memset(mergeItem, 0, sizeof(int) * MaxI);
 
     int cIdx = 0;
     int iIdx = 0;
     for(int i=0; i<(MaxOrder/2);i++){        //scan order list and initialize cust[], item[] and adjMtx[][]
-        if(orders[2*i] == 0) break;
+        if(orders[2*i] == 0)    break;
         cIdx = addArray<char>(custs, orders[2*i]);    //[2i] is char, [2i+1] is int
         iIdx = addArray<int>(items, atoi(&orders[2*i+1]));
         adjMtx[cIdx][iIdx]++;
@@ -56,7 +55,7 @@ int findAnotherMostItem(char orders[MaxOrder], int itemNo ){
     }
     mergeItem[iIdx] =0;        //skip itemNo
     int maxI = 0;
-    for(int i=0; i<MaxI; i++){
+    for(int i=0; i<MaxI; i++){				//this scan can be merged to above iteration of merging item arrays of customers
         if(mergeItem[maxI] < mergeItem[i])
             maxI = i;
     }

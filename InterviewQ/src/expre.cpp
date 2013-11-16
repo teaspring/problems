@@ -10,6 +10,11 @@
 
 /*
  * iteratation function without OO design is ugly, too much duplicate which has to be
+ *
+ * vital problem of this solution is: expression has some internal recursion natively,like (expression) nested in factor
+ * of term*\/. it is difficult to solve it forward in one function
+ * 
+ *
  * */
 int procString(string input){
     size_t pos=0; 
@@ -43,17 +48,19 @@ int procString(string input){
                     res /= atoi(&c);
                 break;
             case '+':        
-                if(bMinus)    lastRes -= res;
-                else lastRes += res;        //after res combined with lastRes, res can be reset
+                if(bMinus)    
+                  lastRes -= res;
+                else 
+                  lastRes += res;        //after res combined with lastRes, res can be reset
                 res = 0;
                 bMinus = false;
                 c = inArr[pos++];
                 if(c == '('){
-                  size_t tmp = pos;
-                  while(inArr[tmp++]!=')');
-                  string str(inArr+pos, tmp-pos-1);
-                  res = procString(str);
-                  pos = tmp;
+                    size_t tmp = pos;
+                    while(inArr[tmp++]!=')');
+                    string str(inArr+pos, tmp-pos-1);
+                    res = procString(str);
+                    pos = tmp;
                 }else
                   pos--;
                 break;
@@ -63,11 +70,11 @@ int procString(string input){
                 bMinus = true;
                 c = inArr[pos++];
                 if(c == '('){
-                  size_t tmp = pos;
-                  while(inArr[tmp++]!=')');
-                  string str(inArr+pos, tmp-pos-1);
-                  res = procString(str);
-                  pos = tmp;
+                    size_t tmp = pos;
+                    while(inArr[tmp++]!=')');
+                    string str(inArr+pos, tmp-pos-1);
+                    res = procString(str);
+                    pos = tmp;
                 }else
                   pos--;
                 break;
@@ -130,7 +137,7 @@ int expreInter::factor(){        //factor = (-)number or (expression)
         ch = inStr[pos++];
         if(ch == '(')
             return expression();
-        if(ch == '-'){            //support minus decimal, only '-' ahead of number is minus;
+        if(ch == '-'){            //support minus decimal, only '-' ahead of number is minus
             if(val==0){
                 minus = -1;
                 continue;

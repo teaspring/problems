@@ -1,10 +1,14 @@
-#include "matrixFind.h"
 /*
+ * problem: given an int matrix as source and another as destination,  
+ *
 */
+
+#include "matrixFind.h"
+
 void findZeroMove(int src[5][5], int dst[5][5], char* seq, const int length){
     int i=0,j=0;    //in src
     int p=0,q=0;    //in dst
-    char orders[MaxN*4];        //use the constant int
+    char* orders = new char[MaxN*4];        //use the constant int
     memset(orders, 0, sizeof(char)*MaxN * 4);
    
     for(;i<5 && j<5;){            //find 0 in src[i][j]
@@ -25,7 +29,7 @@ void findZeroMove(int src[5][5], int dst[5][5], char* seq, const int length){
     }
 
     int step = 0;
-    while(dst[i][j] != 0){
+    while(dst[i][j] != 0){            //start from begining in src[][]
         if(i<4 && dst[i][j] == src[i+1][j]){
             orders[step++] = 'D';
             i++;
@@ -39,11 +43,14 @@ void findZeroMove(int src[5][5], int dst[5][5], char* seq, const int length){
             orders[step++] = 'L';
             j--;
         }
-        else break;
+        else 
+          break;
     }
 
     if(dst[i][j] != 0){
         printf("Unable to move to the dst[][]\n");
+        delete[] orders;
+        orders=0;
         return;
     }
     sort(seq, length);            //sort it
@@ -56,15 +63,18 @@ void findZeroMove(int src[5][5], int dst[5][5], char* seq, const int length){
     bool seqAvail = true;
     int k=0;
     for(;k<length && seq[k]==sortedOrder[k];k++);    //compare the two sorted
-    if(k<length)    seqAvail = false;
-   
-    if(!seqAvail){
+    if(k<length){
         printf("input sequence is incorrect\n");
+        delete[] orders;
+        orders=0;
         return;
     }
     for(k=0;k<length;k++)
         printf("%c", orders[k]);
     printf("\n");
+    delete[] orders;
+    orders=0;
+    return;
 }
 
 void sort(char arr[], int length){    //can sort two array in main function directly

@@ -26,18 +26,21 @@ void columnName01(int n){
     printf("\n");
 }
 
+/*
+ * based on method1, reduce internal iteration. time O(n) with n is digits of num
+ * */
 void columnName02(int n){
     const int N = 26;
     int order=1, offset=0;
     int m = (n-1)/N;
     while(m>0){
-        offset += order;
-        order *= N;
+        offset += order;            // offset exists because of it needs to minus 1 on each decimal bit when calculating
+        order *= N;                 // order=N^index
         m = (m-1)/N;
     }
     m = n;
-    while(order>0){                //time O(n), n is digits of N
-        int x = (m - offset)/order;
+    while(order>0){
+        int x = (m - offset)/order;        // x is value on decimal bit of m
         printf("%c", 'A' + (x-1)%N);
         m -= order * x;
         offset -= order/N;

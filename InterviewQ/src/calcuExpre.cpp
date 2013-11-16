@@ -10,38 +10,39 @@ using namespace std;
  * function signature is limited by default. recursion is not permitted
  * param: length of the input parameters excluding target
  * */
-void calcuEqualExam(int* inArr, int length, int target){
-    char* operands = new char[length-1]();
-    memset(operands, 0, sizeof(char)*(length-1));
-    operands[0]='+';
+void calcuEqualExam(int* inArr, int length, int target){            // size of operators is one less than operands
+    int n = length-1;
+    char* operators = new char[n];
+    memset(operators, 0, sizeof(char)*n);
+    operators[0]='+';
     int idx=1;
-    while(operands[0] != 0){
-        for(;idx<length-1;idx++)         //complement '+' starting from idx
-          operands[idx]='+';
+    while(operators[0] != 0){
+        for(;idx<n;idx++)         //complement '+' starting from idx
+          operators[idx]='+';
         int sum = inArr[0];
-        for(idx=0;idx<length-1;idx++){
-            if(operands[idx] == '+')
+        for(idx=0;idx<n;idx++){
+            if(operators[idx] == '+')
               sum += inArr[idx+1];
             else
               sum -= inArr[idx+1];
         }
         if(sum == target) break;
         idx--;
-        for(;idx>-1 && operands[idx]=='-';idx--)    //reset all '-' backward from tail
-          operands[idx]=0;
-        if(idx>-1)    operands[idx]='-';            //set the last '+' to '-'
+        for(;idx>-1 && operators[idx]=='-';idx--)    //reset all '-' from right to left
+          operators[idx]=0;
+        if(idx>-1)    operators[idx]='-';            //set the last '+' to '-'
         idx++;        
     }
-    if(operands[0]==0)
+    if(operators[0]==0)
       cout<<"Invalid";
     else{
         cout<<inArr[0];
-        for(int i=0;i<length-1;i++)
-          cout<<operands[i]<<inArr[i+1];
+        for(int i=0;i<n;i++)
+          cout<<operators[i]<<inArr[i+1];
         cout<<'='<<target<<endl;
     }
-    delete[] operands;
-    operands = 0;
+    delete[] operators;
+    operators = 0;
     return;
 }
 
@@ -51,7 +52,7 @@ void calcuEqualExam(int* inArr, int length, int target){
  *length of input[]. for {7,2,4,9}, length is 4, target is arr[length-1], path[] size is length-2 
  * */
 bool calcuEqual(int* arr, int length,  int sum, int i, char* path){    //for {7 2 4 9}, length of input[] is 4 while length-2 for path[]
-    if(i>length-3)
+    if(i >= length-2)
       return sum == arr[length-1];
     path[i] = '+';
     bool res = calcuEqual(arr,length,sum+arr[i+1],i+1,path);
