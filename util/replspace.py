@@ -18,7 +18,11 @@ def scandir(folder):
 
 # main function
 if len(sys.argv) > 1:
-    folder=sys.argv[1]
+    args=sys.argv[1:]
 else:
-    folder='./'
-scandir(folder)
+    args=['./']
+for f in args:
+    if os.path.isdir(f):
+        scandir(f)
+    elif os.path.exists(f):
+        replfile(f)
