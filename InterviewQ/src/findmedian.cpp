@@ -1,5 +1,5 @@
 /*
-* integer array A[n], B[n] are sorted in ascending both, find the median of all integers in time O(lgn)
+* integer array A[m], B[n] are sorted in ascending both, find the median of all integers in time O(lg(m+n))
 * 
 * note: 
 * 1.case of m==n is in <IntroductionToAlgorithm> chapter9 median and order statistics, exercise 9.3-8
@@ -130,13 +130,12 @@ int main(int argc, char* argv[]){
         }
         int* arr2 = new int[str.size()]();
         int n = splitStr2IntArray(str, arr2);
-        if(m==n){
-            int r = findmedian(arr1, arr2, n);
-            printf("the median of all the integers is %d\n", r);
-        }else{
-            int r = findmedian(arr1,m,arr2,n);
-            printf("the median of all the integers is %d\n", r);        
-        }
+        //int r = findmedian(arr1, arr2, n);
+        //printf("the median of all the integers is %d\n", r);
+        
+        int r = findmedian(arr1,m,arr2,n);
+        printf("the median of all the integers is %d\n", r);        
+        
         delete[] arr1;
         arr1 = 0;
         delete[] arr2;
