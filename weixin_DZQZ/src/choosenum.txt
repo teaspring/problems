@@ -1,0 +1,12 @@
+
+problem on Aug13. 
+given n integer numbers, choose one from it for 4 times. every time your choice is from all of them [1...n]. given an integer m, you will win if sum of 4 selected int equals to m. ask the time complexity to find it.
+
+
+A: violent solution, n^4 iteration. 
+1. consider if we have a,b,c already(assum time O(n^3)), then the next task is to find d=m-(a+b+c) in all the integers. the bi-search is time O(lgn) based on sorted array. so its total time is O(nlgn + n^3*lgn) = O(n^3*lgn)
+2. further, we can imagine c+d = m-(a+b). beforehand, we calculate sum of every two in arr[n] in O(n^2), sort the set in O(n^2*lgn);
+   iterate set(a+b), search the remainder c+d=m-(a+b) whether in set in time O(2lgn) = O(lgn);
+   As a result, the total time complexity is O(n^2lgn)
+
+good analysis
