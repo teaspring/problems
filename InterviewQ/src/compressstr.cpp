@@ -17,7 +17,7 @@ void compressstr(const string& str, char* res){
     char ch = toupper(str[i++]);
     int count=1;
     for(;i<=str.size();i++){
-        if(toupper(str[i]) != ch || i==str.size()){    //don't forget to process the last char before exit
+        if(i==str.size() || toupper(str[i]) != ch){    //don't forget to process the last char before exit
             if(count>1){
                 int m=1, n=count;                    //write integer to char if > 1
                 while(n/10){
