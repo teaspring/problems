@@ -46,13 +46,13 @@ string maxpalindrome_1(const string& str){
 void cmpwing(const string& str, int& v, int& u, int& b, int& maxl){
     int n = str.size();
     while(v>=0 && u<n && str[v] == str[u]){
-        int l = u-v+1;
-        if(maxl < l){
-            maxl = l;
-            b = v;
-        }
         --v;
         ++u;
+    }
+    int l = u-v-1;        //u-v+1-2
+    if(maxl < l){
+        maxl = l;
+        b = v;
     }
 }
 
@@ -103,7 +103,7 @@ string maxpalindrome_3(const string& str){
 
 
 /*
- * Manache algorithm, time O(n), space O(1), a very smart algorithm
+ * Manache algorithm, time O(n), space O(n), a very smart algorithm
  * */
 inline int mymin(int a, int b){
     return a < b ? a : b;
