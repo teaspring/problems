@@ -1,6 +1,6 @@
 /* 
  * question on Aug08
- * generate a serial of digital: 2^i+5^j in ascending
+ * generate a serial of digital: 2^i*5^j in ascending
  * 1,2,4,5,8,10,16,20,25,32,40,50,64,80,100,125,128,160,200,250,256,320,400,500,512
  * method1 and method2 is my own, method3 is by author. Unfortunately, method1 and method2 are incorrect.
  * */
