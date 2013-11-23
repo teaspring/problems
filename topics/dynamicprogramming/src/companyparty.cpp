@@ -114,7 +114,7 @@ void displayset(set<int>& iset){
     return;
 }
 
-void findLeastIndependentSubsequence(bstNode* root){
+void findmaxIS(bstNode* root){
     postIter(root);
     nodeIS* pcurr = ISMap[root->passion];
     if(compareSet(pcurr->inIS, pcurr->outIS)){
@@ -136,7 +136,7 @@ int main(int argc, char* argv[]){                //assume node of BST has distin
     bstNode* node9 = new bstNode(9, node11, node7);
     bstNode* root = new bstNode(10, node8, node9); 
 
-    findLeastIndependentSubsequence(root);
+    findmaxIS(root);
 
     ISMap.erase(root->passion);
     delete root;                //all children node object will be release in the serial process
