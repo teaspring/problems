@@ -17,7 +17,11 @@ struct hNode{
     ~hNode(){}
 };
 
-//overload operator function is defined outside class 
+/*
+ * for overload operator:
+ * assignment should be defined inside class
+ * arithmetic and relational operator function are defined outside class 
+ * */
 bool operator<(const hNode lhd, const hNode rhd){
     return lhd.sum < rhd.sum;
 }
