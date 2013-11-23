@@ -73,7 +73,8 @@ void heap_sort_desc(int* A, int n){        //output in descending order, or retu
  * priority_queue implemented in max-heap
  * */
 int heap_extract_max(int* A, int n){        //following max heap, A[1...n]
-    if(n<1)    return -1;
+    if(n<1)    
+      return -1;
     int max = A[1];
     A[1] = A[n];
     A[n] = MINUSLIMIT;                                //my added statement
@@ -82,8 +83,10 @@ int heap_extract_max(int* A, int n){        //following max heap, A[1...n]
 }
 
 void heap_increase_key(int* A, int n, int i, int key){        //increase A[i] to k
-    if(i > n)    return;
-    if(key < A[i])    return;
+    if(i > n)    
+      return;
+    if(key < A[i])
+      return;
     A[i] = key;
     while(i > 1 && A[Parent(i)] < A[i]){                    //A[1] is root without parent
         myswap<int>(A+Parent(i), A+i);
@@ -95,10 +98,6 @@ void max_heap_insert(int* A, int n, int key){                //build a priority 
     A[n+1] = MINUSLIMIT;
     heap_increase_key(A, n+1, n+1, key);
 }
-
-/*
- * Young tableau!!!
- * */
 
 int main(int argc, char* argv[]){
     string str;
