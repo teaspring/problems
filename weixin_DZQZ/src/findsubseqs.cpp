@@ -1,10 +1,10 @@
 /*
 * problem on Nov19
-* given two string, one as source, another as pattern. please find count of pattern appearance in source string
+* given two string, one as source, another as ttern. please find count of ttern appearance in source string
 * 
 * test data:
-* src("abbbc"), pattern("abc"), count is 3
-* src("abbcabccb"), pattern("abc"), count is 10
+* s("abbbc"), t("abc"), count is 3
+* s("abbcabccb"), t("abc"), count is 10
 */
 #include "stdio.h"
 #include <iostream>
@@ -14,7 +14,7 @@
 using namespace std;
 
 /*
- * recurse
+ * recurse, in time O((n/m)^m), not good
  * */
 void findsubchar(set<int>* pSet, int m, int* seq, int& k, int& count){
     if(k==m){
@@ -37,13 +37,13 @@ void findsubchar(set<int>* pSet, int m, int* seq, int& k, int& count){
     return;
 }
 
-int findsubseqs(const string& src, const string& pat){
+int findsubseqs(const string& s, const string& t){
     int count=0;
-    int m = pat.size();
+    int m = t.size();
     set<int>* pSet = new set<int>[m];
-    for(size_t i=0;i<src.size();i++){
-        for(size_t j=0;j<pat.size();j++){
-            if(src[i] == pat[j]){
+    for(size_t i=0;i<s.size();i++){
+        for(size_t j=0;j<t.size();j++){
+            if(s[i] == t[j]){
                 pSet[j].insert(i);
             }
         }
@@ -61,16 +61,48 @@ int findsubseqs(const string& src, const string& pat){
     return count;
 }
 
+/*
+ * author's answer, dynamic programming, space O(m*n), time O(m*n)
+ * when coding on using size(length) as array index, take care when it is index and when it is size
+ * */
+int numsubsequence(const string& s, const string& t){
+    if(s.size()==0 || t.size()==0)
+      return 0;
+    int** dp = new int*[t.size()+1];        //dp[i][j] means string t of size i appearance in string s of size j
+    for(size_t i=0;i<=t.size();++i){
+        dp[i] = new int[s.size()+1]();
+    }
+    for(size_t j=0;j<=s.size();++j){
+        dp[0][j]=1;
+    }
+    for(size_t i=0;i<t.size();++i){
+        for(size_t j=0;j<s.size();++j){
+            dp[i+1][j+1] += dp[i+1][j];       //in tha 2D array, dp[i+1][j] is left value of dp[i+1][j+1]
+            if(t[i]==s[j])                    //t[i] is just the tailer of string t of size[i+1], the same is s[j] to size[j+1]
+              dp[i+1][j+1] += dp[i][j];       //dp[i][j+1] is left-upper of dp[i+1][j+1]
+        }
+    }
+    int res = dp[t.size()][s.size()];
+
+    for(size_t i=0;i<=t.size();++i){
+        delete[] dp[i];
+        dp[i] = 0;
+    }
+    delete[] dp;
+    dp=0;
+    return res;
+}
+
 int main(int argc, char* argv[]){
-    string src, pat;
+    string s, t;
     while(1){
-        if(getline(cin, src)==0 || src.empty()){
+        if(getline(cin, s)==0 || s.empty()){
             break;
         }
-        if(getline(cin, pat)==0 || pat.empty()){
+        if(getline(cin, t)==0 || t.empty()){
             break;
         }
-        int res = findsubseqs(src, pat);
+        int res = numsubsequence(s, t);
         printf("sub sequence count is %d\n", res);
     }
     return 0;
