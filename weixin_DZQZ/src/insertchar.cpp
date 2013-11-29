@@ -6,6 +6,7 @@
 * test data:
 * bcddefa
 * bcdefd
+* dcfd
 */
 
 #include "stdio.h"
@@ -22,18 +23,18 @@ inline int max(int a, int b){
 int turn2palindrome(const string& str){
     int s = str.size();
     int ** dp = new int*[s];
-    for(int i=0;i<s;++i){        //dp[i][j] means for str [i,j) of size j-i, the length of internal palindrome
+    for(int i=0;i<s;++i){        //dp[i][j] means for str starting at [i] with size j, the length of internal palindrome
         dp[i] = new int[s+1]();
     }
     for(int i=0;i<s;++i){
-        dp[i][i+1] = 1;            //any char is palindrome of size 1
+        dp[i][1] = 1;            //any char is palindrome naturally
     }
-    for(int l=2;l<=s;++l){
-        for(int i=0;i+l<=s;++i){
-            if(str[i] == str[i+l-1]){
-                dp[i][l] = 2 + dp[i+1][i+l-1];
+    for(int j=2;j<=s;++j){
+        for(int i=0;i+j-1<s;++i){
+            if(str[i] == str[i+j-1]){
+                dp[i][j] = 2 + dp[i+1][j-2];
             }else{
-                dp[i][l] = max(dp[i+1][i+l], dp[i][i+l-1]);
+                dp[i][j] = max(dp[i+1][j-1], dp[i][j-1]);
             }
         }
     }
