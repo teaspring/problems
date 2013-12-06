@@ -6,11 +6,11 @@
  * concept: in a tree, IS means for each node in the result set, parent or child of it is not in there
  * 
  * typical dynamic programming
- * dp[0][x] = sum{max{dp[0,1][y is child of x]}}
- * dp[1][x] = sum{dp[0][y is child of x]} + x
+ * dp[0][x] = sum{max{dp[0,1][y is child of x]}}, if x node is not in
+ * dp[1][x] = sum{dp[0][y is child of x]} + x,    if x node is in
  * dp[0][leaf] = 0
- * dp[1][leaf] = 1
- * finally, result is max{dp[0][r], dp[1][r]}
+ * dp[1][leaf] = passion of leaf
+ * finally, result is max{dp[0][root], dp[1][root]}
  * 
  * */
 
@@ -23,6 +23,9 @@
 
 using namespace std;
 
+/*
+ * it assumes everyone has a unique passion value and apply a map to save the processed substructure.
+ * */
 struct bstNode{                        //input data
     int passion;
     bstNode *left;
