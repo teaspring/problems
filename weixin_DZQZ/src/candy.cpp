@@ -3,12 +3,13 @@
  * we have several children to give candy. Assume each child is assigned an integer weight.
  * rule: nobody can have no candy. for any adjacent children, the one with higher weight must have more candy than neighbors. 
  * ask the minimum candy
- *
- * test data:
- * weights: 1,2,1,3,2,4,6,9,5 
- * candy:   1,2,1,2,1,2,3,4,1
- *
- * weights: 1,2,4,3,2,1,8
+ * 
+ * hidden point: do not assume same ratings neighbouring children should get the same candies. for ratings {1,2,2}, minimum candies are {1,2,1}
+ * 
+ * test data: 
+ * 3,3,3,10(1,1,1,2)
+ * 7,7,3,3(2,2,1,1)
+ * 4 7 7 9 8 7 6 5 4(1,2,1,5,4,3,2,1)
  *
  * solution: for each segment of single side trend, we give candy starting from 1 increasingly
  * */
@@ -16,51 +17,53 @@
 #include "../header/preliminary.h"
 
 /*
- * my own solution, time O(n), space O(n)
+ * answer from leetcode, good code
+ * iterate arrays of weight and candy at the same time.
  * */
-int distributecandy(int* W, int n){
+int candy(int* ratings, int n){
     if(n==0)
       return 0;
     else if(n==1)
       return 1;
-    
-    int *candy = new int[n]();
-    int *p = W, *q = W+1;
-    while(q != W+n){
-        while(q < W+n && (*q - *(q-1))*(*(p+1) - *p)>0){        //[p,q) are single side trend
-            ++q;
+
+    int* candies = new int[n]();
+    candies[0] = 1;
+    int sum=1;
+    for(int i=1;i<n;++i){
+        if(ratings[i] > ratings[i-1]){
+            candies[i] = candies[i-1] + 1;
+            sum += candies[i];
         }
-        int *s = candy, *e = candy;     //s is trouhg, e is peak
-        if(*(q-1) > *p){        
-            s += (p-W);     //s<e
-            e += (q-1-W);
-        }else{
-            s += (q-1-W);   //s>e
-            e += (p-W);
+        /*
+        else if(ratings[i] == ratings[i-1]){
+            candies[i] = candies[i-1];
+            sum += candies[i];
         }
-        int i=1;
-        for(;s!=e;++i){     //move s towards s, starting from candy of 1
-            *s = i;
-            if(s<e)
-              ++s;
-            else
-              --s;
+        */
+        else{                        //ratings[i] <= ratings[i-1]
+            if(candies[i-1] >= 2){
+                candies[i] = 1;
+                sum += 1;
+            }else{
+                int k=i;
+                candies[k] = 1;
+                sum += 1;
+                while(k>0 && ratings[k] < ratings[k-1] && candies[k] >= candies[k-1]){    //supplement candy
+                    candies[k-1]++;
+                    sum++;
+                    k--;
+                }
+            }
         }
-        if(*s < i){         //if crest has been assigned but lower than currently need, set it
-            *s = i;
-        }
-        p = q-1;
     }
-    int sum=0;
     printf("candies: ");
     for(int i=0;i<n;i++){
-        printf("%d ", candy[i]);
-        sum += candy[i];
+        printf("%d ", candies[i]);
     }    
     printf("\n");
     
-    delete[] candy;
-    candy=0;
+    delete[] candies;
+    candies=0;    
     return sum;
 }
 
@@ -71,8 +74,8 @@ int main(int argc, char* argv[]){
           break;
         int *arr = new int[str.size()]();
         int n = splitStr2IntArray(str, arr);
-        int res = distributecandy(arr, n);
-        printf("minimum candy is %d\n", res);
+        int res = candy(arr, n);
+        printf("minimum candies in total are %d\n", res);
 
         delete[] arr;
         arr=0;
