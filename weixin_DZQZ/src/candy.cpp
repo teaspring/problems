@@ -1,5 +1,5 @@
 /*
- * problem on Oct 04,2013 
+ * problem on Oct 04,2013. it is on leetcode as well, within backtracking category
  * we have several children to give candy. Assume each child is assigned an integer weight.
  * rule: nobody can have no candy. for any adjacent children, the one with higher weight must have more candy than neighbors. 
  * ask the minimum candy
