@@ -6,7 +6,10 @@
  * abcacdfcarfr, result is 5(one option is dfcar)
  * */
 
-#include "../header/preliminary.h"
+#include "stdio.h"
+#include <iostream>
+#include <string>
+using namespace std;
 
 /*
  * in time nearly O(n^3), inefficient in determine whether str[j] appears in substr[i,j)
@@ -52,55 +55,22 @@ int maxdistinctsub_1(const string& str){
 }
 
 /*
- * answer of author, but is error!
- * case to prove errorness: abcae, abba
- * */
-int longestSubstrWithoutRepeat(const string& str){
-    int start=0, n=str.size();
-    int end = n;
-    int *pos = new int[n]();
-    for(int i=0;i<n;++i){
-        pos[i] = -1;
-    }
-    int maxlength=-1;
-    for(int i=0;i<n;++i){
-        int j=str[i] - 'a';
-        if(pos[j]==-1){
-            pos[j] = i;
-        }else{
-            int tmp = i - pos[j];
-            if(maxlength < tmp){
-                start = pos[j];
-                end =i;
-                maxlength = tmp;
-            }
-            pos[j] = i;
-        }
-    }
-    printf("method2: result is %s of length %d\n", str.substr(start, end-start).c_str(), maxlength);
-
-    delete[] pos;
-    pos = 0;
-    return maxlength;
-} 
-
-/*
- * correct dynamic programming, in time O(n^2)
+ * dynamic programming, but in time O(n^2), not the best 
  * */
 int longestSubstrNoDuplicate(const string& str){
     int n = str.size();
-    int *alpha = new int[26]();
+    int *alpha = new int[26]();			//alpha[i] is the occurance index of alpha char(i=x-'a')
     for(int i=0;i<26;++i){
         alpha[i] = -1;
     }
-    int *pos = new int[n]();
+    int *pos = new int[n]();			//pos[i] is the last occurance index of str[i]
     for(int i=0;i<n;++i){
         int j = str[i]-'a';
         pos[i] = alpha[j];
         alpha[j] = i;
     }
     int **dp = new int*[n];
-    for(int i=0;i<n;++i){
+    for(int i=0;i<n;++i){				//dp[i][j] is the longest substr length without duplicate char for sub string [i,i+j)
         dp[i] = new int[n+1]();
         dp[i][1] = 1;
     }
@@ -134,15 +104,43 @@ int longestSubstrNoDuplicate(const string& str){
     return maxlength;
 }
 
+/*
+ * correct DP in time O(n), the best!
+ * */
+string longestSubstrWithoutRepeat(const string& str){
+	int n = str.size();
+	if(n==0)	return 0;
+	int* pos = new int[26]();
+	for(int i=0;i<26;++i)
+	  pos[i] = -1;
+	int* dp = new int[n]();
+	dp[0] = 1;
+	pos[str[0] - 'a'] = 0;
+	int maxlength=1, end=0;
+	for(int i=1;i<n;++i){
+		dp[i] = i - pos[str[i] - 'a'];
+		if(dp[i] > dp[i-1] + 1)
+		  dp[i] = dp[i-1]+1;
+		if(maxlength < dp[i]){
+			maxlength = dp[i];
+			end = i;
+		}
+		pos[str[i] - 'a'] = i;
+	}
+	delete[] dp;
+	dp=0;
+	delete[] pos;
+	pos=0;
+	return str.substr(end-maxlength+1, maxlength);
+}
+
 int main(int argc, char* argv[]){
     string str;
     while(1){
         if(getline(cin, str)==0 || str.empty())
           break;
-        int x = maxdistinctsub_1(str);
-        printf("method1: the result is %d\n", x);
-        x = longestSubstrWithoutRepeat(str);
-        x = longestSubstrNoDuplicate(str);
+        string sub = longestSubstrWithoutRepeat(str);
+		printf("the longest substr without duplicate char is %s\n", sub.c_str());
     }
     return 0;
 }
