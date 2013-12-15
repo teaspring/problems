@@ -16,14 +16,14 @@
 #include <string>
 using namespace std;
 
-void check(const string& str, size_t pos, int& score){
+int check(const string& str, size_t pos, int score){
     if(pos >= str.size() || score < 0)
-      return;
+      return score;
     switch(str[pos]){
         case ')':
-            return check(str, pos+1, --score);
+            return check(str, pos+1, score-1);
         case '(':
-            return check(str, pos+1, ++score);
+            return check(str, pos+1, score+1);
         default:
             return check(str, pos+1, score);
     }
@@ -31,14 +31,15 @@ void check(const string& str, size_t pos, int& score){
 
 int main(int argc, char* argv[]){
     string str;
-    if(getline(cin, str) == 0 || str.empty())
-      return 0;
-    int sum = 0;
-    check(str, 0, sum);
-    if(sum != 0)
-      cout<<"no"<<endl;
-    else
-      cout<<"yes"<<endl;
+    while(1){
+		if(getline(cin, str) == 0 || str.empty())
+		  break;
+		int sum = check(str, 0, 0);
+		if(sum != 0)
+		  cout<<"no"<<endl;
+		else
+		  cout<<"yes"<<endl;
+	}
     return 0;
 }
 
