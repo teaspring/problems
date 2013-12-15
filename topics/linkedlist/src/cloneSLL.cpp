@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <map>
 #include "stdlib.h"
 
 using namespace std;
@@ -29,6 +30,9 @@ struct ranSLLNode{
     }
 };
 
+/*
+ * no extra space, but through 3 iterations. pay time for space
+ * */
 ranSLLNode* cloneRandomSLL(ranSLLNode* srcHeader){
     ranSLLNode* curr = srcHeader;
     while(curr != 0){                            //create new node one after each source node 
@@ -62,6 +66,45 @@ ranSLLNode* cloneRandomSLL(ranSLLNode* srcHeader){
     return nHeader;
 }
 
+/*
+ * with a map of [initial, copy], but just once iteration. pay space for time
+ * */
+ranSLLNode* clone_02(ranSLLNode* phead){
+    map<ranSLLNode*, ranSLLNode*> mnodes;
+    ranSLLNode *curr = phead;
+    while(1){
+        if(mnodes.find(curr) == mnodes.end()){
+            ranSLLNode *p = new ranSLLNode;
+            p->cValue = curr->cValue;
+            mnodes[curr] = p;
+        }
+
+        if(mnodes.find(curr->pRandom) == mnodes.end()){
+            ranSLLNode *p = new ranSLLNode;
+            p->cValue = curr->pRandom->cValue;
+            mnodes[curr->pRandom] = p;
+            mnodes[curr]->pRandom = p;
+        }else{
+            mnodes[curr]->pRandom = mnodes[curr->pRandom];
+         }
+        
+        if(curr->pNext != 0){
+            if(mnodes.find(curr->pNext) == mnodes.end()){
+                ranSLLNode *p = new ranSLLNode();
+                p->cValue = curr->pNext->cValue;
+                mnodes[curr->pNext] = p;
+                mnodes[curr]->pNext = p;
+            }else{
+                mnodes[curr]->pNext = mnodes[curr->pNext];
+            }
+        }else{        //reach tail, exit
+            mnodes[curr]->pNext = 0;
+            break;
+        }        
+    }
+    return mnodes[phead];
+}
+
 void showRandomSLL(ranSLLNode* header){
     ranSLLNode* curr = header;
     printf("iterate the SLL:\n");
@@ -91,11 +134,13 @@ void delRandomSLL(ranSLLNode* header){
 int main(int argc, char* argv[]){
     string str;
     while(1){
+        printf("input size of linked list:\n");
         if(getline(cin, str)==0 || str.empty())
           break;
         int count = atoi(str.c_str());
         ranSLLNode *header=0, *curr=0;
         for(int i=0;i<count;i++){
+            printf("the %dth node is:\n", i);
             getline(cin, str);
             ranSLLNode* tmp = new ranSLLNode();
             strcpy(tmp->cValue, str.c_str());
