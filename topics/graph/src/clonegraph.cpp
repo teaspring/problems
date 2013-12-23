@@ -62,11 +62,13 @@ Node* clonegraph_01(Node* pnode){
         for(;iter != curr->neighbors.end()-1;++iter){
             if(snodes.find(*iter) == snodes.end()){
                 qnodes.push(*iter);
+				snodes.insert(*iter);
             }
             clone->neighbors.push_back((*iter)->neighbors.back());  //push clone to neighbors of clone
         }
         curr->neighbors.erase(iter);    //now iter points to A' of A 
     }
+	snodes.clear();
     return npnode;
 }
 

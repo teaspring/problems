@@ -6,7 +6,8 @@
  * |
  * |_________>x
  * 
- * solution1: think straightly, overlap: every corner of either rectangle appears in the other rectangle, total 8 corners!
+ * solution1: think straightly, overlap: every corner of either rectangle appears in the other rectangle, total 8 corners, this is not all;
+ *            another case is rectangles overlap in "body" without any corner, two many conditions....
  * solution2: think the opposite. not overlap: one rectangle appers above/below, right/left of the other. reverse the result
  * */
 #include "../header/preliminary.h"
@@ -23,6 +24,9 @@ bool isinrectangle(int x, int y, node *pLU, node *pRL){        //LU: LeftUpper, 
     return (x > pLU->x) && (x < pRL->x) && (y > pRL->y) && (y < pLU->y); 
 }
 
+/*
+ * these conditions are not all...
+ * */
 bool overlapRectangles01(node *p1, node *p2, node *p3, node *p4){
     if(isinrectangle(p1->x, p1->y, p3, p4))        return true;
     if(isinrectangle(p1->x, p2->y, p3, p4))        return true;
