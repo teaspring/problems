@@ -7,22 +7,20 @@
 #include "../header/preliminary.h"
 
 int getMaxNuts(int N, int D, int C, int F){
-    //base case
-    if(N<=C){
+    if(N<=C){        //base case
         int nutsAtDestination = N - D*F;
         return (nutsAtDestination >= 0) ?
                 nutsAtDestination :
-                0;    //out of fuel
+                0;    //out of fuel!
     }
 
     int numTrips = 2*(N/C - 1) + 1;     //trip count
-    int costPerKm = numTrips * F;
-    int remainingNuts = C*(N/C - 1);    //remaining weights of nuts after consumption
+    int costPerKm = numTrips * F;       //really cool variable
+    int remainingNuts = C*(N/C - 1);    // 1.ensure remain is multiplies of D; 2. till next stop, the consumption equals to C
     int traveled = (N - remainingNuts)/costPerKm;
 
     if(traveled >= D)
-        return N - D*costPerKm;
-
+      return N - D*costPerKm;
     return getMaxNuts(remainingNuts, D - traveled, C, F);
 }
 
