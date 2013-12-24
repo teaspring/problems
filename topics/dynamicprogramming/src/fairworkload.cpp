@@ -40,7 +40,7 @@ int fairworkload_01(int *A, int n, int k){         //work list of A, with n task
                 if(prev >= tmp){
                     prev = tmp;
                 }else{
-                    break;        //search the bottom
+                    break;        //break if bottom is confirmed
                 }
             }
             dp[i][t] = prev;
@@ -60,7 +60,7 @@ int fairworkload_01(int *A, int n, int k){         //work list of A, with n task
 /*
  * alternative algorithm make use of binary search!!!
  * in opposite, it considers constraint of given total cost, the best(minimum) partition count x which is easy to get
- * in time O(k*lg(sum)) in which sum is sum of integer array
+ * in time O(k*lg(sum)) where sum is sum of integer array, and in space O(1)
  */
 int partitionInCost(int sum, int *A, int n){
     int t=1, acc=0;
@@ -82,10 +82,10 @@ int fairworkload_02(int *A, int n, int k){
         if(maxel < A[i])
             maxel = A[i];
     }
-    int u=sum, v=maxel, x=0, m=0;
+    int u=sum, v=maxel;
     while(v < u){
-        m=(u+v)/2;
-        x = partitionInCost(m, A, n);
+        int m=(u+v)/2;
+        int x = partitionInCost(m, A, n);
         if(x >k){
             v = m+1;    //enlarge m to reduce x
         }else{
