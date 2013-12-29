@@ -19,6 +19,7 @@
  * problem 1, solution 1:
  * deque is good structure for this problem: only one element(lower) at head and one(higher) at tail need to consider
  * in time O(n), space O(n)
+ * disadvantage: deque store elements all time, but only the one at front and back possible useful. this structure is overused absolutely
  * */
 int bestbuysellstock01_01(const int *A, int n, int& buy, int& sell){
     if(n<2)        return 0;
@@ -50,7 +51,8 @@ int bestbuysellstock01_01(const int *A, int n, int& buy, int& sell){
 }
 
 /*
- * problem 1, solution 2:
+ * problem 1, solution 2: mention as i traverse from left(earlier) to right(later), we just need to update index of min, and max diff
+ * remain time O(n) without data strucure. 
  * */
 int bestbuysellstock01_02(const int *A, int n, int& buy, int& sell){
     int min=0, maxDiff=0;

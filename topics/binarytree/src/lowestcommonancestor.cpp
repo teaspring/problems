@@ -1,5 +1,6 @@
 /*
- * from leetcode, but popular problem. given a binary tree, find the lowest common ancestor of a binary tree 
+ * from leetcode, still popular. given a binary tree, find the lowest common ancestor of two given nodes
+ * note: parameter is node* instead of the node value 
  * */
 #include "stdio.h"
 #include <iostream>
@@ -31,7 +32,7 @@ int countMatchesPQ(node *root, node *p, node *q){
       return matches;
 }
 
-node *LCA(node *root, node *p, node *q){
+node* LCA_01(node *root, node *p, node *q){
     if(!root || !p || !q)    
       return 0;
     if(root==p || root==q)
@@ -40,9 +41,9 @@ node *LCA(node *root, node *p, node *q){
     if(totalMatches == 1){
         return root;        //the other matched must exist in right half, so return root as LCA
     }else if(totalMatches == 2){
-        return LCA(root->left, p, q);  //both of p and q in left half, now dig in it. this brings repeated search! 
+        return LCA_01(root->left, p, q);  //both of p and q in left half, now dig in it. this brings repeated search! 
     }else{
-        return LCA(root->right, p, q); //neither of p and q in left half, dig in right half which is never searched
+        return LCA_01(root->right, p, q); //neither of p and q in left half, dig in right half which is never searched
     }
 }
 
@@ -56,8 +57,8 @@ node* LCA_02(node *root, node *p, node *q){
       return 0;
     if(root == p || root == q)
       return root;            //bottom return, return the node of exact p or q
-    node *L = LCA(root->left, p, q);
-    node *R = LCA(root->right, p, q);
+    node *L = LCA_02(root->left, p, q);
+    node *R = LCA_02(root->right, p, q);
     if(L && R)
       return root;            //finally return, the required LCA of p and q
     return L ? L : R;         //intermediate return, by parent of found p/q 

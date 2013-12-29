@@ -1,6 +1,6 @@
  /*
-  * regressive problem of Painter's partition problem on leetcode. Actually, it appears on topcoder as "fair work load"
-  * 
+  * regressive problem of Painter's partition problem on leetcode. 
+  * Actually, it appears on topcoder as "fair work load". given a list of consecutivework tasks in time, divide them into k section to ensure the greatest partition small as much as possible(average as much as possible)
   * test data:
   * {1,2,3,4,5,6,7,8,9}, k=3, res = 17
   * {1,3,5,5,4,7,2}, k=3, res = 9
@@ -14,14 +14,16 @@ inline int max(int a, int b){
 }
 
 /*
+ * solution 1: dynamic programming
  * dp[i][j] = min{max{dp[i-1][j-t],t}, t=A[n-1], +A[n-2], +A[n-3],...+A[0]}
+ * in time O(k*n*n), space O(k*n)
  */
-int fairworkload_01(int *A, int n, int k){         //work list of A, with n tasks, divide to k partitions
+int fairworkload_01(int *A, int n, int k){  //work list of A, with n tasks, divide to k partitions
     int sum = 0;
     for(int i=0;i<n;++i){
         sum += A[i];
     }
-    int **dp = new int*[k+1];
+    int **dp = new int*[k+1];    //dp[i][j]: for i(from left) partitions and total work in amount of j, the fair work load
     for(int i=0;i<k+1;++i){
         dp[i] = new int[sum+1]();
     }
@@ -58,7 +60,7 @@ int fairworkload_01(int *A, int n, int k){         //work list of A, with n task
 }
 
 /*
- * alternative algorithm make use of binary search!!!
+ * solution 2: binary search!!!
  * in opposite, it considers constraint of given total cost, the best(minimum) partition count x which is easy to get
  * in time O(k*lg(sum)) where sum is sum of integer array, and in space O(1)
  */
@@ -83,16 +85,16 @@ int fairworkload_02(int *A, int n, int k){
             maxel = A[i];
     }
     int u=sum, v=maxel;
-    while(v < u){
+    while(v < u){        //exit scenario should be v==u
         int m=(u+v)/2;
         int x = partitionInCost(m, A, n);
         if(x >k){
-            v = m+1;    //enlarge m to reduce x
+            v = m+1;    //enlarge m to reduce x. if exit after this branch, v=m+1 while u==m+1
         }else{
-            u = m;      //reduce m, to see if x will increase
+            u = m;      //reduce m, to see if x will increase. if exit after this branch, v==m 
         }
     }
-    return v;      //choose v instead of m
+    return v;      //as a result, choose v instead of m
 }
 
 int main(int, char**){
