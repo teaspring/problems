@@ -48,17 +48,17 @@ int maxDistance_02(int *A, int n, int& left){
         Rmax[i] = max(A[i], Rmax[i+1]);
     } 
  
-    int l=0, r=0, maxDiff=-1;
-    while(l<n && r<n){ 
-        if(A[l] < Rmax[r]){
-            if(r-l > maxDiff){
-                maxDiff = r-l;
-                left = l;
+    int i=0, j=1, maxDiff=0;
+    while(i<n && j<n){ 
+        if(A[i] < Rmax[j]){
+			if(j-i > maxDiff){
+                maxDiff = j-i;
+                left = i;
             }
-            ++r;
+            ++j;
         }else{
-            ++l;
-            ++r;    //resume to scan from the potential distance remaining r-l
+            ++i;
+            ++j;    //resume to scan from the potential distance remaining j-i
         }
     }
     delete[] Rmax;
