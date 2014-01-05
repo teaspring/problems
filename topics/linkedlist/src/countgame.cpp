@@ -4,7 +4,9 @@
  * removed. start counting at x-1 in counterclockwise, the yth integer will be removed. continue the game play till there is only one
  * integer in rest. 
  * 
- * perfect structure for this problem is double linked list(DLL) definitely! 
+ * perfect structure for this problem is DLL definitely:
+ * 1. it needs to remove integer at random position from the structure, so is linked list
+ * 2. it will traverse forward and backward repeatedly, so are double pointers(prev and next) in need
  * */
 #include "stdio.h"
 #include <iostream>
