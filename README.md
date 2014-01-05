@@ -16,6 +16,7 @@ practice & exercise of data structure and algorithm, including some interview pr
  - misc
  - modematch
  - multiwayTree
+ - numbertheory
  - recursion
  - sort
  - stackqueue
