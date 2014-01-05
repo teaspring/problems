@@ -4,7 +4,7 @@ problems
 practice & exercise of data structure and algorithm, including some interview problem solutions.
 
 ##topics
- > topics of data structure and algorithm
+ > exercises on data structure and algorithm divided by topic, mainly C++
  
  - binarysearch
  - binarytree
@@ -24,10 +24,10 @@ practice & exercise of data structure and algorithm, including some interview pr
  > some interview problems solutions
  
 ##weixin_DZQZ
- > solutions to problems published by wechat public account “待字闺中". it opend in mid 2013.
+ > solutions to problems published by wechat public account “待字闺中", which opened in mid 2013.
  
 ##util
- > facilities to help process source code file 
+ > utilities to help process source code file 
  
 ##blogrepository
  > downloadable pkg repository for blog
