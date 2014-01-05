@@ -6,16 +6,18 @@
  * x=1, y="impossible"
  * x=4, y=22
  * x=9, y=171
- * x=5386, y=6556
+ * x=567, y=585      ----!!!
+ * x=5386, y=5665    ----!!!
  * x=5387, y=16961
  * x=5988, y=6996
  * x=5989, y=29992
  * x=414, y=10701
- * x=444, y=525      ----special case for x is palindrome!!!
- * x=5555, y=6446    ----special
- * x=44444, y=45254  ----special
- * x=4441444, y=453135 -----
+ * x=444, y=525      ----special case for x is palindrome
+ * x=5555, y=6446    
+ * x=44444, y=45254  
  * x=919, y=14941
+ * x=5566, y=5665    ----!!! 
+ * x=5656, y=5665    ----!!!
  * x=819, y=909
  * x=8598, y=8778
  * x=7892438, y=8179718
@@ -30,14 +32,17 @@
 using namespace std;
 
 /*
- * special process for x as palindrome integer
+ * special test cases for: 1. x as palindrome; 2.x=5566,x=5656...
  * */
-int convertStr2IntArray(const string& str, int *arr, int m){    //convert a string to int array
+bool convertStr2IntArray(const string& str, int *arr, int m, int& sum){    //convert a string to int array
     int n = str.size();
     memset(arr, 0, sizeof(int)*m);
     char *bar = new char[2];    //used to convert char to int
-    int sum=0;
+    sum=0;
+    bool ispalindrome=true;
     for(int i=0;i<n;++i){
+        if(i<=(n-1)/2 && ispalindrome && str[i] != str[n-1-i])
+          ispalindrome = false;
         memset(bar, 0, sizeof(char)*2);
         bar[0] = str[i];
         bar[1] = '\0';
@@ -45,7 +50,7 @@ int convertStr2IntArray(const string& str, int *arr, int m){    //convert a stri
         sum += arr[i];
     }
     delete[] bar;
-    return sum;
+    return ispalindrome;
 }
 
 string convertIntArray2Str(int *arr, int n){    //convert an int array to string 
@@ -62,7 +67,8 @@ string convertIntArray2Str(int *arr, int n){    //convert an int array to string
 string findPalindromeInt(const string& str){
     int n = str.size();
     int *srcArr = new int[n]();
-    int sum = convertStr2IntArray(str, srcArr, n);
+    int sum = 0;
+    bool bpalindrome = convertStr2IntArray(str, srcArr, n, sum);
     int *dstArr = new int[n+2]();    //maximum length of output
     int m=n, rest=sum;
     bool freemake=false, hasresult=true;
@@ -70,11 +76,27 @@ string findPalindromeInt(const string& str){
     if(sum%2 == 1 && n%2 == 0){
         m = n+1;
     }else{
-        while(rest>0 && d>0){   //attempt in m==n
+        if(bpalindrome){
+            for(int j=0;j<n;dstArr[j] = srcArr[j], j++);
+            int t = (n-1)/2;
+            int offset = (n%2==0) ? 1 : 2;
+            for(;t>0 && dstArr[t] < offset; --t);
+            if(t>0){        //modify palindrome integer from its center digit to make the least greater palindrome
+                dstArr[t-1] += 1;
+                dstArr[n-t] += 1;
+                dstArr[t] -= 1;
+                dstArr[n-1-t] -= 1;
+                d=0;
+                rest=0;
+                freemake=true;
+            }
+        }else{
+          while(rest>0 && d>0){   //attempt in m==n
             if(srcArr[i] >= srcArr[n-1-i]){    //cover d == 1
                 dstArr[i] = dstArr[m-1-i] = srcArr[i];
             }else{
                 if(d>2){
+                    if()
                     dstArr[i] = dstArr[m-1-i] = srcArr[i] +1;
                 }else{        //d==2
                     dstArr[i] = dstArr[m-1-i] = rest/d;
@@ -93,10 +115,11 @@ string findPalindromeInt(const string& str){
               freemake = true; 
             i++;
             if(freemake)    break;
-        } 
+          }
+        }
     }
     
-    if(!freemake){  //generate palindrome integer freely with longer size
+    if(!freemake){  //generate least palindrome integer freely with longer size
         if(sum%2 == 1 && (n+1)%2==0){
             m = n+2;
         }else{
