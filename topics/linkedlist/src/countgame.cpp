@@ -17,14 +17,19 @@
 using namespace std;
 
 struct node{    //node of DLL
-    int val;
-    node* prev;
-    node* next;
     node(int v, node* pp, node* pn):val(v), prev(pp), next(pn){}
     ~node(){
         prev = 0;
         next = 0;
     }
+    int getVal(){
+        return val;
+    }
+private:    
+    int val;
+public:
+    node* prev;
+    node* next;
 };
 
 struct cirDLL{    //circular DLL
@@ -105,7 +110,7 @@ int countgame(int n, int x, int y){
         }
         bclock = !bclock;
     }
-    int res = curr->val;
+    int res = curr->getVal();
     delete pDLL;
     return res;
 }
