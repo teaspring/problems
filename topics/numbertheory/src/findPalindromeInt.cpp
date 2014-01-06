@@ -3,25 +3,25 @@
  * given an integer x, find the least palindrome integer y:1.y > x; 2.sum of digits of y equals to sum of digits of x. x can be as big as 10^1000, so both input and output are string. if no result, output "impossible"
  *
  * test data:
- * x=1, y="impossible"
- * x=4, y=22
+ * x=1, impossible ----type 1 
+ * x=10, impossible
+ * x=4, y=22       ----type 2
  * x=9, y=171
- * x=567, y=585      ----!!!
- * x=5386, y=5665    ----!!!
- * x=5387, y=16961
- * x=5988, y=6996
- * x=5989, y=29992
- * x=414, y=10701
- * x=444, y=525      ----special case for x is palindrome
- * x=5555, y=6446    
+ * x=5989, y=29992 ----type 3, sum is odd when d is even
+ * x=5387, y=16961  
+ * x=444, y=525    ----type 4, x as palindrome      
  * x=44444, y=45254  
+ * x=414, y=10701    ----type 4.1, center is 1 not enough to complement neighbor
  * x=919, y=14941
- * x=5566, y=5665    ----!!! 
- * x=5656, y=5665    ----!!!
- * x=819, y=909
- * x=8598, y=8778
- * x=7892438, y=8179718
- * x=892438, y=1398931
+ * x=89898, y=98889  ----type 4.2, digit is 9 can not increase
+ * x=5566, y=5665    ----type 5.1 
+ * x=5656, y=5665   
+ * x=42146, y=42524
+ * x=7892438, y=7909097 ----type 5.2, freemake for center 3 digits with rest=9
+ * x=5988, y=6996
+ * x=42646, y=43834
+ * x=892438, y=908809   ----type 5.3, freemake for center 4 digits with rest=16
+ *
  * */
 #include "stdio.h"
 #include <iostream>
@@ -62,7 +62,7 @@ string convertIntArray2Str(int *arr, int n){    //convert an int array to string
 }
 
 /*
- * too complicated, too much boundary cases to consider
+ * key of this problem is to merge so many branch cases
  * */
 string findPalindromeInt(const string& str){
     int n = str.size();
@@ -79,9 +79,13 @@ string findPalindromeInt(const string& str){
         if(bpalindrome){
             for(int j=0;j<n;dstArr[j] = srcArr[j], j++);
             int t = (n-1)/2;
-            int offset = (n%2==0) ? 1 : 2;
-            for(;t>0 && dstArr[t] < offset; --t);
-            if(t>0){        //modify palindrome integer from its center digit to make the least greater palindrome
+            for(;t>0;--t){    //get 1 or 2 from [t] to complement [t-1]
+                int offset = (t==n-1-t) ? 2 : 1;
+                if(dstArr[t] >= offset && dstArr[t-1]<9){
+                    break;
+                }
+            }
+            if(t>0){    //modify palindrome integer from its center digit to make the least greater palindrome
                 dstArr[t-1] += 1;
                 dstArr[n-t] += 1;
                 dstArr[t] -= 1;
@@ -91,31 +95,45 @@ string findPalindromeInt(const string& str){
                 freemake=true;
             }
         }else{
-          while(rest>0 && d>0){   //attempt in m==n
-            if(srcArr[i] >= srcArr[n-1-i]){    //cover d == 1
-                dstArr[i] = dstArr[m-1-i] = srcArr[i];
-            }else{
-                if(d>2){
-                    if()
-                    dstArr[i] = dstArr[m-1-i] = srcArr[i] +1;
-                }else{        //d==2
-                    dstArr[i] = dstArr[m-1-i] = rest/d;
+            while(rest>0 && d>0 && !freemake){   //attempt in m==n
+                if(d>1){
+                    int tmp = srcArr[i];
+                    for(;tmp<10 && (rest-2*tmp)>(d-2)*9;tmp++);
+                    if(tmp==10 
+                    || (rest-2*tmp)<0            //7892438, i=2
+                    || ((rest-2*tmp)==0 && d>2)){ //892438, i=1
+                        if(i<1){
+                            break;    //to free make with longer size
+                        }else{
+                            for(;i>0 && dstArr[i-1]==9;--i){  //backtrack
+                                rest += 2*dstArr[i-1];
+                                d += 2;
+                            }
+                            if(i==0){
+                                break;    //to free make with longer size
+                            }else{
+                                dstArr[i-1] += 1;
+                                dstArr[n-i] += 1;
+                                rest -= 2;
+                                freemake=true;    //start free make from digit i
+                            }
+                        }
+                    }else{
+                        dstArr[i] = dstArr[n-1-i] = tmp;
+                        rest -= 2*tmp;
+                        d -= 2;
+                        if(tmp > srcArr[i] || (rest==0 && d==0)){
+                            freemake = true; //start free make from digit i+1
+                        }
+                        i++;    //enlarge i if dstArr[i] is set
+                    }
+                }else{    //d==1
+                    dstArr[i] = rest;
+                    d -= 1;
+                    rest = 0;
+                    freemake = true;
                 }
             }
-
-            if(i==n-1-i){
-                rest -= dstArr[i];
-                d -= 1;
-            }else{
-                rest -= 2*dstArr[i];
-                d -= 2;
-            }
-        
-            if(dstArr[i] > srcArr[i] && rest >= 0)
-              freemake = true; 
-            i++;
-            if(freemake)    break;
-          }
         }
     }
     
