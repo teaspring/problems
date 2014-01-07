@@ -8,7 +8,6 @@
 #include "../header/preliminary.h"
 #include <vector>
 #include <map>
-#include <set>
 #include <algorithm>
 
 bool myfunc(int a, int b){    //for sort in ascending
@@ -24,11 +23,11 @@ class Solution{
  * since the problem not need output index and no requirment of index order, so
  * 1. sort the array firstly 
  * 2. because array is sorted, no need of map, O(n) search for <b,c> while a is fixed
+ * 3. remember to skip duplicate a,b,c separately during their index moving
  * */
 vector<vector<int> > Solution::threeSum(vector<int> &num){
     typedef vector<int> numbers;
     vector<numbers> res;
-    set<numbers> st;
     sort(num.begin(), num.end(), myfunc);
     int n = num.size();
     for(int j=0;j<n-2;++j){
@@ -51,10 +50,7 @@ vector<vector<int> > Solution::threeSum(vector<int> &num){
                 tmp.push_back(num[j]);
                 tmp.push_back(num[v]);
                 tmp.push_back(num[u]);
-                if(st.find(tmp) == st.end()){    //this triplet is not found yet
-                    res.push_back(tmp);
-                    st.insert(tmp);
-                }
+                res.push_back(tmp); //as array is sorted and moving a/b/c skip their duplicate already, tmp will not be duplicate
                 ++v;
                 --u;
             }else if(sum < target){
@@ -64,7 +60,6 @@ vector<vector<int> > Solution::threeSum(vector<int> &num){
             }
         }
     }
-    st.clear();
     return res;
 }
 
