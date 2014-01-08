@@ -1,9 +1,10 @@
 /*
  * from oj.leetcode. given a SLL, sort it in time O(n*lgn) with constant space structure
  *
- * generally I think about two options: quick sort and merge sort for this problem:
+ * several options:
  * 1.quick sort is dependent on swap(), this function will turns too complicated in SLL
- * 2.merge sort is great for linked list, no additional space like for array
+ * 2.merge sort is great for linked list, no additional space like for array, in time O(n*lgn)
+ * 3.insertion sort is not bad, as insertion is easy for SLL instead of swap, though its time in O(n^2)
  * 
  * test cases:
  * 1,2,3
@@ -159,7 +160,7 @@ ListNode *split(ListNode *h, int len){    //cut a segment of SLL of size len fro
     return t;
 }
 
-ListNode* sortList(ListNode *head){
+ListNode* sortSLL_02(ListNode *head){
     ListNode n(0);
     n.next = head;
     int listlen = 0;
@@ -192,6 +193,33 @@ void showSLL(ListNode *head){
     cout<<endl;
 }
 
+/*
+ * solution 3, insertion sort
+ * */
+ListNode* sortSLL_03(ListNode *head){
+    if(head == NULL)    return NULL;
+    ListNode *curr = head->next, *start = head, *cprev=head;
+    while(curr != NULL){
+        ListNode *t = start, *tprev=NULL;
+        for(; t!=curr && t->val <= curr->val; tprev=t, t=t->next);
+        if(t == curr){
+            cprev = curr;
+            curr = curr->next;
+            continue;
+        }
+        cprev->next = curr->next;    //insert curr between tprev and t
+        if(tprev == NULL){
+            curr->next = t;        //insert curr as new head
+            start = curr;
+        }else{
+            tprev->next = curr;
+            curr->next = t;
+        }
+        curr = cprev->next;
+    }
+    return start;
+}
+
 int main(int, char**){
     string str;
     while(1){
@@ -212,7 +240,7 @@ int main(int, char**){
             curr = tmp;
         }
         showSLL(head);
-        ListNode *res = sortList(head);
+        ListNode *res = sortSLL_03(head);
         showSLL(res);
 
         delete[] arr;
