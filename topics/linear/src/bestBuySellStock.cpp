@@ -1,6 +1,5 @@
 /*
- * from leetcode. 
- * 
+ * from oj.leetcode. 
  * given an integer array for which the ith element is price of a given stock on day i, find solution to get maximum benefit for below constraints:
  * 1). if you were only permitted to buy one share and sell one share
  * 2). if you can keep buying and selling
@@ -14,6 +13,7 @@
  * */
 #include "../header/preliminary.h"
 #include <queue>
+#include <vector>
 
 /*
  * problem 1, solution 1:
@@ -104,28 +104,7 @@ int main(int, char**){
           break;
         int *arr = new int[str.size()]();
         int n = splitStr2IntArray(str, arr);
-        int b=0, s=0;
-        int res = bestbuysellstock01_01(arr, n, b, s);
-        cout<<"problem 1 solution 1:";
-        if(res > 0){
-            printf("the best solution is buy on day %d in $%d and sell on day %d in $%d, with benefite %d\n", 
-                        b, arr[b], s, arr[s], res);
-        }else{
-            printf("no solution to buy and sell at all!\n");
-        }
-
-        b=0;
-        s=0;
-        res = bestbuysellstock01_02(arr, n, b, s);
-        cout<<"problem 1 solution 2:";
-        if(res > 0){
-            printf("the best solution is buy on day %d in $%d and sell on day %d in $%d, with benefite %d\n", 
-                        b, arr[b], s, arr[s], res);
-        }else{
-            printf("no solution to buy and sell at all!\n");
-        }
-
-        printf("problem 2:if permit keep buying and selling stock, the maximum benefite is %d\n", keepbuysellstock(arr, n));
+        printf("the max profit is %d\n", keepbuysellstock(arr, n));
 
         delete[] arr;
         arr=0;
