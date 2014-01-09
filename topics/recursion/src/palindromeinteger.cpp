@@ -18,7 +18,8 @@ bool ispalindrome(int n, int x, int m){
       return x == m;
 }
 
-bool palindromeint(int n){
+bool palindromeint(int n){        //how about minus integer? please confirm it with interviewer in advance!!! 
+    if(n<0)        return false;    
     return ispalindrome(n, 0, n);
 }
 
