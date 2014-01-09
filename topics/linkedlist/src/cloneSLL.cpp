@@ -13,52 +13,49 @@ using namespace std;
 
 const int CSIZE = 11;
 
-struct ranSLLNode{
-    char* cValue;
-    ranSLLNode* pNext;
-    ranSLLNode* pRandom;
+struct RandomListNode{
+    int label;
+    RandomListNode* next;
+    RandomListNode* random;
 
-    ranSLLNode(): pNext(0), pRandom(0){
-        cValue = new char[CSIZE];
-        memset(cValue, 0, CSIZE);
+    RandomListNode(int x): label(x), next(0), random(0){
     }
-    ~ranSLLNode(){
-        delete cValue;
-        cValue=0;
-        pNext=0;
-        pRandom=0;
+    ~RandomListNode(){
+        next=0;
+        random=0;
     }
 };
 
 /*
  * no extra space, but through 3 iterations. pay time for space
  * */
-ranSLLNode* cloneRandomSLL(ranSLLNode* srcHeader){
-    ranSLLNode* curr = srcHeader;
+RandomListNode* cloneRandomSLL(RandomListNode *head){
+    if(!head)    return NULL;            //NULL input must be considered
+    RandomListNode* curr = head;
     while(curr != 0){                            //create new node one after each source node 
-        ranSLLNode* nNode = new ranSLLNode();
-        strcpy(nNode->cValue, curr->cValue);
-        nNode->cValue[strlen(curr->cValue)]='\0';
-        nNode->pRandom = curr->pRandom;
-        nNode->pNext = curr->pNext;
-        curr->pNext = nNode;
-        curr = nNode->pNext;
+        RandomListNode* nNode = new RandomListNode(curr->label);
+        nNode->random = curr->random;
+        nNode->next = curr->next;
+        curr->next = nNode;
+        curr = nNode->next;
         nNode = 0;
     }
 
-    curr=srcHeader;
-    while(curr != 0){                            //set pRandom of new node be new node
-        curr->pNext->pRandom = curr->pRandom->pNext;
-        curr = curr->pNext->pNext;
+    curr=head;
+    while(curr != 0){                            //set random of new node be new node
+        if(curr->random != NULL){    //NULL random pointer must be considered!!!
+            curr->next->random = curr->random->next;
+        }
+        curr = curr->next->next;
     }
     
-    curr = srcHeader;
-    ranSLLNode* next = curr->pNext;
-    ranSLLNode* nHeader = next;
+    curr = head;
+    RandomListNode* next = curr->next;
+    RandomListNode* nHeader = next;
     while(next != 0){                            //unplug new node and source node
-        curr->pNext = next->pNext;
+        curr->next = next->next;
         curr = next;
-        next = curr->pNext;
+        next = curr->next;
     }
 
     curr=0;
@@ -67,64 +64,65 @@ ranSLLNode* cloneRandomSLL(ranSLLNode* srcHeader){
 }
 
 /*
- * with a map of [initial, copy], but just once iteration. pay space for time
+ * with a map of [initial, copy], but just once iteration. pay space for time.
+ * from oj.leetcode judge, this solution is not recommended as it cost more structure
  * */
-ranSLLNode* clone_02(ranSLLNode* phead){
-    map<ranSLLNode*, ranSLLNode*> mnodes;
-    ranSLLNode *curr = phead;
+RandomListNode* clone_02(RandomListNode* phead){
+    if(phead==NULL)        return NULL;
+    map<RandomListNode*, RandomListNode*> mnodes;
+    RandomListNode *curr = phead;
     while(1){
         if(mnodes.find(curr) == mnodes.end()){
-            ranSLLNode *p = new ranSLLNode;
-            p->cValue = curr->cValue;
+            RandomListNode *p = new RandomListNode(curr->label);
             mnodes[curr] = p;
         }
-
-        if(mnodes.find(curr->pRandom) == mnodes.end()){
-            ranSLLNode *p = new ranSLLNode;
-            p->cValue = curr->pRandom->cValue;
-            mnodes[curr->pRandom] = p;
-            mnodes[curr]->pRandom = p;
-        }else{
-            mnodes[curr]->pRandom = mnodes[curr->pRandom];
-         }
         
-        if(curr->pNext != 0){
-            if(mnodes.find(curr->pNext) == mnodes.end()){
-                ranSLLNode *p = new ranSLLNode();
-                p->cValue = curr->pNext->cValue;
-                mnodes[curr->pNext] = p;
-                mnodes[curr]->pNext = p;
+        if(curr->random!=NULL){
+            if(mnodes.find(curr->random) == mnodes.end()){
+                RandomListNode *p = new RandomListNode(curr->random->label);
+                mnodes[curr->random] = p;
+                mnodes[curr]->random = p;
             }else{
-                mnodes[curr]->pNext = mnodes[curr->pNext];
+                mnodes[curr]->random = mnodes[curr->random];
+            }
+        }
+        
+        if(curr->next != 0){
+            if(mnodes.find(curr->next) == mnodes.end()){
+                RandomListNode *p = new RandomListNode(curr->next->label);
+                mnodes[curr->next] = p;
+                mnodes[curr]->next = p;
+            }else{
+                mnodes[curr]->next = mnodes[curr->next];
             }
         }else{        //reach tail, exit
-            mnodes[curr]->pNext = 0;
+            mnodes[curr]->next = 0;
             break;
         }        
     }
     return mnodes[phead];
 }
 
-void showRandomSLL(ranSLLNode* header){
-    ranSLLNode* curr = header;
+void showRandomSLL(RandomListNode* head){
+    RandomListNode* curr = head;
     printf("iterate the SLL:\n");
     while(curr != 0){
-        printf("value: %s, random: %s\n", 
-                curr->cValue, curr->pRandom==0 ? "null" : curr->pRandom->cValue);
-        curr = curr->pNext;
+        printf("value: %d, random: %d\n", 
+                curr->label, curr->random==0 ? -1 : curr->random->label);
+        curr = curr->next;
     }
     curr = 0;
 }
 
-void delRandomSLL(ranSLLNode* header){
-    ranSLLNode* curr = header;
+void delRandomSLL(RandomListNode* head){
+    RandomListNode* curr = head;
     while(curr != 0){            //reset the random pointer
-        curr->pRandom = 0;
-        curr = curr->pNext;
+        curr->random = 0;
+        curr = curr->next;
     }
-    curr = header;
+    curr = head;
     while(curr != 0){
-        ranSLLNode* next = curr->pNext;
+        RandomListNode* next = curr->next;
         delete curr;
         curr = next;
         next = 0;
@@ -138,42 +136,40 @@ int main(int argc, char* argv[]){
         if(getline(cin, str)==0 || str.empty())
           break;
         int count = atoi(str.c_str());
-        ranSLLNode *header=0, *curr=0;
+        RandomListNode *head=0, *curr=0;
         for(int i=0;i<count;i++){
             printf("the %dth node is:\n", i);
             getline(cin, str);
-            ranSLLNode* tmp = new ranSLLNode();
-            strcpy(tmp->cValue, str.c_str());
-            tmp->cValue[str.size()]='\0';
-            if(header == 0){
-                header=tmp;
+            RandomListNode* tmp = new RandomListNode(atoi(str.c_str()));
+            if(head == 0){
+                head=tmp;
             }else{
-                curr->pNext=tmp;
+                curr->next=tmp;
             }
             curr=tmp;
             tmp=0;
         }
-        curr=header;
+        curr=head;
         while(curr != 0){                    //set random pointer to be next of next
-            ranSLLNode* next = curr;
+            RandomListNode* next = curr;
             for(int i=0;i<2;i++){
-                next = next->pNext;
+                next = next->next;
                 if(next == 0)    
-                  next = header;
+                  next = head;
             }
-            curr->pRandom = next;
-            curr = curr->pNext;
+            curr->random = next;
+            curr = curr->next;
             next=0;
         }
         curr=0;
-        showRandomSLL(header);
+        showRandomSLL(head);
 
-        ranSLLNode* nHeader = cloneRandomSLL(header);
+        RandomListNode* nHeader = cloneRandomSLL(head);
         showRandomSLL(nHeader);
         
-        delRandomSLL(header);
+        delRandomSLL(head);
         delRandomSLL(nHeader);
-        header=0;
+        head=0;
         nHeader=0;
     }
     return 0;
