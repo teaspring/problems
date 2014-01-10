@@ -5,7 +5,7 @@
  * 
  * test data:
  * 1,2,4,2,5,7,2,4,9,0          ----- max profit is 6+7=13
- * [1,3], [2,4], [2,6], [2,7]   ----- max profit is 5+5=10
+ * 1,3,2,4,2,6,2,7              ----- max profit is 5+5=10
  * */
 #include "../header/preliminary.h"
 #include <queue>
@@ -170,16 +170,20 @@ int twicebuysell_03(vector<int>& prices){
     int *futureprofit  = new int[n]();
     int valley=prices[0], peak=prices[n-1], sum=0;
     for(int i=1;i<n;++i){
-        if(valley > prices[i]){
+        if(valley > prices[i]){ //two ways of prices[i] affecting historyprofit[i] and valley
             valley = prices[i];
+            historyprofit[i] = historyprofit[i-1];
+        }else{
+            historyprofit[i] = max(historyprofit[i-1], prices[i]-valley);
         }
-        historyprofit[i] = max(historyprofit[i-1], prices[i]-valley);
     }
     for(int i=n-2;i>=0;--i){
-        if(peak < prices[i]){
+        if(peak < prices[i]){   //two ways of prices[i] affecting futureprofut[i] and peak
             peak = prices[i];
+            futureprofit[i] = futureprofit[i+1];
+        }else{
+            futureprofit[i] = max(futureprofit[i+1], peak - prices[i]);
         }
-        futureprofit[i] = max(futureprofit[i+1], peak - prices[i]);
         int tmp = historyprofit[i] + futureprofit[i];
         if(sum < tmp)
           sum=tmp;
