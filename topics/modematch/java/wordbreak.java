@@ -121,10 +121,21 @@ public class wordbreak{
         for(int i=0;i<n;++i){
             arr.add(i, new ArrayList<Integer>());            
         }
+        /*
         for(int stop=n;stop>=0;--stop){
             if(stop<n && arr.get(stop).isEmpty())
                 continue;   //key and most smart statement, skip the index which can not arrive in end
             for(int start = stop-1;start>=0;--start){
+                if(dict.contains(s.substring(start,stop))){
+                    arr.get(start).add(stop);
+                }
+            }
+        }
+        */
+        for(int start=0;start<n;++start){
+            if(start>0 && !arr.get(0).contains(start))
+                continue;   //key and most smart statement, skip the index which can not start from 0 to it 
+            for(int stop = start+1;stop<=n;++stop){
                 if(dict.contains(s.substring(start,stop))){
                     arr.get(start).add(stop);
                 }
