@@ -112,6 +112,14 @@ public class wordbreak{
      * efficient solution to problem 2.
      * 1. a traverse of O(n^2) is necessary and a ArrayList<ArrayList<Integer>> is used for the traverse result; 
      * 2. utilize the structure to find all consecutive composition
+     *
+     * test data:
+     * dict={a,aa,aaa,aaaa,aaaaa...}, str=aaaaaaaaaaaaaaab
+     * dict={a,aa,aaa,aaaa,aaaaa...}, str=baaaaaaaaaaaaaaa
+     * think about how to skip as much useless clauses as possible during preparement(fill the ArrayList<ArrayList<Integer>>)
+     * 
+     * why it can skip some steps in traverse? because this problem asks to find "word break" instead of "word occurance", any word
+     * occurance which cannot contribute to a complete breaking option does not need to cover
      * */
     public ArrayList<String> wordbreakall_02(String s, Set<String> dict){
         ArrayList<String> res = new ArrayList<String>();
@@ -121,7 +129,7 @@ public class wordbreak{
         for(int i=0;i<n;++i){
             arr.add(i, new ArrayList<Integer>());            
         }
-        for(int stop=n;stop>=0;--stop){
+        for(int stop=n;stop>0;--stop){ //as collect() start from [0] later, here traverse from [n-1] will skip more clauses?
             if(stop<n && arr.get(stop).isEmpty())
                 continue;   //key and most smart statement, skip the index which can not arrive in end
             for(int start = stop-1;start>=0;--start){
