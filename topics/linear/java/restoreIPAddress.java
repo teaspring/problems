@@ -15,16 +15,18 @@ public class restoreIPAddress{
     private int max(int a, int b){
         return a>b ? a : b;
     }
+    /*
+     * key of this algorithm is skip all the invalid cases
+     * */
     public ArrayList<String> restoreIpAddress(String s){
         ArrayList<String> res = new ArrayList<String>();
-        if(s == null || s.length() < 4)    return res;
+        if(s == null || s.length() < 4 || s.length() > 12)    return res;
         final int n = s.length();
 
         ArrayList<Integer>    dom1 = new ArrayList<Integer>();
         for(int i=1; i<4;++i){
             int tmp = new Integer(s.substring(0, i));
-            if(tmp > 255 || tmp<0 
-            || (tmp<10 && i>1) || (tmp<100 && i>2)){
+            if(tmp > 255 || tmp<0 || (tmp<10 && i>1) || (tmp<100 && i>2)){
                 continue;
             }
             dom1.add(i);    //exclusive end of domain 1
@@ -34,9 +36,7 @@ public class restoreIPAddress{
         ArrayList<Integer> dom4 = new ArrayList<Integer>();
         for(int i=n-1; i>=n-3;i--){
             int tmp = new Integer(s.substring(i, n));
-            if(tmp > 255 || tmp < 0 
-            || (tmp<10 && n-i>1)
-            || (tmp<100 && n-i>2)){
+            if(tmp > 255 || tmp < 0 || (tmp<10 && n-i>1) || (tmp<100 && n-i>2)){
                 continue;
             }
             dom4.add(i);    //inclusive start of domain4
