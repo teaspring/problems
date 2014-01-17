@@ -24,9 +24,14 @@ int evalRPN(vector<string> &tokens){
             stk.push(atoi(str.c_str()));
             continue;
         }else{
-            if(isdigit(str[0])){
-                stk.push(atoi(str.c_str()));
+            char ch = str[0];
+            if(isdigit(ch)){
+                stk.push(atoi(&ch));
                 continue;
+            }
+            if(stk.size() < 2){    //ch is operator, at least two integers must be in stack
+                printf("error !\n");
+                break;
             }
             int x1=0, x2=0;
             switch (str[0]){
@@ -69,7 +74,7 @@ int evalRPN(vector<string> &tokens){
             }
         }
     }
-    if(stk.empty()){
+    if(stk.empty()){    //final pop() must ensure stack not empty
         printf("error!\n");
         return 0;
     } 
