@@ -14,7 +14,7 @@ import java.io.*;
 import java.util.*;
 
 public class numdecode{
-    public int numDecodings(String s){
+    public int numDecodings_01(String s){
         if(s == null || s.isEmpty())    return 0;
         int[] grps = getGroups_04(s);
         return decodePath_04(grps, 0, s.length());
@@ -44,7 +44,7 @@ public class numdecode{
         if(curr.isEmpty())    return 0;
         int sum=0;
         for(int i : curr){
-            sum += (i>9 ? decodePath(groups, ind+2, n) : decodePath(groups, ind+1, n));
+            sum += (i>9 ? decodePath_01(groups, ind+2, n) : decodePath_01(groups, ind+1, n));
         }
         return sum;
     }
@@ -141,11 +141,28 @@ public class numdecode{
         return dp[n];
     }
 
+    /*
+     * copy from Discussion of oj.leetcode. the simplest solution, once iteration, constant space, certainly the best!
+     * use two variables for DP 
+     * */
+    public int numDecodings_02(String s){
+        if(s==null || s.isEmpty() || s.charAt(0)=='0')        return 0;
+        int cur_2=1, cur_1=1, cur=0;
+        for(int i=2; i<=s.length(); i++){    //cur_2 is count in front of [i-2], cur_1 is count in frout of [i-1]
+            if(s.charAt(i-1) != '0')    cur += cur_1;
+            if(s.charAt(i-2)=='1' || (s.charAt(i-2)=='2' && s.charAt(i-1)<'7'))    cur += cur_2;
+            cur_2 = cur_1;
+            cur_1 = cur;
+            cur=0;
+        }
+        return cur_1;
+    }
+
     public void test(){
         Scanner scan = new Scanner(System.in);
         while(true){
             String str = scan.nextLine();
-            System.out.println(numDecodings(str));
+            System.out.println(numDecodings_02(str));
             if(str.isEmpty())    break;
         }
     }
