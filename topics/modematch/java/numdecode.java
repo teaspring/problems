@@ -143,17 +143,18 @@ public class numdecode{
 
     /*
      * copy from Discussion of oj.leetcode. the simplest solution, once iteration, constant space, certainly the best!
-     * use two variables for DP 
+     * use two variables for DP
+     * this algorithm induce the problem similar to Fibonacci seriel
      * */
     public int numDecodings_02(String s){
         if(s==null || s.isEmpty() || s.charAt(0)=='0')        return 0;
-        int cur_2=1, cur_1=1, cur=0;
+        int cur_2=1, cur_1=1;
         for(int i=2; i<=s.length(); i++){    //cur_2 is count in front of [i-2], cur_1 is count in frout of [i-1]
+            int cur=0;
             if(s.charAt(i-1) != '0')    cur += cur_1;
             if(s.charAt(i-2)=='1' || (s.charAt(i-2)=='2' && s.charAt(i-1)<'7'))    cur += cur_2;
             cur_2 = cur_1;
             cur_1 = cur;
-            cur=0;
         }
         return cur_1;
     }
