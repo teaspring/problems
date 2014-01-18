@@ -47,11 +47,10 @@ void shortestPath::DijkstraShortest( genGraph* pGraph, int start){
             if(currDist[i] < currDist[v])
                 v = i;
         }
-        toBeChecked[v] = NullVert;                //remove v from toBeChecked
-        
         int* vAdjs = pGraph->adjaMtx[v];
         for(int u=0; u<N; u++){
             if(vAdjs[u] == MAX                    //u not adjacent to v
+            || v==u
             || toBeChecked[u] == NullVert)      //u which is pick up already will not be updated.that's different with label-correcting
                 continue;
             if(currDist[u] > currDist[v] + vAdjs[u]){
@@ -59,6 +58,7 @@ void shortestPath::DijkstraShortest( genGraph* pGraph, int start){
                 predecessor[u] = v;
             }
         }
+        toBeChecked[v] = NullVert;                //remove v from toBeChecked
     }   
     //output
     cout << "Dijkstra algorithm, currDist[] is: \n";
