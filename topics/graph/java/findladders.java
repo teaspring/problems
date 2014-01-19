@@ -5,8 +5,12 @@
  * 2.each intermediate word must exist in the dictionary
  *
  * test data:
- * start="hit", end="cog", dict=["hot","dot","dog","lot","log"]
- * return [[hit,hot,dot,dog,cog], [hit,hot,lot,log,cog]]
+ * start="hit", end="cog", dict=[hot,dot,dog,lot,log,hat,bit,big,dit,dig,cat,hak,cak,cok,dok]
+ * return:
+ * [hit,hot,dot,dog,cog]
+ * [hit,hot,lot,log,cog]
+ * [hit,dit,dig,dog,cog]
+ * [hit,hot,dot,dog,cog]
  * */
 
 import java.lang.*;
@@ -256,6 +260,93 @@ public class findladders{
         return 0;
     }
 
+    /*
+     * correct and accepted by oj.leetcode. 
+     * BFS to get next ladder
+     * */
+    public ArrayList<ArrayList<String>> findLadders_02(String start, String end, HashSet<String> dict){
+        HashMap<String, Queue<String>> adjMap = new HashMap<String, Queue<String>>();//contains all the adjacent words discovered in its prev
+        int currLen=0;
+        boolean found=false;
+        ArrayList<ArrayList<String>> r = new ArrayList<ArrayList<String>>();//results
+        Queue<String> queue = new LinkedList<String>();    //Queue for BFS
+        Set<String> unVisited = new HashSet<String>(dict);    //unvisited words
+        unVisited.add(end);
+        Set<String> visitedThisLev = new HashSet<String>();
+        
+        queue.offer(start);
+        int currLev=1; //ladders count at current level
+        int nextLev=0; //ladders count of next level
+        for(String word : unVisited){
+            adjMap.put(word, new LinkedList<String>());
+        }
+        unVisited.remove(start);    //nobody tells whether start is in dict
+        
+        while(!queue.isEmpty()){//BFS, every time change one char of it among a-z 26 characters
+            String currLadder = queue.poll();
+            for(String nextLadder : getNextLadder(currLadder, unVisited)){
+                if(visitedThisLev.add(nextLadder)){
+                    nextLev++;    //every new nextLadder converted from currLadder contributes to nextLev
+                    queue.offer(nextLadder);
+                }
+                adjMap.get(nextLadder).offer(currLadder);    //save in map: nextLadder-->currLadder 
+                if(nextLadder.equals(end) && !found){
+                    found=true;
+                    currLen += 2;
+                }    
+            }
+            System.out.println("currLen=" + currLev + " , nextLev=" + nextLev + ", currLadder=" + currLadder + ", unVisited=" + unVisited.toString() + ", visitedThisLev=" + visitedThisLev.toString());
+            if(--currLev==0){
+                if(found)    break;
+                unVisited.removeAll(visitedThisLev);    //expand in BFS from start to further, so current visited word does not need later
+                visitedThisLev.clear();
+                currLev = nextLev;
+                nextLev=0;
+                currLen++;
+            }
+        }
+        if(found){
+            LinkedList<String> p = new LinkedList<String>();
+            p.addFirst(end);    //from end to start
+            getLadders(start, end, p, r, adjMap, currLen);
+        }
+        return r;
+    }
+
+    private ArrayList<String> getNextLadder(String currLadder, Set<String> unVisited){//
+        ArrayList<String> nextLadder = new ArrayList<String>();
+        StringBuffer replace = new StringBuffer(currLadder);
+        for(int i=0;i<currLadder.length();i++){
+            char old = replace.charAt(i);
+            for(char ch='a'; ch<='z';ch++){
+                if(ch==old)    continue;
+                replace.setCharAt(i, ch);
+                String replaced = replace.toString();
+                if(unVisited.contains(replaced)){
+                    nextLadder.add(replaced);
+                }
+            }
+            replace.setCharAt(i, old);
+        }
+        return nextLadder;
+    }
+
+    //DFS to get all possible path from start to end
+    //@params p: choose LinkedList<> to push/pop like stack, and initialize ArrayList<> like queue
+    private void getLadders(String start, String currLadder, LinkedList<String> p, ArrayList<ArrayList<String>> solu,
+            HashMap<String, Queue<String>> adjMap, int len){
+        if(currLadder.equals(start)){
+            solu.add(new ArrayList<String>(p));
+        }else if(len>0){
+            Queue<String> adjs = adjMap.get(currLadder);
+            for(String lad : adjs){
+                p.addFirst(lad);
+                getLadders(start, lad, p, solu, adjMap, len-1);
+                p.pollFirst();
+            }
+        }
+    }
+
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
         findladders lad = new findladders();
@@ -275,12 +366,11 @@ public class findladders{
             
             int steps = lad.ladderLength_02(start, end, dict);
             System.out.println("the shortest ladder is " + steps);
-            /*
-            ArrayList<ArrayList<String>> result = lad.findall(start, end, dict);
+            
+            ArrayList<ArrayList<String>> result = lad.findLadders_02(start, end, dict);
             for(int i=0;i<result.size(); i++){
                 System.out.println(result.get(i).toString());
             }
-            */
         }
     }
 }
