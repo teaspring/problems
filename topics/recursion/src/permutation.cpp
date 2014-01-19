@@ -60,16 +60,15 @@ vector<vector<int> > perm(vector<int>& num){
     res.push_back(num);
     while(1){
         int j = n-1;
-        for(;j>0 && num[j-1] >= num[j];--j);
+        for(;j>0 && num[j-1] >= num[j];--j);//reversely from tail, find first digit([j-1]) less than its right([j])
         if(j==0)    break;
         int t = n-1;
         while(t > j){
-            if(num[t] > num[j-1])
-                break;
+            if(num[t] > num[j-1])    break; //reversely from tail, find the first digit greater than [j-1], at least it is [j]
             t--;
         }
         myswap(num[t], num[j-1]);
-        quicksort(num, j, n-1);        //here needs sort the src[j:count] instead of just iteration
+        quicksort(num, j, n-1); //here sort the src[j:n) to set that part as ascending for later process
         res.push_back(num);
         output(num);
     }
