@@ -3,7 +3,7 @@
  * 1. int get(key) - Get the value(always be positive) of the key if the key exists in the cache, otherwise return -1;
  * 2. void set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should
  * invalidate the least recently used item before inserting a new item.
- *
+ * 
  * solution 1: self-defined double linked list(DLL), insert new node at tail. every get() move referred node to tail, so that the head
  * becomes "least recently used" node till now.
  * soltuion 2: use LinkedHashMap.
@@ -38,14 +38,14 @@ public class LRUCache{
         mHMap = new HashMap<Integer, node>();
     }
 
-    public int get(int key){
+    public int get(int key){    // in time O(1)
         if(!mHMap.containsKey(key)){
             return -1;
         }
         node curr = mHMap.get(key);
         node cNext = curr.next;
         node cPrev = curr.prev;
-        if(cNext != null){    //move referred node to tail
+        if(cNext != null){    //move referred node to tail to make it becomes most recently used 
             if(cPrev == null){
                 mHead = cNext;
             }else{
@@ -60,7 +60,7 @@ public class LRUCache{
         return curr.Value;
     }
 
-    public void set(int key, int value){
+    public void set(int key, int value){    //in time O(1)
         if(mHMap.containsKey(key)){
             get(key);    //put it to mTail of DLL
             mHMap.get(key).Value = value;
@@ -68,7 +68,7 @@ public class LRUCache{
         }
         if(mHMap.size() >= mCapacity){
             node oldNode = mHead;
-            if(oldNode.next != null){    //remove the mHead which is least recently used 
+            if(oldNode.next != null){    //remove mHead which is least recently used till now 
                 mHead = oldNode.next;
                 mHead.prev = null;
             }else{
