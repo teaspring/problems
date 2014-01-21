@@ -36,7 +36,8 @@ public class threesumclosest{
                     res = arr[i] + arr[l] + arr[r];
                     if(dist==0)            break;    //exit while nothing else can be closer than 0
                 }
-                //if(lastDist < tmp)    break;    //NOTE: track distance descending is not needed which will skip correct answer!
+                //if(lastDist < tmp)    break;    //NOTE: track distance descending is not needed which will skip correct answer! because
+                //the minus of target-arr[i]-arr[l]-arr[r] will be +,-,+,- so the absminus will not be descending absolutely
                 if(arr[l] + arr[r] > target-arr[i]){
                     r--;
                 }else{
