@@ -27,17 +27,13 @@ public class reverseSLLBetween{
         ListNode mPrev=null, mHead=null, cPrev=null, curr=head;
         for(int i=1;curr != null; i++){
             ListNode cNext = curr.next;    //take care of the position/order of these statements
-            if(i<=m){
-                if(i==m){
-                    mPrev = cPrev;
-                    mHead = curr;
-                }
+            if(i==m){
+                mPrev = cPrev;
+                mHead = curr;
             }else if(i<=n){
                 curr.next = cPrev;  //store curr.next and reverse it  
                 if(i==n){
-                    if(mPrev != null){
-                        mPrev.next = curr;
-                    }
+                    if(mPrev != null)    mPrev.next = curr;
                     mHead.next = cNext;
                     break;
                 }
