@@ -139,27 +139,35 @@ double findmedian(int* A, int m, int* B, int n){
 }
 
 /*
- * from internet, Geeky code!
+ * solution 2 rom internet, Geeky code!
+ * test data for debug: 
+ * {0,1,2}, {4,5,6,7}
+ * {4,5,6,7}, {3,8,9}
  * */
 int find(int *a, int n, int *b, int m, int th){    //th is 0-based
-    if(n==0)    return b[th];
+    if(n==0)    return b[th];    //finally all the recurse returns from below two statements
     if(m==0)    return a[th];
+    
+    printf("n=%d, m=%d, a[0]=%d, b[0]=%d\n", n,m, *a, *b);
+    
     int mida = (n-1) >> 1;    //divide by 2
     int midb = (m-1) >> 1;
-    if(a[mida] < b[midb])    return find(b,m,a,n,th);
-    // below a[mida] >= b[midb]
-    if(mida+1+midb+1 <= th+1)
+    if(a[mida] < b[midb])    return find(b,m,a,n,th);    //ensure greater median in a[]
+    // below a[mida] >= b[midb], required middle must be in a[]
+    if(mida+1 + midb+1 <= th+1)        //clause1: it skips half of elements in b[]
       return find(a, n, b+(midb+1), m-(midb+1), th-(midb+1));
-    else
+    else{    //clause2: skip half elements in a[], it always happens after clause1 
+      printf("n=%d, m=%d, mida=%d, midb=%d\n", n,m, mida, midb);
       return find(a,mida,b,m,th);
+    }
 }
 
 double findMedianSortedArrays_02(int *A, int m, int *B, int n){
     if(m==0 && n==0)    return 0;
-    if((m+n) & 1){    //m+n % 2 == 1, support case of m+n==1
+    if((m+n) & 1){    //(m+n)%2 == 1, support case of m+n==1
         int mid = (m+n) >> 1;
         return find(A,m,B,n,mid);
-    }else{        //m+n%2 ==0
+    }else{        //(m+n)%2 == 0
         int r = (m+n) >> 1;
         int l = r-1;
         return (find(A,m,B,n,l) + find(A,m,B,n,r))/2.0;
