@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <fstream>
+
 using namespace std;
 
 inline int min(int a, int b){
@@ -24,8 +26,11 @@ string longestPalindrome(const string& S){
     p[0] =1;        //radius of longest palindrome including center
     int id=0, mx = id+p[id];//id is center of longest palindrome, mx is exclusive edge index of it
     for(int i=1;i<2*n+1;i++){
-        if(2*id >= i)        p[i] = min(p[2*id-i], mx-i);
-        else                 p[i] = 1;
+        if(mx > i){    //remember (mx > i)!!! if (mx > i) stands, (2*id-i >= 0) stands absolutely
+            p[i] = min(p[2*id-i], mx-i);
+        }else{
+            p[i] = 1;
+        }
         while(i-p[i] >= 0 && i+p[i]<2*n+1 && pMix[i-p[i]] == pMix[i+p[i]])
           p[i]++;
         if(p[i] > p[id]){
@@ -50,13 +55,26 @@ string longestPalindrome(const string& S){
     return res;
 }
 
-int main(int, char**){
+int main(int argc, char** args){
     string str;
     while(1){
         cout<<"please input string:"<<endl;
         if(getline(cin, str)==0 || str.empty())
           break;
         printf("%s\n", longestPalindrome(str).c_str());
+    }
+    if(0 && argc > 1){
+        fstream infile(args[1]);
+        if(!infile){
+            cerr<<"cannot open file";
+            infile.close();
+            return 0;
+        }
+        char *cstr = new char[1000];
+        memset(cstr, 0, sizeof(char)*1000);
+        infile.getline(cstr, 1000);
+        printf("%s\n", longestPalindrome(cstr).c_str());
+        infile.close();
     }
     return 0;
 }
