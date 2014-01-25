@@ -13,53 +13,54 @@ public class candy{
     private int minCandy(int[] ratings){
         int n = ratings.length;
         if(n==0 || n==1)    return n;
-        ArrayList<Integer> candies = new ArrayList<Integer>();
-        candies.add(1);
+        int[] candies = new int[n];    //to structure with fixed size, Array is good choice
+        candies[0] = 1;
         int sum=1, ki=-1;
         for(int i=1;i<n;i++){
-            if(ratings[i] == ratings[i-1]){    //as candies is ArrayList<>, it must add 0 to take place
+            if(ratings[i] == ratings[i-1]){
                 if(ki > -1){
-                    candies.add(0);
+                    candies[i] = 0;
                     continue;
+                }else{
+                    candies[i] = 1;
                 }
-                candies.add(1);
             }else if(ratings[i] < ratings[i-1]){
                 if(ki == -1)    ki=i-1;
-                candies.add(0);
+                candies[i] = 0;
                 continue;
             }else{    //ratings: [i] > [i-1]
                 if(ki > -1){
                     sum += backtrack(ratings, ki, i-1, candies);
                     ki = -1;
                 }
-                candies.add(candies.get(i-1) + 1);
+                candies[i] = candies[i-1] + 1;
             }
-            sum += candies.get(i);
+            sum += candies[i];
         }
         if(ki > -1){
             sum += backtrack(ratings, ki, n-1, candies);
         }
-        System.out.println(candies.toString());
+        System.out.println(Arrays.toString(candies));
         return sum;
     }
 
     /*
      * In arguments, int[] cannot be modified, so it must be ArrayList<> 
      * */
-    private int backtrack(int[] ratings, int l, int r, ArrayList<Integer> candies){
-        int n=ratings.length, m=candies.size();
+    private int backtrack(int[] ratings, int l, int r, int[] candies){
+        int n=ratings.length, m=candies.length;
         if(l<0 || r >= n || r >= m)        return 0;
-        candies.set(r, 1);
+        candies[r] = 1;
         int sum = 1;
         for(int i=r-1; i>l;i--){    //ratings: [i] >= [i+1]
-            int tmp = (ratings[i] == ratings[i+1] ? 1 : candies.get(i+1)+1); 
-            candies.set(i, tmp);
-            sum += candies.get(i);
+            int tmp = (ratings[i] == ratings[i+1] ? 1 : candies[i+1]+1); 
+            candies[i] = tmp;
+            sum += candies[i];
         }
-        int tmp = candies.get(l+1) + 1;
-        if(tmp > candies.get(l)){
-            sum += tmp - candies.get(l);
-            candies.set(l, tmp);
+        int tmp = candies[l+1] + 1;
+        if(tmp > candies[l]){
+            sum += tmp - candies[l];
+            candies[l] = tmp;
         }
         return sum;
     }
