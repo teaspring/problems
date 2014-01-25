@@ -47,15 +47,11 @@ public class foursum{
 
     private int[] parseIntArray(String s, String delimeter){
         StringTokenizer t = new StringTokenizer(s, delimeter);
-        ArrayList<Integer> arr = new ArrayList<Integer>();
-        while(t.hasMoreTokens()){
-            arr.add(Integer.parseInt(t.nextToken().toString()));
+        int[] arr = new int[t.countTokens()];
+        for(int i=0; t.hasMoreTokens(); i++){
+            arr[i]= Integer.parseInt(t.nextToken().toString());
         }
-        int[] res = new int[arr.size()];
-        for(int i=0;i<arr.size();i++){
-            res[i] = arr.get(i);
-        }
-        return res;
+        return arr;
     }
 
     public void test(){
