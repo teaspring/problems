@@ -5,6 +5,8 @@
  * 2.children with a higher rating get more candies than their neighbors.
  * what is the minimum candies you must give?
  *
+ * hidden point: for 4 4 3, the minimum candies can be 1+2+1 = 4 
+ *
  * test data:
  * 2 5 7 6 5 4 2 3 6 9 4 2
  * 4 4 5 7 6 5 4 4 3 3 2 1 4 6 9 3 2 
@@ -46,7 +48,7 @@ int candy(vector<int>& ratings){
     int sum=1, ki=-1;
     for(int i=1;i<n;i++){
         if(ratings[i]==ratings[i-1]){
-            if(ki>-1)    continue;    //during decending
+            if(ki>-1)    continue;    //during decending, leave candies[i] as 0 to set it in backtrack()
             candies[i] = 1;
         }else if(ratings[i] > ratings[i-1]){
             if(ki > -1){
@@ -54,8 +56,8 @@ int candy(vector<int>& ratings){
                 ki = -1;
             }
             candies[i] = candies[i-1] + 1;
-        }else{    //ratings[i] < ratings[i-1]
-            if(ki==-1)    ki = i-1;
+        }else{    //decending
+            if(ki==-1)    ki = i-1;     //leave candies[i] as 0 to set it in backtrack()
         }
         sum += candies[i];
     }

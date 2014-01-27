@@ -5,6 +5,8 @@
  * 2. children with a higher rating get more than their neighnors
  * what is the minimum candies you must have?
  *
+ * hidden point: 
+ * for 4 4 3, the minimum candies can be 1+2+1=4
  * */
 import java.io.*;
 import java.util.*;
@@ -19,16 +21,16 @@ public class candy{
         for(int i=1;i<n;i++){
             if(ratings[i] == ratings[i-1]){
                 if(ki > -1){
-                    candies[i] = 0;
+                    candies[i] = 0;        //during decending, leave it as 0 to set it in backtrack()
                     continue;
                 }else{
                     candies[i] = 1;
                 }
-            }else if(ratings[i] < ratings[i-1]){
+            }else if(ratings[i] < ratings[i-1]){    //decending
                 if(ki == -1)    ki=i-1;
-                candies[i] = 0;
+                candies[i] = 0;            //leave it as 0 to set it in backtrack()
                 continue;
-            }else{    //ratings: [i] > [i-1]
+            }else{    //ascending
                 if(ki > -1){
                     sum += backtrack(ratings, ki, i-1, candies);
                     ki = -1;
