@@ -87,10 +87,10 @@ void solve(vector<vector<char> > &board){
     return;
 }
 
-void display(vector<vector<char> > vec){
+void display(const vector<vector<char> >& vec){
     printf("-------------------\n");
     for(size_t i=0;i<vec.size();i++){
-        for(size_t j=0;j<vec[0].size();j++){
+        for(size_t j=0;j<vec[i].size();j++){
             printf("%c ", vec[i][j]);
         }
         printf("\n");
@@ -120,12 +120,52 @@ void test_01(){
     v2.push_back('x');
     vec.push_back(v2);
     display(vec);
+
+    solve(vec);
+    display(vec);
+    return;
+}
+
+/*
+ * x x x 0
+ * x 0 0 x
+ * x 0 x 0
+ * x x 0 x
+ * */
+void test_02(){
+    vector<vector<char> > vec;
+    vector<char> v0;
+    v0.push_back('x');
+    v0.push_back('x');
+    v0.push_back('x');
+    v0.push_back('0');
+    vec.push_back(v0);
+    vector<char> v1;
+    v1.push_back('x');
+    v1.push_back('0');
+    v1.push_back('0');
+    v1.push_back('x');
+    vec.push_back(v1);
+    vector<char> v2;
+    v2.push_back('x');
+    v2.push_back('0');
+    v2.push_back('x');
+    v2.push_back('0');
+    vec.push_back(v2);
+    vector<char> v3;
+    v3.push_back('x');
+    v3.push_back('x');
+    v3.push_back('0');
+    v3.push_back('x');
+    vec.push_back(v3);
+    display(vec);
+
     solve(vec);
     display(vec);
     return;
 }
 
 int main(int, char**){
-    test_01();
+    test_02();
     return 0;
 }
