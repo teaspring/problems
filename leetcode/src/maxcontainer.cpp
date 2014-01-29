@@ -9,7 +9,7 @@ int maxArea(vector<int> &height){
     int s=0, e=height.size()-1;
     int area = 0;
     while(s<e){
-        int tmp = min(height[e], height[s])*(e-s);
+        int tmp = min(height[e], height[s])*(e-s);        //min() is in <algorithm>
         if(area < tmp)    area = tmp;
         if(height[s] < height[e]){
             s++;
