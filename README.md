@@ -1,7 +1,7 @@
 problems
 ========
 
-practice & exercise of data structure and algorithm, including some interview problem solutions.
+practice & exercise of data structure and algorithm, including some online problems' solutions.
 
 ##topics
  > exercises on data structure and algorithm divided by topic, mainly C++
@@ -26,7 +26,10 @@ practice & exercise of data structure and algorithm, including some interview pr
  
 ##weixin_DZQZ
  > solutions to problems published by wechat public account “待字闺中", which opened in mid 2013.
- 
+
+##leetcode
+ > solutions implementation to problems on oj.leetcode.com, both C++ & Java.
+
 ##util
  > utilities to help process source code file 
  
