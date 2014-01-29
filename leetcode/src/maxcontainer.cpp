@@ -7,16 +7,20 @@
 
 int maxArea(vector<int> &height){
     int s=0, e=height.size()-1;
+    if(e<1)        return 0;
     int area = 0;
+    int maxL=0, maxR=0;
     while(s<e){
         int tmp = min(height[e], height[s])*(e-s);        //min() is in <algorithm>
         if(area < tmp)    area = tmp;
+        maxL = height[s];
+        maxR = height[e];
         if(height[s] < height[e]){
             s++;
-            while(s<e && height[s] <= height[s-1])    s++;    //skip hopeless points
+            while(s<e && height[s] <= maxL)    s++;    //skip hopeless points
         }else{
             e--;
-            while(s<e && height[e] <= height[e+1])    e--;    //skip hopeless points 
+            while(s<e && height[e] <= maxR)    e--;    //skip hopeless points 
         }     
     }
     return area;
