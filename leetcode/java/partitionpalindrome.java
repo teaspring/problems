@@ -17,7 +17,7 @@ public class partitionpalindrome{
         for(int i=0;i<n;i++){
             alpalin.add(new ArrayList<Integer>());
         }
-        int[][] dp = new int[n][n+1];
+        int[][] dp = new int[n][n+1];    //dp[start][length] == 1 means substring is palindrome
         for(int i=0;i<n;i++){
             dp[i][1] = 1;
             alpalin.get(i).add(i+1);
@@ -87,6 +87,36 @@ public class partitionpalindrome{
             }
         }
         return;
+    }
+
+    /*
+     * time Limit exceed as the recurse with stack operation costing too much memory 
+     * */
+    public int minCut_01(String s){
+        if(s==null || s.length()==1)        return 0;
+        int n = s.length();
+        ArrayList<ArrayList<Integer>> alpalin = make_alpalin(s);
+        Stack<Integer> stk = new Stack<Integer>(); //class Stack<>
+        stk.push(0);
+        int count = partition_count(alpalin, s, 0, stk);
+        stk.pop();
+        return count;
+    }
+    private int partition_count(ArrayList<ArrayList<Integer>> alpalin, String s, int start, Stack<Integer> stk){
+        if(start == s.length()){
+            return stk.size()-2;    //return cut 
+        }
+        ArrayList<Integer> arr = alpalin.get(start);
+        int cut = s.length()-1;
+        for(int i=0;i<arr.size();i++){
+            stk.push(arr.get(i));
+            int tmp = partition_count(alpalin, s, arr.get(i), stk);
+            if(tmp < cut){
+                cut = tmp;
+            }
+            stk.pop();
+        }
+        return cut;
     }
 
     public static void main(String[] args){
