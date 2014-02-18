@@ -61,7 +61,7 @@ node* LCA_02(node *root, node *p, node *q){
     node *R = LCA_02(root->right, p, q);
     if(L && R)
       return root;            //finally return, the required LCA of p and q
-    return L ? L : R;         //intermediate return, by parent of found p/q 
+    return L ? L : R;         //intermediate return, NULL or parent of p and q 
 }
 
 int main(int, char**){

@@ -10,7 +10,7 @@
 #include "../header/genBST.h"
 
 template<class T>
-T* BST<T>::search(BSTNode<T>* p, const T& el) const{
+T* BST<T>::search(BSTNode<T>* p, const T& el) const{ //binary search tree; and this declare means method cannot change any member 
     while(p != 0)
       if(el == p->key)
         return &p->key;
@@ -76,8 +76,7 @@ void BST<T>::postorder(BSTNode<T> *p){
  * */
 template<class T>
 void BST<T>::iterativePreorder(){
-    if(root == 0)
-      return;
+    if(root == 0)    return;
     stack<BSTNode<T>*> stk;
     BSTNode<T> *p = root;
     stk.push(p);
@@ -86,7 +85,7 @@ void BST<T>::iterativePreorder(){
         stk.pop();
         visit(p);
         if(p->right != 0)
-          stk.push(p->right);        //push left child after right on top of stack
+          stk.push(p->right);        //push right to stack before left as left will be poped before right
         if(p->left != 0)
           stk.push(p->left);                
     }
@@ -100,20 +99,22 @@ void BST<T>::iterativePreorder(){
 template<class T>
 void BST<T>::iterativePostorder(){
     stack<BSTNode<T>*> stk;
-    BSTNode<T> *p = root, *q = root;        //q is last visited node
-    while(p != 0){
-        for(;p->left != 0; p=p->left)        //go down to left most leaf
-          stk.push(p);                
+    BSTNode<T> *p = root, *q = root;    //q is last visited node
+    if(root == 0)    return;
+    while(1){
+        while(p->left != 0){
+            stk.push(p);                            
+            p = p->left;        //go down to left most leaf
+        }
         while(p->right == 0 || p->right == q){    //without right child,or right child is visited already
             visit(p);                
             q = p;
-            if(stk.empty())
-              return;
-            p = stk.top();            //non-leaf node as parent will be pop() and pushed once again
+            if(stk.empty())    return;   //only one exit clause
+            p = stk.top();
             stk.pop();
         }
-        stk.push(p);            //mid node with right child is push again, now access right child
-        p = p->right;            //access right child as a new subtree
+        stk.push(p);    //mid node with unvisited right child is pushed again, now access right child
+        p = p->right;   //access right child as a new subtree
     }      
 }
 
@@ -124,15 +125,14 @@ template<class T>
 void BST<T>::iterativeInorder(){
     stack<BSTNode<T>*> stk;
     BSTNode<T> *p = root;
-    while(p != 0){                 
+    while(1){                 
         while(p->left != 0){        //go to left most leaf
             stk.push(p);
             p = p->left;
         }
-        visit(p);                    //visited as V
+        visit(p);   //visited as V
         while(p->right==0){
-            if(stk.empty())
-              return;
+            if(stk.empty())    return;//only one exit clause
             p = stk.top();
             stk.pop();
             visit(p);
@@ -256,8 +256,7 @@ void BST<T>::deleteByCopying(BSTNode<T>*& node){
 
 template<typename T>
 void BST<T>::rebuildPreIn(BSTNode<T>* preorder, BSTNode<T>* inorder, int treeLen, BSTNode<T>** pRoot){
-    if(treeLen < 1)
-      return;
+    if(treeLen < 1)    return;
     T curr = preorder->key;
     (*pRoot) = new BSTNode<T>();
     (*pRoot)->key = curr; 
@@ -265,21 +264,18 @@ void BST<T>::rebuildPreIn(BSTNode<T>* preorder, BSTNode<T>* inorder, int treeLen
     (*pRoot)->right = 0;
 
     int i=0;
-    for(;i<treeLen && (inorder+i)->key != curr;i++);
-    if(i == treeLen)
-      return;
+    for(;i<treeLen && (inorder+i)->key != curr;i++);    //curr must be the root of this piece of tree
+    if(i == treeLen)    return;
     rebuildPreIn(preorder+1, inorder, i, &((*pRoot)->left));
     rebuildPreIn(preorder+1+i, inorder+i+1, treeLen-i-1, &((*pRoot)->right));      
 }
 
 /*
  * rebuild binary tree based on postorder and inorder
- * it has a bug, for left most d-b, it is wrong!!!
  * */
 template<typename T>
-void BST<T>::rebuildPostIn(BSTNode<T>* postend, BSTNode<T>* inorder, int treeLen, BSTNode<T>** pRoot){
-    if(treeLen < 1)
-      return;
+void BST<T>::rebuildPostIn(BSTNode<T>* postend, BSTNode<T>* inorder, int treeLen, BSTNode<T>** pRoot){//postend is last element of postorder iteration array
+    if(treeLen < 1)    return;
     T curr = postend->key;
     (*pRoot) = new BSTNode<T>();
     (*pRoot)->key = curr;
@@ -290,7 +286,7 @@ void BST<T>::rebuildPostIn(BSTNode<T>* postend, BSTNode<T>* inorder, int treeLen
     for(;i<treeLen && (inorder+i)->key != curr;i++);        //i is left subtree length
     if(i == treeLen)
       return;
-    rebuildPostIn(postend-(treeLen-1)+i-1, inorder+1, i, &((*pRoot)->left));    //note the postend for left  
+    rebuildPostIn(postend+1-treeLen+i-1, inorder, i, &((*pRoot)->left));    //note the postend for left  
     rebuildPostIn(postend-1, inorder+i+1, treeLen-i-1, &((*pRoot)->right));
 }
 

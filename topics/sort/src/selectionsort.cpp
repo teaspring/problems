@@ -13,12 +13,12 @@ void myswap(int& a, int& b){
 /*
  * bubble method, time O(n^2), with excessive use of swap in each internal iteration
  */
-int bubblesort(int* A, int n){
+int bubblesort(int* A, int n){  //in descending order
     int op = 0;
     for(int i=0; i<n-1; i++){        
-        for(int j=n-1; j>i; j--){
+        for(int j=n-1; j>i; j--){ //compare two adjacent elements and swap
             if(A[j-1] > A[j]){
-                myswap(A[j-1], A[j]);
+                myswap(A[j-1], A[j]); //the minimum during [i,n) rises to [i] like bubble
                 op += 2;
             }
             op++;
@@ -37,13 +37,13 @@ int selectionsort(int* A, int n){
     for (int i=0; i<n-1; i++){
         int sel = i;
         for(int j=n-1; j>i; j--){
-            if(A[j] < A[sel]){        
+            if(A[j] < A[sel]){  //find the minimum [sel] among (i,n)
                 sel=j;
                 op++;
             }
             op++;
         } 
-        if(sel != i){
+        if(sel != i){   //swap [sel] and [i] if in need 
             myswap(A[i], A[sel]);
             op += 2;
         }
@@ -53,7 +53,9 @@ int selectionsort(int* A, int n){
 }
 
 /*
- * basic insertion sort. in internal iteration, stops till finding its correct postion. 
+ * basic insertion sort. in internal iteration, stops till finding its correct postion.
+ * optimize selection sort, copy rest elements instead of swap.
+ * high efficient to sort linked list
  * */
 int insertionsort(int* A, int n){
     int op = 0;

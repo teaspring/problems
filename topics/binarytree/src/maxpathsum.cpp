@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <algorithm>
 using namespace std;
 
 struct TreeNode{
@@ -18,13 +19,6 @@ struct TreeNode{
     TreeNode(int x): val(x), left(NULL), right(NULL){}
 };
 
-inline int max(int a, int b){
-    return a>b ? a : b;
-}
-inline int min(int a, int b){
-    return a<b ? a : b;
-}
-
 int maxPath(TreeNode *par, int *pSum){
     if(!par)    return 0;
     int leftsum  = maxPath(par->left, pSum);
@@ -32,22 +26,8 @@ int maxPath(TreeNode *par, int *pSum){
     int mx = max(leftsum, rightsum);    //it is key of efficiency to conclude the process of left/right to max/min 
     int mn = min(leftsum, rightsum);
 
-    if(mx <= 0){     //both mx/min can not contribute to max path sum beneath *par 
-        if(par->val > *pSum){
-            *pSum = par->val;
-        }
-        return par->val > 0 ? par->val : 0;
-    }else if(mn > 0){ //both mx/mn can contribute to max path sum beneath *par, but only mx contributes the one above *par
-        if(par->val + mx + mn > *pSum){
-            *pSum = par->val + mx + mn;
-        }
-        return (par->val + mx) > 0 ? (par->val + mx) : 0;
-    }else{
-        if(par->val + mx > *pSum){
-            *pSum = par->val + mx;
-        }
-        return (par->val + mx) > 0 ? (par->val + mx) : 0;
-    }
+    *pSum = max(par->val + max(mx,0) + max(mn,0), *pSum);
+    return max(par->val + max(mx,0), 0);
 }
 
 int maxPathSum(TreeNode *root){
