@@ -7,6 +7,7 @@
 #include <cctype>
 #include <vector>
 #include "math.h"
+#include <stack>
 
 using namespace std;
 
@@ -174,3 +175,10 @@ void delBinaryTree(BinaryTree *root){    //natural for post order
     root = 0;
     return;
 }
+
+struct TreeNode{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x): val(x), left(NULL), right(NULL){}
+};
