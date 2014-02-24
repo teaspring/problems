@@ -13,6 +13,8 @@
  * D  - 500
  * CM - 900
  * M  - 1000
+ *
+ * note that: in Roman numeral's defition, integer >= 3999 is invalid
  * */
 import java.io.*;
 import java.util.*;

@@ -1,11 +1,7 @@
 /*
  * write functions to convert integer2roman and roman2integer
- * roman numerals:
- * 1,5,10,50,100,500,1000
- * I,V, X, L, C,  D,  M
  * 
- * 8-VIII, 9-IX, 5-V, 41-XLI, 45-VL, 95-VC
- *
+ * note: in Roman numeral's definition, integer >= 3999 is invalid
  * */
 #include "stdio.h"
 #include <iostream>
