@@ -25,7 +25,12 @@
 #include "stdlib.h"
 using namespace std;
 
-vector<int> grayCode(int n){
+/*
+ * @parameters:
+ *        n: digit count of Gray Code
+ *        return: vector of gray code
+ * */
+vector<int> grayCode_01(int n){
     vector<int> res;
     if(n<1)    return res;
     int x=0, bin=0;
@@ -56,12 +61,29 @@ void show(const vector<int>& vec){
     printf("\n");
 }
 
+/*
+ * method 2, find gray code by index
+ * */
+int indexedGrayCode(int k){
+    return k ^ (k >> 1);
+}
+
+vector<int> grayCode_02(int n){
+    vector<int> res;
+    res.push_back(0);
+    for(int i=1;i < (1 << n);i++){
+        res.push_back(indexedGrayCode(i));
+    }
+    return res;
+}
+
 int main(int, char**){
     string str;
     while(1){
         if(getline(cin, str)==0 || str.empty())    break;
         int n = atoi(str.c_str());
-        show(grayCode(n));
+        show(grayCode_01(n));
+        show(grayCode_02(n));
     }
     return 0;
 }
