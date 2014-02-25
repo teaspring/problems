@@ -18,20 +18,22 @@ using namespace std;
 
 class NQueens{
     public:
-        NQueens(int n): N(n){
+        NQueens(int n): N(n), total(0){
             columnForRow = new int[N]();
         }
         virtual ~NQueens(){
             delete[] columnForRow;
         }
         vector<vector<string> > solve();
-
+        int totalNQueens();
+            
     private:
         void printBoard(vector<vector<string> >& res);
         bool check(int r);
         void placeQueen(int r, vector<vector<string> >& res);
         
         int N;
+        int total;
         int *columnForRow;
 };
 
@@ -47,6 +49,7 @@ void NQueens::printBoard(vector<vector<string> >& res){
         delete[] row;
     }
     res.push_back(board);
+    ++total;
     return;
 }
 
@@ -80,6 +83,12 @@ vector<vector<string> > NQueens::solve(){
     return res;
 }
 
+int NQueens::totalNQueens(){
+    total=0;
+    solve();
+    return total;
+}
+
 void display(const vector<vector<string> > &combinations){
     int n = combinations.size();
     for(int i=0;i<n;++i){
@@ -99,8 +108,9 @@ int main(int, char**){
         if(getline(cin, str)==0 || str.empty())        break;
         int n = atoi(str.c_str());
         NQueens *pnq = new NQueens(n);
-        vector<vector<string> > res = pnq->solve();
-        display(res);
+        //vector<vector<string> > res = pnq->solve();
+        //display(res);
+        printf("total solutions: %d\n", pnq->totalNQueens());
         delete pnq;
     }
     return 0;
