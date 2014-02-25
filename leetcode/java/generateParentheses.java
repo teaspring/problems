@@ -5,6 +5,9 @@ import java.io.*;
 import java.util.*;
 
 public class generateParentheses{
+    /*
+     * method 1
+     * */
     private String makeout(Stack<Integer> stk){
         StringBuilder builder = new StringBuilder();
         for(Integer i : stk){
@@ -13,24 +16,24 @@ public class generateParentheses{
         return builder.toString();
     }
 
-    private void append(ArrayList<String> res, Stack<Integer> stk, int posiN, int negaN){
-        if(posiN==0 && negaN==0){
+    private void append(ArrayList<String> res, Stack<Integer> stk, int l, int r){
+        if(l==0 && r==0){
             res.add(makeout(stk));
             return;
         }
-        if(posiN > 0){
+        if(l > 0){
             stk.push(1);
-            append(res, stk, posiN-1, negaN);
+            append(res, stk, l-1, r);
             stk.pop();
         }
-        if(posiN < negaN){
+        if(l < r){
             stk.push(-1);
-            append(res, stk, posiN, negaN-1);
+            append(res, stk, l, r-1);
             stk.pop();
         }
     }
 
-    public ArrayList<String> generate(int n){
+    public ArrayList<String> generate_01(int n){
         ArrayList<String> arr = new ArrayList<String>();
         if(n < 1)    return arr;
         Stack<Integer> stk = new Stack<Integer>();        
