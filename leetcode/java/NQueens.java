@@ -8,6 +8,7 @@ import java.util.*;
 public class NQueens{
     private int N;
     private int[] columnForRow;
+    private int total;
     
     private void printBoard(ArrayList<String[]> res){
         String[] board = new String[N];
@@ -19,6 +20,7 @@ public class NQueens{
             board[i] = builder.toString();
         }
         res.add(board);
+        ++total;
     }
 
     private boolean check(int r){
@@ -50,6 +52,12 @@ public class NQueens{
         ArrayList<String[]> res = new ArrayList<String[]>();
         placeQueen(0, res);
         return res;
+    }
+    
+    public int totalNQueens(int n){
+        total = 0;
+        solve(n);
+        return total;
     }
 
     public void test_01(){
