@@ -153,12 +153,57 @@ int longestValidParentheses_03(const string& s){
     return (ans<<1);
 }
 
+/*
+ * optimization based on solution 3
+ * fail on case ()(())
+ * */
+int longestValidParentheses_04(const string& s){
+    vector<int> stk;
+    int ans=0, n=s.size();
+    for(int i=0;i<n;++i){
+        if(s[i] == '('){
+            stk.push_back(-1);
+            continue;
+        }
+
+        if(stk.size()>0){  //coming ')'
+            int m = stk.size();
+            if(stk[m-1] == -1){  // ...'(' waiting for ')'
+                stk[m-1] = 1;
+                ans = max(ans, 1);
+            }else if(m > 1 && stk[m-2] == -1){  // ...(() waiting for ')'
+                int sum = stk[m-1] + 1;
+                stk.pop_back();
+                stk.pop_back();
+                stk.push_back(sum);
+                ans = max(ans, sum);
+            }else{            //invalid ')'
+                if(stk[m-1] > 0){    //multiple seperators equals to one
+                    stk.push_back(0);  //seperator
+                }
+                continue;
+            }
+            
+            while(stk.size()>1 && stk[stk.size()-2] > 0){
+                m = stk.size();
+                int sum = stk[m-1] + stk[m-2];
+                stk.pop_back();
+                stk.pop_back();
+                stk.push_back(sum);
+                ans = max(ans, sum);
+            }
+        }
+    }
+    return ans << 1;
+}
+
 int main(int, char**){
     string str;
     while(1){
         printf("please input parentheses string:\n");
         if(getline(cin, str)==0 || str.empty())        break;
         printf("%d\n", longestValidParentheses_03(str));
+        printf("%d\n", longestValidParentheses_04(str));
     }
     return 0;
 }
