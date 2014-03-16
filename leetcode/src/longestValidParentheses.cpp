@@ -171,7 +171,7 @@ int longestValidParentheses_04(const string& s){
             if(stk[m-1] == -1){  // ...'(' waiting for ')'
                 stk[m-1] = 1;
                 ans = max(ans, 1);
-            }else if(m > 1 && stk[m-2] == -1){  // ...(() waiting for ')'
+            }else if(m > 1 && stk[m-2] == -1){  // ...(x waiting for ')'
                 int sum = stk[m-1] + 1;
                 stk.pop_back();
                 stk.pop_back();
