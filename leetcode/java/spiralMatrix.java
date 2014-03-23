@@ -63,6 +63,62 @@ public class spiralMatrix{
         return res;
     }
 
+    /*
+     * spiral matrix II: given n, generate a square matrix filled with elements from 1 to n^2 in spiral order
+     * */
+    public int[][] generateMatrix(int n){
+        if(n<1)    return new int[0][0];   //note the invalid case
+        int[][] matrix = new int[n][n];
+        for(int i=0; i<n; ++i){
+            for(int j=0; j<n; ++j){
+                matrix[i][j] = 0;
+            }
+        }
+        
+        int d=n, w=d;
+        int[] step = new int[]{1,-1,-1,1};
+        int i=0, j=0, k=0, a=1;
+        boolean horizon = true;
+        while(w>0 && d>0){
+            if(horizon){
+                if(k==0){
+                    for(int cnt=0; cnt<w; ++cnt, ++j){
+                        matrix[i][j] = a++;
+                    }
+                    --j;
+                }else if(k==2){
+                    for(int cnt=0; cnt<w; ++cnt, --j){
+                        matrix[i][j] = a++;
+                    }
+                    ++j;
+                }else{
+                    break;
+                }
+                i += step[k];
+                --d;
+            }else{
+                if(k==1){
+                    for(int cnt=0; cnt<d; ++cnt, ++i){
+                        matrix[i][j] = a++;
+                    }
+                    --i;
+                }else if(k==3){
+                    for(int cnt=0; cnt<d; ++cnt, --i){
+                        matrix[i][j] = a++;
+                    }
+                    ++i;
+                }else{
+                    break;
+                }
+                j += step[k];
+                --w;
+            }
+            k = (k+1)%4;
+            horizon = !horizon;
+        }
+        return matrix;
+    }
+
     public static void main(String[] args){
         return;
     }
