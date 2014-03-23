@@ -18,9 +18,8 @@ vector<int> spiralOrder(vector<vector<int> >& matrix){
     
     int step[] = {1,-1,-1,1};
     int i=0, j=0, k=0;
-    bool horizon = true;
     while(w>0 && d>0){
-        if(horizon){
+        if((k & 1) == 0){  // k == 0, 2
             if(k==0){
                 for(int cnt=0; cnt<w; ++cnt, ++j){
                     res.push_back(matrix[i][j]);
@@ -31,8 +30,6 @@ vector<int> spiralOrder(vector<vector<int> >& matrix){
                     res.push_back(matrix[i][j]);
                 }
                 ++j;
-            }else{
-                break;
             }
             i += step[k];
             --d;
@@ -47,14 +44,11 @@ vector<int> spiralOrder(vector<vector<int> >& matrix){
                     res.push_back(matrix[i][j]);
                 }
                 ++i;
-            }else{
-                break;
             }
             j += step[k];
             --w;            
         }
         k = (k+1)%4;
-        horizon = !horizon;
     }
     return res;
 }
@@ -172,6 +166,6 @@ void test_02(){
 }
 
 int main(int, char**){
-    test_02();
+    test_01();
     return 0;
 }

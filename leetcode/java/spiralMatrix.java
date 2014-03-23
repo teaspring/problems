@@ -22,9 +22,8 @@ public class spiralMatrix{
         
         int[] step = new int[]{1,-1,-1,1};
         int i=0, j=0, k=0;
-        boolean horizon = true;
         while(w>0 && d>0){
-            if(horizon){
+            if(k % 2 == 0){
                 if(k==0){
                     for(int cnt=0; cnt<w; ++cnt){
                         res.add(matrix[i][j++]);
@@ -35,8 +34,6 @@ public class spiralMatrix{
                         res.add(matrix[i][j--]);
                     }
                     ++j;
-                }else{
-                    break;
                 }
                 i += step[k];
                 --d;
@@ -51,14 +48,11 @@ public class spiralMatrix{
                         res.add(matrix[i--][j]);
                     }
                     ++i;
-                }else{
-                    break;
                 }
                 j += step[k];
                 --w;
             }
             k = (k+1)%4;
-            horizon = !horizon;
         }
         return res;
     }
