@@ -8,6 +8,7 @@
 #include <vector>
 #include "math.h"
 #include <stack>
+#include <algorithm>
 
 using namespace std;
 
