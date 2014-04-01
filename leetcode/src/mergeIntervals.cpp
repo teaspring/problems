@@ -62,7 +62,7 @@ void my_quicksort(vector<Interval>& intervals, int s, int e, cmpFcn cmp){  // ra
 }
 
 vector<Interval> merge(vector<Interval>& intervals){
-    //sort(intervals.begin(), intervals.end(), cmpInterval);  //std::sort(), <algorithm>
+    //sort(intervals.begin(), intervals.end(), cmpInterval);  //std::sort(), <algorithm>. not accepted by oj.leetcode
     my_quicksort(intervals, 0, intervals.size()-1, cmpInterval);
     displayIntervals(intervals);
     vector<Interval> res;
