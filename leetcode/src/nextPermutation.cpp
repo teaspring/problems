@@ -67,7 +67,33 @@ void nextPermutation(vector<int> &num){
     return;
 }
 
-int main(int, char**){
+/*
+ * another similar question which solution is based nextPermutation().
+ * note: in case k >> n!
+ * but it is TIME LIMIT ERROR on oj.leetcode
+ * */
+string getPermutation(int n, int k){    // k is 1-based
+    vector<int> nums;
+    for(int i=1; i<=n; ++i){
+        nums.push_back(i);
+    }
+    for(int i=2; i<=k; ++i){
+        nextPermutation(nums);
+    }
+    
+    char *cstr = new char[n+1];
+    cstr[n] = '\0';
+    for(int i=0; i<n; ++i){
+        cstr[i] = '0' + nums[i];
+    }
+    
+    string str(cstr);
+    delete[] cstr;
+    cstr = 0;
+    return str;
+}
+
+void test_01(){
     string str;
     while(1){
         printf("please input integer array:\n");
@@ -85,6 +111,28 @@ int main(int, char**){
         printf("\n");
 
         delete[] arr;
+        arr=0;
     }
+    return;
+}
+
+void test_02(){
+    string str;
+    while(1){
+        printf("please input integer n:\n");
+        if(getline(cin, str)==0 || str.empty())        break;
+        int n = atoi(str.c_str());
+
+        printf("please input integer k:\n");
+        if(getline(cin, str)==0 || str.empty())        break;
+        int k = atoi(str.c_str());
+
+        printf("%s\n", getPermutation(n, k).c_str());
+    }
+    return;
+}
+
+int main(int, char**){
+    test_02();
     return 0;
 }
