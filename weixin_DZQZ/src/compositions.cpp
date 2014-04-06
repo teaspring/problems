@@ -19,11 +19,11 @@ int compositions(int* arr, int n, int sum){
         dp[i] = new int[sum+1]();
     }
     dp[0][0] = 1;
-    for(int i=1;i<=n;i++){
-        for(int m=0;m<=sum;m++){
+    for(int i=1; i <= n; ++i){
+        for(int m=0; m <= sum; ++m){
             dp[i][m] = dp[i-1][m];
-            if(m>=arr[n-i]){
-                dp[i][m] += dp[i-1][m-arr[n-i]];        //[n-i] is head of the last i elements !!! 
+            if(m >= arr[n-i]){
+                dp[i][m] += dp[i-1][m - arr[n-i]];        //[n-i] is head of the last i elements !!! 
             }
         }
     }
@@ -38,16 +38,16 @@ int compositions(int* arr, int n, int sum){
     return res;
 }
 
-int main(int argc, char* argv[]){
+void test_01(){
     string str;
     while(1){
-        if(getline(cin, str)==0 || str.empty())
-          break;
+        printf("please input integer set:\n");
+        if(getline(cin, str)==0 || str.empty())        break;
         int* num = new int[str.size()]();
         int n = splitStr2IntArray(str, num);
         
-        if(getline(cin, str)==0 || str.empty())
-          break;
+        printf("please input sum to add:\n");
+        if(getline(cin, str)==0 || str.empty())        break;
         int s = atoi(str.c_str());
         int count = compositions(num, n, s);
         printf("count of compositions: %d\n", count);
@@ -55,5 +55,10 @@ int main(int argc, char* argv[]){
         delete[] num;
         num=0;
     }
+    return;
+}
+
+int main(int argc, char* argv[]){
+    test_01();
     return 0;
 }

@@ -47,8 +47,9 @@ void insert(const string& word, node* root){                //construct trie tre
     int index=0;
     for(size_t i=0;i<word.size();i++){
         index = word[i] - 'a';
-        if(p->next[index] == NULL)
-          p->next[index] = new node();
+        if(p->next[index] == NULL){
+            p->next[index] = new node();
+        }
         p = p->next[index];
     }
     p->count++;            //it means one word ends
@@ -88,8 +89,9 @@ int query(const string& str, node *root){
     node *p = root;
     for(size_t i=0;i<str.size();i++){
         index = str[i] - 'a';
-        while(p != NULL && p->next[index]==NULL)
-          p = p->fail;            //iterate upwords
+        while(p != NULL && p->next[index]==NULL){
+            p = p->fail;            //iterate upwords
+        }
         if(p == NULL){
             p = root;
         }else{
@@ -98,8 +100,9 @@ int query(const string& str, node *root){
         node* temp = p;
         while(temp != root && temp->count != -1){
             cnt += temp->count;            // 0 or 1
-            if(temp->count == 1)
-              temp->count = -1;            //mark this word has been searched already
+            if(temp->count == 1){
+                temp->count = -1;            //mark this word has been searched already
+            }
             temp = temp->fail;
         }
     }

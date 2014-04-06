@@ -1,7 +1,7 @@
 /*
  * given a digit string, return all possible letter combinations that the number could be represent.
  * a mapping of digit to letters(just like on the telephone buttons)
- * 2-abc, 2-def, 
+ * 2-abc, 3-def, 
  * questions necessary to ask during interview:
  * 1. how to process 1, 0?
  * 2. what should the result be while no valid combination? empty vector<> or empty string in vector<>?

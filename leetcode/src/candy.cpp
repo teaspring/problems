@@ -13,13 +13,13 @@
  * */
 #include "../header/preliminary.h"
 
-void backtrack(vector<int>& ratings, int l, int r, int *candies, int& sum){
+int backtrack(vector<int>& ratings, int l, int r, int *candies){
     int n = ratings.size();
-    if(l<0 || r>=n)    return;
+    if(l<0 || r>=n)    return 0;
     candies[r] = 1;
-    sum += 1;
-    for(int i=r-1;i>l;i--){
-        if(ratings[i]==ratings[i+1]){    //ratings[i] >= ratings[i+1]
+    int sum = 1;
+    for(int i = r-1; i>l; --i){
+        if(ratings[i] == ratings[i+1]){    //ratings[i] >= ratings[i+1]
             candies[i] = 1;
         }else{
             candies[i] = candies[i+1] + 1;
@@ -31,7 +31,7 @@ void backtrack(vector<int>& ratings, int l, int r, int *candies, int& sum){
         sum += tmp - candies[l];
         candies[l] = tmp;
     }
-    return;
+    return sum;
 }
 
 /*
@@ -46,23 +46,23 @@ int candy(vector<int>& ratings){
     int *candies = new int[n]();
     candies[0] = 1;
     int sum=1, ki=-1;
-    for(int i=1;i<n;i++){
-        if(ratings[i]==ratings[i-1]){
-            if(ki>-1)    continue;    //during decending, leave candies[i] as 0 to set it in backtrack()
+    for(int i=1; i<n; ++i){
+        if(ratings[i] == ratings[i-1]){
+            if(ki > -1)    continue;    //during decending, leave candies[i] as 0 to set it in backtrack()
             candies[i] = 1;
         }else if(ratings[i] > ratings[i-1]){
             if(ki > -1){
-                backtrack(ratings, ki, i-1, candies, sum);
+                sum += backtrack(ratings, ki, i-1, candies);
                 ki = -1;
             }
             candies[i] = candies[i-1] + 1;
         }else{    //decending
-            if(ki==-1)    ki = i-1;     //leave candies[i] as 0 to set it in backtrack()
+            if(ki == -1)    ki = i-1;     //leave candies[i] as 0 to set it in backtrack()
         }
         sum += candies[i];
     }
     if(ki > -1){
-        backtrack(ratings, ki, n-1, candies, sum);
+        sum += backtrack(ratings, ki, n-1, candies);
     }
     cout<<"candies: ";;
     for(int i=0;i<n;i++){
@@ -73,9 +73,10 @@ int candy(vector<int>& ratings){
     return sum;
 }
 
-int main(int, char**){
+void test_01(){
     string str;
     while(1){
+        printf("please input rating values of children in a row:\n");
         if(getline(cin, str)==0 || str.empty())        break;
         int *arr = new int[str.size()]();
         int n = splitStr2IntArray(str, arr);
@@ -85,5 +86,10 @@ int main(int, char**){
         }
         printf("minimum sum is %d\n", candy(ratings));
     }
+    return;
+}
+
+int main(int, char**){
+    test_01();
     return 0;
 }

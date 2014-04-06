@@ -56,7 +56,10 @@ int countsortonce(int* A, int* B, int n){
     return k;
 }
 
-void maxversion(string* version, int n){
+/*
+ * solution without preprocess of strings
+ * */
+void maxversion(string *version, int n){
     int* index = new int[n]();
     for(int i=0;i<n;++i){
         index[i] = i;
@@ -93,7 +96,7 @@ void maxversion(string* version, int n){
     key=0;
     return;
 }
-      
+ 
 int main(int argc, char* argv[]){
     string str;
     while(1){
