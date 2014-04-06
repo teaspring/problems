@@ -72,8 +72,9 @@ void NQueens::placeQueen(int r, vector<vector<string> >& res){
     }
     for(int i=0; i<N; i++){
         columnForRow[r] = i; //try to place queen at row (r) to any column
-        if(check(r))      
+        if(check(r)){
             placeQueen(r+1, res);
+        }
     }
 }
 
