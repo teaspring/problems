@@ -10,7 +10,7 @@
  * Warshall Floyd Ingerman algorithm
  */
 
-#include "algorithmHeader.h"
+#include "../header/algorithmHeader.h"
 
 bool NotNullArray(int *a, int length){
     int i=0;

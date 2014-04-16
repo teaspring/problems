@@ -75,7 +75,7 @@ vector<vector<int> > perm(vector<int>& num){
     return res;
 }
 
-int main(int, char**){
+void test_01(){
     string str;
     while(1){
         cout<<"input integers to permute:"<<endl;
@@ -89,6 +89,116 @@ int main(int, char**){
         }
         perm(num);
         delete[] arr;
+        arr = 0;
     }
+    return;
+}
+
+/*
+ * method without recursice
+ * current logic is based on the source string in ascending, final is descending.
+ * 123, 132, 213, 231, 312, 321
+ * */
+void Swap(char *a, char *b){        //swap char
+    char t = *a;
+    *a = *b;  
+    *b = t;  
+}
+
+void Reverse(char *a, char *b){  
+   while (a < b)  
+       Swap(a++, b--);  
+}  
+
+bool Next_permutation(char *a){  
+    char *pEnd = a + strlen(a);  
+    if (a == pEnd)        return false;  
+    char *p, *q, *pFind;  
+    pEnd--;  
+    p = pEnd;  
+    while (p != a){  
+        q = p; 
+        --p;
+        if (*p < *q){  
+            pFind = pEnd;  
+            while (*pFind <= *p){  
+                --pFind;
+            }
+            Swap(pFind, p);  
+            Reverse(q, pEnd);  
+            return true;  
+        }  
+    }  
+    Reverse(p, pEnd);  
+    return false;  
+}  
+int QsortCmp(const void *pa, const void *pb){  
+    return *(char*)pa - *(char*)pb;  
+}  
+
+void Perm2(char* src){
+     //qsort(src, strlen(src), sizeof(src[0]), QsortCmp);  
+     int i = 1;  
+     do{  
+        printf("%d, \t%s\n", i++, src);  // \t make the next item output align 
+     }while (Next_permutation(src)); 
+}
+
+void test_02(){
+    string str;
+    while(1){
+        cout << "input string to permute:" << endl;
+        if(getline(cin, str)==0 || str.empty())        break;
+        int n = str.size();
+        char *cstr = new char[n + 1];
+        for(int i = 0; i<n; ++i){
+            cstr[i] = str[i];
+        }
+        cstr[n] = '\0';
+        Perm2(cstr);
+        
+        delete[] cstr;
+        cstr = 0;
+    }
+    return;
+}
+
+/*
+ * permutation via recursion 
+ * */
+
+bool IsSwap(char *src, int b, int e){  
+    for(int i = b; i < e; i++){
+       if (src[i] == src[e])  return false;  
+    }
+    return true;  
+}
+
+int layer = 0;
+// with recursive, with regard to avoid swap duplicate by call IsSwap()
+void AllRange(char *src, int k, int m){    
+    if (k < m){       
+        for (int i = k; i <= m; i++){
+            if(IsSwap(src, k, i)){
+                if(k!=i){
+                    printf("Swap %d and %d\n", k, i);
+                    Swap(src + k, src + i);                  
+                }            
+                AllRange(src, k + 1, m);  //output string when k==m-1
+                if(k != i){
+                    Swap(src + k, src + i);
+                }
+            }
+        }
+    }
+    return;
+}  
+   
+void Perm3(char *src){  
+    AllRange(src, 0, strlen(src) - 1);  
+}  
+
+int main(int, char**){
+    test_02();
     return 0;
 }

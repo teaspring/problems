@@ -51,21 +51,20 @@ int maxDistance_02(int *A, int n, int& left){
     int i=0, j=1, maxDiff=0;
     while(i<n && j<n){ 
         if(A[i] < Rmax[j]){
-			if(j-i > maxDiff){
+            if(j-i > maxDiff){
                 maxDiff = j-i;
                 left = i;
             }
-            ++j;
         }else{
             ++i;
-            ++j;    //resume to scan from the potential distance remaining j-i
         }
+        ++j;    // resume to scane from the potential distance remaining j-i
     }
     delete[] Rmax;
     return maxDiff;
 }
 
-int main(int, char**){
+void test_01(){
     string str;
     while(1){
         printf("please input integer array:\n");
@@ -84,5 +83,10 @@ int main(int, char**){
         delete[] arr;
         arr = 0;
     }
+    return;
+}
+
+int main(int, char**){
+    test_01();
     return 0;
 }
