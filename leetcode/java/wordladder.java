@@ -1,8 +1,10 @@
 /*
- * from oj.leetcode, WordLadder I/II
- * given two words(start and end), and a dictionary, find all shortest transformation sequence(s) from start to end, such that:
+ * from oj.leetcode, given two words(start and end) and a dictionary, such that
  * 1.only one letter can be chanegd at a time
  * 2.each intermediate word must exist in the dictionary
+ * 
+ * WordLadder I,  find the length of shortest transformation sequence from start to end
+ * WordLadder II, find all shortest transformation sequence(s) from start to end
  *
  * test data:
  * start="hit", end="cog", dict=[hot,dot,dog,lot,log,hat,bit,big,dit,dig,cat,hak,cak,cok,dok]
@@ -347,31 +349,35 @@ public class wordladder{
         }
     }
 
-    public static void main(String[] args){
+    public void test(){
         Scanner scan = new Scanner(System.in);
-        wordladder lad = new wordladder();
         while(true){            
             System.out.println("input start string:");
             String start = scan.nextLine().trim();
-            if(start.length()==0)        break;
+            if(start.isEmpty())       break;
             
             System.out.println("input end string:");
             String end = scan.nextLine().trim();
-            if(end.length()==0)        break;
+            if(end.isEmpty())         break;
             
             System.out.println("input dictionary strings:");
             String dictStr = scan.nextLine();
-            if(dictStr.length()==0)        break;
+            if(dictStr.isEmpty())     break;
             HashSet<String> dict = parseStrArray(dictStr);
             
-            int steps = lad.ladderLength_02(start, end, dict);
+            int steps = ladderLength_02(start, end, dict);    // WordLadder_I
             System.out.println("the shortest ladder is " + steps);
             
-            ArrayList<ArrayList<String>> result = lad.findLadders_02(start, end, dict);
-            for(int i=0;i<result.size(); i++){
+            ArrayList<ArrayList<String>> result = findLadders_02(start, end, dict);    // WordLadder_II
+            for(int i=0; i<result.size(); ++i){
                 System.out.println(result.get(i).toString());
             }
         }
+        return;
+    }
+
+    public static void main(String[] args){
+        return;
     }
 }
 
