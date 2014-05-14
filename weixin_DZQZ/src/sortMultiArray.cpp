@@ -3,13 +3,12 @@
  * input is an array of int{1,2,3} where each integer appears varied times. sort the array in time O(n)
  * 
  * test data:
- * 1 1 1 3
- * 2 1 2 1 3 1
- * 3 3 2 2 1 1
- * 3 3 3 3
- * 2 2 2 2
- * 1 1 1 1
- * 3 1 1 1 2
+ * 1 2 3,
+ * 1 3 2,
+ * 3 2 1,
+ * 3 1 2,
+ * 2 1 3,
+ * 2 3 1
  * */
 #include "../header/preliminary.h"
 
@@ -21,22 +20,26 @@ void myswap(T* left, T* right){
     tmp = 0;
 }
 
-void sortTriArray(int* arr, int N){
+void sortTriArray(int *arr, int N){
     int *p1=arr, *p2=0, *p3=arr+N-1;
-    while(p3 > p2){
+    while(p3 > p1){
+        while(p3 >= arr && (*p3)==3)
+            --p3;
+        if(p3 < arr)    break;
         while(p1<arr+N && (*p1)==1)
-            p1++;
-        while(p3>=arr && (*p3)==3)
-            p3--;
-        p2 = p1;
-        while(p2<arr+N && (*p2)==2)
-            p2++;
-        if(p3<p2)    break;
-        if((*p2)==3)
+            ++p1;
+        if(p1 == arr+N)    break;
+        p2 = p1;        //p2 must begin with p1 because if(*p1==3) it needs to swap with p3
+        while(p2 < arr+N && (*p2)==2)
+            ++p2;
+        if(p2 > p3)    break;   // if p2==p3, that must a '1'
+        if((*p2)==3){
             myswap<int>(p2, p3);
-        else
+        }else{            // *p2 is a '1'
             myswap<int>(p2, p1);
+        }
     }
+    return;
 }
 
 /*
@@ -105,19 +108,25 @@ void outputArray(int* arr, int N){
     cout<<endl;
 }
 
-int main(int argc, char* argv[]){
+void test_01(){
     string str;
     while(1){
-        if(getline(cin, str)==0 || str.empty())    
-            break;
-        int* array = new int[str.size()]();
-        int length = splitStr2IntArray(str,array);
-        outputArray(array, length);
-        sortQuartArray(array, length);
-        outputArray(array, length);
+        printf("please input integer array made up of 1, 2 and 3\n");
+        if(getline(cin, str)==0 || str.empty())        break;
+        int *arr = new int[str.size()]();
+        int n = splitStr2IntArray(str,arr);
+        //outputArray(arr, n);
+        //sortQuartArray(arr, n);
+        sortTriArray(arr, n);
+        outputArray(arr, n);
         
-        delete[] array;
-        array = 0;
+        delete[] arr;
+        arr = 0;
     }
+    return;
+}
+
+int main(int, char**){
+    test_01();
     return 0;
 }
