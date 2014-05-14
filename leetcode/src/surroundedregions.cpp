@@ -30,7 +30,7 @@ void bfs(int r, int c, const vector<vector<char> >& board, int **covered){
             int nr = r + rs[i];
             int nc = c + cs[i];
             if(nr >= 0 && nr < n && nc >= 0 && nc < m){
-                if(board[nr][nc]=='0' && !covered[nr][nc]){
+                if(board[nr][nc] != 'x' && !covered[nr][nc]){
                     covered[nr][nc] = 1;
                     q.push(make_pair(nr,nc));
                 }
@@ -51,29 +51,29 @@ void solve(vector<vector<char> > &board){
     }
 
     for(int j=0;j<m;j++){    //iterate from up wall
-        if(board[0][j]=='0' && !covered[0][j]){
+        if(board[0][j] != 'x' && !covered[0][j]){
             bfs(0,j, board, covered);
         }
     }
     for(int j=0;j<m;j++){    //iterate from low wall
-        if(board[n-1][j]=='0' && !covered[n-1][j]){
+        if(board[n-1][j] != 'x' && !covered[n-1][j]){
             bfs(n-1, j, board, covered);
         }
     }
     for(int i=0;i<n;i++){    //iterate from left wall
-        if(board[i][0]=='0' && !covered[i][0]){
+        if(board[i][0] != 'x' && !covered[i][0]){
             bfs(i,0, board, covered);
         }
     }
     for(int i=0;i<n;i++){    //iterate from right wall
-        if(board[i][m-1]=='0' && !covered[i][m-1]){
+        if(board[i][m-1] != 'x' && !covered[i][m-1]){
             bfs(i, m-1, board, covered);
         }
     }
 
     for(int i=1;i<n-1;i++){    //flip all '0's inside the 4 walls in board
         for(int j=1;j<m-1;j++){
-            if(board[i][j] == '0' && !covered[i][j]){
+            if(board[i][j] != 'x' && !covered[i][j]){
                 board[i][j] = 'x';
             }
         }
