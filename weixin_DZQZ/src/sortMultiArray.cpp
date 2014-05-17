@@ -21,7 +21,7 @@ void myswap(T* left, T* right){
 }
 
 void sortTriArray(int *arr, int N){
-    int *p1=arr, *p2=0, *p3=arr+N-1;
+    int *p1=arr, *p2=0, *p3=arr+N-1;  // p2 is in [p1, p3]
     while(p3 > p1){
         while(p3 >= arr && (*p3)==3)
             --p3;
@@ -48,12 +48,13 @@ void sortTriArray(int *arr, int N){
 void sortOutputPrimeTriArray(int* arr, int N){
     long multi = 1;
     for(int i=0;i<N;i++){
-        if(arr[i] == 1)
+        if(arr[i] == 1){
             multi *= 2;
-        else if(arr[i] == 2)
+        }else if(arr[i] == 2){
             multi *= 3;
-        else if(arr[i] == 3)
+        }else if(arr[i] == 3){
             multi *= 5;
+        }
     }
     
     while(multi%2 == 0){
