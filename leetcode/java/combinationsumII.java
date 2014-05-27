@@ -18,14 +18,9 @@ public class combinationsumII{
     private Stack<Integer> stk = new Stack<Integer>();    //put index of candidate nums
     
     private void putStack(int[] num){
-        Stack<Integer> stk2 = new Stack<Integer>();
-        while(!stk.isEmpty()){
-            stk2.push(stk.pop());
-        }
         ArrayList<Integer> arr = new ArrayList<Integer>();
-        while(!stk2.empty()){
-            arr.add(num[stk2.peek()]);
-            stk.push(stk2.pop());
+        for(int i : stk){
+            arr.add(num[i]);
         }
         combinations.add(arr);
         return;
@@ -57,6 +52,7 @@ public class combinationsumII{
         return combinations;
     }
 
+    /***************test***************/
     public void display(){
         System.out.println("combinations:");
         for(ArrayList<Integer> arr : combinations){
