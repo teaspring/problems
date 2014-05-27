@@ -2,31 +2,16 @@
  * given a set of candidate numbers (C) and a target number (T), find all unique combinations in C where candidate number sum to T.
  * ps, the same number in candidates can be chosen from C unlimited number of times.
  * all numbers are positive integers, and elements in a combination must be non-decending order without duplicate combinations.
+ *
+ * test case:
+ * S=[2,3,7], target=7
+ * output: [2,2,3], [7]
  * */
 #include "../header/preliminary.h"
 #include <algorithm>
 
-void putStk2Vector(stack<int>& stk, vector<int>& vec){
-    stack<int> stk2;
-    while(!stk.empty()){
-        stk2.push(stk.top());
-        stk.pop();
-    }
-    while(!stk2.empty()){
-        stk.push(stk2.top());
-        vec.push_back(stk.top());
-        stk2.pop();
-    }
-    return;
-}
-
-void plusSum(vector<vector<int> >& res, 
-             const vector<int>& candidates, 
-             stack<int>& stk, 
-             int target){
+void plusSum(vector<vector<int> >& res, const vector<int>& candidates, vector<int>& vec, int target){
     if(target==0){
-        vector<int> vec;
-        putStk2Vector(stk, vec);
         res.push_back(vec);
         return;
     }
@@ -34,10 +19,10 @@ void plusSum(vector<vector<int> >& res,
     for(int i=0;i<n;++i){
         int d = candidates[i];
         if(target < d)    break;
-        if(!stk.empty() && stk.top() > d)        continue;
-        stk.push(d);
-        plusSum(res, candidates, stk, target - d);
-        stk.pop();
+        if(!vec.empty() && vec[vec.size()-1] > d)        continue;
+        vec.push_back(d);
+        plusSum(res, candidates, vec, target - d);
+        vec.pop_back();
     }
     return;
 }
@@ -45,17 +30,22 @@ void plusSum(vector<vector<int> >& res,
 vector<vector<int> > combinationSum(vector<int>& candidates, int target){
     sort(candidates.begin(), candidates.end());  //sort candidates in ascending order 
     vector<vector<int> > res;
-    stack<int> stk;
-    plusSum(res, candidates, stk, target);
+    vector<int> vec;
+    plusSum(res, candidates, vec, target);
     return res;
 }
 
+/*********************test**************************/
 void displayVecVec(const vector<vector<int> >& combinations){
-    for(size_t i=0; i<combinations.size(); ++i){
-        for(size_t j=0; j<combinations[i].size(); ++j){
-            printf("%d ", combinations[i][j]);
+    int n = combinations.size();
+    for(int i=0; i<n; ++i){
+        int m = combinations[i].size();
+        printf("[");
+        if(m>0)        printf("%d", combinations[i][0]);
+        for(int j=1; j<m; ++j){
+            printf(", %d", combinations[i][j]);
         }
-        printf("\n");
+        printf("]\n");
     }
 }
 

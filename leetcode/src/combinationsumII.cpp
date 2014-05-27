@@ -8,60 +8,52 @@
 #include "../header/preliminary.h"
 #include <algorithm>
 
-void putStk2Vector(const vector<int>& candidates, stack<int>& stk, vector<int>& vec){
-    stack<int> stk2;
-    while(!stk.empty()){
-        stk2.push(stk.top());
-        stk.pop();
+vector<int> index2Values(const vector<int>& candidates, vector<int>& indexes){
+    vector<int> values;
+    int n = indexes.size();
+    for(int i=0; i<n; ++i){
+        values.push_back(candidates[indexes[i]]);
     }
-    //printf("index: ");
-    while(!stk2.empty()){
-        stk.push(stk2.top());
-        vec.push_back(candidates[stk.top()]);
-        //printf("%d ", stk.top());
-        stk2.pop();
-    }
-    //printf("\n");
-    return;
+    return values;
 }
 
-void plusSum(vector<vector<int> >& res, 
-             const vector<int>& candidates, 
-             stack<int>& stk,  //stk to push index in candidates 
-             int target){
+void plusSum(vector<vector<int> >& res, const vector<int>& candidates, vector<int>& vec, int target){
     if(target==0){
-        vector<int> vec;
-        putStk2Vector(candidates, stk, vec);
-        res.push_back(vec);
+        res.push_back(index2Values(candidates, vec));
         return;
     }
     int n = candidates.size();
-    int last = stk.empty() ? 0 : stk.top()+1;
-    for(int i=last;i<n;++i){
+    int last = vec.empty() ? 0 : vec[vec.size()-1] + 1;
+    for(int i=last; i<n; ++i){
         if(target < candidates[i])        break;
         if(i>last &&  candidates[i] == candidates[last])    continue;  //key to skip duplicat combinations
-        stk.push(i);
-        plusSum(res, candidates, stk, target - candidates[i]);
-        stk.pop();
+        vec.push_back(i);
+        plusSum(res, candidates, vec, target - candidates[i]);
+        vec.pop_back();
         last=i;
     }
     return;
 }
 
-vector<vector<int> > combinationSumII(vector<int>& candidates, int target){
-    sort(candidates.begin(), candidates.end());  //sort in ascending order 
+vector<vector<int> > combinationSum2(vector<int>& num, int target){
+    sort(num.begin(), num.end());  //sort in ascending order 
     vector<vector<int> > res;
-    stack<int> stk;
-    plusSum(res, candidates, stk, target);
+    vector<int> vec;
+    plusSum(res, num, vec, target);
     return res;
 }
 
+/**********************test************************/
 void displayVecVec(const vector<vector<int> >& combinations){
-    for(size_t i=0; i<combinations.size(); ++i){
-        for(size_t j=0; j<combinations[i].size(); ++j){
-            printf("%d ", combinations[i][j]);
+    int n = combinations.size();
+    for(int i=0; i<n; ++i){
+        int m = combinations[i].size();
+        printf("[");
+        if(m>0)        printf("%d", combinations[i][0]);
+        for(int j=1; j<m; ++j){
+            printf(", %d", combinations[i][j]);
         }
-        printf("\n");
+        printf("]\n");
     }
 }
 
@@ -80,7 +72,7 @@ void test_01(){
         printf("please input target integer:\n");
         if(getline(cin, str)==0 || str.empty())        break;
         int t = atoi(str.c_str());
-        vector<vector<int> > res = combinationSumII(candi, t);
+        vector<vector<int> > res = combinationSum2(candi, t);
         displayVecVec(res);
     }
 }
