@@ -1,9 +1,15 @@
 /*
+ * problem I:
  * given a set of distinct integers S,  return all possible subsets.
  * e.g. S = [1,2,3]
  * output: 
  * [], [1], [1,2], [1,2,3], [1,3], [2], [2,3], [3] 
  *
+ * problem II:
+ * given a set with duplicate integers
+ * e.g. S = [1,2,2]
+ * output:
+ * [], [1], [1,2], [1,2,2], [2], [2,2]
  * */
 #include "stdio.h"
 #include <iostream>
@@ -14,6 +20,9 @@
 #include "stdlib.h"
 using namespace std;
 
+/*
+ * for problem I that S of distinct integers
+ * */
 void helper(const vector<int>& src, int i, vector<int>& pipe, vector<vector<int> >& res){
     if(i<0)     return;
     res.push_back(pipe);
@@ -35,6 +44,39 @@ vector<vector<int> > subsets(vector<int>& S){
     return result;
 }
 
+/*
+ * for problem II that S with duplicate integers
+ * */
+vector<int> index2Value(const vector<int>& src, const vector<int>& indexes){
+    vector<int> values;
+    for(size_t i=0; i < indexes.size(); ++i){
+        values.push_back(src[indexes[i]]);
+    }
+    return values;
+}
+
+void helper_II(const vector<int>& src, int i, vector<int>& vec, vector<vector<int> >& res){
+    res.push_back(index2Value(src, vec));
+    int n = src.size();
+    for(; i<n; ++i){
+        int m = vec.size();
+        if(i>0 && (m==0 || i > vec[m-1] + 1) && (src[i-1] == src[i]))        continue;
+        vec.push_back(i);        // vec to save index of src instead of value
+        helper_II(src, i+1, vec, res);
+        vec.pop_back();
+    }
+}
+
+vector<vector<int> > subsets_II(vector<int>& S){
+    sort(S.begin(), S.end());
+    vector<vector<int> > result;
+    vector<int> vec;
+
+    helper_II(S, 0, vec, result);
+    return result;
+}
+
+/*****************test****************/
 void output(const vector<vector<int> >& res){
     for(size_t i=0; i<res.size(); ++i){
         printf("[");
@@ -64,7 +106,13 @@ void test_01(){
     }
 }
 
+void test_02(){
+    int a[] = {1,2,2,2,1};
+    vector<int> S(a, a + sizeof(a)/sizeof(int));
+    output(subsets_II(S));
+}
+
 int main(int, char**){
-    test_01();
+    test_02();
     return 0;
 }
