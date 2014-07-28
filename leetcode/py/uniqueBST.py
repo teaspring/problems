@@ -13,7 +13,7 @@ class TreeNode:
 class Solution:
     def build(self, nodes):
         n = len(nodes)
-        if n = 0:
+        if n == 0:
             yield None
             return
         for i in range(n):
