@@ -18,7 +18,7 @@ void sortColors_01(int A[], int n){
         if(*q == 2){        // check 2 firstly
             t--;
             swap(q, t);
-            continue;        // NOTE: the swapped from *t must recheck whether it is '0'
+            continue;        // NOTE: value swapped from [t] is at right of q which has not been checked yet
         }else if(*q == 0){
             p++;
             if(q > p)    swap(q, p);
@@ -38,7 +38,7 @@ void sortColors_02(int A[], int n){
         }else if(*q == 2){
             t--;
             swap(q, t);
-            continue;      //NOTE: the recheck of the swapped from *t is necessary 
+            continue;      //NOTE: recheck of the swapped value from *t is necessary
         }
         q++;
     }
