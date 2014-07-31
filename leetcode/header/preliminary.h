@@ -6,6 +6,7 @@
 #include <string>
 #include <cctype>
 #include <vector>
+#include <map>
 #include "math.h"
 #include <stack>
 #include <algorithm>

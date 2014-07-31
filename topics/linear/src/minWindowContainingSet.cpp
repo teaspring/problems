@@ -107,11 +107,13 @@ bool minWindow_02(const string& S, const string& T, int& minWindowLen, int& minW
         if(hasFound[(int)S[end]] <= need2Find[(int)S[end]])
             count++;
         if(count == m){
-            while(need2Find[(int)S[begin]] == 0 ||
-                   hasFound[(int)S[begin]] > need2Find[(int)S[begin]]){
-                if(hasFound[(int)S[begin]] > need2Find[(int)S[begin]])
+            for(;;begin++){
+                if(need2Find[(int)S[begin] == 0])    continue;
+                if(hasFound[int]S[begin] > need2Find[(int)S[begin]]){
                     hasFound[(int)S[begin]]--;
-                begin++;
+                }else{
+                    break;
+                }
             }
 
             int length = end - begin + 1;
