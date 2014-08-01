@@ -138,6 +138,16 @@ void displaySLL(ListNode *head){
     return;
 }
 
+ListNode* createSLL(int A[], int n){
+    if(n == 0)    return NULL;
+    ListNode *head = new ListNode(A[0]);
+    ListNode *h = head;
+    for(int i=1; i<n; i++, h = h->next){
+        h->next = new ListNode(A[i]);
+    }
+    return head;
+}
+
 void delSLL(ListNode *head){
     if(!head){
         printf("NULL\n");
