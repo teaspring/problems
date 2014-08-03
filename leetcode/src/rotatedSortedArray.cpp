@@ -7,31 +7,25 @@
  * */
 #include "../header/preliminary.h"
 
-int search(int A[], int n, int x){  // problem I: no duplicate
-    int v=0, u=n-1;
-    while(v <= u){
-        int m = (v+u)/2;
-        if(x == A[m]){
-            return m;
-        }else if(A[v] <= A[m]){
-            if(x > A[m]){
-                v = m+1;
-            }else if(x >= A[v]){
-                u = m-1;
+int search(int A[], int n, int key){  // problem I: no duplicate
+    int l=0, r=n-1;
+    while(l <= r){
+        int m = l + (r-l)/2;
+        if(key == A[m])    return m;
+        if(A[l] < A[m]){  // left half is sorted
+            if(A[l] <= key && key < A[m]){
+                r = m-1;
             }else{
-                v = m+1;
+                l = m+1;
             }
-        }else{        //A[v] > A[m], now the rotated node is between (v,m)
-            if(x < A[m] || x > A[v]){
-                u = m-1;
-            }else if(x <= A[u]){
-                v = m+1;
-            }else if(x == A[v]){  //my own added branch
-                return v;
+        }else if(A[l] > A[m]){  // right half is sorted
+            if(A[m] < key && key <= A[r]){
+                l = m+1;
             }else{
-                printf("here!!!!, now v=%d, u=%d, m=%d\n", v, u, m);
-                u = m-1;
+                r = m-1;
             }
+        }else{  // l == m
+            l = m+1;
         }
     }
     return -1;
@@ -39,26 +33,26 @@ int search(int A[], int n, int x){  // problem I: no duplicate
 
 int searchII(int A[], int n, int key){  // probelm II: with duplicates
     int l = 0, r = n-1;
-	while(l <= r){
-	    int m = l + (r-l)/2;
-		if(A[m] == key)    return m;
-		if(A[l] < A[m]){    // left half is sorted
-		    if(A[l] <= key && key < A[m]){
-			    r = m-1;
-			}else{
-			    l = m+1;
-			}
-		}else if(A[l] > A[m]){  // right half is sorted
-		    if(A[m] < key && key <= A[r]){
-			    l = m+1;
-			}else{
-			    r = m-1;
-			}
-		}else{    // e.g. {1,1,5,1,1,1} with key=5, no sense it is in which side. so the worst case is O(n)
-		    l++;
-		}
-	}
-	return -1;
+    while(l <= r){
+        int m = l + (r-l)/2;
+        if(A[m] == key)    return m;
+        if(A[l] < A[m]){    // left half is sorted
+            if(A[l] <= key && key < A[m]){
+                r = m-1;
+            }else{
+                l = m+1;
+            }
+        }else if(A[l] > A[m]){  // right half is sorted
+            if(A[m] < key && key <= A[r]){
+                l = m+1;
+            }else{
+                r = m-1;
+            }
+        }else{    // e.g. {1,1,5,1,1,1} with key=5, no sense it is in which side. so the worst case is O(n)
+            l++;
+        }
+    }
+    return -1;
 }
 
 int main(int, char**){
