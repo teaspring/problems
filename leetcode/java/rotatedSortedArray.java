@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.*;
 
 public class rotatedSortedArray{
-    public int search(int[] A, int x){
+    public int search(int[] A, int x){  // problem I: no duplicate
         int n = A.length;
         int v=0, u=n-1;
         while(v <= u){
@@ -37,6 +37,32 @@ public class rotatedSortedArray{
         }
         return -1;
     }
+
+    public int searchII(int[] A, int key  // problem II: duplicate is allowed
+        int n = A.length;
+        int l = 0, r = n-1;
+        while(l <= r){
+            int m = l + (r-l)/2;
+            if(A[m] == key)    return m;
+            if(A[l] < A[m]){    // left half is sorted
+                if(A[l] <= key && key < A[m]){
+                    r = m-1;
+                }else{
+                    l = m+1;
+                }
+            }else if(A[l] > A[m]){  // right half is sorted
+                if(A[m] < key && key <= A[r]){
+                    l = m+1;
+                }else{
+                    r = m-1;
+                }
+            }else{    // e.g. {1,1,5,1,1,1} with key is 5, no sense it is in which side
+                l++;
+            }
+        }
+        return -1;
+    }
+
     public static void main(String[] args){
         return;
     }
