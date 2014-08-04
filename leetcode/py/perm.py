@@ -11,8 +11,8 @@ def perm(items, n=None):
         if n == 1:
             yield v
         else:
-            rest = items[:i] + items[i+1:]    # lower recursion of permutation
-            for p in perm(rest, n-1):
+            rest = items[:i] + items[i+1:]  # rest always has n-1 elements
+            for p in perm(rest, n-1):       # recurse
                 yield v + p
 
 def comb(items, n=None):
@@ -23,7 +23,7 @@ def comb(items, n=None):
         if n == 1:
             yield v
         else:
-            rest = items[i+1:]    # lower recursion of combination
+            rest = items[i+1:]    # if rest has no element, following code will not yield any more
             for c in comb(rest, n-1):
                 yield v + c
 

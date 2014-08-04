@@ -15,7 +15,6 @@ class Solution:
         n = len(nodes)
         if n == 0:
             yield None
-            return
         for i in range(n):
             root = nodes[i]
             for left in self.build(nodes[:i]):
