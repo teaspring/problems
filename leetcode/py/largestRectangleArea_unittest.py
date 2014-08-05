@@ -1,9 +1,10 @@
 import unittest
+# how to execute: >>> python -m unittest largestRectangleArea_unittest
 
 from largestRectangleArea import Solution
 
 class TestLRA(unittest.TestCase):
-    def test_execute(self):
+    def test_execute(self):  # each test case must be named as text_xxx
         s = Solution()
         a = s.largestRA([2,1,3,1,4,2])
         self.assertEquals(a, 6)
