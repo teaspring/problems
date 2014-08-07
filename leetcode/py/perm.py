@@ -1,3 +1,6 @@
+# !/usr/bin/env python
+# -*- coding:utf-8 -*-
+
 # permutation and combination
 
 import os, sys

@@ -1,5 +1,9 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # how to execute: >>> python -m unittest largestRectangleArea
-import unittest 
+
+import sys, unittest
 
 class Solution:
     # @param height, a list of integer

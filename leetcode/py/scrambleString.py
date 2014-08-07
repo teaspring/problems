@@ -1,3 +1,6 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # scramble string
 # given a string s1, represent it as a binary tree by partitioning it to two non-empty substrings recursively
 # to scramble a string, we choose any non-leaf node and swap its two children

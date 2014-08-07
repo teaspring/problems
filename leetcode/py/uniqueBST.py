@@ -1,8 +1,10 @@
+# !/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # given n, generate all structually unique BST's that store values 1...n
 # E.g, n=3, your program should return all 5 unique BST
-#
 
-import copy
+import sys, copy, unittest
 
 class TreeNode:
     def __init__(self, x):
