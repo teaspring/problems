@@ -7,6 +7,7 @@
 #include <cctype>
 #include <vector>
 #include <map>
+#include <set>
 #include "math.h"
 #include <stack>
 #include <algorithm>
@@ -114,6 +115,19 @@ void copyarray(int* dst, int* src, int n){
     memset(dst, 0, sizeof(int)*n);
     for(int i=0;i<n;i++)
       dst[i] = src[i];
+    return;
+}
+
+void displayVector(vector<int>& vec){
+    if(vec.size() == 0){
+        cout << "empty" << endl;
+        return;
+    }
+    cout << vec[0];
+    for(int i=1; i < (int)vec.size(); i++){
+        cout << ", " << vec[i];
+    }
+    cout << endl;
     return;
 }
 
