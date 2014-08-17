@@ -49,7 +49,7 @@ void max_heapify(int* A, int n, int i){                //enable i is max of the 
     }
 }
 
-//time O(n)
+//time O(nlgn)
 void build_max_heap(int* A, int n){                //ensure A[1...n] are elements in scope
     for(int i=n/2;i>0;i--){
         max_heapify(A, n, i);
