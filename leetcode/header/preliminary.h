@@ -1,7 +1,8 @@
 /******************preliminary.h**************************/
 #include "stdio.h"
 #include <iostream>
-#include "stdlib.h"
+#include <cstdlib>
+#include <climits>
 #include <cstring>
 #include <string>
 #include <cctype>
@@ -175,15 +176,15 @@ void delSLL(ListNode *head){
     return;
 }
 
-/*************BinaryTree for binary (search) tree***********/
-struct BinaryTree{
+/*************TreeNode for binary (search) tree***********/
+struct TreeNode{
     int val;
-    BinaryTree *left;
-    BinaryTree *right;
-    BinaryTree(int x): val(x), left(0), right(0){}
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x): val(x), left(0), right(0){}
 };
 
-void preorder(BinaryTree *root){
+void preorder(TreeNode *root){
     if(!root)    return;
     printf("%d ", root->val);
     preorder(root->left);
@@ -191,14 +192,14 @@ void preorder(BinaryTree *root){
     return;
 }
 
-void showPre(BinaryTree *root){
+void showPre(TreeNode *root){
     printf("preorder: ");
     preorder(root);
     printf("\n");
     return;
 }
 
-void inorder(BinaryTree *root){
+void inorder(TreeNode *root){
     if(!root)    return;
     inorder(root->left);
     printf("%d ", root->val);
@@ -206,25 +207,19 @@ void inorder(BinaryTree *root){
     return;
 }
 
-void showIn(BinaryTree *root){
+void showIn(TreeNode *root){
     printf("inorder: ");
     inorder(root);
     printf("\n");
     return;
 }
 
-void delBinaryTree(BinaryTree *root){    //natural for post order
+void delTreeNode(TreeNode *root){    //natural for post order
     if(!root)    return;
-    delBinaryTree(root->left);
-    delBinaryTree(root->right);
+    delTreeNode(root->left);
+    delTreeNode(root->right);
     delete root;
     root = 0;
     return;
 }
 
-struct TreeNode{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x): val(x), left(NULL), right(NULL){}
-};
