@@ -12,19 +12,62 @@
  * */
 #include "../header/preliminary.h"
 
-/*
- * recurse hides too much detail, careful to understand
- * */
-BinaryTree* sortedSLL2BST(ListNode* &list, int start, int end){
-    if(start > end)    return 0;
-    int mid = start + (end-start)/2;    //same to (start+end)/2, avoids overflow
-    BinaryTree *leftChild = sortedSLL2BST(list, start, mid-1);
-    BinaryTree *parent = new BinaryTree(list->val);    //once call create/insert one node
-    parent->left = leftChild;
-    list = list->next;                                 //once call moves one step
-    parent->right = sortedSLL2BST(list, mid+1, end);
-    return parent;
-}
+class Solution{
+public:
+    /*
+     * recurse hides too much detail, careful to understand
+     * */
+    TreeNode* sortedSLL2BST(ListNode* head){
+        if(!head)    return NULL;
+        int n = 0;   // nodes count of SLL
+        ListNode *h = head;
+        while(h){
+            n++;
+            h = h->next;
+        }
+        h = head;
+        return plug(h, 0, n);
+    }
+
+    /*
+     * convert an array where elements sorted in ascending order to a height balanced BST
+     * */
+    TreeNode *sortedArray2BST(vector<int> &num){
+        int n = num.size();
+        if(n == 0)    return NULL;
+        return plug(num, 0, n);
+    }
+
+private:
+    /*
+     * @param head: SLL head node which will be updated accordingly
+     * @param start: inclusive index
+     * @param end: exclusive index
+     * */
+    TreeNode *plug(ListNode* &head, int start, int end){
+        if(start >= end)    return 0;
+        int mid = start + (end-start)/2;    //same to (start+end)/2, avoids overflow
+        TreeNode *lChild = plug(head, start, mid);
+        TreeNode *curr = new TreeNode(head->val);    //once call create/insert one node
+        curr->left = lChild;
+        head = head->next;                                 //once call moves one step
+        curr->right = plug(head, mid+1, end);
+        return curr;
+    }
+
+    /*
+     * facilitary method to convert sorted array to balanced BST
+     * @param end: exclusive index
+     * */
+    TreeNode *plug(vector<int> &num, int start, int end){
+        if(start >= end)    return NULL;
+        int mid = start + (end - start)/2;
+        TreeNode *root = new TreeNode(num[mid]);
+        root->left  = plug(num, start, mid);
+        root->right = plug(num, mid+1, end);
+        return root;
+    }
+};
 
 int main(int, char**){
     ListNode *p1 = new ListNode(1);
@@ -48,12 +91,20 @@ int main(int, char**){
     p9->next = p10;
     displaySLL(p1);
     ListNode *head = p1;
-    BinaryTree *r = sortedSLL2BST(head, 0, 9);    //take note that 1st argument is ListNode *&, so it will be NULL when it returns 
+    Solution s;
+    TreeNode *r = s.sortedSLL2BST(head);    //take note that 1st argument is ListNode *&, so it will be NULL when it returns
     showPre(r);
     showIn(r);
 
+    int A[] = {1,2,3,4,5,6,7,8,9,10};
+    vector<int> num(A, A + sizeof(A)/sizeof(int));
+    displayVector(num);
+    TreeNode *q = s.sortedArray2BST(num);
+    showPre(q);
+    showIn(q);
+
     delSLL(p1);
-    delBinaryTree(r);
+    delTree(r);
+    delTree(q);
     return 0;
 }
-

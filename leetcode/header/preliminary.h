@@ -214,10 +214,10 @@ void showIn(TreeNode *root){
     return;
 }
 
-void delTreeNode(TreeNode *root){    //natural for post order
+void delTree(TreeNode *root){    //natural for post order
     if(!root)    return;
-    delTreeNode(root->left);
-    delTreeNode(root->right);
+    delTree(root->left);
+    delTree(root->right);
     delete root;
     root = 0;
     return;
