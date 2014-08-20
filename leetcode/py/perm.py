@@ -30,17 +30,36 @@ def swaplist(A, i, j):
 def perm_02(items):
     res = []
     res.append(copy(items))   # initial status must be processed precedingly
-    recur(items, 0, len(items), res)
+    recur_02(items, 0, len(items), res)
     return res
 
-def recur(items, start, end, res):
+def recur_02(items, start, end, res):
     if start >= end:
         return
-    recur(items, start+1, end, res)
+    recur_02(items, start+1, end, res)
     for i in range(start+1, end):
         swaplist(items, start, i)
         res.append(copy(items))    # shallow copy
-        recur(items, start+1, end, res)
+        recur_02(items, start+1, end, res)
+        swaplist(items, start, i)
+
+# convert C++ style solution(recur_02) to python style with 'yield'
+# @return it returns a list instead of a generator !
+def perm_03(items):
+    return map(copy, recur_03(items, 0, len(items)))
+
+# @return: with 'yield', it returns generator(iterator) !
+def recur_03(items, start, end):
+    if start == 0:
+        yield items
+    if start < end-1:
+        for x in recur_03(items, start+1, end):
+            yield x
+    for i in range(start+1, end):
+        swaplist(items, start, i)
+        yield items
+        for x in recur_03(items, start+1, end):
+            yield x
         swaplist(items, start, i)
 
 def comb(items, n=None):
@@ -83,6 +102,12 @@ def test_02():
         print p
     print len(res)
 
+def test_03():
+    res = perm_03(range(4))
+    for p in res:
+        print p
+    print len(res)
+
 if __name__ == '__main__':
     # test_01()
-    test_02()
+    test_03()
