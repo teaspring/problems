@@ -6,10 +6,10 @@
 import sys, unittest
 
 class TreeNode:
-    def __init__(self, x):
+    def __init__(self, x, left=None, right=None):
         self.val = x
-        self.left = None
-        self.right = None
+        self.left = left
+        self.right = right
 
 class TreeTraverse:
     # traverse binary tree in zigzag level order
@@ -68,33 +68,63 @@ class TreeTraverse:
             i = 1-i
         return res
 
-    # convert sorted array(list in Python) to binary tree
+    # convert sorted array to binary tree with 'yield'
+    def tree(self, A):
+        n = len(A)
+        if n == 0:
+            return None
+        i = n/2
+        return TreeNode(A[i], self.tree(A[:i]), self.tree(A[i+1:]))
+
+    # convert sorted array to binary tree, C++/Java style
     # @param A, a list of int value
     # @param end, exclusive index
-    def initTree(self, A, start, end):
+    def tree_02(self, A, start, end):
         if start >= end:
             return None
-        mid = start + (end - start)/2
+        mid = start + (end-start)/2
         curr = TreeNode(A[mid])
-        curr.left  = self.initTree(A, start, mid)
-        curr.right = self.initTree(A, mid+1, end)
+        curr.left  = self.tree_02(A, start, mid)
+        curr.right = self.tree_02(A, mid+1, end)
         return curr
 
     # for preorder traverse of binary tree
-    def preorder(self, root):
-        if root is None:
-            return
-        print root.val,
-        self.preorder(root.left)
-        self.preorder(root.right)
+    def preorder_gen(self, root):
+        if root:
+            yield root.val
+            for x in self.preorder_gen(root.left):
+                yield x
+            for x in self.preorder_gen(root.right):
+                yield x
 
-    def inorder(self, root):
-        if root is None:
-            return
-        self.inorder(root.left)
-        print root.val,
-        self.inorder(root.right)
-    
+    # with yield, recurse
+    def inorder_gen(self, root):
+        if root:
+            for x in self.inorder_gen(root.left):
+                yield x
+            yield root.val
+            for x in self.inorder_gen(root.right):
+                yield x
+
+    # with yield, recurse
+    def inorder_iter(self, node):
+        stack = []
+        while node:
+            while node.left:
+                stack.append(node)
+                node = node.left
+            yield node.val
+            while not node.right and len(stack) > 0:
+                node = stack.pop()
+                # try:
+                #    node = stack.pop()
+                # except IndexError:
+                #    return
+                yield node.val
+            if not node.right and len(stack) == 0:
+                return
+            node = node.right
+
     def postorder(self, root):
         if root is None:
             return
@@ -104,11 +134,16 @@ class TreeTraverse:
 
 def test_init():
     A = range(16)
-    b = TreeNode()
-    root = b.initTree(A, 0, len(A))
-    b.preorder(root)
+    b = TreeTraverse()
+    root = b.tree(A)
+    for i in b.preorder_gen(root):
+        print i,
     print
-    b.inorder(root)
+    for i in b.inorder_gen(root):
+        print i,
+    print
+    for i in b.inorder_iter(root):
+        print i,
     print
     b.postorder(root)
     print
@@ -116,7 +151,7 @@ def test_init():
 def test_zigzag():
     A = range(15)
     b = TreeTraverse()
-    root = b.initTree(A, 0, len(A))
+    root = b.tree(A, 0, len(A))
     matrix = b.zigzagLevelOrder(root)
     for level in matrix:
         print level
@@ -124,12 +159,10 @@ def test_zigzag():
     for level in matrix:
         print level
 
-
 class TestZigzagLevel(unittest.TestCase):
     def test_01(self):
         s = TreeNode()
         
-
 if __name__ == '__main__':
-    test_zigzag()
+    test_init()
     # unittest.main()
