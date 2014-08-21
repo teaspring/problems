@@ -1,5 +1,7 @@
 /*
  * given a binary tree, validate whether it is a binary search tree
+ * NOTE: the idea beneath the solution is "bottom-up": when a subtree with root A is not BST, its parent with A as left/right child
+ * will not be BST definitely
  * */
 #include "../header/preliminary.h"
 
