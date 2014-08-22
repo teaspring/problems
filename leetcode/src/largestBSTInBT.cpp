@@ -1,6 +1,8 @@
 /*
  * given a binary tree, find the largest BST.
  * Note: the result BST may not be balanced; and it may or may not include all of its descendants
+ * idea of this solution looks like "top-down". if root p's value breaks BST(compare with min and max), it cannot contribute
+ * to parent as subtree. it has to consider as an independent subtree.
  * */
 
 #include "../header/preliminary.h"
@@ -20,9 +22,9 @@ public:
     int findLargestBST(TreeNode *p, int min, int max, int &maxNodes,
                 TreeNode* &largestBST, TreeNode* &child){
         if(!p)    return 0;
-        if(!(min < p->val) || !(max > p->val)){ // p cannot contribute to above tree as part of BST, consider it as an independent subtree
-            findLargestBST(p, INT_MIN, INT_MAX, maxNodes, largestBST, child);
-            return 0;   // NOTE: return 0 to indicate subtree beneath p can not contribute to above
+        if(!(min < p->val) || !(max > p->val)){ // p's value breaks BST definition
+            findLargestBST(p, INT_MIN, INT_MAX, maxNodes, largestBST, child);  // consider p an independent subtree
+            return 0;   // return 0 means p cannot contribute to parent as subtree of BST
         }
 
         int totalNodes = 1;
