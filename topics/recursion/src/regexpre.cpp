@@ -1,12 +1,19 @@
 /*
  * regular expression matching, from leetcode
  * Q: implement regular expression matching with support for '.' and '*'. The matching should cover entire input string(not partial)
- * '.': matches any single character
- * '*': natches zero or more of preceding element
+ * '.': matches any single char
+ * '*': matches 0+ times of preceding single char(instead of '*' in wild char)
  * bool isMatch(const char *s, const char *p)
  * isMatch("aa", "a")  false
- * isMatch("ab", ".*") true    ?!
+ * isMatch("ab", ".*") true !!!
  * isMatch("abcbcd", "a.*c.*d") true
+ *
+ * I want to explain further more about s="aa", p='a*'
+ * its idea is when p[1] == '*', so it compares s[0] and p[0] firstly. when it succeeds, move s one char, to compare s[1] and p[0].
+ * As a result, isMatch("aa", "a*") is true.
+ * with the same idea, isMatch("ab", "a*") is false
+ * Let's take a look at s="ab" and p=".*". as p[1]=='*', we compare s[0] and p[0], then s[1] and p[0]... finally, it is TRUE!
+ * besides, any string of s, even empty string, can match ".*" successfully
  * */
 
 #include "stdio.h"
