@@ -28,15 +28,13 @@ using namespace std;
  * */
 bool isMatch(const char *s, const char *p){
     assert(s && p);
-    if(*p == '\0')
-      return *s == '\0';
-    if(*(p+1) != '*'){            //next char is '*', must match current character
+    if(*p == '\0')    return *s == '\0';
+    if(*(p+1) != '*'){  // p[1] is not '*', so s[0] must match p[0]
         assert(*p != '*');
         return ((*p == *s) || (*p == '.' && *s != '\0')) && isMatch(s+1, p+1);
     }
-    while((*p == *s) || (*p == '.' && *s != '\0')){        //next char is '*', match s with the one after '*' in p 
-        if(isMatch(s, p+2))
-          return true;
+    while((*p == *s) || (*p == '.' && *s != '\0')){ // p[1] is '*', match s[0] and p[0] recursely with moving s
+        if(isMatch(s, p+2))    return true;  // p[1] '*' evaluates 0 occurance of p[0]
         s++;
     }
     return isMatch(s, p+2);
