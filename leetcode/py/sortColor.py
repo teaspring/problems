@@ -15,21 +15,13 @@ class Solution:
         while q < t:
             if A[q] == 2:
                 t -= 1
-                self.swap(A, q, t)
+                A[q], A[t] = A[t], A[q]
                 continue
             elif A[q] == 0:
                 p += 1
-                self.swap(A, q, p)
+                A[q], A[p] = A[p], A[q]
             q += 1
         return
-
-    def swap(self, A, i, j):
-        if i != j:
-            x = A[i]
-            A[i] = A[j]
-            A[j] = x
-        return
-
 
 class TestSortColor(unittest.TestCase):
     def test_01(self):

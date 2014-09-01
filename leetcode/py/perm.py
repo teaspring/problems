@@ -19,13 +19,6 @@ def perm(items, n=None):
             for p in perm(rest, n-1):       # recurse
                 yield v + p
 
-def swaplist(A, i, j):
-    if len(A) <= i or len(A) <= j or i==j:
-        return
-    tmp = A[i]
-    A[i] = A[j]
-    A[j] = tmp
-
 # recurse for C++ style
 def perm_02(items):
     res = []
@@ -38,10 +31,10 @@ def recur_02(items, start, end, res):
         return
     recur_02(items, start+1, end, res)
     for i in range(start+1, end):
-        swaplist(items, start, i)
+        items[start], items[i] = items[i], items[start]   # swap
         res.append(copy(items))    # shallow copy
         recur_02(items, start+1, end, res)
-        swaplist(items, start, i)
+        items[i], items[start] = items[start], items[i]   # fallback
 
 # convert C++ style solution(recur_02) to python style with 'yield'
 # @return it returns a list instead of a generator !
@@ -56,11 +49,11 @@ def recur_03(items, start, end):
         for x in recur_03(items, start+1, end):
             yield x
     for i in range(start+1, end):
-        swaplist(items, start, i)
+        items[i], items[start] = items[start], items[i]   # swap
         yield items
         for x in recur_03(items, start+1, end):
             yield x
-        swaplist(items, start, i)
+        items[i], items[start] = items[start], items[i]   # fallback
 
 def comb(items, n=None):
     if n is None:
