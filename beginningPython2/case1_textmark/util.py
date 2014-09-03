@@ -12,6 +12,9 @@ def blocks(file):
     for line in lines(file):
         if line.strip():
             block.append(line)
+            if line.strip()[0] == '-':
+                yield ''.join(block).strip()
+                block=[]
         elif block:
             yield ''.join(block).strip()
             block=[]

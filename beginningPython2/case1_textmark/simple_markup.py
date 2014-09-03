@@ -10,7 +10,7 @@ from util import *   # util is our local module
 print '<html><head><title>...</title><body>'
 
 title = True
-for block in util.blocks(sys.stdin):   # stdin
+for block in blocks(sys.stdin):   # stdin
     block = re.sub(r'\*(.+?)\*', r'<em>\1</em>', block)  # emphasize words between *,*
     if title:
         print '<h1>'
