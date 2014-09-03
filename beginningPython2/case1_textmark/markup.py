@@ -1,4 +1,5 @@
 # markup.py
+# current version: mark up for html
 
 import sys, re
 from handler import *
@@ -23,20 +24,22 @@ class Parser:    # base class
 
     def parse(self, file):
         self.handler.start('document')
-        for block in blocks(file):
-            for filter in self.filters:
+        for block in blocks(file):   # read file via util.blocks()
+            for filter in self.filters:  # why to run all filters without care of result?
                 block = filter(block, self.handler)
             for rule in self.rules:
                 if rule.condition(block):
-                    last = rule.action(block, self.handler)  # return True/False of action() to control the loop 
+                    last = rule.action(block, self.handler)  # return bool to control break
                     if last: break    # break process of current block 
         self.handler.end('document')
 
+# the solution is not perfect in decompose: HTMLRenderer.start_xxx()/sub_xxx() are dependent
+# on list/item/utl/email etc. but not added dynamically in main py
 class BasicTextParser(Parser):
     """
     inside constructor, add rule and filter
     """
-    def __init__(self, handler):  # put specified rule and filter in derived sub class, good scalability 
+    def __init__(self, handler):  # put specified rule/filter in sub class, good scalability
         Parser.__init__(self, handler)
         self.addRule(ListRule())
         self.addRule(ListItemRule())

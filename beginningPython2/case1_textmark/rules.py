@@ -10,7 +10,7 @@ class Rule:    # base of Handler()
         handler.start(self.type)       # self.type is defined in each sub class
         handler.feed(block)
         handler.end(self.type)
-        return True    # used in parse()
+        return True    # indicate whether stop the process of this block
 
 class HeadingRule(Rule):
     """
