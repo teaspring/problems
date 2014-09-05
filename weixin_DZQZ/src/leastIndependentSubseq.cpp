@@ -1,15 +1,16 @@
 /*
  * problem on Oct 18, least independent subsequence(LIS)
- * in a binary search tree, LIS means for each one in a set of nodes, parent or child of it is not in there
+ * for LIS in BST, if one node in, parent or child of it is not in
  * 
  * typical dynamic programming
- * dp[0][x] = sum{max{dp[0,1][y is child of x]}}
- * dp[1][x] = sum{dp[0][y is child of x]} + x
+ * dp[0][x] = sum{max{dp[0][y], dp[1][y]}}, y is every child of x   # x not in
+ * dp[1][x] = sum{dp[0][y]} + x,            y is every child of x   # x in
  * dp[0][leaf] = 0
  * dp[1][leaf] = 1
- * finally, result is max{dp[0][r], dp[1][r]}
- * 
- * in fact, for binary search tree, count of leaves is nearly n/2, so for LIS, all leaves are always in there
+ * finally, result is max{dp[0][root], dp[1][root]}
+ * above indicates a bottom-up solution, so, post order iterate??
+ *
+ * in BST, leaf nodes around n/2. so tnat for LIS, all leaf nodes are always in
  * */
 
 #include "stdio.h"
@@ -61,9 +62,8 @@ void importOutLIS(set<int>& outLIS, nodeLIS* pChild){
     return;
 }
 
-void postIter(bstNode* root){
-    if(root == 0)
-      return;
+void postIter(bstNode* root){   // post-order iterate make it bottom-up
+    if(root == 0)    return;
     postIter(root->left);
     postIter(root->right);
     nodeLIS *pcurr = new nodeLIS();
