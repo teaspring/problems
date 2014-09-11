@@ -1,12 +1,21 @@
-//******************one to all shortest path**************************
-/* 
-* label-setting and label-correcting methods. Difference is label-correcting always choose vertex v in toBeChecked with the smallest current distance.
-* Dijkstra algorithm: label-setting, for non-negative weight
-* Ford: label-correcting, able to process negative weight
-*/
-
-/******************all to all shortest path***************************************/
 /*
+ * one-to-all shortest path
+ * label-setting and label-correcting methods.
+ * Dijkstra algorithm: label-setting, for non-negative weight.
+ * Idea:
+ * check vertex in order of ascending distance. for each checked vertex u, review its adjacent v and update distance[v].
+ *
+ * why update dist[v] without dist[u]?:
+ * as u is checked already before v, dist[u] will not change.
+ *
+ * Prerequisite:
+ * labels(weight) is non-negative, which is called 'label-setting'
+ *
+ * Ford algorithm: label-correcting, work for negative weight
+ * */
+
+/*
+ * all-to-all shortest path
  * Warshall Floyd Ingerman algorithm
  */
 
@@ -25,40 +34,38 @@ void shortestPath::DijkstraShortest( genGraph* pGraph, int start){
     const int N = pGraph->vNum;
     int *currDist = new int[N]();
     int *predecessor = new int[N]();
-    for(int i=0; i<N; i++){            //initialize
+    for(int i=0; i<N; i++){     //initialize
         currDist[i] = MAX;
         predecessor[i] = -1;
     }
-    currDist[start]=0;                //every vertex shortest distance to start
+    currDist[start]=0;      // every vertex shortest distance to start
 
-    int *toBeChecked = new int[N]();            //toBeChecked is set of all vertices         
+    int *toBeChecked = new int[N]();    //toBeChecked is set of all vertices
     for(int i=0;i<N; i++)
         toBeChecked[i] = i;
 
-    while(NotNullArray(toBeChecked, N)){       //toBeChecked not null
+    while(NotNullArray(toBeChecked, N)){    // toBeChecked not null
         int v=-1 ;
-        for(int i=0; i<N; i++){                 //find v of minimum currDist(v) in toBeChecked[]
-            if(toBeChecked[i] == NullVert)      
-                continue;
-            if(v == -1){                        //set v initial value
+        for(int i=0; i<N; i++){     // pick up v of minimum currDist(v) in toBeChecked[]
+            if(toBeChecked[i] == NullVert)      continue;
+            if(v == -1){        // set v initial value
                 v = i;
                 continue;
             }
-            if(currDist[i] < currDist[v])
-                v = i;
+            if(currDist[i] < currDist[v])    v = i;
         }
         int* vAdjs = pGraph->adjaMtx[v];
         for(int u=0; u<N; u++){
-            if(vAdjs[u] == MAX                    //u not adjacent to v
+            if(vAdjs[u] == MAX      // u not adjacent to v
             || v==u
-            || toBeChecked[u] == NullVert)      //u which is pick up already will not be updated.that's different with label-correcting
+            || toBeChecked[u] == NullVert)  // which is checked already not need update. different with label-correcting
                 continue;
             if(currDist[u] > currDist[v] + vAdjs[u]){
                 currDist[u] = currDist[v] + vAdjs[u];    
                 predecessor[u] = v;
             }
         }
-        toBeChecked[v] = NullVert;                //remove v from toBeChecked
+        toBeChecked[v] = NullVert;  // remove v from toBeChecked
     }   
     //output
     cout << "Dijkstra algorithm, currDist[] is: \n";
