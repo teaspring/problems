@@ -11,11 +11,11 @@ void swap(int &a, int &b){
 }
 
 /*
- * idea: Morris inorder to traverse BST which output in ascending order. store the error node with its follower
+ * idea: Morris inorder to traverse BST in ascending order. store the swapped nodes
  * */
 void recoverTree(TreeNode *root){
-    TreeNode *p = root, *tmp = NULL;
-    TreeNode *pred = NULL, *pre1 = NULL, *cur1 = NULL, *pre2 = NULL, *cur2 = NULL;
+    TreeNode *p = root, *tmp = NULL, *pred = NULL;
+    TreeNode *cur1 = NULL, *cur2 = NULL;  // two swapped nodes to recover
     while(p){
         if(p->left == NULL){
             pred = p;    // visit p
@@ -28,33 +28,21 @@ void recoverTree(TreeNode *root){
             }
 
             if(tmp->right == NULL){
-                tmp->right = p;    // extra link up
+                tmp->right = p;  // extra link up
                 p = p->left;
             }else{
-                pred = p;             // visit p
-                tmp->right = NULL;    // release the extra link up
+                pred = p;       // visit p
+                tmp->right = NULL;  // release the extra link up
                 p = p->right;
             }
         }
 
-
         if(pred && p && pred->val > p->val){  // in normal, pred should be greater then p
-            if(!pre1){
-                pre1 = pred;
-                cur1 = p;
-            }else{
-                pre2 = pred;
-                cur2 = p;
-            }
-            pred = NULL;
+            if(!cur1)    cur1 = pred;  // 1st swapped element
+            cur2 = p;  // anyway, it must be the 2nd swapped node
         }
     }
-
-    if(pre1 && cur2){   // pre1 and cur2 in pair to swap
-        swap(pre1->val, cur2->val);
-    }else{    // now pre1 and cur1 in pair to swap
-        swap(pre1->val, cur1->val);
-    }
+    swap(cur1->val, cur2->val);
 }
 
 int main(){
