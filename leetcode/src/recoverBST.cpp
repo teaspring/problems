@@ -38,8 +38,9 @@ void recoverTree(TreeNode *root){
         }
 
         if(pred && p && pred->val > p->val){  // in normal, pred should be greater then p
-            if(!cur1)    cur1 = pred;  // 1st swapped element
+            if(!cur1)    cur1 = pred;  // 1st swapped node
             cur2 = p;  // anyway, it must be the 2nd swapped node
+            pred = NULL;  // defensive coding
         }
     }
     swap(cur1->val, cur2->val);

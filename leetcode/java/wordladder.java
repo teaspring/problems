@@ -23,12 +23,12 @@ public class wordladder{
     private final int X = 0xffff;    // maximum length
     /*
     * Dijkstra algorithm, undirected graph, label-settings, for each iteration, choose nearest vertex
-	* for this problem, as the adjacent word, it means label(distance) equals to 1, become nearest naturally
+    * for this problem, as the adjacent word, it means label(distance) equals to 1, become nearest naturally
     *
-	* If dict does not have many words and <start> is long, this solution is good.
+    * If dict does not have many words and <start> is long, this solution is good.
     * But if <start> is not long while dict has too much redundent string, it turns much worse.
     *
-	* anyway, create an adjacent matrix in space O(n^2) is bad :(
+    * anyway, create an adjacent matrix in space O(n^2) is bad :(
     * */
     public int ladderLength_01(String start, String end, HashSet<String> dict){
         if(start.equals(end))              return 1;
@@ -71,10 +71,10 @@ public class wordladder{
     /*
      * utility: create an adjacent matrix
      * */
-    public ArrayList<ArrayList<Integer>> getAdjMatrix(ArrayList<String> strArr){    //assume src vertex is [0] and dest is [n-1]
+    public ArrayList<ArrayList<Integer>> getAdjMatrix(ArrayList<String> strArr){
         final int n = strArr.size();
         ArrayList<ArrayList<Integer>>  adjMtx = new ArrayList<ArrayList<Integer>>();
-        for(int i=0;i<n;++i){
+        for(int i=0;i<n;++i){     // assume src is [0] and dst is [n-1]
             adjMtx.add(new ArrayList<Integer>(n));
             for(int j=0;j<n;++j){
                 adjMtx.get(i).add(i==j ? 0 : X);
@@ -198,7 +198,7 @@ public class wordladder{
      * this solution considers every candicate which changes one char for once.
      * 1. if dict has too much redundent string, and <start> is not long, it is better than _01
      * 2. in frequent use, char[] is faster than String manipulation
-     * 3. Java Doc suggests ArrayDeque is faster than LinkedList in most cases
+     * 3. JavaDoc says ArrayDeque faster than LinkedList in most cases
      *
      * note: it is accepted on oj. but actually, the structure steps can be refactored...
      * */
@@ -210,7 +210,7 @@ public class wordladder{
         Queue<String> q     = new ArrayDeque<String>();
         Set<String> visited = new HashSet<String>();  // <visited> is to ensure add word in <q> only once
         q.add(start);
-        Queue<Integer> steps = new LinkedList<Integer>();  // each element in <steps> follows the one in <q>
+        Queue<Integer> steps = new LinkedList<Integer>();  // each value in <steps> follows the word in <q>
         steps.add(0);
         final int N = start.length();
 
@@ -223,7 +223,7 @@ public class wordladder{
                 char saved = wordChar[i];
                 for(char c='a';c <= 'z';++c){
                     int st = stp;
-                    wordChar[i] = c;  // no need to avoid case of c == saved because that one is in <visited> already
+                    wordChar[i] = c;  // no need to filter case of 'c == saved' as it is in <visited> already
                     String str = new String(wordChar);
                     if(str.equals(end))    return st+2;
                     if(dict.contains(str) && !visited.contains(str) && !q.contains(str)){
@@ -239,69 +239,72 @@ public class wordladder{
     }
 
     /*
-     * BFS to get next ladder, accepted by oj.leetcode
+     * BFS, accepted by oj.leetcode
      * */
     public ArrayList<ArrayList<String>> findLadders_02(String start, String end, HashSet<String> dict){
         HashMap<String, Queue<String>> adjMap
-            = new HashMap<String, Queue<String>>();  // all adjacent words discovered
+            = new HashMap<String, Queue<String>>();  // conversion of word ladders
         int currLen = 0;
         boolean found = false;
         ArrayList<ArrayList<String>> r = new ArrayList<ArrayList<String>>();  // results
-        Queue<String> queue   = new LinkedList<String>();    // Queue for BFS
-        Set<String> unVisited = new HashSet<String>(dict);   // unvisited words
+        Queue<String> queue   = new LinkedList<String>();    // for BFS
+        Set<String> unVisited = new HashSet<String>(dict);   // all optional intermeida words
         unVisited.add(end);
         Set<String> visitedThisLev = new HashSet<String>();
         
         queue.offer(start);
-        int currLev=1;  // ladders count at current level
-        int nextLev=0;  // ladders count of next level
+        int currLev = 1;  // ladders count at current level
+        int nextLev = 0;  // ladders count of next level
         for(String word : unVisited){
             adjMap.put(word, new LinkedList<String>());
         }
-        unVisited.remove(start);    // nobody tells whether start is in dict
-        
-        while(!queue.isEmpty()){  // BFS, change one char in [a-z] for once
+        unVisited.remove(start);  // <unVisited> saves all words converted from start
+
+        while(!queue.isEmpty()){  // BFS
             String currLadder = queue.poll();
-            for(String nextLadder : getNextLadder(currLadder, unVisited)){
-                if(visitedThisLev.add(nextLadder)){
-                    nextLev++;    // every new nextLadder converted from currLadder contributes to nextLev
+            for(String nextLadder : getNextLadder(currLadder, unVisited)){  // change one char for once
+                if(visitedThisLev.add(nextLadder)){  // for this level
+                    nextLev++;  // count of next ladders
                     queue.offer(nextLadder);
                 }
-                adjMap.get(nextLadder).offer(currLadder);    // save in map: nextLadder-->currLadder
+                adjMap.get(nextLadder).offer(currLadder);  // save in map: nextLadder --> currLadder
                 if(nextLadder.equals(end) && !found){
-                    found=true;
+                    found = true;
                     currLen += 2;
                 }    
             }
             System.out.println("currLen=" + currLev + " , nextLev=" + nextLev + ", currLadder=" + currLadder
                     + ", unVisited=" + unVisited.toString() + ", visitedThisLev=" + visitedThisLev.toString());
-            if(--currLev==0){
+            if(--currLev == 0){
                 if(found)    break;
-                unVisited.removeAll(visitedThisLev);    // expand in BFS from start to further, current visited word not need any more
-                visitedThisLev.clear();
+                unVisited.removeAll(visitedThisLev); // expand BFS from start to further,
+                visitedThisLev.clear();              // current visited word not need any more
                 currLev = nextLev;
-                nextLev=0;
+                nextLev = 0;
                 currLen++;
             }
         }
         if(found){
             LinkedList<String> p = new LinkedList<String>();
-            p.addFirst(end);    // from end to start
+            p.addFirst(end);  // from end to start
             getLadders(start, end, p, r, adjMap, currLen);
         }
         return r;
     }
 
+    /*
+     * utility: return all unvisited words which differ 1 with @currLadder
+     * */
     private ArrayList<String> getNextLadder(String currLadder, Set<String> unVisited){
         ArrayList<String> nextLadder = new ArrayList<String>();
         StringBuffer replace = new StringBuffer(currLadder);
-        for(int i=0; i<currLadder.length(); i++){
+        for(int i=0; i < currLadder.length(); i++){
             char old = replace.charAt(i);
-            for(char ch='a'; ch<='z';ch++){
-                if(ch==old)    continue;
+            for(char ch = 'a'; ch <= 'z';ch++){   // replace one char in [a-z] for once
+                if(ch == old)    continue;  // one statement for 1/26 possibility :(
                 replace.setCharAt(i, ch);
                 String replaced = replace.toString();
-                if(unVisited.contains(replaced)){
+                if(unVisited.contains(replaced)){  // if it is optional intermedia word
                     nextLadder.add(replaced);
                 }
             }
@@ -310,13 +313,16 @@ public class wordladder{
         return nextLadder;
     }
 
-    //DFS to get all possible path from start to end
-    //@params p: choose LinkedList<> to push/pop like stack, and initialize ArrayList<> like queue
-    private void getLadders(String start, String currLadder, LinkedList<String> p, ArrayList<ArrayList<String>> solu,
-            HashMap<String, Queue<String>> adjMap, int len){
+    /*
+     * utility: DFS to get all possible path from ... to start
+     * @params p: used as stack
+     * @params adjMap: conversion of words
+     * */
+    private void getLadders(String start, String currLadder, LinkedList<String> p,
+            ArrayList<ArrayList<String>> solu, HashMap<String, Queue<String>> adjMap, int len){
         if(currLadder.equals(start)){
             solu.add(new ArrayList<String>(p));
-        }else if(len>0){
+        }else if(len > 0){
             Queue<String> adjs = adjMap.get(currLadder);
             for(String lad : adjs){
                 p.addFirst(lad);
@@ -326,7 +332,7 @@ public class wordladder{
         }
     }
 
-	// utility for input
+    // utility for input
     private static HashSet<String> parseStrArray(String str){
         HashSet<String> st = new HashSet<String>();
         StringTokenizer t = new StringTokenizer(str, " ,");
@@ -367,4 +373,3 @@ public class wordladder{
         return;
     }
 }
-
