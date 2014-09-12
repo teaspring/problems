@@ -262,9 +262,9 @@ public class wordladder{
 
         while(!queue.isEmpty()){  // BFS
             String currLadder = queue.poll();
-            for(String nextLadder : getNextLadder(currLadder, unVisited)){  // change one char for once
+            for(String nextLadder : getNextLadder(currLadder, unVisited)){ // currLadder -> nextLadder
                 if(visitedThisLev.add(nextLadder)){  // for this level
-                    nextLev++;  // count of next ladders
+                    nextLev++;  // count of next level ladders
                     queue.offer(nextLadder);
                 }
                 adjMap.get(nextLadder).offer(currLadder);  // save in map: nextLadder --> currLadder
@@ -273,15 +273,15 @@ public class wordladder{
                     currLen += 2;
                 }    
             }
-            System.out.println("currLen=" + currLev + " , nextLev=" + nextLev + ", currLadder=" + currLadder
+            System.out.println("currLen=" + currLen + " , nextLev=" + nextLev + ", currLadder=" + currLadder
                     + ", unVisited=" + unVisited.toString() + ", visitedThisLev=" + visitedThisLev.toString());
-            if(--currLev == 0){
-                if(found)    break;
-                unVisited.removeAll(visitedThisLev); // expand BFS from start to further,
-                visitedThisLev.clear();              // current visited word not need any more
+            if(--currLev == 0){  // complete process of currLadder polled from queue
+                if(found)    break;  // it breaks at first time when currLev reduced to 0 and found is true
+                unVisited.removeAll(visitedThisLev); // expand BFS from start to further
+                visitedThisLev.clear();
                 currLev = nextLev;
                 nextLev = 0;
-                currLen++;
+                currLen++;  // this level of intermediate word ladders are processed already
             }
         }
         if(found){
