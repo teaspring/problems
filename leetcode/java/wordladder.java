@@ -277,7 +277,7 @@ public class wordladder{
             //        + ", unVisited=" + unVisited.toString() + ", visitedThisLev=" + visitedThisLev.toString());
             if(--currLev == 0){  // complete process of currLadder polled from queue
                 if(found)    break;  // it breaks at first time when currLev reduced to 0 and found is true
-                unVisited.removeAll(visitedThisLev); // expand BFS from start to further
+                unVisited.removeAll(visitedThisLev); // next leverl ladders will not include this level ladders!!
                 visitedThisLev.clear();
                 currLev = nextLev;
                 nextLev = 0;
