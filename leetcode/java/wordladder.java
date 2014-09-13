@@ -273,8 +273,8 @@ public class wordladder{
                     currLen += 2;
                 }    
             }
-            System.out.println("currLen=" + currLen + " , nextLev=" + nextLev + ", currLadder=" + currLadder
-                    + ", unVisited=" + unVisited.toString() + ", visitedThisLev=" + visitedThisLev.toString());
+            // System.out.println("currLen=" + currLen + " , nextLev=" + nextLev + ", currLadder=" + currLadder
+            //        + ", unVisited=" + unVisited.toString() + ", visitedThisLev=" + visitedThisLev.toString());
             if(--currLev == 0){  // complete process of currLadder polled from queue
                 if(found)    break;  // it breaks at first time when currLev reduced to 0 and found is true
                 unVisited.removeAll(visitedThisLev); // expand BFS from start to further
@@ -314,7 +314,7 @@ public class wordladder{
     }
 
     /*
-     * utility: DFS to get all possible path from ... to start
+     * utility: DFS to get all path from @currLadder to @start in length of @len
      * @params p: used as stack
      * @params adjMap: conversion of words
      * */
@@ -325,7 +325,7 @@ public class wordladder{
         }else if(len > 0){
             Queue<String> adjs = adjMap.get(currLadder);
             for(String lad : adjs){
-                p.addFirst(lad);
+                p.addFirst(lad);  // adjMap key is dst while value is <src>, so lad must be added in head
                 getLadders(start, lad, p, solu, adjMap, len-1);
                 p.pollFirst();
             }
@@ -337,7 +337,7 @@ public class wordladder{
         HashSet<String> st = new HashSet<String>();
         StringTokenizer t = new StringTokenizer(str, " ,");
         while(t.hasMoreTokens()){
-            st.add(t.nextToken().toString().strip());
+            st.add(t.nextToken().toString().trim());
         }
         return st;
     }
@@ -370,6 +370,8 @@ public class wordladder{
     }
 
     public static void main(String[] args){
+        wordladder wl = new wordladder();
+        wl.test();
         return;
     }
 }
