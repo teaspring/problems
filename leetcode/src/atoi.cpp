@@ -11,32 +11,32 @@ public:
         bool isminus = false, gotvalid = false;
         for(int i=0; str[i] != '\0'; i++){
             if(str[i] == ' '){
-                if(!gotvalid)    continue;
-                else             break;
+                if(!gotvalid)  continue;
+                else  break;
             }
             if(str[i] == '+'){
                 if(!gotvalid){
                     gotvalid = true;
                     continue;
-                }else
-                    break;
+                }else  break;
             }
             if(str[i] == '-'){
                 if(!gotvalid){
                     gotvalid = true;
                     isminus = true;
                     continue;
-                }else
-                    break;
+                }else  break;
             }
             if(str[i] < '0' || str[i] > '9')    break;
             int resi = str[i] - '0';
             if(!isminus){
-                if(INT_MAX/10 < preted || (INT_MAX - 10 * preted) < resi){
+                if(INT_MAX/10 < preted
+                  || (INT_MAX - 10 * preted) < resi){
                     preted = INT_MAX; //positive overflow, INT_MAX is returned
                     break;
                 }
-            }else if( INT_MIN / 10 > -preted || (INT_MIN + 10 * preted) > -resi){ // avoid reverse INT_MIN to compare!
+            }else if(INT_MIN / 10 > -preted
+                    || (INT_MIN + 10 * preted) > -resi){ // avoid reverse INT_MIN to compare!
                 preted = INT_MIN;  // negative overflow, INT_MIN is returned
                 isminus = false;   //set minus flag to false in trick
                 break;
@@ -54,7 +54,7 @@ public:
         vec.push_back(" .3 2");   // 0
         vec.push_back(" 110d");   //110
         vec.push_back(" -13d");   // -13
-        vec.push_back(" 2147483648");   //overflow case, return 2147483647(2^31-1)
+        vec.push_back(" 2147483648");  //overflow case, return 2147483647(2^31-1)
         vec.push_back(" 2147483647");
         vec.push_back(" -2147483648");
         vec.push_back(" -2147483649");  //overflow case, return -2147483648(-2^31)

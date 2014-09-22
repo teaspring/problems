@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.*;
 
 public class anagrams{
-    private String wordkey(String word){
+    private String wordkey(String word){  // count sort
         int[] A = new int[26];
         int n = word.length();
         for(int i=0;i<n;i++){
@@ -29,7 +29,8 @@ public class anagrams{
         ArrayList<String> res = new ArrayList<String>();
         int n = strs.length;
         if(n<2)    return res;
-        HashMap<String, List<Integer>> mmp = new HashMap<String, List<Integer>>();  //replacement of multimap<>
+        HashMap<String, List<Integer>> mmp
+            = new HashMap<String, List<Integer>>();  //replacement of multimap<>
         for(int i=0;i<n;i++){
             String kstr = wordkey(strs[i]);
             if(!mmp.containsKey(kstr)){

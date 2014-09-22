@@ -12,11 +12,11 @@ public class foursum{
         ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
         Arrays.sort(num);
         for(int i=0;i<num.length-3;i++){
-            if(i>0 && num[i] == num[i-1])    continue;         //skip duplicate num[i]
+            if(i>0 && num[i] == num[i-1])    continue;  //skip duplicate num[i]
             for(int j=i+1;j<num.length-2;j++){
-                if(j>i+1 && num[j]==num[j-1])    continue;     //skip duplicate num[j]
-                for(int l=j+1, r=num.length-1;l<r;){
-                    if(l>j+1 && num[l]==num[l-1]){             //skip duplicate num[l]
+                if(j>i+1 && num[j]==num[j-1])    continue;  //skip duplicate num[j]
+                for(int l=j+1, r=num.length-1;l<r;){  // for last two dimensions, move in dual-directions in O(n)
+                    if(l>j+1 && num[l]==num[l-1]){  //skip duplicate num[l]
                         l++;
                         continue;
                     }
@@ -32,7 +32,7 @@ public class foursum{
                         arr.add(num[l]);
                         arr.add(num[r]);
                         res.add(arr);
-                        //break;    //can not break here!! because the solution is not exactly one and there will be other options later
+                        //break;    //can not break as there is not only one solution
                         l++;
                     }else if(tmp < target){
                         l++;

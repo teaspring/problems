@@ -58,7 +58,6 @@ public class strStr{
             System.out.println("please input pattern string:");
             String needle = scan.nextLine().trim();
             if(needle.isEmpty())    break;
-            
             System.out.println(strstr(haystack, needle));
         }
         return;
