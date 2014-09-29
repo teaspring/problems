@@ -23,7 +23,7 @@ public:
         int result = A[i];
         for(int j=i+1; j <= n; j++){  // [i,j) is the contiguous range without 0
             if(j==n || A[j]==0){
-                result = max(0, max(result, maxProductRange(A, i, j))); // in case [-2, 0, -1]
+                result = max(0, max(result, maxProductRange(A, i, j))); // not less than delimeter - 0
                 i=j+1;
                 while(i<n && A[i]==0)    i++;  // A[i] is next non-zero
                 j=i;
