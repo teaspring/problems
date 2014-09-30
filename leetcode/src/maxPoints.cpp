@@ -6,7 +6,7 @@
  * 2. if there is duplicate points
  * 3. all points are duplicate
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 using namespace std;
 

@@ -3,7 +3,7 @@
  * a matrix is made up of '1' and '0', find the maximum rectangle which ONLY contains '1'
  */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 class Max2DRectangle{
 public:

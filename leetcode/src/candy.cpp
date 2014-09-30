@@ -11,7 +11,7 @@
  * 2 5 7 6 5 4 2 3 6 9 4 2
  * 4 4 5 7 6 5 4 4 3 3 2 1 4 6 9 3 2 
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 int backtrack(vector<int>& ratings, int l, int r, int *candies){
     int n = ratings.size();

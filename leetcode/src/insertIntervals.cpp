@@ -5,7 +5,7 @@
  * 
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 struct Interval{
     int start;

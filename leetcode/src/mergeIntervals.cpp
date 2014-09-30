@@ -8,7 +8,7 @@
  *
  * given [1,3], [2,4]
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 struct Interval{
     int start;

@@ -2,7 +2,7 @@
  * given an array of strings, return all groups of strings that are anagrams. All inputs are in lower-case
  * ps, anagram means words which have same characters with different order, e.g dog and god
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 #include <set>
 #include <map>
 

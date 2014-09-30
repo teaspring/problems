@@ -1,7 +1,7 @@
 /*
  * given string s1, s2, s3, ask if s1 and s2 interleave s3
  */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 class InterleaveString{
 public:

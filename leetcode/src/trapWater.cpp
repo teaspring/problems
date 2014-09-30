@@ -2,7 +2,7 @@
  * given a non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
  *
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 /*
  * one-pass solution: scan leftward and rightward at the same time, start from lower of the two.  

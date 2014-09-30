@@ -5,7 +5,7 @@
  * 13243221, k=5, result is 121
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 #include <queue>
 
 /*

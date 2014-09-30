@@ -5,7 +5,7 @@
  * k=3, 3->2->1->4->5
  * {1}, k=2 => return {1}
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 void reverse(ListNode *pre, ListNode *h, ListNode *e, ListNode *post){ //pre->h->...->e->post => pre->e->...->h->post
     if(!h)    return;

@@ -8,7 +8,7 @@
  * gas{1,2,3,4,5}, cost{3,4,5,1,2}, n=5, start = 3
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 #include <vector>
 
 int gasstation(vector<int>& gas, vector<int>& cost){

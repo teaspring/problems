@@ -1,7 +1,7 @@
 /*
  * given an array and a value, remove all instances of that value in place and return the new length
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 int removeElement(int A[], int n, int elem){
     int i=-1, j=0;

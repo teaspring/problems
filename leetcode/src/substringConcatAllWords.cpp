@@ -10,7 +10,7 @@
  *
  * a question can be asked: if words in L has different length?
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 bool isfull(int *arr, int n){
     for(int i=0; i<n; i++){

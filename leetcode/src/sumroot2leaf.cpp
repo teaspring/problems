@@ -3,7 +3,7 @@
  * an example is 1->2->3 which represents the number 123.
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 int sumStackAsNumber(stack<TreeNode*>& stk){
     int sum=0;

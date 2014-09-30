@@ -1,7 +1,7 @@
 /*
  * given two numbers represented as strings, return multiplication of the two numbers as string
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 string multiply(string num1, string num2){
     int m = num1.size();

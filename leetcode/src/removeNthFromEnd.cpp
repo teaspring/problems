@@ -8,7 +8,7 @@
  * 1->2, 1
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 ListNode* removeNth2End(ListNode *head, int n){
     if(!head)    return NULL;

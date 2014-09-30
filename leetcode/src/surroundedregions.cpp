@@ -10,7 +10,7 @@
  * solution: very smart!
  * mark all '0's can be iterated from 4 walls(up/down/left/right), then flip all '0's without being marked
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 #include <queue>
 
 const int rs[4]={-1,0,0,1};

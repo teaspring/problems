@@ -3,7 +3,7 @@
  * 1. determine if the tree has a root-to-leaf path such that adding up all the values of path equals the sum
  * 2. find all root-to-leaf paths where each path's sum equals the given sum
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 /*
  * I

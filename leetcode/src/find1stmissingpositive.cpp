@@ -5,7 +5,7 @@
  * [1,2,0], return 3
  * [3,4,-1,1], return 2
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 int findMissingPositive(int A[], int n){
     int *B = new int[n]();

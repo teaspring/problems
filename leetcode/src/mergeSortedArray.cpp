@@ -6,7 +6,7 @@
  * 3,4,5 | 1, 2
  * 1,2,2,5 | 0,2,3
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 void swap(int *pa, int *pb){
     int tmp = *pb;

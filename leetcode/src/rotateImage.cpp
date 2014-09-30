@@ -1,7 +1,7 @@
 /*
  * given an n*n 2D matrix, rotate the image by 90 degrees clockwisely in place.
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 void swap(int &a, int &b){
     int tmp = b;

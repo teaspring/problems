@@ -10,7 +10,7 @@
  * inserting nodes following list's order, in that way, no longer need to find the middle. total time is O(n), this is a bottom-up method.
  * 
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 class Solution{
 public:

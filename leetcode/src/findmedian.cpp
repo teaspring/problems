@@ -30,7 +30,7 @@
 * {6,7,8}, {1,2,3,4,5}
 */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 /*
  * my own solution, complicated,boring:(

@@ -4,7 +4,7 @@
  * S = "rabbbit", T="rabbit", count is 3
  *
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 /*
  * solution DP:

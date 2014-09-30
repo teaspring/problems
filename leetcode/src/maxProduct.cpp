@@ -73,8 +73,11 @@ public:
     }
 };
 
+/*
+ *  apply unittest code instead
 int main(){
     Solution s;
     s.test();
     return 0;
 }
+*/

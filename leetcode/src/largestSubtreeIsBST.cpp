@@ -3,7 +3,7 @@
  * Idea: 'bottom-up' solution. when subtree with node A is validated not BST, and node above A with A as child will not be BST definitely
  * NOTE: recurse method calling is 'top-down' from root to child with no doubt. "bottom-up" means denying child as BST will deny parent immediately
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 class Solution{
 public:

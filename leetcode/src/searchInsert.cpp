@@ -2,7 +2,7 @@
  * given a sorted array and a target value, return index if it is found. if not, return the index where it would be inserted in order
  * assume array is in ascending order without duplicates.
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 int searchInsert(int A[], int n, int x){
     int v=0, u=n, m;

@@ -6,7 +6,7 @@
  * ABE,  true
  * DF: flase
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 bool searchOneChar(vector<int> pos[], string s, int currpos, int *used, int rows, int cols){
     if(s.empty())    return true;

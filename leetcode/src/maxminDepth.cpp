@@ -1,7 +1,7 @@
 /*
  * given a binary tree, find the maximum depth and minimum depth
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 class Solution{
 public:

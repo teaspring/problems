@@ -1,7 +1,7 @@
 /*
  * merge k sorted linked lists and return it as one sorted list. Analyze its complexity
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 using namespace std;
 

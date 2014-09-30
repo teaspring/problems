@@ -2,7 +2,7 @@
  * given an array of n, integers 0,1,2 for color red, white, and blue. sort it in order 0/1/2 in one-pass with space O(1)
  * 
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 void swap(int *pa, int *pb){
     int tmp = *pa;

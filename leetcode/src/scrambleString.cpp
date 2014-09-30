@@ -2,7 +2,7 @@
  * scrambleString.h
  */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 class ScrambleString{
 public:

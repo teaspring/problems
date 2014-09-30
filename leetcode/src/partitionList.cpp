@@ -4,7 +4,7 @@
  * given  1->4->3->2->5->2 and x = 3
  * return 1->2->2->4->3->5
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 ListNode* partition(ListNode *head, int x){
     if(!head || !(head->next))    return head;

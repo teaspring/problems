@@ -5,7 +5,7 @@
  * 5,1,3, x=4, return -1
  * 5,6,1,2,3,  x=5, return 0
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 int search(int A[], int n, int key){  // problem I: no duplicate
     int l=0, r=n-1;

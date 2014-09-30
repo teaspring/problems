@@ -7,7 +7,7 @@
  * 1,1,5 -> 1,5,1
  * 
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 void swap(int& a, int & b){
     int tmp = b;

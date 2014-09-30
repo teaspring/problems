@@ -2,7 +2,7 @@
  * implement atoi(const char*). ps, do you really know the logic of <stdlib> atoi() ?
  *
  */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 class Solution{
 public:

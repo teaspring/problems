@@ -7,7 +7,7 @@
  * 1,  x=1,0,2
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 vector<int> searchRange(int A[], int n, int x){
     vector<int> res;

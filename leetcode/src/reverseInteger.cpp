@@ -3,7 +3,7 @@
  * ie, 123 => 321,
  * -123 => -321
  * */
-#include "../header/prelimiinary.h"
+#include "../include/prelimiinary.h"
 
 int reverse(int x){  // take care of positive and negative overflow
     if(x==0)    return 0;

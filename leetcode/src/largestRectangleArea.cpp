@@ -5,7 +5,7 @@
  * e.g. {2,1,5,6,2,3}, output 5*2=10
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 int largestRectangleArea_01(const vector<int>& height){   // time limit error for array with extreme peak
     int n = height.size();

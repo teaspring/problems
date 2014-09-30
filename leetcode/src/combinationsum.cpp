@@ -7,7 +7,7 @@
  * S=[2,3,7], target=7
  * output: [2,2,3], [7]
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 #include <algorithm>
 
 void plusSum(vector<vector<int> >& res, const vector<int>& candidates, vector<int>& vec, int target){

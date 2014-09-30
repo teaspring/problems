@@ -3,7 +3,7 @@
  * do it in-place without altering nodes' values
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 struct ListNode{
     int val;

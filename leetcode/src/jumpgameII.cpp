@@ -11,7 +11,7 @@
  * 1 1 0 0, res = -1
  * 0 1 1, res = -1
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 /*
  * using simple DP, in time O(n^2), and it has bug! 

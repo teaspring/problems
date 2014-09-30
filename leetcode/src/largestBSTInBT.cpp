@@ -5,7 +5,7 @@
  * to parent as subtree. it has to consider as an independent subtree.
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 class Solution{
 public:

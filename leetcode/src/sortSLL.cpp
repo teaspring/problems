@@ -1,7 +1,7 @@
 /*
  * sort a single linked list. among all the sort algorithms, merge and insertion are two options. this file is for merge sort
  * */
-#include "../header/preliminary.h"  //class ListNode is defined in preliminary.h
+#include "../include/preliminary.h"  //class ListNode is defined in preliminary.h
 
 using namespace std;
 

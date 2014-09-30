@@ -4,7 +4,7 @@
  * 1->1->2->2->2->3     1->2->3
  * */
 
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 /*
  * for duplicate nodes, remove them other than one

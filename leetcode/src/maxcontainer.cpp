@@ -3,7 +3,7 @@
  * endpoints of line i is at(i, ai) and (i,0). For two lines , which together with x-axis forms a container, such that the container
  * contains the most water.
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 int maxArea(vector<int> &height){
     int s=0, e=height.size()-1;

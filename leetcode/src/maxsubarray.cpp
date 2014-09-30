@@ -8,7 +8,7 @@
  * [-1, 4, -2, 3, 1, -2], 6
  * [2, 2, -4, 1, 2, -1], 4
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 /*
  * linear scan in O(n)

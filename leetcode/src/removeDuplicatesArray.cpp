@@ -1,7 +1,7 @@
 /*
  * given a sorted array, remove the duplicates from it in-place, return the new array size.
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 /*
  * problem I: every value is allowed to appear only once

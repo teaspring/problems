@@ -2,7 +2,7 @@
  * given a binary tree, determine if it is height-balanced
  * concept: depth of the two subtrees of any nodes never differ more than 1
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 
 class Solution{

@@ -4,7 +4,7 @@
  * test case:
  * 1->2->3->4->5, k = 2, return 4->5->1->2->3
  * */
-#include "../header/preliminary.h"  //struct ListNode, displayList()
+#include "../include/preliminary.h"  //struct ListNode, displayList()
 
 ListNode* rotateRight(ListNode *head, int k){    //twice traverse   
     if(head == NULL || k==0)    return head;

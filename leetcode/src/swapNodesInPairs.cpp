@@ -8,7 +8,7 @@
  * 1->2->3
  *
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 ListNode *swapPairs(ListNode *head){
     if(!head || !(head->next))    return head;

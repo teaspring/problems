@@ -6,7 +6,7 @@
  * 4,1,8,3
  * the answer is 2+3+5+1
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 #include <algorithm>
 #include <fstream>
 

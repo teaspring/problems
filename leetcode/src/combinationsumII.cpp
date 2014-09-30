@@ -5,7 +5,7 @@
  * 2.all numbers are positive integers with repeated value in possible
  * 3.all elements in a combination must be non-decending order without duplicate combinations.
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 #include <algorithm>
 
 vector<int> index2Values(const vector<int>& candidates, vector<int>& indexes){

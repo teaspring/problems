@@ -3,7 +3,7 @@
  * given string S and string T, find the minimum window in S which contains all the characters in T in time O(n)
  * assume only one minimum window in S
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 /*
  * this method only solve T without duplicate char

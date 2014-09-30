@@ -2,7 +2,7 @@
  * two elements of a BST are swapped by mistake. find them and recover the tree without changing the structure
  * use space O(1)
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 void swap(int &a, int &b){
     int tmp = a;

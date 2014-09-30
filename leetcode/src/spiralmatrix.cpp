@@ -7,7 +7,7 @@
  * 9 10 11 12
  * output in spiral order: 1,2,3,4,8,12,11,10,9,5,6,7
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 vector<int> spiralOrder(vector<vector<int> >& matrix){
     vector<int> res;
