@@ -11,7 +11,7 @@
  * [-2, -1, -3], return 3
  * [-2,2,0,0,3,2], return 6
  * */
-#include "../header/preliminary.h"
+#include "../include/preliminary.h"
 
 class Solution{
 public:

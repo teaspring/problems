@@ -1,29 +1,15 @@
-/******************preliminary.h**************************/
-#include "stdio.h"
-#include <iostream>
-#include <cstdlib>
-#include <climits>
-#include <cstring>
-#include <string>
-#include <cctype>
-#include <vector>
-#include <map>
-#include <set>
-#include "math.h"
-#include <stack>
-#include <algorithm>
-
-using namespace std;
+/******************preliminary.cpp**************************/
+#include "../include/preliminary.h"
 
 /*
  * 1. support any unknown delimiter(\s,\n,','...) except digit
- * 2. support minus integer, multiple digits but float 
+ * 2. support minus integer, multiple digits but float
  * */
 int splitStr2IntArray(const string& str, int *array){
     int leng = 0;
     string::size_type  pos = 0;        //string::size_type and std::size_t are alternative
     int minus = 1;
-    while(pos<str.size()){    
+    while(pos<str.size()){
         if(str[pos] == '-' && pos<(str.size()-1) && isdigit(str[pos+1])){        //support minus
             minus = -1;
         }else if(isdigit(str[pos])){
@@ -47,7 +33,7 @@ int splitStr2IntArray(const string& str, int *array){
 
 int splitStr2IntArrayExt(const string& str, int *array){
     int leng = 0;
-    string::size_type  pos = 0;        //string::size_type and std::size_t are alternative
+    string::size_type  pos = 0; //string::size_type and std::size_t are alternative
     int minus = 1;
     while(pos<str.size()){
         if(str[pos] == '-' && pos<(str.size()-1) && isdigit(str[pos+1])){
@@ -55,7 +41,7 @@ int splitStr2IntArrayExt(const string& str, int *array){
         }else if(isdigit(str[pos])){
             int val = 0;
             while(pos<str.size() && isdigit(str[pos])){
-                char ch = str[pos];          
+                char ch = str[pos];
                 val = (val==0) ? atoi(&ch) : 10*val + atoi(&ch);    //it works
                 pos++;
             }
@@ -89,7 +75,7 @@ vector<string> splitStr2Vector(const string& str){
 /*
 * time O(lgm) to get index m == lgn
 */
-int getindex(int num, int& t, int e =10){
+int getindex(int num, int& t, int e){
     int m=1, pre_m=0, pre_t=1;
     t=e;
     while(num/t < 1 || num/t > 9){
@@ -105,7 +91,7 @@ int getindex(int num, int& t, int e =10){
     }
     return m;
 }
-    
+
 void showarray(int *A, int n){
     for(int i=0;i<n;i++)
         printf("%d ", A[i]);
@@ -132,13 +118,7 @@ void displayVector(vector<int>& vec){
     return;
 }
 
-/*************ListNode for single linked list*****************/
-struct ListNode{
-    int val;
-    ListNode *next;
-    ListNode(int x): val(x), next(NULL){}
-};
-
+// struct ListNode is defined in preliminary.h
 void displaySLL(ListNode *head){
     printf("SLL is: ");
     if(!head){
@@ -176,14 +156,7 @@ void delSLL(ListNode *head){
     return;
 }
 
-/*************TreeNode for binary (search) tree***********/
-struct TreeNode{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x): val(x), left(0), right(0){}
-};
-
+// struct TreeNode is defined in preliminary.h
 void preorder(TreeNode *root){
     if(!root)    return;
     printf("%d ", root->val);
