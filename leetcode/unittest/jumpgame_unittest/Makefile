@@ -74,8 +74,8 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-# object file [xxx].o will be produced by [xxx].cpp
-# target: ...
+# -c: compile and assemble source file without link.
+# the ultimate output is .o file for each source file
 jumpgameII.o: $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/jumpgameII.cpp $(USER_DIR)/src/preliminary.cpp
 
