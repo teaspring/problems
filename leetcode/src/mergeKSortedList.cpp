@@ -46,10 +46,6 @@ ListNode* mergeKLists(vector<ListNode*>& lists){
     return l1;
 }
 
-void test_01(){
-    
-}
-
 int main(int, char**){
     return 0;
 }

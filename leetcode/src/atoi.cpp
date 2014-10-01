@@ -38,7 +38,7 @@ public:
             }else if(INT_MIN / 10 > -preted
                     || (INT_MIN + 10 * preted) > -resi){ // avoid reverse INT_MIN to compare!
                 preted = INT_MIN;  // negative overflow, INT_MIN is returned
-                isminus = false;   //set minus flag to false in trick
+                //isminus = false;   //set minus flag to false in trick
                 break;
             }
             if(!gotvalid)    gotvalid = true;
@@ -54,14 +54,17 @@ public:
         vec.push_back(" .3 2");   // 0
         vec.push_back(" 110d");   //110
         vec.push_back(" -13d");   // -13
-        vec.push_back(" 2147483648");  //overflow case, return 2147483647(2^31-1)
-        vec.push_back(" 2147483647");
-        vec.push_back(" -2147483648");
-        vec.push_back(" -2147483649");  //overflow case, return -2147483648(-2^31)
+        vec.push_back(" 2147483647");   // in:  2^31 - 1, out: 2^31 - 1
+        vec.push_back(" -2147483648");  // in: -2^31,     out: -2^31
         vec.push_back(" --3");    // 0
         vec.push_back(" 14dof");  // 14
         vec.push_back("fx");
         vec.push_back("-(1+2)");  // 0
+        vec.push_back(" 2147483648");   // in: 2^31,      out: -2^31
+        vec.push_back(" 2147483649");   // in: 2^31 + 1,  out: -2^31 + 1
+        vec.push_back(" 2147483650");   // in: 2^31 + 2,  out: -2^31 + 2
+        vec.push_back(" -2147483649");  // in: -2^31 - 1, out: 2^31 - 1 
+        vec.push_back(" -2147483650");  // in: -2^31 - 2, out  2^31 - 2
         for(int i=0; i<(int)vec.size(); i++){
             cout << vec[i] << ": std atoi() " << atoi(vec[i].c_str()) << ", my atoi() " << myatoi(vec[i].c_str()) << endl;
         }

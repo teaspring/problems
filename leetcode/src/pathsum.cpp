@@ -1,7 +1,7 @@
 /*
  * given a binary and a sum
- * 1. determine if the tree has a root-to-leaf path such that adding up all the values of path equals the sum
- * 2. find all root-to-leaf paths where each path's sum equals the given sum
+ * I. determine if the tree has a root-to-leaf path such that adding up all the values of path equals the sum
+ * II. find all root-to-leaf paths where each path's sum equals the given sum
  * */
 #include "../include/preliminary.h"
 
@@ -10,16 +10,10 @@
  * */
 bool hasPathSum(TreeNode *root, int sum){
     if(!root)    return false;
+    if(root->left == NULL && root->right == NULL && sum == 0)   return true;
     sum -= root->val;
-    if(root->left != NULL){
-        if(hasPathSum(root->left, sum))        return true;
-    }
-    if(root->right != NULL){
-        if(hasPathSum(root->right, sum))        return true;
-    }
-    if(root->left == NULL && root->right == NULL && sum==0){
-        return true;
-    }
+    if(root->left != NULL  && hasPathSum(root->left, sum))     return true;
+    if(root->right != NULL && hasPathSum(root->right, sum))    return true;
     return false;
 }
 

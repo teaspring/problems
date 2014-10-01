@@ -1,8 +1,6 @@
 /*
  * given two sorted SLL(assume in ascending order), merge them to one SLL (in ascending order)
- *
  */
-
 #include "stdio.h"
 #include <iostream>
 #include <cstring>
