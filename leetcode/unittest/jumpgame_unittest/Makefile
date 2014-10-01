@@ -23,6 +23,7 @@ USER_DIR = ../..
 UNITTEST_DIR = .
 
 # Flags passed to the preprocessor.
+# $(USER_DIR)/src is used by xxx_unittest.cpp
 CPPFLAGS += -I$(GTEST_DIR)/include
 CPPFLAGS += -I$(USER_DIR)/src
 
@@ -31,7 +32,7 @@ CXXFLAGS += -g -Wall -Wextra
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = maxProduct_unittest
+TESTS = jumpgame_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -73,22 +74,14 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-# sample1.o : $(USER_DIR)/sample1.cc $(USER_DIR)/sample1.h $(GTEST_HEADERS)
-#	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/sample1.cc
+# object file [xxx].o will be produced by [xxx].cpp
+# target: ...
+jumpgameII.o: $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/jumpgameII.cpp $(USER_DIR)/src/preliminary.cpp
 
-# sample1_unittest.o : $(USER_DIR)/sample1_unittest.cc \
-#                     $(USER_DIR)/sample1.h $(GTEST_HEADERS)
-#	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/sample1_unittest.cc
+jumpgame_unittest.o : $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/jumpgame_unittest.cpp
 
-# sample1_unittest : sample1.o sample1_unittest.o gtest_main.a
-#	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
-
-maxProduct.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/maxProduct.cpp $(USER_DIR)/src/preliminary.cpp
-
-maxProduct_unittest.o : $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/maxProduct_unittest.cpp
-
-maxProduct_unittest : maxProduct.o maxProduct_unittest.o gtest_main.a
+jumpgame_unittest : jumpgameII.o jumpgame_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $^ -o $@
 
