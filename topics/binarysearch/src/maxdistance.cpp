@@ -42,25 +42,22 @@ int maxDistance_01(int *A, int n, int& begin){
  * */
 int maxDistance_02(int *A, int n, int& left){
     if(n<2)    return 0;
-    int *Rmax = new int[n]();
+    int Rmax[n];  // Rmax[i] is the maximum value on right side of A[i], inclusive of A[i]
     Rmax[n-1] = A[n-1];
-    for(int i=n-2;i>=0;i--){
+    for(int i = n-2; i >= 0; i--){  // in time O(n)
         Rmax[i] = max(A[i], Rmax[i+1]);
     } 
  
     int i=0, j=1, maxDiff=0;
-    while(i<n && j<n){ 
+    while(i<n && j<n){   // in time O(n)
         if(A[i] < Rmax[j]){
-            if(j-i > maxDiff){
-                maxDiff = j-i;
-                left = i;
-            }
+            maxDiff = max(maxDiff, j-i);
+            if(maxDiff == j-i)    left = i;
         }else{
             ++i;
         }
         ++j;    // resume to scane from the potential distance remaining j-i
     }
-    delete[] Rmax;
     return maxDiff;
 }
 
