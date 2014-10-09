@@ -56,6 +56,8 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 # implementation details, the dependencies specified below are
 # conservative and not optimized.  This is fine as Google Test
 # compiles fast and for ordinary users its source rarely changes.
+#
+# $(CXX) is C++ compiler on this computer: g++
 gtest-all.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
             $(GTEST_DIR)/src/gtest-all.cc
@@ -77,7 +79,8 @@ gtest_main.a : gtest-all.o gtest_main.o
 # -c: compile and assemble source file without link.
 # the ultimate output is .o file for each source file
 jumpgameII.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/jumpgameII.cpp $(USER_DIR)/src/preliminary.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
+		$(USER_DIR)/src/jumpgameII.cpp $(USER_DIR)/src/preliminary.cpp
 
 jumpgame_unittest.o : $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/jumpgame_unittest.cpp
