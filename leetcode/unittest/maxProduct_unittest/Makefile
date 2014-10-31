@@ -73,7 +73,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 # gtest_main.a, depending on whether it defines its own main()
 # function.
 
-maxProduct.o: $(GTEST_HEADERS)
+maxProduct.o : $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/maxProduct.cpp $(USER_DIR)/src/preliminary.cpp
 
 maxProduct_unittest.o : $(GTEST_HEADERS)
