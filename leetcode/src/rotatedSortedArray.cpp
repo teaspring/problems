@@ -1,5 +1,5 @@
 /*
- * search in a sorted(asending) array which is rotated somewhere, assume it is ascending order initially
+ * search in a sorted(ascending) array which is rotated somewhere, assume it is ascending order initially
  *
  * test case:
  * 5,1,3, x=4, return -1
@@ -16,18 +16,18 @@ int search(int A[], int n, int key){  // problem I: no duplicate
         int m = l + (r-l)/2;
         if(key == A[m])    return m;
         if(A[l] < A[m]){  // left half is sorted
-            if(A[l] <= key && key < A[m]){
+            if(A[l] <= key && key < A[m]){   // if in [l, m)
                 r = m-1;
             }else{
                 l = m+1;
             }
         }else if(A[l] > A[m]){  // right half is sorted
-            if(A[m] < key && key <= A[r]){
+            if(A[m] < key && key <= A[r]){   // if in (m, r]
                 l = m+1;
             }else{
                 r = m-1;
             }
-        }else{  // l == m
+        }else{  // l == m, r == m+1
             l = m+1;
         }
     }
@@ -40,18 +40,18 @@ int searchII(int A[], int n, int key){  // probelm II: with duplicates
         int m = l + (r-l)/2;
         if(A[m] == key)    return m;
         if(A[l] < A[m]){    // left half is sorted
-            if(A[l] <= key && key < A[m]){
+            if(A[l] <= key && key < A[m]){  // if in [l, m)
                 r = m-1;
             }else{
                 l = m+1;
             }
         }else if(A[l] > A[m]){  // right half is sorted
-            if(A[m] < key && key <= A[r]){
+            if(A[m] < key && key <= A[r]){  // if in (m, r]
                 l = m+1;
             }else{
                 r = m-1;
             }
-        }else{    // e.g. {1,1,5,1,1,1} with key=5, no sense it is in which side. so the worst case is O(n)
+        }else{  // e.g.{1,1,5,1,1,1} with key=5, no idea where it is. so the time is O(n) in the worst
             l++;
         }
     }
@@ -61,54 +61,54 @@ int searchII(int A[], int n, int key){  // probelm II: with duplicates
 int findMin(vector<int>& nums){  // find minimum of a rotated sorted array
     int n = nums.size();
     if(n == 0)    return 0;
-    if(n == 1)    return nums[0];
     int l = 0, r = n-1;
-    while(l < r){
-        if(r == l+1)    break;    // include case of m==0
-        if(nums[l] < nums[r])    break;  // no rotate at all
+    while(l <= r){
         int m = l + (r-l)/2;
-        if(nums[m-1] > nums[m])    return nums[m];
-        if(nums[l] < nums[m]){ 
-            l = m+1;
-        }else{
+        if((m == 0 || nums[m-1] > nums[m])
+          &&(m == n-1 || nums[m] < nums[m+1]))    return nums[m];  // exit criteria
+        if(nums[l] < nums[m]){ // left half is sorted
+            if(nums[l] > nums[r])    l = m+1;
+            else                     r = m-1;
+        }else if(nums[l] > nums[m]){  // right half is sorted while left half is not
             r = m-1;
+        }else{  // l == m
+            l = m+1;
         }
     }
-    return min(nums[l], nums[r]);
+    return 0;
 }
 
 int findMinII(vector<int>& nums){  // duplicate exists in array
     int n = nums.size();
     if(n == 0)    return 0;
-    if(n == 1)    return nums[0];
-    int l = 1, res = nums[0], r = n-1;
-    while(l < r){
-        if(r == l+1)    break;
+    int l = 0, r = n-1;
+    while(l <= r){
         int m = l + (r-l)/2;
-        if(nums[m-1] > nums[m])    return min(res, nums[m]);
-        if(nums[l] == nums[m]){
-            res = min(min(nums[m], nums[r]), res);
+        if(m != 0 && m != n-1 
+          && nums[m-1] == nums[m] && nums[m] == nums[m+1]){  // [m-1] == [m] == [m+1]
+            if(nums[l] > nums[r])    l++;
+            else                     r--;
+            continue;
+        }
+        if((m == 0 || nums[m-1] > nums[m])
+          &&(m == n-1 || nums[m+1] >= nums[m]))    return nums[m];  // exit critetial
+        if(nums[l] < nums[m]){  // left half is sorted
+            if(nums[l] >= nums[r])    l = m+1;
+            else                      r = m-1;
+        }else if(nums[l] > nums[m]){  // right half is sorted while left is not
+            r = m-1;
+        }else if(l < m){
             l++;
-        }else if(nums[r] == nums[m]){
-            res = min(min(nums[l], nums[m]), res);
-            r--;
-        }else if(nums[l] == nums[r]){
-            res = min(nums[m], res);
-            l++;
-            r--;
-        }else if(nums[l] < nums[m]){
-            res = min(res, nums[l]);
-            l = m+1;
-        }else{
-            res = min(res, nums[m]);
-            r = m;
+        }else{  // r == l+1
+            return min(nums[l], nums[r]);
         }
     }
-    return min(res, min(nums[l], nums[r]));
+    return 0;
 }
 
 };
 
+/*
 void test_01(){
     string str;
     printf("please input sorted ascending array which is rotated in some where\n");
@@ -145,3 +145,4 @@ int main(int, char**){
     test_02();
     return 0;
 }
+*/
