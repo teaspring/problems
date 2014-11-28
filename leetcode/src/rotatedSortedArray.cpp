@@ -91,16 +91,15 @@ int findMinII(vector<int>& nums){  // duplicate exists in array
             continue;
         }
         if((m == 0 || nums[m-1] > nums[m])
-          &&(m == n-1 || nums[m+1] >= nums[m]))    return nums[m];  // exit critetial
+          &&(m == n-1 || nums[m+1] >= nums[m]))    return nums[m];  // exit case, note the '>=' for right side
         if(nums[l] < nums[m]){  // left half is sorted
             if(nums[l] >= nums[r])    l = m+1;
             else                      r = m-1;
         }else if(nums[l] > nums[m]){  // right half is sorted while left is not
             r = m-1;
-        }else if(l < m){
-            l++;
-        }else{  // r == l+1
-            return min(nums[l], nums[r]);
+        }else{  // nums[l] == nums[m]
+            if(l < m)    l++;
+            else         return min(nums[l], nums[r]);
         }
     }
     return 0;
