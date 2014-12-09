@@ -2,20 +2,22 @@ from xml.sax.handler import ContentHandler
 from xml.sax import parse
 import os
 
-class Dispatcher:
+# xml.sax.handler.ContentHandler is main callback interface of SAX
+
+class Dispatcher:  # mix-in class, inherited by WebsiteConstructor with ContentHandler
     
-    def dispath(self, prefix, name, attrs=None):
+    def dispatch(self, prefix, name, attrs=None):
         mname = prefix + name.capitalize()       # prefix is start/end, name is Head/Page...
         dname = 'default' + prefix.capitalize()  # like defaultStart, defaultEnd
         method = getattr(self, mname, None)      # self.<mname>
-        if callable(method): agrs = ()     # args is tuple
+        if callable(method): args = ()     # tuple
         else:
             method = getattr(self, dname, None)
-            args = name
-        if prefix == 'start': args += attrs
+            args = name,    # ',' makes it tuple
+        if prefix == 'start': args += attrs,
         if callable(method) : method(*args)
 
-    def startElement(self, name, attrs):
+    def startElement(self, name, attrs):  # override ContentHandler.startElement
         self.dispatch('start', name, attrs)
 
     def endElement(self, name):
