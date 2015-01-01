@@ -33,7 +33,7 @@
 #include "../include/preliminary.h"
 
 /*
- * my own solution, complicated,boring:(
+ * my own solution, complicated and boring...
  * */
 bool findmediansingle(int *A, int m, int *B, int n, double& res, int tag){
     if(m==0 && n==0){
@@ -49,13 +49,13 @@ bool findmediansingle(int *A, int m, int *B, int n, double& res, int tag){
     int u=m, v=0, i=0;
     int mid = (m+n)/2;
     if(tag==0){
-        while(v<u){               //[v,u)
+        while(v<u){ // [v,u)
             i = (v+u)/2;
-            int j=(mid-1-i);      //index in B[]
+            int j=(mid-1-i);  // index in B[]
             if(j<-1){
-                u=i;              //reduce k to enlarge j
-            }else if(j==-1){    //it means all elements in A[] less than A[i] add up to mid
-                if(B[0] >= A[i]){    //B[0] is above A[i], out of mid elements below A[i], A[i] is floor of the middle two
+                u=i;    // reduce k to enlarge j
+            }else if(j==-1){ //it means all elements in A[] less than A[i] add up to mid
+                if(B[0] >= A[i]){ //B[0] is above A[i], out of mid elements below A[i], A[i] is floor of the middle two
                     int high = A[i];
                     int low = i>0 ? A[i-1] : 0;
                     res = (double)(high + low)/2;
@@ -74,14 +74,14 @@ bool findmediansingle(int *A, int m, int *B, int n, double& res, int tag){
                     res = (double)(low + high)/2;
                     return true;
                 }else{
-                    v=i+1;    //enlarge i to reduce j
+                    v=i+1;  //enlarge i to reduce j
                     continue;
                 }
             }else{  //A[i] > B[j]
                 if(j==n-1 || A[i] <= B[j+1]){
-                    int high = A[i];    //now we fix A[i] as ceil of the two middle
+                    int high = A[i]; //now we fix A[i] as ceil of the two middle
                     int low = B[j];
-                    if(i>0 && B[j] < A[i-1]){    //A[i-1] is closer to A[i] than B[j]
+                    if(i>0 && B[j] < A[i-1]){ //A[i-1] is closer to A[i] than B[j]
                         low = A[i-1];
                     }
                     res = (double)(low+high)/2;
@@ -94,20 +94,20 @@ bool findmediansingle(int *A, int m, int *B, int n, double& res, int tag){
         }
         return false;
     }else{
-        while(v<u){               //[v,u)
+        while(v<u){ // [v,u)
             i = (v+u)/2;
-            int j=(mid-1-i);      //index in B[]
+            int j=(mid-1-i); //index in B[]
             if(j<-1){
-                u=i;              //reduce k to enlarge j
+                u=i;    //reduce k to enlarge j
             }else if(j==-1){  //it means all elements in A[] less than A[i] add up to mid
                 if(B[0] >= A[i]){  //B[0] is out of the mid elements below A[i], A[i] is the middle of all
                     res = (char)A[i];
                     return true;
                 }
                 break;
-            }else if(j>n-1){    //enlarge k to reduce j
+            }else if(j>n-1){ // enlarge k to reduce j
                 v=i+1;  
-            }else if(A[i] >= B[j]){    //1.A[i] and B[j] are middle two; 2.max(A[i], B[j]) is middle of all
+            }else if(A[i] >= B[j]){ // A[i] and B[j] are middle two; max(A[i], B[j]) is middle of all
                 if(j==n-1 || A[i] <= B[j+1]){
                     res = (double)A[i];
                     return true;
@@ -116,10 +116,10 @@ bool findmediansingle(int *A, int m, int *B, int n, double& res, int tag){
                 }
             }else{
                 if(i==m-1 || B[j] <= A[i+1]){
-                    res = (double)B[j];        //we need max(A[i], B[j])
+                    res = (double)B[j]; //we need max(A[i], B[j])
                     return true;
                 }else{
-                    v=i+1;    //enlarge i
+                    v=i+1;  //enlarge i
                 }
             }
         }
@@ -130,8 +130,7 @@ bool findmediansingle(int *A, int m, int *B, int n, double& res, int tag){
 double findmedian(int* A, int m, int* B, int n){
     double res = 0.0;
     int tag=0;
-    if((m+n)%2 == 1)
-      tag=1;            //1 for odd total count, 0  for even
+    if((m+n)%2 == 1)    tag=1;  // 1 for odd total count, 0  for even
     if(!findmediansingle(A,m,B,n,res,tag)){
         findmediansingle(B,n,A,m,res,tag);
     }
@@ -139,35 +138,33 @@ double findmedian(int* A, int m, int* B, int n){
 }
 
 /*
- * solution 2 rom internet, Geeky code!
+ * solution 2 geek code!
  * test data for debug: 
  * {0,1,2}, {4,5,6,7}
  * {4,5,6,7}, {3,8,9}
  * */
-int find(int *a, int n, int *b, int m, int th){    //th is 0-based
-    if(n==0)    return b[th];    //finally all the recurse returns from below two statements
+int find(int *a, int n, int *b, int m, int th){ //th is 0-based
+    if(n==0)    return b[th];
     if(m==0)    return a[th];
-    
-    printf("n=%d, m=%d, a[0]=%d, b[0]=%d\n", n,m, *a, *b);
-    
-    int mida = (n-1) >> 1;    //divide by 2
+    //printf("n=%d, m=%d, a[0]=%d, b[0]=%d\n", n,m, *a, *b);
+    int mida = (n-1) >> 1;
     int midb = (m-1) >> 1;
-    if(a[mida] < b[midb])    return find(b,m,a,n,th);    //ensure greater median in a[]
+    if(a[mida] < b[midb])    return find(b,m,a,n,th); //ensure greater median in a[]
     // below a[mida] >= b[midb], required middle must be in a[]
-    if(mida+1 + midb+1 <= th+1)        //clause1: it skips half of elements in b[]
+    if(mida+1 + midb+1 <= th+1){ // case 1: skip half of b[]
       return find(a, n, b+(midb+1), m-(midb+1), th-(midb+1));
-    else{    //clause2: skip half elements in a[], it always happens after clause1 
-      printf("n=%d, m=%d, mida=%d, midb=%d\n", n,m, mida, midb);
+    }else{  // case 2: skip half elements in a[], it always happens after case 1
+      //printf("n=%d, m=%d, mida=%d, midb=%d\n", n,m, mida, midb);
       return find(a,mida,b,m,th);
     }
 }
 
 double findMedianSortedArrays_02(int *A, int m, int *B, int n){
     if(m==0 && n==0)    return 0;
-    if((m+n) & 1){    //(m+n)%2 == 1, support case of m+n==1
+    if((m+n) & 1){  // (m+n)%2 == 1, including m+n == 1
         int mid = (m+n) >> 1;
         return find(A,m,B,n,mid);
-    }else{        //(m+n)%2 == 0
+    }else{  // (m+n)%2 == 0
         int r = (m+n) >> 1;
         int l = r-1;
         return (find(A,m,B,n,l) + find(A,m,B,n,r))/2.0;

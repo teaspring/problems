@@ -1,5 +1,4 @@
 /*
- * max2DRectangle.h
  * a matrix is made up of '1' and '0', find the maximum rectangle which ONLY contains '1'
  */
 
@@ -7,7 +6,7 @@
 
 class Max2DRectangle{
 public:
-    int maximumRectangle(vector<vector<char> >& matrix){
+    int maximumRectangle(vector<vector<char> >& matrix){ //to project 2D matrix to 1D array eventually
         if(matrix.empty())    return 0;
         int m = matrix.size(), n = matrix[0].size(), res = 0;
         if(n==0)    return 0;
@@ -24,23 +23,23 @@ public:
             }
             vector<int> height(horizon, horizon + n);
             int tmp = largestRectangleArea(height);
-            if(res < tmp)    res = tmp;
+            res = max(res, tmp);
         }
         return res;
     }
 
-    int largestRectangleArea(const vector<int>& height){    // max rectangle area in one array, in time O(n )
+    int largestRectangleArea(const vector<int>& height){ //max rectangle in one array, time is O(n)
         int n = height.size(), res = 0;
         if(n == 0)    return res;
         stack<int> stk;    // store index
-        for(int i=0; i<=n; i++){
+        for(int i=0; i<=n; i++){  // include i==n avoids the appendix process
             int h = i == n ? 0 : height[i];
             while(!stk.empty()){
                 int p = stk.top();
                 if(height[p] < h)    break;
                 stk.pop();
-                int start = stk.empty() ? -1 : stk.top();
-                res = max(res, (i - 1 - start) * height[p]);
+                int start = stk.empty() ? -1 : stk.top();  // start is exclusive index in left
+                res = max(res, (i-1 - start) * height[p]); // i-1 is inclusive index
             }
             stk.push(i);
         }

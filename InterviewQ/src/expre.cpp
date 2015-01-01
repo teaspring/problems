@@ -91,8 +91,9 @@ int procString(string input){
     }
     if(bMinus){
         res = lastRes - res;
-    }else
+    }else{
         res += lastRes;
+    }
     return res;
 }
 
@@ -124,20 +125,19 @@ int expreInter::term(){            //term = factor */ factor (loop)
         else if(ch =='/'){
             val /= factor();
         }
-        else
-            break;
+        else  break;
     }                            //ch points to next char beyond term
     return val;
 }
 
-int expreInter::factor(){        //factor = (-)number or (expression)
+int expreInter::factor(){ //factor = (-)number or (expression)
     int val = 0;
     int minus = 1;
     while(pos < inStr.length()){
         ch = inStr[pos++];
         if(ch == '(')
             return expression();
-        if(ch == '-'){            //support minus decimal, only '-' ahead of number is minus
+        if(ch == '-'){  // support minus decimal, only '-' ahead of number is minus
             if(val==0){
                 minus = -1;
                 continue;
@@ -146,7 +146,7 @@ int expreInter::factor(){        //factor = (-)number or (expression)
             val = 10*val + atoi(&ch);
             continue;
         }
-        --pos;                //ch(inStr[pos++]) is not processed, turn back pos to let others handle it
+        --pos;  // ch(inStr[pos++]) is not processed, turn back pos to let others handle it
         break;
     }
     return val * minus;

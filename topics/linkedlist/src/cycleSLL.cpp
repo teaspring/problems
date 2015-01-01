@@ -20,31 +20,32 @@ struct ListNode{
 
 bool hasCycle(ListNode *head){
     if(!head)    return false;
-    ListNode *n1=head, *n2=head;
+    ListNode *n1 = head, *n2 = head;
     while(n1 && n1->next){            //note that this loop is do-while{}
         n1 = n1->next->next;
         n2 = n2->next;
-        if(n1==n2)        return true;
+        if(n1 == n2)        return true;
     }
     return false;
 }
 
-ListNode* findCycleStart(ListNode* head){
+ListNode* findCycleStart(ListNode *head){
     if(!head)        return NULL;
     ListNode *n1 = head, *n2=head;
     while(n1 && n1->next){
         n1 = n1->next->next;
         n2 = n2->next;
-        if(n1==n2)    break;
+        if(n1 == n2)    break;
     }
     if(!n1 || !(n1->next))        return NULL;
-    n1=head;
+    n1 = head;
     while(n1 != n2){
-        n1=n1->next;
-        n2=n2->next;
+        n1 = n1->next;
+        n2 = n2->next;
     }
     return n1;
 }
+
 int main(int, char**){
     return 0;
 }

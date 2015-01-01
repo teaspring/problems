@@ -1,8 +1,8 @@
 /*
  * 20130714, question1 on InterviewStreet, and it was on leetcode in 2010/10 as well:
- * In Excel, the column named as A(1), B(2), Z(26), AA(27), ...AZ
- * test data: 
- * 27(AA), 1378(AZZ), 676(YZ), 702(ZZ)
+ * In Excel, the column named as A(1), B(2), Z(26), AA(27), ...AZ(52), AAA(53)
+ * test data:
+ * Z(26), AA(27), AB(28), AZ(52), AAA(53)
  * */
 #include <iostream>
 #include "stdio.h"
@@ -12,13 +12,13 @@ using namespace std;
 void numToStr01(int n){
     int index = 0;
     int sum = n;
-    while((sum-1)/26){        //analysis 1-A, 26-Z, 26*26-YZ, 27*26-ZZ
+    while((sum-1)/26){
         index++;
         sum = (sum-1)/26;
     }
-    while(index>-1){            //time O(n^2), n is digits of N
+    while(index > -1){    //time O(n^2), very bad
         sum = n;
-        for(int i=0;i<index;i++)
+        for(int i=0; i<index; ++i)
             sum = (sum-1)/26;
         printf("%c", 'A'+ (sum-1) % 26);
         index--;
@@ -34,13 +34,13 @@ void numToStr02(int n){
     int order=1, offset=0;
     int m = (n-1)/N;
     while(m>0){
-        offset += order;            // offset exists because of it needs to minus 1 on each decimal bit when calculating
-        order *= N;                 // order=N^index
+        offset += order;
+        order *= N;      // order=N^index
         m = (m-1)/N;
     }
     m = n;
     while(order>0){
-        int x = (m - offset)/order;        // x is value on decimal bit of m
+        int x = (m - offset)/order;
         printf("%c", 'A' + (x-1)%N);
         m -= order * x;
         offset -= order/N;
@@ -54,6 +54,7 @@ void numToStr02(int n){
  * note: if require A-0, B-1,...Z-25, AA-26, AB-27..., it only differs in the first line is n%26 and n/26 instead of n-1
  * */
 void numToStr03(int n){
+    if(n == 0)    return;
     string str(1, 'A' + (n-1)%26);
     n = (n-1)/26;
     while(n){
