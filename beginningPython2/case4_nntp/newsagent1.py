@@ -4,7 +4,7 @@
 
 from nntplib import NNTP
 from time import strftime, time, localtime
-day = 24*60*60  # seconds of one day
+day = 24 * 60 * 60  # seconds of one day
 
 yesterday = localtime(time() - day)
 date = strftime('%y%m%d', yesterday)

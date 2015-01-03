@@ -9,7 +9,7 @@ day = 24 * 60 * 60  # second of one day
 
 def wrap(string, max=70):
     """
-    将字符串调整为最大行宽
+    maximize the char width
     """
     return '\n'.join(textwrap(string)) + '\n'
 
@@ -31,7 +31,7 @@ class NewsAgent:
         """
         get news from all src and publish to all dest
         """
-        items = []
+        items = []   # list of list
         for src in self.sources:
             items.extend(src.getItems())
         for dest in self.destinations:
@@ -106,7 +106,7 @@ class HTMLDestination:
     def __init__(self, filename):
         self.filename = filename
 
-    def receiveItems(slef, items):
+    def receiveItems(self, items):
         out = open(self.filename, 'w')
         print >> out, """
         <html>
@@ -135,34 +135,34 @@ class HTMLDestination:
         </html>
         """
 
-    def runDefaultSetup():
-        """
-        default setup of src and tgt, can be modified manually
-        """
-        agent = NewsAgent()
+def runDefaultSetup():
+    """
+    default setup of src and tgt, can be modified manually
+    """
+    agent = NewsAgent()
 
-        # SimpleWebSource which get news from BBS news website
-        bbc_url = 'http://news.bbc.co.uk/text_only.stm'
-        bbc_title = r'(?s)a href="[^"]*">\s*<b>\s*(.*?)\s*</b>'
-        bbc_body = r'(?s)</a>\s*<br />\s*(.*?)\s*<'
-        bbc = SimpleWebSource(bbc_url, bbc_title, bbc_body)
+    # SimpleWebSource which get news from BBS news website
+    bbc_url = 'http://news.bbc.co.uk/text_only.stm'
+    bbc_title = r'(?s)a href="[^"]*">\s*<b>\s*(.*?)\s*</b>'
+    bbc_body = r'(?s)</a>\s*<br />\s*(.*?)\s*<'
+    bbc = SimpleWebSource(bbc_url, bbc_title, bbc_body)
 
-        agent.addSource(bbc)
+    agent.addSource(bbc)
         
-        # NNTPSource from comp.lang.python.announce
-        clpa_server = 'news.foo.bar'  # Insert real server name
-        clpa_group = 'comp.lang.python.announce'
-        clpa_window = 1
-        clpa_NNTPSource(clpa_server, clpa_group, clpa_window)
+    # NNTPSource from comp.lang.python.announce
+    clpa_server = 'mcadams.posc.mu.edu'  # Insert your real server name
+    clpa_group = 'alt.assassination.jfk'
+    clpa_window = 1
+    clpa = NNTPSource(clpa_server, clpa_group, clpa_window)
 
-        agent.addSource(clpa)
+    agent.addSource(clpa)
 
-        # add plain text tgt and HTML tgt
-        agent.addDestination(PlainDestination())
-        agent.addDestination(HTMLDestination('news.html'))
+    # add plain text tgt and HTML tgt
+    agent.addDestination(PlainDestination())
+    agent.addDestination(HTMLDestination('news.html'))
 
-        # publish
-        agent.distribute()
+    # publish
+    agent.distribute()
 
 if __name__ == '__main__': runDefaultSetup()
 
