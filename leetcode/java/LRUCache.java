@@ -4,8 +4,8 @@
  * 2. void set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity, it should
  * invalidate the least recently used item before inserting a new item.
  * 
- * solution 1: self-defined double linked list(DLL), insert new node at tail. every get() move referred node to tail, so that the head
- * becomes "least recently used" node till now.
+ * solution 1: self-defined double linked list(DLL) to save node, insert new node at tail; and HashMap for O(1) retrieve.
+ *             every get() move referred node to tail, so that the head becomes "least recently used" node till now.
  * soltuion 2: use LinkedHashMap.
  *
  * */
