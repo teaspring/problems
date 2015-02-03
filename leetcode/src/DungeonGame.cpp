@@ -191,12 +191,18 @@ private:
         int np1 = 0, nsum1 = 0, np2 = 0, nsum2 = 0;
         directStep(p1, sum1, val, np1, nsum1);
         directStep(p2, sum2, val, np2, nsum2);
-        if(np1 <= np2){
-            np = np1;
+        if(nsum1 == nsum2){  // key block to determine next step choice
             nsum = nsum1;
-        }else{
-            np = np2;
-            nsum = nsum2;
+            np = min(np1, np2);
+        }else if(np1 == np2){
+            np = np1;
+            nsum = max(nsum1, nsum2);
+        }else if((np1 < np2 && nsum1 > nsum2) || (np1 > np2 && nsum1 < nsum2)){
+            np = min(np1, np2);
+            nsum = max(nsum1, nsum2);
+        }else{ // (np1, nsum1) > or < (np2, nsum2)
+            np = min(np1, np2);
+            nsum = min(nsum1, nsum2);
         }
         return;
     }

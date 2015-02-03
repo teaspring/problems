@@ -66,6 +66,21 @@ TEST(Function_Test, Positive04){
     EXPECT_EQ(30, hp);
 }
 
+// Test case: Function_Test
+// Test name: Positive05
+TEST(Function_Test, Positive05){
+    Solution s;
+    int arr[][3] = {{ 1,  2,  1},
+                    {-2, -3, -3},
+                    { 3,  2, -2}};
+    vector<vector<int> > dungeon;
+    for(int i=0; i<3; i++){
+        dungeon.push_back(vector<int>(arr[i], arr[i] + sizeof(arr[i])/sizeof(int)));
+    }
+    int hp = s.calculateMinimumHP(dungeon);
+    EXPECT_EQ(1, hp);
+}
+
 // Test case: Edge_Test
 // Test name: single
 TEST(Edge_Test, single){
