@@ -103,7 +103,7 @@ public:
         int n = dungeon.size();
         if(n == 0)    return 0;
         int m = dungeon[0].size();
-        vector<vector<int> >  twiRows[2];
+        vector<vector<int> >  horiRow;
         vector<vector<int> >  leftBound;
         vector<int> startRoom;
         int p0 = 0, sum0 = 0;
@@ -113,14 +113,14 @@ public:
         startRoom.push_back(p0);  // room[0][0] has no predecessor
         startRoom.push_back(sum0);
         int currR = 0;
-        twiRows[currR].push_back(startRoom);
+        horiRow.push_back(startRoom);
         leftBound.push_back(startRoom);
 
         for(int j=1; j<m; j++){  // for row[0]
-            int p1   = twiRows[currR][j-1][0];
-            int sum1 = twiRows[currR][j-1][1];
-            int p2   = twiRows[currR][j-1][2];
-            int sum2 = twiRows[currR][j-1][3];
+            int p1   = horiRow[j-1][0];
+            int sum1 = horiRow[j-1][1];
+            int p2   = horiRow[j-1][2];
+            int sum2 = horiRow[j-1][3];
             int np = 0, nsum = 0;
             nextStep(p1, sum1, p2, sum2, dungeon[0][j], np, nsum);
             vector<int> room;
@@ -128,7 +128,7 @@ public:
             room.push_back(nsum);
             room.push_back(np);  // for row[0], every room has only one predecessor
             room.push_back(nsum);
-            twiRows[currR].push_back(room);
+            horiRow.push_back(room);
         }
 
         for(int i=1; i<n; i++){  // for column[0]
@@ -148,33 +148,34 @@ public:
 
         for(int i=1; i<n; i++){
             currR = 1 - currR;
-            twiRows[currR].clear();
-            twiRows[currR].push_back(leftBound[i]);
+            horiRow[0].clear();
+            for(int k = 0; k < 4; k++){
+                horiRow[0].push_back(leftBound[i][k]);
+            }
             for(int j=1; j<m; j++){
                 int np1 = 0, nsum1 = 0, np2 = 0, nsum2 = 0;
-                nextStep(twiRows[1 - currR][j][0],
-                         twiRows[1 - currR][j][1],
-                         twiRows[1 - currR][j][2],
-                         twiRows[1 - currR][j][3],
+                nextStep(horiRow[j][0],
+                         horiRow[j][1],
+                         horiRow[j][2],
+                         horiRow[j][3],
                          dungeon[i][j],
                          np1,
                          nsum1);
-                nextStep(twiRows[currR][j-1][0],
-                         twiRows[currR][j-1][1],
-                         twiRows[currR][j-1][2],
-                         twiRows[currR][j-1][3],
+                nextStep(horiRow[j-1][0],
+                         horiRow[j-1][1],
+                         horiRow[j-1][2],
+                         horiRow[j-1][3],
                          dungeon[i][j],
                          np2,
                          nsum2);
-                vector<int> room;
-                room.push_back(np1);
-                room.push_back(nsum1);
-                room.push_back(np2);
-                room.push_back(nsum2);
-                twiRows[currR].push_back(room);
+                horiRow[j].clear();
+                horiRow[j].push_back(np1);
+                horiRow[j].push_back(nsum1);
+                horiRow[j].push_back(np2);
+                horiRow[j].push_back(nsum2);
             }
         }
-        return min(twiRows[currR][m-1][0], twiRows[currR][m-1][2]);
+        return min(horiRow[m-1][0], horiRow[m-1][2]);
     }
 
 private:
