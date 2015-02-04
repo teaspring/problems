@@ -41,6 +41,28 @@ TEST(Function_Test, Positive04){
     EXPECT_EQ("12212121", str);
 }
 
+// Test case: Function_Test
+// Test name: Positive05
+// very good unit test case which is not in scope of oj.leetcode judge :)
+TEST(Function_Test, Positive05){
+    Solution s;
+    int arr[] = {121, 12113};
+    vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
+    string str = s.largestNumber(num);
+    EXPECT_EQ("12113121", str);
+}
+
+// Test case: Function_Test
+// Test name: Positive05
+// spawned case of Positive05
+TEST(Function_Test, Positive06){
+    Solution s;
+    int arr[] = {121, 1211212};
+    vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
+    string str = s.largestNumber(num);
+    EXPECT_EQ("1211212121", str);
+}
+
 // Test case: Edge_Test
 // Test name: Zero
 TEST(Edge_Test, Zero){

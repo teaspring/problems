@@ -83,16 +83,13 @@ private:
         }
         int res = 0;
         if(nL == nR)    return res;
-        char *tmp = new char[2];
-        tmp[1] = '\0';
-        if(i == nL){  // deeper thinking: compare the sub division
-            tmp[0] = decR[nL];
-            res = compDeciFromHigh(decL, nL, tmp, 1);
-        }else{  // i == nR
-            tmp[0] = decL[nR];
-            res = compDeciFromHigh(tmp, 1, decR, nR);
+        int deltaLen = max(nL, nR) - i;  // i == min(nL, nR)
+        // next: compare the tail of long str and the short str
+        if(i == nL){  // left str is short
+            res = compDeciFromHigh(decL, nL, decR + nL, deltaLen);
+        }else{  // right str is short
+            res = compDeciFromHigh(decL + nR, deltaLen, decR, nR);
         }
-        delete[] tmp;
         return res;
     }
 
