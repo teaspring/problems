@@ -98,7 +98,6 @@ public:
      *
      *  unfortunately, this solution fails for unitttest case Function Test -> Positive04 :(
      * */
-    
     int calculateMinimumHP(vector<vector<int> > &dungeon){
         int n = dungeon.size();
         if(n == 0)    return 0;
@@ -112,7 +111,6 @@ public:
         startRoom.push_back(sum0);
         startRoom.push_back(p0);  // room[0][0] has no predecessor
         startRoom.push_back(sum0);
-        int currR = 0;
         horiRow.push_back(startRoom);
         leftBound.push_back(startRoom);
 
@@ -147,7 +145,6 @@ public:
         }
 
         for(int i=1; i<n; i++){
-            currR = 1 - currR;
             horiRow[0].clear();
             for(int k = 0; k < 4; k++){
                 horiRow[0].push_back(leftBound[i][k]);
