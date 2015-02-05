@@ -8,7 +8,7 @@
 #include "../include/preliminary.h"
 
 /*
- * solution 1: in use of vector<> which leads to Memory Limit Error
+ * solution 1: vector<> is used, but Memory Limit Error:(
  * */
 struct element{
     int val;
@@ -45,7 +45,7 @@ private:
 };
 
 /*
- * solution 2: in use of double linked list(DLL)
+ * solution 2: use double linked list(DLL), but memory limit error as well :(
  * */
 struct node{
     int val;
@@ -74,7 +74,7 @@ public:
         if(mTail)    mTail->next = NULL;
         tmp->pre = NULL;
         delete tmp;
-        if(!mTail)    mHead = NULL;    // cannot be forgotten !
+        if(!mTail)    mHead = NULL; // cannot be forgotten !
         return;
     }
 
@@ -95,7 +95,7 @@ public:
             node* tmp = mHead;
             mHead = mHead->next;
             tmp->next = NULL;
-            mHead->pre = NULL;
+            if(mHead)    mHead->pre = NULL;
             delete tmp;
         }
         mTail = NULL;
@@ -104,4 +104,109 @@ public:
 private:
     node* mHead;
     node* mTail;
+};
+
+/*
+ * this solution causes memory limit error ?!!
+ * */
+class MinStackIII{
+public:
+    void push(int x){
+        if(stk.empty()){
+            stk.push(new element(x, x));
+        }else{
+            int preMin = stk.top()->minBelow;
+            stk.push(new element(x, min(preMin, x)));
+        }
+        return;
+    }
+
+    void pop(){
+        if(!stk.empty()){
+            element* tmp = stk.top();
+            stk.pop();
+            delete tmp;
+        }
+    }
+
+    int top(){
+        return stk.empty() ? 0 : stk.top()->val;
+    }
+
+    int getMin(){
+        return stk.empty() ? 0 : stk.top()->minBelow;
+    }
+
+    virtual ~MinStackIII(){
+        while(!stk.empty()){
+            pop();
+        }
+    }
+
+private:
+    stack<element*> stk;
+};
+
+/*
+ * the oj judge accepts this kind of structure without explicit stack<>
+ * each node takes extra pointers of minimum next
+ * */
+struct ItsNode{
+    int val;
+    ItsNode* next;
+    ItsNode* minNext;
+    ItsNode(int x):val(x), next(NULL), minNext(NULL){}
+};
+
+class MinStackIV{
+public:
+    void push(int x){
+        ItsNode* curr = new ItsNode(x);
+        if(empty()){
+            minHead = curr;
+        }else{
+            curr->next = head;
+            curr->minNext = minHead;
+            if(x < minHead->val)    minHead = curr;
+        }
+        head = curr;
+        return;
+    }
+
+    void pop(){
+        if(empty())    return;
+
+        ItsNode* tmp = head;
+        head = tmp->next;
+        tmp->next = NULL;
+
+        minHead = tmp->minNext;
+        tmp->minNext = NULL;
+        delete tmp;
+        return;
+    }
+
+    int top(){
+        return empty() ? 0 : head->val;
+    }
+
+    int getMin(){
+        return empty() ? 0 : minHead->val;
+    }
+
+    bool empty(){
+        return head == NULL;
+    }
+
+    MinStackIV():head(NULL), minHead(NULL){}
+
+    virtual ~MinStackIV(){
+        while(!empty()){
+            pop();
+        }
+    }
+
+private:
+    ItsNode* head;     // as top of the stack
+    ItsNode* minHead;  // as min node of the stack
 };
