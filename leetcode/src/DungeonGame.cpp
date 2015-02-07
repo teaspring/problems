@@ -9,20 +9,6 @@
  *  result: the initial health of the knight must be at least 7 if he walks right, right, down, down.
  * */
 
-/*
- * solution1 with bug:
- * P[i][j] - minimum initial health points starting from room [0][0]
- * Sum[i][j] - health points for knight with minimum initial P[i][j] to reach room [i][j]
- * V[i][j] - health threats or power-up for room [i][j]
- *
- * if V[i][j] >= 0, P[i][j] = min{P[i-1][j], P[i][j-1]
- * if V[i][j] < 0,
- * as Sum[i-1][j] + delta1 + V[i][j] >= 1, delta1 = max{0, 1-V[i][j]-Sum[i-1][j]}
- * delta2 = max{0, 1-V[i][j]-Sum[i][j-1]}
- * P[i][j] = min(delta1 + P[i-1][j], delta2 + P[i][j-1])
- * Sum[i][j] = V[i][j] + down or right ? Sum[i-1][j] : Sum[i][j-1]
- * */
-
 #include "stdio.h"
 #include <iostream>
 #include <cstring>
@@ -96,7 +82,9 @@ public:
      *  (3,1)    |(6,1)     |(8,1)    |]
      *  so the result is 3
      *
-     *  unfortunately, this solution fails for unitttest case Function Test -> Positive04 :(
+     * compared to solution 1, the main difference is it think of every cell has two optional pairs of
+     * (minInitHP, sumHP). one of it has the smallest initHP for current room itself, the other pair has
+     * sufficient HP to help afford potential minus threats in next room.
      * */
     int calculateMinimumHP(vector<vector<int> > &dungeon){
         int n = dungeon.size();
@@ -198,7 +186,7 @@ private:
         }else if((np1 < np2 && nsum1 > nsum2) || (np1 > np2 && nsum1 < nsum2)){
             np = min(np1, np2);
             nsum = max(nsum1, nsum2);
-        }else{ // (np1, nsum1) > or < (np2, nsum2)
+        }else{   // (np1, nsum1) > or < (np2, nsum2)
             np = min(np1, np2);
             nsum = min(nsum1, nsum2);
         }
@@ -212,19 +200,4 @@ private:
         return;
     }
 };
-/*
-void test(){
-    int arr1[] = {1, -3, 3};
-    int arr2[] = {0, -2, 0};
-    int arr3[] = {-3, -3, -3};
-    vector<vector<int> > dungeon;
-    dungeon.push_back(vector<int>(arr1, arr1 + sizeof(arr1)/sizeof(int)));
-    dungeon.push_back(vector<int>(arr2, arr2 + sizeof(arr2)/sizeof(int)));
-    Solution s;
-    s.calculateMinimumHP(dungeon);
- }
 
-int main(){
-    test();
-}
-*/
