@@ -65,6 +65,10 @@ gtest-all.o : $(GTEST_SRCS_)
 gtest_main.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c $(GTEST_DIR)/src/gtest_main.cc
 
+# ar: create, modify and extract archives
+# rv: r - replace existing or insert new files into the one; v - verbose
+# below is to create gtest_main.a based on gtest-all.o and gtest_main.o
+
 gtest.a : gtest-all.o
 	$(AR) $(ARFLAGS) $@ $^
 
