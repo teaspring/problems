@@ -1,5 +1,4 @@
 #problems
-================================================================
 
  1. programming of data structure and algorithms
  2. solutions to problems from some online programming judger sites
