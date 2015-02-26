@@ -22,9 +22,9 @@ practice & exercise of data structure and algorithm, including some online probl
  - stackqueue
  
 ##InterviewQ
- > some interview problems solutions
+ > solutions to some typical interview problems
  
-##weixin_DZQZ
+##weixin_DZGZ
  > solutions to problems published by wechat public account “待字闺中", which opened in mid 2013.
 
 ##leetcode
@@ -36,3 +36,8 @@ practice & exercise of data structure and algorithm, including some online probl
 ##blogrepository
  > downloadable pkg repository for blog
 
+##beginningPython2
+ > tutorial projects pragramming from book "beginning-python2"
+
+##statistics
+ > practice of statistical process
