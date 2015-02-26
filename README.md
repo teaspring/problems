@@ -1,10 +1,12 @@
 problems
 ========
 
-practice & exercise of data structure and algorithm, including some online problems' solutions.
+programming of data structure and algorithms
+solutions to problems from some online programming judger sites
+practices of languages, framework, and theories
 
 ##topics
- > exercises on data structure and algorithm divided by topic, mainly C++
+ > implementations to data structure and algorithms in categories, mainly C++
  
  - binarysearch
  - binarytree
@@ -21,23 +23,23 @@ practice & exercise of data structure and algorithm, including some online probl
  - sort
  - stackqueue
  
+##leetcode
+ > implementation of problems on oj.leetcode.com, both C++ & Java.
+
 ##InterviewQ
  > solutions to some typical interview problems
  
 ##weixin_DZGZ
- > solutions to problems published by wechat public account “待字闺中", which opened in mid 2013.
-
-##leetcode
- > solutions implementation to problems on oj.leetcode.com, both C++ & Java.
-
-##util
- > utilities to help process source code file 
- 
-##blogrepository
- > downloadable pkg repository for blog
+ > solutions to problems on wechat account “待字闺中" in 2013-2014
 
 ##beginningPython2
- > tutorial projects pragramming from book "beginning-python2"
+ > tutorial projects from book "beginning-python2"
 
 ##statistics
  > practice of statistical process
+
+##util
+ > utilities 
+ 
+##blogrepository
+ > downloadable pkg repository for blog
