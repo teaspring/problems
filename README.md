@@ -24,6 +24,7 @@
  
 ###leetcode
  > implementation of problems on oj.leetcode.com, both C++ & Java.
+ > C++ unit test via googletest
 
 ###InterviewQ
  > solutions to some typical interview problems
@@ -41,4 +42,4 @@
  > utilities 
  
 ###blogrepository
- > downloadable pkg repository for blog
+ > downloadable pkg repository for blogger
