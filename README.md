@@ -23,6 +23,7 @@
  - stackqueue
  
 ###leetcode
+
  - implementation of problems on oj.leetcode.com, both C++ & Java.
  - C++ unit test via googletest
 
@@ -37,6 +38,9 @@
 
 ###statistics
  > practice of statistical process
+ 
+ - cpp/imageSearch
+ - py/imageSearch
 
 ###util
  > utilities 
