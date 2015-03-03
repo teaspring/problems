@@ -2,8 +2,10 @@
  * @file searchImages.cpp
  * @brief C++ implementation of one search image engine based on statistical test with histogram 
  * @author bruce.yu
- * 
- * one recommend HSV bins are {8, 12, 3}
+ *
+ * one optional HSV bin set is {8, 12, 3}, from pyimagesearch
+ * another is {50, 60}, without V, from opencv-userguide/sample/imgproc/histogram
+ * finally, I find {50, 60, 2} is relatively better than above two options
  *
  * how to compile it:
  * precedence: opencv installed already
@@ -21,9 +23,12 @@
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/core/core.hpp"
 
 using namespace std;
 using namespace cv;
+
+const int SEG_COUNT = 5;
 
 class SearchEngine{
 
@@ -45,12 +50,11 @@ private:
     void calcMaskedHists(const Mat* hsvSrc, int nimages, Mat* hists, int n, Mat* masks, const int* channels,
                 const int dims, const int* histSize, const float** ranges);
 
-    double compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha);
+    double compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, double alpha);
 
     inline bool isImage(char* name){
         return (fnmatch("*.jpg", name, FNM_CASEFOLD) == 0
-                || (fnmatch("*.png", name, FNM_CASEFOLD) == 0)
-                || (fnmatch("*.jpeg", name, FNM_CASEFOLD)) == 0);
+                || fnmatch("*.png", name, FNM_CASEFOLD) == 0);
     }
 
 private:
@@ -59,55 +63,67 @@ private:
 
 class Utility{
 public:
-    static void quick_sort(double* values, int n, char** names);
+    void quick_sort(double* values, int n, char** names);
+
+    const static double eps = 1e-5;
+
+private:
+    void swap_cstr(char** pcstr1, char** pcstr2){
+        char* tmp = *pcstr2;
+        *pcstr2 = *pcstr1;
+        *pcstr1 = tmp;
+        tmp = NULL;
+        return;
+    }
+
+    void swap_double(double* pd1, double* pd2){
+        double tmp = *pd2;
+        *pd2 = *pd1;
+        *pd1 = tmp;
+        return;
+    }
 };
 
+    void Utility::quick_sort(double* values, int n, char** names){
+        if(n < 2)    return;
+        double *p = values, *q = values - 1, *t = values + n-1;
+        while(p < t){
+            if((*p - *t) < eps){
+                q++;
+                swap_double(q, p);
+                swap_cstr(names + (q - values), names + (p - values));
+            }
+            p++;
+        }
+        q++;
+        swap_double(q, t);
+        swap_cstr(names + (q - values), names + (t - values));
+
+        quick_sort(values, (q - values), names);
+        quick_sort(q + 1, n - 1 - (q - values), names + (q + 1 - values));
+    }
+
+    /*
+     * compare two test images with one base image
+     * */
     void SearchEngine::searchHist(const char* base, const char* test1, const char* test2){
-        Mat src_base,  hsv_base;
-        Mat src_test1,  hsv_test1;
-        Mat src_test2,  hsv_test2;
+        Mat baseHists[SEG_COUNT];
+        getMaskedHists(base, baseHists);
 
-        src_base  = imread(base,  1); // int flag > 0, return a 3-channels color image
-        src_test1 = imread(test1, 1);
-        src_test2 = imread(test2, 1);
+        Mat test1Hists[SEG_COUNT];
+        getMaskedHists(test1, test1Hists);
 
-        /// BGR2HSV, the srcMat must have 3 or 4 channels 
-        cvtColor(src_base,   hsv_base,  COLOR_BGR2HSV); // now V = R
-        cvtColor(src_test1, hsv_test1,  COLOR_BGR2HSV);
-        cvtColor(src_test2, hsv_test2,  COLOR_BGR2HSV);
-
-        /// histogram size consisting of multiple channel bins
-        int histSize[] = { h_bins, s_bins, v_bins };
-
-        float h_ranges[] = { 0, 180 };
-        float s_ranges[] = { 0, 256 };
-        float v_ranges[] = { 0, 256 };
-        const float* ranges[] = { h_ranges, s_ranges, v_ranges };
-
-        int channels[] = { 0, 1, 2 };  // H, S and V
-
-        /// we have 5 segment histograms for each image
-        Mat srcMasks[5];
-        generateFiveMasks(hsv_base.size(), srcMasks);
-        Mat baseHists[5];
-        calcMaskedHists(&hsv_base, 1, baseHists, 5, srcMasks, channels, 3, histSize, ranges);
-
-        Mat test1Masks[5];
-        generateFiveMasks(hsv_test1.size(), test1Masks);
-        Mat test1Hists[5];
-        calcMaskedHists(&hsv_test1, 1, test1Hists, 5, test1Masks, channels, 3, histSize, ranges);
-
-        Mat test2Masks[5];
-        generateFiveMasks(hsv_test2.size(), test2Masks);
-        Mat test2Hists[5];
-        calcMaskedHists(&hsv_test2, 1, test2Hists, 5, test2Masks, channels, 3, histSize, ranges);
+        Mat test2Hists[SEG_COUNT];
+        getMaskedHists(test2, test2Hists);
 
         /// compare histogram in weighted
-        double alpha = 0.28; // our 5 weights are [0.28, 0.18, 0.18, 0.18, 0.18]
+        double alpha = 0.28; // our 5 weights are [alpha, (1 - alpha)/(n-1),...]
         int compare_method = 1;  // 1 for CV_COMP_CHISQR
-        double base_test1 = compareHistWeighted(baseHists, 5, test1Hists, compare_method, alpha);
-        double base_test2 = compareHistWeighted(baseHists, 5, test2Hists, compare_method, alpha);
-        printf("weighted compare hitogram Base-Test(1), Base-Test(2): %.4f, %.4f \n", base_test1, base_test2);
+        double base_base  = compareHistWeighted(baseHists, SEG_COUNT, baseHists, compare_method, alpha);
+        double base_test1 = compareHistWeighted(baseHists, SEG_COUNT, test1Hists, compare_method, alpha);
+        double base_test2 = compareHistWeighted(baseHists, SEG_COUNT, test2Hists, compare_method, alpha);
+        printf("weighted compare hitogram perfrect,  Base-Test(1), Base-Test(2): %f, %f, %f \n",
+                    base_base, base_test1, base_test2);
         return;
     }
 
@@ -115,19 +131,19 @@ public:
      * search top images in <dstPath> similar with srcImg
      * */
     int SearchEngine::searchImages(char* base, char** dstPath, char** pImgNames /* out */, int topN){
-        Mat baseHists[5];
+        Mat baseHists[SEG_COUNT];
         if(getMaskedHists(base, baseHists)){
             printf("source image fail to calculate masked histograms!\n");
             return 0;
         }
 
-        const int nhists = 5;
-        const int dims = 3;
         const int method_idx = 1;
-        const float alpha = 0.28;
+        const double alpha = 0.28;
 
         double sqrValues[MAX_COUNT];
         int soldCount = 0;
+
+        double t = (double)getTickCount();
 
         /// iterate <dstPath> for image
         FTS *tree = fts_open(dstPath, FTS_NOCHDIR, 0);
@@ -138,31 +154,40 @@ public:
 
         FTSENT *node;
         while(node = fts_read(tree)){
+            if(MAX_COUNT == soldCount)    break;
             if(node->fts_level > 0 && node->fts_name[0] == '.'){
                 fts_set(tree, node, FTS_SKIP);
                 continue;
             }
             else if((node->fts_info & FTS_F) && isImage(node->fts_name)){ // fts_name is short file name
-                Mat testHists[5];
+                Mat testHists[SEG_COUNT];
                 if(getMaskedHists(node->fts_accpath, testHists)){
                     fts_set(tree, node, FTS_SKIP);
                     continue;
                 }
                 char* lname = node->fts_accpath; // fts_accpath, access path is long file name
                 char* nameCopy = new char[strlen(lname) + 1];
-                strcpy(nameCopy, lname);
                 nameCopy[strlen(lname)] = '\0';
+                strcpy(nameCopy, lname);
+
                 pImgNames[soldCount] = nameCopy;
-                sqrValues[soldCount] = compareHistWeighted(baseHists, nhists, testHists, method_idx, alpha);
+                sqrValues[soldCount] = compareHistWeighted(baseHists, SEG_COUNT, testHists, method_idx, alpha);
                 soldCount++;
             }
         }
 
+        double seconds = ((double)getTickCount() - t) / getTickFrequency();
+
+        Utility util;
+        util.quick_sort(sqrValues, soldCount, pImgNames);
+
         printf("base file: %s\n", base);
         printf("==========================================\n");
-        for(int i = 0 ; i < soldCount; i++){
-            printf("image %s, chi-square value: %.4f\n", pImgNames[i], sqrValues[i]);
+        for(int i = 0 ; i < min(topN, soldCount); i++){
+            printf("image %s, chi-square value: %f\n", pImgNames[i], sqrValues[i]);
         }
+        printf("==========================================\n");
+        printf("image search cost: %f seconds\n", seconds);
 
         return soldCount;
     }
@@ -187,14 +212,15 @@ public:
         float h_ranges[] = { 0, 180 };
         float s_ranges[] = { 0, 256 };
         float v_ranges[] = { 0, 256 };
-        const float* ranges[] = { h_ranges, s_ranges, v_ranges };
+        const float* ranges[] = { h_ranges, s_ranges, v_ranges};
 
-        int channels[] = { 0, 1, 2 };  // H, S and V
+        int channels[] = {0, 1, 2};  // H, S and V
+        const int dims = sizeof(channels) / sizeof(int);
 
         /// we have 5 segment histograms for each image
         Mat srcMasks[5];
         generateFiveMasks(hsvSrc.size(), srcMasks);
-        calcMaskedHists(&hsvSrc, 1, hists, 5, srcMasks, channels, 3, histSize, ranges);
+        calcMaskedHists(&hsvSrc, 1, hists, 5, srcMasks, channels, dims, histSize, ranges);
         return 0;
     }
 
@@ -247,7 +273,7 @@ public:
     * @param alpha: weight of 1st element
     * @param methodIdx: one of CV_COMP_XXX
     * */
-    double SearchEngine::compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha){
+    double SearchEngine::compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, double alpha){
         double beta = (1 - alpha) / (n-1);
         double res = compareHist(histsBase[0], histsTest[0], methodIdx) * alpha;
         for(int i=1; i < n; i++){
@@ -263,7 +289,7 @@ int main( int argc, char** argv ){
         printf("** Error. Usage: ./searchHist_Demo <image0_base> <images_dir_toSearch> <number_results>\n");
         return -1;
     }
-    SearchEngine se(8, 12, 3);
+    SearchEngine se(50, 60, 2);
     char* outImages[SearchEngine::MAX_COUNT];
     se.searchImages(argv[1], argv + 2, outImages, atoi(argv[3]));
     // se.searchHist(argv[1], argv[2], argv[3]);
