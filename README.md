@@ -31,7 +31,7 @@
  > solutions to some typical interview problems
  
 ###weixin_DZGZ
- > solutions to problems on wechat account “待字闺中" in 2013-2014
+ > solutions to problems on wechat public account “待字闺中" in 2013-14
 
 ###beginningPython2
  > tutorial projects from book "beginning-python2"
@@ -46,4 +46,4 @@
  > utilities 
  
 ###blogrepository
- > downloadable pkg repository for blogger
+ > pkg repository for blogger

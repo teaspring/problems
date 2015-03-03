@@ -117,12 +117,12 @@ private:
         getMaskedHists(test2, test2Hists);
 
         /// compare histogram in weighted
-        double alpha = 0.28; // our 5 weights are [alpha, (1 - alpha)/(n-1),...]
+        double alpha = 0.28;     // our 5 weights are [alpha, (1 - alpha)/(n-1),...]
         int compare_method = 1;  // 1 for CV_COMP_CHISQR
         double base_base  = compareHistWeighted(baseHists, SEG_COUNT, baseHists, compare_method, alpha);
         double base_test1 = compareHistWeighted(baseHists, SEG_COUNT, test1Hists, compare_method, alpha);
         double base_test2 = compareHistWeighted(baseHists, SEG_COUNT, test2Hists, compare_method, alpha);
-        printf("weighted compare hitogram perfrect,  Base-Test(1), Base-Test(2): %f, %f, %f \n",
+        printf("weighted compare hitogram perfect, Base-Test(1), Base-Test(2): %f, %f, %f \n",
                     base_base, base_test1, base_test2);
         return;
     }
@@ -176,10 +176,10 @@ private:
             }
         }
 
-        double seconds = ((double)getTickCount() - t) / getTickFrequency();
-
         Utility util;
         util.quick_sort(sqrValues, soldCount, pImgNames);
+
+        double seconds = ((double)getTickCount() - t) / getTickFrequency();
 
         printf("base file: %s\n", base);
         printf("==========================================\n");
@@ -286,12 +286,12 @@ private:
  */
 int main( int argc, char** argv ){
     if(argc < 4){
-        printf("** Error. Usage: ./searchHist_Demo <image0_base> <images_dir_toSearch> <number_results>\n");
+        printf("** Error. Usage: ./searchImages <image_base> <search_repository> <top_N_results>\n");
         return -1;
     }
     SearchEngine se(50, 60, 2);
     char* outImages[SearchEngine::MAX_COUNT];
-    se.searchImages(argv[1], argv + 2, outImages, atoi(argv[3]));
+    int n = se.searchImages(argv[1], argv + 2, outImages, atoi(argv[3]));
     // se.searchHist(argv[1], argv[2], argv[3]);
     return 0;
 }
