@@ -157,12 +157,13 @@ private:
         double seconds = ((double)getTickCount() - t) / getTickFrequency();
 
         printf("base file: %s\n", base);
-        printf("==========================================\n");
+        printf("==========================================================\n");
         for(int i = 0 ; i < min(topN, soldCount); i++){
             printf("image %s, chi-square value: %f\n", pImgNames[i], sqrValues[i]);
         }
-        printf("==========================================\n");
-        printf("image search cost: %f seconds\n", seconds);
+        printf("==========================================================\n");
+        printf("engine channel bins:  H-%d, S-%d, V-%d\n", h_bins, s_bins, v_bins);
+		printf("search + sort time: %f seconds\n", seconds);
 
         return min(topN, soldCount);
     }
@@ -174,10 +175,12 @@ private:
     int SearchEngine::getMaskedHists(const char* nameSrc /* in */, Mat* hists /* out */){
         Mat matSrc, hsvSrc;
         matSrc = imread(nameSrc, 1);
-        if(!(matSrc.channels() == 3 || matSrc.channels() == 4)){
+        /*
+		if(!(matSrc.channels() == 3 || matSrc.channels() == 4)){
             printf("ERROR: image %s channels %d!\n", nameSrc, matSrc.channels());
             return 1;
         }
+		*/
 
         cvtColor(matSrc, hsvSrc, COLOR_BGR2HSV);  // BGR -> HSV, here V = R
 
