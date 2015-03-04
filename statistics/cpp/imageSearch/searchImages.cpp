@@ -25,6 +25,8 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/core/core.hpp"
 
+#include "MaxHeap.h"
+
 using namespace std;
 using namespace cv;
 
@@ -60,48 +62,6 @@ private:
 private:
     int h_bins, s_bins, v_bins;
 };
-
-class Utility{
-public:
-    void quick_sort(double* values, int n, char** names);
-
-    const static double eps = 1e-5;
-
-private:
-    void swap_cstr(char** pcstr1, char** pcstr2){
-        char* tmp = *pcstr2;
-        *pcstr2 = *pcstr1;
-        *pcstr1 = tmp;
-        tmp = NULL;
-        return;
-    }
-
-    void swap_double(double* pd1, double* pd2){
-        double tmp = *pd2;
-        *pd2 = *pd1;
-        *pd1 = tmp;
-        return;
-    }
-};
-
-    void Utility::quick_sort(double* values, int n, char** names){
-        if(n < 2)    return;
-        double *p = values, *q = values - 1, *t = values + n-1;
-        while(p < t){
-            if((*p - *t) < eps){
-                q++;
-                swap_double(q, p);
-                swap_cstr(names + (q - values), names + (p - values));
-            }
-            p++;
-        }
-        q++;
-        swap_double(q, t);
-        swap_cstr(names + (q - values), names + (t - values));
-
-        quick_sort(values, (q - values), names);
-        quick_sort(q + 1, n - 1 - (q - values), names + (q + 1 - values));
-    }
 
     /*
      * compare two test images with one base image
@@ -152,6 +112,8 @@ private:
             return 0;
         }
 
+        MaxHeap mheap(sqrValues, pImgNames, topN);
+        bool isKMinimum = true;
         FTSENT *node;
         while(node = fts_read(tree)){
             if(MAX_COUNT == soldCount)    break;
@@ -161,23 +123,36 @@ private:
             }
             else if((node->fts_info & FTS_F) && isImage(node->fts_name)){ // fts_name is short file name
                 Mat testHists[SEG_COUNT];
-                if(getMaskedHists(node->fts_accpath, testHists)){
+                char* lname = node->fts_accpath; // fts_accpath, access path is long file name
+                if(getMaskedHists(lname, testHists)){
                     fts_set(tree, node, FTS_SKIP);
                     continue;
                 }
-                char* lname = node->fts_accpath; // fts_accpath, access path is long file name
+                sqrValues[soldCount] = compareHistWeighted(baseHists, SEG_COUNT, testHists, method_idx, alpha);
+
                 char* nameCopy = new char[strlen(lname) + 1];
                 nameCopy[strlen(lname)] = '\0';
                 strcpy(nameCopy, lname);
-
                 pImgNames[soldCount] = nameCopy;
-                sqrValues[soldCount] = compareHistWeighted(baseHists, SEG_COUNT, testHists, method_idx, alpha);
+
                 soldCount++;
+
+                if(isKMinimum){
+                    if(soldCount == topN){
+                        mheap.heap_build();
+                    }else if(soldCount > topN){
+                        mheap.heap_insert(sqrValues[soldCount - 1], pImgNames[soldCount - 1]);
+                    }
+                }
             }
         }
 
-        Utility util;
-        util.quick_sort(sqrValues, soldCount, pImgNames);
+        if(!isKMinimum){
+            Utility util;
+            util.quick_sort(sqrValues, soldCount, pImgNames);
+        }else{
+            mheap.heap_sort_asce();
+        }
 
         double seconds = ((double)getTickCount() - t) / getTickFrequency();
 
@@ -189,7 +164,7 @@ private:
         printf("==========================================\n");
         printf("image search cost: %f seconds\n", seconds);
 
-        return soldCount;
+        return min(topN, soldCount);
     }
 
     /*
@@ -281,9 +256,8 @@ private:
         }
         return res;
     }
-/**
- * @function main
- */
+
+/****************************  @function main **************************/
 int main( int argc, char** argv ){
     if(argc < 4){
         printf("** Error. Usage: ./searchImages <image_base> <search_repository> <top_N_results>\n");
