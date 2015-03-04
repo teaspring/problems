@@ -2,7 +2,10 @@
  * "introduction to algorithm" chapter6, heap sort
  * 
  * note: 
- * 1. index of heap in process must begin with 1, otherwise [0] cannot support valid Left or Right
+ * 0. max-heap can solve k-minimum problem where the maximum(root) can be used as sentinel(any key > root can enter the heap)
+ *    min-heap can solve k-maximum heap while the minimum root can be sentinel
+ *
+ * 1. in native implementaion, index of heap is 1-based
  * 2. heap sort: time O(nlgn), can be in place sort
  * */
 #include "../header/preliminary.h"
