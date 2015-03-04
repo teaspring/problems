@@ -72,7 +72,10 @@ void YoungTableau::clean(){
     ppTab = 0;
 }
 
-void YoungTableau::getTailer(int& tailx, int& taily){                //find tailer of the young tableau, the last valid element
+/*
+ * find taller of the young tableau, the last valid element
+ * */
+void YoungTableau::getTailer(int& tailx, int& taily){
     tailx = 0;
     taily = N-1;
     for(;tailx<M && ppTab[tailx][0]<LIMIT;tailx++);
@@ -90,7 +93,7 @@ void YoungTableau::insert(int key){
         x++;
     }else
       y++;
-    if(x>=M)    return;            //full
+    if(x >= M)    return;   //full
     ppTab[x][y] = key;
     min_heapify(x, y);
 }
@@ -120,11 +123,11 @@ void YoungTableau::min_heapify(int i, int j){
 }
 
 int YoungTableau::extract_max(){
-    int x=0, y=0;
+    int x = 0, y = 0;
     getTailer(x, y);
-    if(x<0)    return 0-LIMIT;
+    if(x < 0)    return -LIMIT;
     int max = ppTab[x][y];
-    if(y<N-1 && x>0 && ppTab[x-1][N-1] > max){            //1.compare two options 2.compact the table if there is hole
+    if(y < N-1 && x > 0 && ppTab[x-1][N-1] > max){  //1.compare two options 2.compact the table if there is hole
         max = ppTab[x-1][N-1];
         myswap(ppTab[x][y], ppTab[x-1][N-1]);
         min_heapify(x-1, N-1);
@@ -144,7 +147,7 @@ int YoungTableau::extract_min(){
     myswap(ppTab[0][0], ppTab[tailx][taily]);
     ppTab[tailx][taily] = LIMIT;
     int x=0, y=0;
-    while(1){                                            //move (x,y) downside if it larger than any element less than it
+    while(1){   //move (x,y) downside if it larger than any element less than it
         int leastx = x, leasty = y;
         if(downx(x)<M && ppTab[downx(x)][y] < ppTab[x][y]){
             leastx = downx(x);
@@ -170,7 +173,8 @@ int YoungTableau::extract_min(){
  * 3  4  8
  * 6  7  11
  * 9  10
- * when search 5 in the box of 1<-->11, it returns false because it choose to 7's branch. when 8's and 7's are all greater than 5, both should be searched
+ * when search 5 in the box of 1<-->11, it returns false because it choose to 7's branch.
+ * when 8's and 7's are all greater than 5, both should be searched
  *
  * solution is recurse
  * */
@@ -227,7 +231,10 @@ void YoungTableau::showAll(){
     }
 }
 
-void decomposeInt(int num, int& m, int& n){            //decompose N to around a*b which is a little greater than N 
+/*
+ * decompose N to around a*b which is a little greater than N
+ * */
+void decomposeInt(int num, int& m, int& n){
     m = 2;
     for(; num/m >= m; m++);
     n = num/m + 1;
@@ -239,7 +246,7 @@ int main(int argc, char* argv[]){
     while(1){
         if(getline(cin, str) == 0 || str.empty())
           break;
-        int* arr = new int[str.size()]();            //to facilitate following test case, the input int count must not be less than 6
+        int* arr = new int[str.size()]();   // limited by test case, input count < 6
         int size = splitStr2IntArray(str, arr);
         int m=1, n=1;
         decomposeInt(size, m, n);
@@ -255,7 +262,7 @@ int main(int argc, char* argv[]){
             printf("now %d should be in Young Tableau: %s\n", arr[i], res ? "true" : "false");
         }
         
-        for(int i=0;i<3;i++){                        //extract top3 max elements
+        for(int i=0;i<3;i++){   //extract top 3 max elements
             int max = pYTable->extract_max();
             printf("current maximum element is %d\n", max);
             
