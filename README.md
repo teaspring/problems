@@ -26,6 +26,7 @@
 
  - implementation of problems on oj.leetcode.com, both C++ & Java.
  - C++ unit test via googletest
+ - java unit test via junit + ant
 
 ###InterviewQ
  > solutions to some typical interview problems

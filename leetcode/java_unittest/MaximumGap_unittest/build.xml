@@ -34,9 +34,9 @@
     <!-- create the build, docs and dist directory -->
     <target name="makedir">
         <mkdir dir="${src.dir}"/>
-        <copy file="${init.dir}/jumpgameII.java" todir="${src.dir}"/>
+        <copy file="${init.dir}/MaximumGap.java" todir="${src.dir}"/>
         <mkdir dir="${test.dir}"/>
-        <copy file="jumpgameIIUnitTest.java" todir="${test.dir}"/>
+        <copy file="MaximumGapUnitTest.java" todir="${test.dir}"/>
 
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${build.test.dir}"/>

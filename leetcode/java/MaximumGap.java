@@ -48,7 +48,7 @@ public class MaximumGap{
 
         /// scan bucks
         int lastEngaged = -1;
-        while(Engaged[++lastEngagaed])    break;
+        while(Engaged[++lastEngaged])    break;
         for(int i = lastEngaged; i < n - 1; i++){
             if(Engaged[i]){
                 maxGap = Math.max(bucks[i].high - bucks[i].low, maxGap); // inner buck

@@ -18,14 +18,15 @@ public class jumpgameIIUnitTest{
     public void negativeTest(){
         int arr1[] = new int[]{1, 1, 0, 0};
         Assert.assertEquals(-1, game.jump(arr1));
-        
+
         int arr2[] = new int[]{0, 1, 1};
         Assert.assertEquals(-1, game.jump(arr2));
-        
+
         int arr3[] = new int[]{0};
         Assert.assertEquals(0, game.jump(arr3));
     }
 
+    @Test
     public void positiveTest(){
         int arr1[] = new int[]{1, 2};
         Assert.assertEquals(1, game.jump(arr1));
