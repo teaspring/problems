@@ -30,14 +30,12 @@ public class MaximumGap{
             int idx = Math.min(
                     (int)Math.floor((double)(num[i] - min) / gap),  n-2);
             Engaged[idx] = true;
-
             /// lower bound
             if(bucks[idx].low == -1){
                 bucks[idx].low = num[i];
             }else{
                 bucks[idx].low = Math.min(bucks[idx].low, num[i]);
             }
-
             /// upper bound
             if(bucks[idx].high == -1){
                 bucks[idx].high = num[i];
@@ -45,24 +43,22 @@ public class MaximumGap{
                 bucks[idx].high = Math.max(bucks[idx].high, num[i]);
             }
         }
-
         /// scan bucks
         int lastEngaged = -1;
         while(Engaged[++lastEngaged])    break;
         for(int i = lastEngaged; i < n - 1; i++){
             if(Engaged[i]){
                 maxGap = Math.max(bucks[i].high - bucks[i].low, maxGap); // inner buck
-                if(lastEngaged < i){  // inter buck
+                if(lastEngaged < i){  // inter bucks
                     maxGap = Math.max(bucks[i].low - bucks[lastEngaged].high, maxGap);
                 }
                 lastEngaged = i;
             }
         }
-
         return maxGap;
     }
 
-    class Buck{
+    class Buck{  // inner class(private)
         int low;
         int high;
         Buck(){

@@ -41,7 +41,9 @@ public class jumpgameII{
         }
         return i == 0 ? res : -1;
     }
+    /* unittest will be done via junit code in ../java_unittest/[class_name]/ */
 
+    /*
     public void test_01(){
         Scanner scan = new Scanner(System.in);
         while(true){
@@ -59,10 +61,5 @@ public class jumpgameII{
         }
         return;
     }
-
-    public static void main(String[] args){
-        jumpgameII jp = new jumpgameII();
-        jp.test_01();
-        return;
-    }
+    */
 }
