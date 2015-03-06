@@ -2,6 +2,8 @@
  * given an array of non-regative integers, you are initially positioned at the first index of array. Each element in the array represents
  * your maximum jump length at that position. Your goal is to reach the last index in the minimum number of jumps. if no path available, return -1
  *
+ * it's a greedy problem
+ * 
  * test cases:
  * 0   -   0
  * 1 2 -   1
@@ -18,22 +20,22 @@ import java.lang.Math.*;
 public class jumpgameII{
     public int jump(int[] A){
         int n = A.length;
-        if(n<2)        return 0;
+        if(n < 2)    return 0;
         int[] B = new int[n];
-        for(int i=0;i<n;++i){
+        for(int i = 0; i < n; ++i){
             B[i] = i;
         }
-        int forward = 0;
-        for(int i=0;i<n-1;++i){
-            int bound = Math.min(n-1, i+A[i]);
-            if(bound <= forward)    continue;
-            for(int j=bound; j>forward; --j){
-                B[j] = i;
+        int forward = 0;  
+        for(int i = 0;i < n-1; ++i){
+            int bound = Math.min(n-1, i + A[i]);  // bound is furthest postition which is jumped from [i]
+            if(bound <= forward)    continue;  // forward is the furthest position which is jumped from [i-1]
+            for(int j = bound; j > forward; --j){
+                B[j] = i;   // B[j] means the furthest predecent position jump to it
             }
             forward = bound;
         }
-        int res=0, i=0;
-        for(i=n-1; i>0 && B[i] < i;){
+        int res = 0, i = 0;
+        for(i = n-1; i > 0 && B[i] < i;){
             ++res;
             i = B[i];
         }
