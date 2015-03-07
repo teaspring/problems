@@ -24,9 +24,10 @@
  
 ###leetcode
 
- - implementation of problems on oj.leetcode.com, both C++ & Java.
+ - implementation of problems on oj.leetcode.com, including C++, java and python
  - C++ unit test via googletest
  - java unit test via junit + ant
+ - python unit test via unittest module
 
 ###InterviewQ
  > solutions to some typical interview problems
