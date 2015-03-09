@@ -91,7 +91,6 @@ public class addTwoNumbers{
             l2.val = -l2.val;
         }
 
-        int n1 = 0, n2 = 0;
         ListNode h1 = l1, h2 = l2;
         /// use Stack to store digits
         Stack<Integer> stk1 = new Stack<Integer>();
@@ -100,21 +99,19 @@ public class addTwoNumbers{
         /// decide abs(l2) - abs(l1) or opposite
         while(h1 != null || h2 != null){
             if(h1 != null){
-                n1++;
                 stk1.push(h1.val);
                 h1 = h1.next;
             }
             if(h2 != null){
-                n2++;
                 stk2.push(h2.val);
                 h2 = h2.next;
             }
         }
 
         boolean l2GreaterAbs = false;
-        if(n1 < n2){
+        if(stk1.size() < stk2.size()){
             l2GreaterAbs = true;
-        }else if(n1 == n2){
+        }else if(stk1.size() == stk2.size()){
             while(!stk1.isEmpty() && stk1.peek() == stk2.peek()){
                 stk1.pop();
                 stk2.pop();
