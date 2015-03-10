@@ -12,41 +12,25 @@ public class countandsay{
     private String getNext(String a){
         int n = a.length();
         StringBuilder builder = new StringBuilder();
-        int i=0;
-        while(i<n){
-            int k=i+1;
-            for(;k<n && a.charAt(k) == a.charAt(k-1);++k);
-            builder.append(k-i);
+        int i = 0;
+        while(i < n){
+            int k = i + 1;
+            for(; k < n && a.charAt(k) == a.charAt(k-1); ++k);
+            builder.append(k - i);
             builder.append(a.charAt(i));
-            i=k;
+            i = k;
         }
         return builder.toString();
     }
 
     public String countAndSay(int n){
-        if(n<1)        return new String();
-        int l=1;
+        if(n < 1)    return new String();
+        int l = 1;
         String str = new String("1");
-        for(; n>1; --n){
+        for(; n > 1; --n){
             str = getNext(str);
         }
         return str;
     }
-
-    public void test_01(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            System.out.println("please input nth:");
-            String str = scan.nextLine().trim();
-            if(str.isEmpty())    break;
-            int n = Integer.parseInt(str);
-            System.out.println(countAndSay(n));
-        }
-    }
-
-    public static void main(String[] args){
-        countandsay cs = new countandsay();
-        cs.test_01();
-        return;
-    }
+    /* unit test code is in ../java_unittest/countandsay_unittest/ */
 }
