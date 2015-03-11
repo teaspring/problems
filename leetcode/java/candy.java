@@ -20,15 +20,10 @@ public class candy{
         int sum = 1, ki = -1;
         for(int i = 1; i < n; i++){
             if(ratings[i] == ratings[i-1]){
-                if(ki > -1){
-                    candies[i] = 0; // process the decending range in backtrack()
-                    continue;
-                }else{
-                    candies[i] = 1;
-                }
-            }else if(ratings[i] < ratings[i-1]){  // less than preceding 
-                if(ki == -1)    ki = i-1; // start of range to process
-                candies[i] = 0;
+                if(ki > -1)    continue;  // within a decending range
+                candies[i] = 1;
+            }else if(ratings[i] < ratings[i-1]){
+                if(ki == -1)    ki = i-1; // [i-1] is start of decending range in possible
                 continue;
             }else{    // greater than preceding
                 if(ki > -1){

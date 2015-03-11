@@ -29,8 +29,8 @@ public class candyUnitTest{
 
     @Test
     public void positiveTest_02(){
-        int ratings[] = new int[]{1, 8, 5, 5, 3, 2, 4, 6, 1};
-        int candies[] = new int[]{1, 2, 1, 3, 2, 1, 2, 3, 1};
+        int ratings[] = new int[]{1, 8, 8, 5, 5, 3, 2, 2, 2, 4, 6, 1};
+        int candies[] = new int[]{1, 2, 2, 1, 3, 2, 1, 1, 1, 2, 3, 1};
         int expected = 0;
         for(int c : candies){
             expected += c;
