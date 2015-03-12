@@ -26,12 +26,9 @@ import java.util.*;
 public class wordladder{
 
     /*
-     * this solution considers every candicate which changes one char for once.
-     * 1. if dict has too much redundent string, and <start> is not long, it is better than _01
-     * 2. in frequent use, char[] is faster than String manipulation
-     * 3. JavaDoc says ArrayDeque faster than LinkedList in most cases
-     *
-     * note: it is accepted on oj. but actually, the structure steps can be refactored...
+     * tips:
+     * 1. in frequent use, char[] is faster than String manipulation
+     * 2. JavaDoc says ArrayDeque faster than LinkedList in most cases
      * */
     public int ladderLength(String start, String end, HashSet<String> dict){
         if(start.equals(end))         return 1;
