@@ -27,7 +27,7 @@ public class wordladder{
 
     /*
      * tips:
-     * 1. in frequent use, char[] is faster than String manipulation
+     * 1. char[] is faster than String manipulation
      * 2. JavaDoc says ArrayDeque faster than LinkedList in most cases
      * */
     public int ladderLength(String start, String end, HashSet<String> dict){
@@ -38,14 +38,14 @@ public class wordladder{
         Set<String> visited = new HashSet<String>();
         Queue<Integer> steps = new LinkedList<Integer>(); // FIFO, steps[i] is the transform steps of q[i]
         steps.add(1);
-        final int N = start.length();
+        final int n = start.length();
 
         while(!q.isEmpty()){
             String word = q.poll();
             visited.add(word);
             int stp = steps.poll();
             char[] wordChar = word.toCharArray();   // char Array is faster than String
-            for(int i=0; i < N; ++i){  // change one char once
+            for(int i=0; i < n; ++i){  // change one char once
                 char saved = wordChar[i];
                 for(char c = 'a'; c <= 'z'; ++c){
                     if(c == saved)    continue;
@@ -53,8 +53,8 @@ public class wordladder{
                     String str = new String(wordChar);
                     if(str.equals(end))    return stp + 1;
                     if(dict.contains(str)
-                    && !visited.contains(str)  /* every word polled from q ever */
-                    && !q.contains(str)){  /* word stored in q right now */
+                    && !visited.contains(str)  /* every words polled from q */
+                    && !q.contains(str)){  /* words in q right now */
                         q.add(str);
                         steps.add(stp + 1);
                     }
@@ -66,100 +66,107 @@ public class wordladder{
     }
 
     /*
-     * BFS, accepted by oj.leetcode
+     * BFS, accepted by oj.leetcode on time and memory limit
      * */
-    public ArrayList<ArrayList<String>> findLadders_02(String start, String end, HashSet<String> dict){
-        HashMap<String, Queue<String>> adjMap
-            = new HashMap<String, Queue<String>>();  // conversion of word ladders
-        int currLen = 0;
-        boolean found = false;
-        ArrayList<ArrayList<String>> r = new ArrayList<ArrayList<String>>();  // results
-        Queue<String> queue   = new LinkedList<String>();    // for BFS
-        Set<String> unVisited = new HashSet<String>(dict);   // all optional intermeida words
-        unVisited.add(end);
-        Set<String> visitedThisLev = new HashSet<String>();
-        
-        queue.offer(start);
-        int currLev = 1;  // ladders count at current level
-        int nextLev = 0;  // ladders count of next level
+    public ArrayList<ArrayList<String>> findLadders(String start, String end, HashSet<String> dict){
+        Queue<String> q   = new LinkedList<String>();    // for BFS
+        q.offer(start);
+
+        Set<String> unVisited = new HashSet<String>(dict); // all optional intermediate words
+        unVisited.add(end);  // ensure end in unVisited
+        unVisited.remove(start);
+
+        /// [values] are all optional ladders transform to [key] with one char change
+        HashMap<String, Queue<String>> adjMap = new HashMap<String, Queue<String>>();
         for(String word : unVisited){
             adjMap.put(word, new LinkedList<String>());
         }
-        unVisited.remove(start);  // <unVisited> saves all words converted from start
 
-        while(!queue.isEmpty()){  // BFS
-            String currLadder = queue.poll();
-            for(String nextLadder : getNextLadder(currLadder, unVisited)){ // currLadder -> nextLadder
-                if(visitedThisLev.add(nextLadder)){  // for this level
-                    nextLev++;  // count of next level ladders
-                    queue.offer(nextLadder);
+        Set<String> visitedThisLev = new HashSet<String>();
+
+        int currLev = 1;  // ladders count at current level(depth)
+        int nextLev = 0;  // ladders count of next level(depth)
+        int currLen = 1;  // unprocessed ladders count at current level
+        boolean found = false;
+
+        while(!q.isEmpty()){  // BFS
+            String currLadder = q.poll();
+            ArrayList<String> nextLadders = getNextLadder(currLadder, unVisited);
+            for(String nextLadder : nextLadders){ // next valid ladder(in unVisited) with one char change from currLadder
+                if(visitedThisLev.add(nextLadder)){
+                    nextLev++;
+                    q.offer(nextLadder);
                 }
                 adjMap.get(nextLadder).offer(currLadder);  // save in map: nextLadder --> currLadder
                 if(nextLadder.equals(end) && !found){
                     found = true;
-                    currLen += 2;
                 }    
             }
-            // System.out.println("currLen=" + currLen + " , nextLev=" + nextLev + ", currLadder=" + currLadder
-            //        + ", unVisited=" + unVisited.toString() + ", visitedThisLev=" + visitedThisLev.toString());
-            if(--currLev == 0){  // complete process of currLadder polled from queue
-                if(found)    break;  // it breaks at first time when currLev reduced to 0 and found is true
-                unVisited.removeAll(visitedThisLev); // next leverl ladders will not include this level ladders!!
+
+            if(--currLev == 0){
+                currLen++; // ladders of current level have been processed already
+                if(found)    break; // break only if all ladders at current level have been processed already
+
+                unVisited.removeAll(visitedThisLev); // later ladders not include this level ladders
                 visitedThisLev.clear();
                 currLev = nextLev;
                 nextLev = 0;
-                currLen++;  // this level of intermediate word ladders are processed already
             }
         }
+
+        ArrayList<ArrayList<String>> r = new ArrayList<ArrayList<String>>();  // results
         if(found){
-            LinkedList<String> p = new LinkedList<String>();
-            p.addFirst(end);  // from end to start
-            getLadders(start, end, p, r, adjMap, currLen);
+            Stack<String> stk = new Stack<String>();
+            stk.push(end);  // from end to start
+            getLadders(start, end, stk, r, adjMap, currLen);
         }
         return r;
     }
 
     /*
-     * utility: return all unvisited words which differ 1 with @currLadder
+     * return all unvisited words with one char change with currLadder
      * */
     private ArrayList<String> getNextLadder(String currLadder, Set<String> unVisited){
-        ArrayList<String> nextLadder = new ArrayList<String>();
-        StringBuffer replace = new StringBuffer(currLadder);
-        for(int i=0; i < currLadder.length(); i++){
-            char old = replace.charAt(i);
-            for(char ch = 'a'; ch <= 'z';ch++){   // replace one char in [a-z] for once
-                if(ch == old)    continue;  // one statement for 1/26 possibility :(
-                replace.setCharAt(i, ch);
-                String replaced = replace.toString();
-                if(unVisited.contains(replaced)){  // if it is optional intermedia word
-                    nextLadder.add(replaced);
+        ArrayList<String> nextLadders = new ArrayList<String>();
+        char[] wordChar = currLadder.toCharArray();
+        final int n = wordChar.length;
+        for(int i=0; i < n; i++){
+            char saved = wordChar[i];
+            for(char ch = 'a'; ch <= 'z'; ch++){
+                if(ch == saved)    continue;
+                wordChar[i] = ch;
+                String str = new String(wordChar);
+                if(unVisited.contains(str)){
+                    nextLadders.add(str);
                 }
             }
-            replace.setCharAt(i, old);
+            wordChar[i] = saved;
         }
-        return nextLadder;
+        return nextLadders;
     }
 
     /*
-     * utility: DFS to get all path from @currLadder to @start in length of @len
-     * @params p: used as stack
-     * @params adjMap: conversion of words
+     * DFS to get all path from @currLadder to @start in length of @len
+     * @params adjMap: transfromation map of intermediate ladders
      * */
-    private void getLadders(String start, String currLadder, LinkedList<String> p,
-            ArrayList<ArrayList<String>> solu, HashMap<String, Queue<String>> adjMap, int len){
-        if(currLadder.equals(start)){
-            solu.add(new ArrayList<String>(p));
+    private void getLadders(String start, String curr, Stack<String> stk,
+            ArrayList<ArrayList<String>> result, HashMap<String, Queue<String>> adjMap, int len){
+        if(curr.equals(start)){  // len == 0 implicitly
+            result.add(new ArrayList<String>(stk)); // top is [start] while bottom is [end]
+            return;
         }else if(len > 0){
-            Queue<String> adjs = adjMap.get(currLadder);
+            Queue<String> adjs = adjMap.get(curr); // [values] are all laddders which can transform to [key] with 1 char change
             for(String lad : adjs){
-                p.addFirst(lad);  // adjMap key is dst while value is <src>, so lad must be added in head
-                getLadders(start, lad, p, solu, adjMap, len-1);
-                p.pollFirst();
+                stk.push(lad);
+                getLadders(start, lad, stk, result, adjMap, len-1);
+                stk.pop();
             }
         }
     }
 
-    // utility for input
+    /* unit test code is in ../java_unittest/wordladder_junit */
+
+    /*
     private static HashSet<String> parseStrArray(String str){
         HashSet<String> st = new HashSet<String>();
         StringTokenizer t = new StringTokenizer(str, " ,");
@@ -169,8 +176,6 @@ public class wordladder{
         return st;
     }
 
-    /* unit test code is in ../java_unittest/wordladder_junit */
-    /*
     public void test(){
         Scanner scan = new Scanner(System.in);
         while(true){            
