@@ -1,13 +1,17 @@
 /*
- * from oj.leetcode, given two words(start and end) and a dictionary, such that
+ * oj.leetcode,given two words(start and end) and a dictionary, such that
  * 1.only one letter can be changed once
  * 2.each intermediate word must exist in the dictionary
  * 
  * WordLadder I,  find length of shortest transformation sequence from start to end
- * WordLadder II, find all shortest transformation sequence(s) from start to end
+ * case:
+ * start="dog", end="dig", dict={}
+ * transformation: "dog" -> "dig"
+ * return: 2
  *
- * test data:
- * start="hit", end="cog", dict=[hot,dot,dog,lot,log,hat,bit,big,dit,dig,cat,hak,cak,cok,dok]
+ * WordLadder II, find all shortest transformation sequence(s) from start to end
+ * case:
+ * start="hit", end="cog", dict={hot,dot,dog,lot,log,hat,bit,big,dit,dig,cat,hak,cak,cok,dok}
  * return:
  * [hit,hot,dot,dog,cog]
  * [hit,hot,lot,log,cog]
@@ -20,179 +24,6 @@ import java.io.*;
 import java.util.*;
 
 public class wordladder{
-    private final int X = 0xffff;    // maximum length
-    /*
-    * Dijkstra algorithm, undirected graph, label-settings, for each iteration, choose nearest vertex
-    * for this problem, as the adjacent word, it means label(distance) equals to 1, become nearest naturally
-    *
-    * If dict does not have many words and <start> is long, this solution is good.
-    * But if <start> is not long while dict has too much redundent string, it turns much worse.
-    *
-    * anyway, create an adjacent matrix in space O(n^2) is bad :(
-    * */
-    public int ladderLength_01(String start, String end, HashSet<String> dict){
-        if(start.equals(end))              return 1;
-        else if(canConvert(start, end))    return 2;
-
-        if(dict.isEmpty())    return 0;
-        dict.add(start);   // ensure it is in
-        dict.add(end);
-        ArrayList<String> strArr = new ArrayList<String>(dict);
-        ArrayList<ArrayList<Integer>> adjMtx = getAdjMatrix(strArr);
-
-        final int n = strArr.size();
-        int[] dist = new int[n];
-        for(int i=0;i<n;i++){
-            dist[i] = X;
-        }
-        LinkedList<Integer> q = new LinkedList<Integer>();  // used as queue
-        boolean[] cover = new boolean[n];
-        for(boolean b : cover){
-            b = false;
-        }
-        q.addFirst(0);    // src vertex
-        dist[0] = 0;
-        
-        while(!q.isEmpty()){    // Dijkstra algorithm, shortest path from src to dst
-            int u = q.pollLast();
-            cover[u] = true;
-            for(int v=0;v<n;v++){
-                if(v==u || adjMtx.get(u).get(v) != 1)        continue;
-                if(dist[u] + 1 < dist[v]){   // iterate all adjacent vertex of u, update distance of v
-                    dist[v] = dist[u] + 1;
-                }
-                if(!q.contains(v) && cover[v] == false)    q.addFirst(v);
-            }
-        }
-        if(dist[n-1]==X)    return 0;
-        return dist[n-1] + 1;
-    }
-    
-    /*
-     * utility: create an adjacent matrix
-     * */
-    public ArrayList<ArrayList<Integer>> getAdjMatrix(ArrayList<String> strArr){
-        final int n = strArr.size();
-        ArrayList<ArrayList<Integer>>  adjMtx = new ArrayList<ArrayList<Integer>>();
-        for(int i=0;i<n;++i){     // assume src is [0] and dst is [n-1]
-            adjMtx.add(new ArrayList<Integer>(n));
-            for(int j=0;j<n;++j){
-                adjMtx.get(i).add(i==j ? 0 : X);
-            }
-        }
-        for(int u=0;u<n;++u){
-            for(int v=u+1;v<n;++v){
-                if(canConvert(strArr.get(u), strArr.get(v))){
-                    adjMtx.get(u).set(v,1);
-                    adjMtx.get(v).set(u,1);
-                }else{
-                    adjMtx.get(u).set(v,X);
-                    adjMtx.get(v).set(u,X);
-                }
-            }
-        }
-        return adjMtx;
-    }
-
-    /*
-     * utility: check whether two words differs by 1
-     * */
-    public boolean canConvert(String s1, String s2){
-        if(s1.length() != s2.length())    return false;
-        boolean once = false;
-        for(int i=0;i < s1.length();++i){
-            if(s1.charAt(i) != s2.charAt(i)){
-                if(once)    return false;
-                once = true;
-            }
-        }
-        return once;
-    }
-
-    /*
-     * solution 01 to problem 2, find all shortest convertion sequences from start to end
-     * */
-    public ArrayList<ArrayList<String>> findall_01(String start, String end, HashSet<String> dict){
-        ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();    
-        if(start.equals(end) || canConvert(start, end)){
-            ArrayList<String> arr = new ArrayList<String>();
-            arr.add(start);
-            arr.add(end);
-            res.add(arr);
-            return res;
-        }
-        if(dict.isEmpty())    return res;
-        dict.add(start);   // ensure it is in
-        dict.add(end);
-        ArrayList<String> strArr = new ArrayList<String>(dict);
-        ArrayList<ArrayList<Integer>> adjMtx = getAdjMatrix(strArr);
-
-        final int n = strArr.size();
-        ArrayList<HashSet<Integer>> prevPos = new ArrayList<HashSet<Integer>>();
-        for(int i=0; i<n; i++){  // prevPos[i] is set of pre words for conversion from src to words[i]
-            prevPos.add(new HashSet<Integer>());
-        }
-        int[] dist = new int[n];  // array of distance
-        for(int i=0; i<n; i++){
-            dist[i] = X;
-        }
-        LinkedList<Integer> q = new LinkedList<Integer>();  //used as queue
-        boolean[] cover = new boolean[n];
-        for(boolean b : cover){
-            b = false;
-        }
-        q.addFirst(0);  // src vertex
-        dist[0] = 0;
-        
-        while(!q.isEmpty()){
-            int u = q.pollLast();
-            cover[u] = true;
-            for(int v=0; v<n; v++){  // iterate all adjacent vertex of u
-                if(v==u || adjMtx.get(u).get(v) != 1)      continue;
-                if(!q.contains(v) && cover[v] == false)    q.addFirst(v);
-                if(dist[u] + 1 > dist[v])    continue;  // not update dist[u]?
-                if(dist[u] + 1 < dist[v]){  // as v and u differs by 1, dist[v] can be updated
-                    dist[v] = dist[u] + 1;
-                    prevPos.get(v).clear();
-                }
-                prevPos.get(v).add(u);  // words[u] can be pre of words[v] for conversion from <start>
-            }
-        }
-        if(dist[n-1] == X)    return res;   // dict[n-1]+1 is the ladder length
-        
-        LinkedList<Integer> stk = new LinkedList<Integer>();    //used as stack
-        replayPath(prevPos, strArr, n-1, stk, res);
-        return res;
-    }
-
-    /*
-     * utility
-     * */
-    public void replayPath(ArrayList<HashSet<Integer>> prevPos, ArrayList<String> strArr, int ind, 
-            LinkedList<Integer> stk1, ArrayList<ArrayList<String>> res){
-        if(ind==0){
-            ArrayList<String> ladder = new ArrayList<String>();
-            ladder.add(strArr.get(0));
-            LinkedList<Integer> stk2 = new LinkedList<Integer>();
-            while(!stk1.isEmpty()){
-                int i = stk1.pop();
-                stk2.push(i);
-                ladder.add(strArr.get(i));
-            }
-            res.add(ladder);
-            while(!stk2.isEmpty()){
-                stk1.push(stk2.pop());
-            }
-            return;
-        }else{
-            stk1.push(ind);
-            for(int i : prevPos.get(ind)){
-                replayPath(prevPos, strArr, i, stk1, res);
-            }
-            stk1.pop();
-        }
-        return;
-    }
 
     /*
      * this solution considers every candicate which changes one char for once.
@@ -202,34 +33,33 @@ public class wordladder{
      *
      * note: it is accepted on oj. but actually, the structure steps can be refactored...
      * */
-    public int ladderLength_02(String start, String end, HashSet<String> dict){
+    public int ladderLength(String start, String end, HashSet<String> dict){
         if(start.equals(end))         return 1;
-        if(canConvert(start, end))    return 2;
-        if(dict.isEmpty())            return 0;
 
-        Queue<String> q     = new ArrayDeque<String>();
-        Set<String> visited = new HashSet<String>();  // <visited> is to ensure add word in <q> only once
+        Queue<String> q = new ArrayDeque<String>(); // FIFO, store intermediate words and start + end
         q.add(start);
-        Queue<Integer> steps = new LinkedList<Integer>();  // each value in <steps> follows the word in <q>
-        steps.add(0);
+        Set<String> visited = new HashSet<String>();
+        Queue<Integer> steps = new LinkedList<Integer>(); // FIFO, steps[i] is the transform steps of q[i]
+        steps.add(1);
         final int N = start.length();
 
         while(!q.isEmpty()){
             String word = q.poll();
             visited.add(word);
             int stp = steps.poll();
-            char[] wordChar = word.toCharArray();   // array is faster than string manipulation
-            for(int i=0;i<N;++i){
+            char[] wordChar = word.toCharArray();   // char Array is faster than String
+            for(int i=0; i < N; ++i){  // change one char once
                 char saved = wordChar[i];
-                for(char c='a';c <= 'z';++c){
-                    int st = stp;
-                    wordChar[i] = c;  // no need to filter case of 'c == saved' as it is in <visited> already
+                for(char c = 'a'; c <= 'z'; ++c){
+                    if(c == saved)    continue;
+                    wordChar[i] = c;
                     String str = new String(wordChar);
-                    if(str.equals(end))    return st+2;
-                    if(dict.contains(str) && !visited.contains(str) && !q.contains(str)){
+                    if(str.equals(end))    return stp + 1;
+                    if(dict.contains(str)
+                    && !visited.contains(str)  /* every word polled from q ever */
+                    && !q.contains(str)){  /* word stored in q right now */
                         q.add(str);
-                        st++;
-                        steps.add(st);
+                        steps.add(stp + 1);
                     }
                 }
                 wordChar[i] = saved;
@@ -342,6 +172,8 @@ public class wordladder{
         return st;
     }
 
+    /* unit test code is in ../java_unittest/wordladder_junit */
+    /*
     public void test(){
         Scanner scan = new Scanner(System.in);
         while(true){            
@@ -368,10 +200,5 @@ public class wordladder{
         }
         return;
     }
-
-    public static void main(String[] args){
-        wordladder wl = new wordladder();
-        wl.test();
-        return;
-    }
+    */
 }
