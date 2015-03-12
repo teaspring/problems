@@ -73,6 +73,8 @@ public class wordladderUnitTest{
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
         Assert.assertEquals(expected.size(), result.size());
+        Assert.assertTrue(assertArrayListExt(expected, result));
+        Assert.assertTrue(assertArrayListExt(result, expected));
     }
 
     @Test
@@ -109,14 +111,9 @@ public class wordladderUnitTest{
 
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
-        for(ArrayList<String> path : result){
-            Assert.assertTrue(expected.contains(path));
-        }
-        for(ArrayList<String> path : expected){
-            Assert.assertTrue(result.contains(path));
-        }
-        Assert.assertTrue(result.containsAll(expected));
-        Assert.assertTrue(expected.containsAll(result));
+        Assert.assertEquals(expected.size(), result.size()); // pass
+        Assert.assertTrue(assertArrayListExt(expected, result)); // pass
+        Assert.assertTrue(assertArrayListExt(result, expected)); // fail ?...
     }
 
     private void fillList(ArrayList<String> dst, String[] arr){
@@ -124,6 +121,22 @@ public class wordladderUnitTest{
             dst.add(arr[i]);
         }
         return;
+    }
+
+    private boolean assertArrayListExt(ArrayList<ArrayList<String>> expected,
+            ArrayList<ArrayList<String>> result){
+        boolean contains = false;
+        for(ArrayList<String> listExp : expected){
+            contains = false;
+            for(ArrayList<String> listRes : result){
+                if(listExp.containsAll(listRes) && listRes.containsAll(listExp)){
+                    contains = true;
+                    break;
+                }
+            }
+            if(!contains)    return false;
+        }
+        return true;
     }
 
     @After
