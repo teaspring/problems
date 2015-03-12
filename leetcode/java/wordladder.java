@@ -16,7 +16,7 @@
  * [hit,hot,dot,dog,cog]
  * [hit,hot,lot,log,cog]
  * [hit,dit,dig,dog,cog]
- * [hit,hot,dot,dog,cog]
+ * [hit,dit,dot,dog,cog]
  * */
 
 import java.lang.*;
@@ -86,7 +86,7 @@ public class wordladder{
 
         int currLev = 1;  // ladders count at current level(depth)
         int nextLev = 0;  // ladders count of next level(depth)
-        int currLen = 1;  // unprocessed ladders count at current level
+        int currLen = 1;  // length of ladders
         boolean found = false;
 
         while(!q.isEmpty()){  // BFS
@@ -103,8 +103,8 @@ public class wordladder{
                 }    
             }
 
-            if(--currLev == 0){
-                currLen++; // ladders of current level have been processed already
+            if(--currLev == 0){ // ladders of current level have been processed already
+                currLen++;
                 if(found)    break; // break only if all ladders at current level have been processed already
 
                 unVisited.removeAll(visitedThisLev); // later ladders not include this level ladders
@@ -152,7 +152,9 @@ public class wordladder{
     private void getLadders(String start, String curr, Stack<String> stk,
             ArrayList<ArrayList<String>> result, HashMap<String, Queue<String>> adjMap, int len){
         if(curr.equals(start)){  // len == 0 implicitly
-            result.add(new ArrayList<String>(stk)); // top is [start] while bottom is [end]
+            ArrayList<String> path = new ArrayList<String>(stk);
+            Collections.reverse(path); // to put [start] at head
+            result.add(path);
             return;
         }else if(len > 0){
             Queue<String> adjs = adjMap.get(curr); // [values] are all laddders which can transform to [key] with 1 char change
@@ -165,8 +167,6 @@ public class wordladder{
     }
 
     /* unit test code is in ../java_unittest/wordladder_junit */
-
-    /*
     private static HashSet<String> parseStrArray(String str){
         HashSet<String> st = new HashSet<String>();
         StringTokenizer t = new StringTokenizer(str, " ,");
@@ -192,15 +192,14 @@ public class wordladder{
             if(dictStr.isEmpty())     break;
             HashSet<String> dict = parseStrArray(dictStr);
             
-            int steps = ladderLength_02(start, end, dict);    // WordLadder_I
+            int steps = ladderLength(start, end, dict);
             System.out.println("the shortest ladder is " + steps);
             
-            ArrayList<ArrayList<String>> result = findLadders_02(start, end, dict);    // WordLadder_II
-            for(int i=0; i<result.size(); ++i){
+            ArrayList<ArrayList<String>> result = findLadders(start, end, dict);
+            for(int i=0; i < result.size(); ++i){
                 System.out.println(result.get(i).toString());
             }
         }
         return;
     }
-    */
 }

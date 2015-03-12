@@ -104,16 +104,16 @@ public class wordladderUnitTest{
         fillList(path3, arr3);
         expected.add(path3);
 
-        String[] arr4 = new String[]{"hit", "hot", "dot", "dog", "cog"};
+        String[] arr4 = new String[]{"hit", "dit", "dot", "dog", "cog"};
         ArrayList<String> path4 = new ArrayList<String>();
         fillList(path4, arr4);
-        expected.add(path4);
+        expected.add(path3);
 
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
-        Assert.assertEquals(expected.size(), result.size()); // pass
-        Assert.assertTrue(assertArrayListExt(expected, result)); // pass
-        Assert.assertTrue(assertArrayListExt(result, expected)); // fail ?...
+        Assert.assertEquals(expected.size(), result.size());
+        Assert.assertTrue(assertArrayListExt(expected, result));
+        Assert.assertTrue(assertArrayListExt(result, expected));
     }
 
     private void fillList(ArrayList<String> dst, String[] arr){
@@ -123,11 +123,13 @@ public class wordladderUnitTest{
         return;
     }
 
+    /*
+     * to assert two ArrayList<ArrayList<String>> objects equals or not
+     * */
     private boolean assertArrayListExt(ArrayList<ArrayList<String>> expected,
             ArrayList<ArrayList<String>> result){
-        boolean contains = false;
         for(ArrayList<String> listExp : expected){
-            contains = false;
+            boolean contains = false;
             for(ArrayList<String> listRes : result){
                 if(listExp.containsAll(listRes) && listRes.containsAll(listExp)){
                     contains = true;
