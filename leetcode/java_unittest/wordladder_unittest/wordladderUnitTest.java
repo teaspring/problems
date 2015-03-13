@@ -22,8 +22,8 @@ public class wordladderUnitTest{
 
     @Test
     public void wordladderI_positiveTest_1(){
-        String start = "dik";
-        String end = "oak";
+        String start = new String("dik");
+        String end = new String("oak");
         HashSet<String> dict = new HashSet<String>();
         String[] arr = new String[]{"dog", "dig", "dad", "oad", "oig", "oag"};
         for(String s : arr){
@@ -50,8 +50,8 @@ public class wordladderUnitTest{
 
     @Test
     public void wordladderII_positiveTest_1(){
-        String start = "dog";
-        String end = "dad";
+        String start = new String("dog");
+        String end = new String("dad");
         HashSet<String> dict = new HashSet<String>();
         String[] arr = new String[]{"dod", "dag", "did"};
         for(String s : arr){
@@ -74,10 +74,11 @@ public class wordladderUnitTest{
 
     @Test
     public void wordladderII_positiveTest_2(){
-        String start = "hit";
-        String end = "cog";
+        String start = new String("hit");
+        String end = new String("cog");
         HashSet<String> dict = new HashSet<String>();
-        String[] arr = new String[]{"hot", "dot", "dog", "lot", "log", "hat", "bit", "big", "dit", "dig", "cat", "hak", "cak", "cok", "dok"};
+        String[] arr = new String[]{"hot", "dot", "dog", "lot", "log", "hat", "bit",
+            "big", "dit", "dig", "cat", "hak", "cak", "cok", "dok"};
         for(String s : arr){
             dict.add(s);
         }

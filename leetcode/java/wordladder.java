@@ -86,7 +86,7 @@ public class wordladder{
 
         int currLev = 1;  // ladders count at current level(depth)
         int nextLev = 0;  // ladders count of next level(depth)
-        int currLen = 1;  // length of ladders
+        int depth = 1;  // depth of transformation, equals to ladder length as well
         boolean found = false;
 
         while(!q.isEmpty()){  // BFS
@@ -104,9 +104,8 @@ public class wordladder{
             }
 
             if(--currLev == 0){ // ladders of current level have been processed already
-                currLen++;
+                depth++;
                 if(found)    break; // break only if all ladders at current level have been processed already
-
                 unVisited.removeAll(visitedThisLev); // later ladders not include this level ladders
                 visitedThisLev.clear();
                 currLev = nextLev;
@@ -117,8 +116,8 @@ public class wordladder{
         ArrayList<ArrayList<String>> r = new ArrayList<ArrayList<String>>();  // results
         if(found){
             Stack<String> stk = new Stack<String>();
-            stk.push(end);  // from end to start
-            getLadders(start, end, stk, r, adjMap, currLen);
+            stk.push(end);  // end is seed of DFS, backtrack to start
+            getLadders(start, end, stk, r, adjMap, depth - 1);
         }
         return r;
     }
@@ -151,22 +150,23 @@ public class wordladder{
      * */
     private void getLadders(String start, String curr, Stack<String> stk,
             ArrayList<ArrayList<String>> result, HashMap<String, Queue<String>> adjMap, int len){
-        if(curr.equals(start)){  // len == 0 implicitly
+        if(len == 0 && curr.equals(start)){
             ArrayList<String> path = new ArrayList<String>(stk);
             Collections.reverse(path); // to put [start] at head
             result.add(path);
             return;
         }else if(len > 0){
-            Queue<String> adjs = adjMap.get(curr); // [values] are all laddders which can transform to [key] with 1 char change
+            Queue<String> adjs = adjMap.get(curr); // [values] are all laddders which can transform to [key] in one char change
             for(String lad : adjs){
                 stk.push(lad);
-                getLadders(start, lad, stk, result, adjMap, len-1);
+                getLadders(start, lad, stk, result, adjMap, len - 1);
                 stk.pop();
             }
         }
     }
 
     /* unit test code is in ../java_unittest/wordladder_junit */
+
     private static HashSet<String> parseStrArray(String str){
         HashSet<String> st = new HashSet<String>();
         StringTokenizer t = new StringTokenizer(str, " ,");
