@@ -1,10 +1,13 @@
 /*
- * given a collection of candidate numbers (C) and a target number (T), find all unique combination in C where the candidate numbers sums to T. Each number in C may only be used only once in the combination.
+ * given a collection of candidate numbers (C) and a target number (T), find all unique combination in C
+ * where the candidate numbers sums to T.
+ *
  * Note:
+ * 0. each number in C can be used only once in one combination.
  * 1. all numbers (including target) will be positive integers
- * 2. elements in a combination must be in non-descending order
- * 3. the solution set must not contain duplicate combinations
- * hidden: candidate numbers can have duplciate
+ * 2. elements in a combination result must be in non-descending order
+ * 3. the result set cannot have duplicate combinations
+ * by the way, C can have duplciate numbers
  *
  * test data: 
  * {1,1,2,2,2,3}, target = 6
@@ -14,46 +17,46 @@ import java.io.*;
 import java.util.*;
 
 public class combinationsumII{
-    private ArrayList<ArrayList<Integer>> combinations = new ArrayList<ArrayList<Integer>>();
-    private Stack<Integer> stk = new Stack<Integer>();    //put index of candidate nums
-    
-    private void putStack(int[] num){
+    private Stack<Integer> stk = new Stack<Integer>();  // push index of num[]
+
+    private void putStack(int[] num, ArrayList<ArrayList<Integer>> combinations){
         ArrayList<Integer> arr = new ArrayList<Integer>();
         for(int i : stk){
-            arr.add(num[i]);
+            arr.add(num[i]); // save number instead of index in result
         }
         combinations.add(arr);
         return;
     }
 
-    private void plusSum(int[] num, int target){
-        if(target==0){
-            putStack(num);
+    private void plusSum(int[] num, int target, ArrayList<ArrayList<Integer>> result){
+        if(target == 0){
+            putStack(num, result);
             return;
         }
-        int n = num.length;
-        int last = stk.isEmpty() ? 0 : stk.peek() + 1;
-        for(int i=last; i<n; ++i){
-            if(target < num[i])        break;
-            if(i > last && num[i]==num[last])    continue;    // key statement to skip duplicate combination
+
+        int start = stk.isEmpty() ? 0 : stk.peek() + 1;
+        /// num[i] is the first number which can be used for consistent args (stk, target)
+        for(int i = start; i < num.length; ++i){
+            if(target < num[i])    break;
+            if(i > start && num[i] == num[i-1])    continue; // skip duplicate combination!
             stk.push(i);
-            plusSum(num, target - num[i]);
+            plusSum(num, target - num[i], result);
             stk.pop();
-            last = i;
         }
         return;
     }
 
-    public ArrayList<ArrayList<Integer>> combinationSum2(int[] num, int target){
+    public ArrayList<ArrayList<Integer>> combinationSumII(int[] num, int target){
         Arrays.sort(num);    //sort in ascending order
-        combinations.clear();
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
         stk.clear();
-        plusSum(num, target);
-        return combinations;
+        plusSum(num, target, result);
+        return result;
     }
 
-    /***************test***************/
-    public void display(){
+    /* unit test is in ../java_unittest/combinatiomsumII_junit/  */
+
+    public void display(ArrayList<ArrayList<Integer>> combinations){
         System.out.println("combinations:");
         for(ArrayList<Integer> arr : combinations){
             for(Integer i : arr){
@@ -75,21 +78,14 @@ public class combinationsumII{
             while(t.hasMoreTokens()){
                 nums[i++] = Integer.parseInt(t.nextToken().toString());
             }
-            
+
             System.out.println("please input integer target:");
             str = scan.nextLine().trim();
             if(str.isEmpty())    break;
             int x = Integer.parseInt(str);
-            
-            combinationSum2(nums, x);
-            display();
-        }
-        return;
-    }
 
-    public static void main(String[] args){
-        combinationsumII cs = new combinationsumII();
-        cs.test_01();
+            display(combinationSumII(nums, x));
+        }
         return;
     }
 }

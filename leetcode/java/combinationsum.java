@@ -1,11 +1,12 @@
 /*
- * given a set of candidate numbers(C) and a target number(T), find all unique combinations where the candidate numbers sums to T.
- * the same number may be chosen from C unlimited times.
+ * given a set of candidate numbers(C) and a target number(T), find all unique combinations where
+ * the candidate numbers sums to T.
  *
  * note:
- * 1.all numbers(including target) will be positive integers
- * 2.elements in a combination must be non-decending order
- * 3.solution set must not contain duplicate combinations.
+ * 0. the same number may be chosen from C unlimited times.
+ * 1. all numbers including target are positive
+ * 2. elements in a combination must be non-decending order
+ * 3. result set cannot have duplicate combinations.
  *
  * test data:
  * {2,3,6,7}, target=7, 
@@ -74,12 +75,6 @@ public class combinationsum{
             int x = Integer.parseInt(str);
             displayArrArr(combinationSum(arr, x));
         }
-    }
-
-    public static void main(String[] args){
-        combinationsum cs = new combinationsum();
-        cs.test_01();
-        return;
     }
 }
 
