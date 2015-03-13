@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<project name="JUNIT" default="main" basedir=".">
+    <!-- sets variables which can later be used. -->
+    <!-- the values of a property is accessed via ${} -->
+    <property name="init.dir" location="../../java"/>
+    <property name="src.dir" location="src"/>
+    <property name="test.dir" location="tests"/>
+
+    <property name="junit.jar.dir" location="/home/bruyu/IDE/jars"/>
+
+    <property name="build.dir" location="bin"/>
+    <property name="build.test.dir" location="bin/test"/>
+
+    <!-- variables used for junit testing -->
+    <property name="test.report.dir" location="testreport"/>
+
+    <!-- define the classpath which includes the junit.jar and the classes after compiling -->
+    <path id="project.class.path">
+        <pathelement location="${junit.jar.dir}/junit-4.12.jar"/>
+        <pathelement location="${junit.jar.dir}/hamcrest-core-1.3.jar"/>
+        <pathelement path="${build.dir}"/>
+    </path>
+
+    <!-- deletes the existing build, doc and dist directory -->
+    <target name="clean">
+        <delete dir="${src.dir}"/>
+        <delete dir="${test.dir}"/>
+
+        <delete dir="${build.dir}"/>
+        <delete dir="${build.test.dir}" />
+        <delete dir="${test.report.dir}" />
+    </target>
+
+    <!-- create the build, docs and dist directory -->
+    <target name="makedir">
+        <mkdir dir="${src.dir}"/>
+        <copy file="${init.dir}/combinationsum.java" todir="${src.dir}"/>
+        <mkdir dir="${test.dir}"/>
+        <copy file="combinationsumUnitTest.java" todir="${test.dir}"/>
+
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.test.dir}"/>
+        <mkdir dir="${test.report.dir}"/>
+    </target>
+
+    <!-- compiles the java code(including usage of junit lib) -->
+    <target name="compile" depends="clean, makedir">
+        <javac
+            srcdir="${src.dir}"
+            destdir="${build.dir}"
+            includeantruntime="true">
+        </javac>
+        <javac
+            srcdir="${test.dir}"
+            destdir="${build.test.dir}"
+            includeantruntime="true">
+            <classpath refid="project.class.path"/>
+        </javac>
+    </target>
+
+    <!-- run the junit test -->
+    <!-- outputis xml, be plain -->
+    <target name="junit" depends="compile">
+        <junit printsummary="on" fork="true" haltonfailure="yes">
+            <classpath refid="project.class.path"/>
+            <classpath>
+                <pathelement path="${build.test.dir}"/>
+            </classpath>
+            <!--
+            <test name="addTwoNumbersUnitTest" haltonfailure="no" todir="${test.report.dir}" outfile="result">
+                <formatter type="xml"/>
+            </test>
+            -->
+            <formatter type="xml"/>
+            <batchtest todir="${test.report.dir}">
+                <fileset dir="${test.dir}">
+                    <include name="*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="main" depends="compile, junit">
+        <description>Main Target</description>
+    </target>
+</project>

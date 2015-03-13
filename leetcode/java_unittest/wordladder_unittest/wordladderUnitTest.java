@@ -61,14 +61,9 @@ public class wordladderUnitTest{
         ArrayList<ArrayList<String>> expected = new ArrayList<ArrayList<String>>();
 
         String[] arr1 = new String[]{"dog", "dod", "dad"};
-        ArrayList<String> path1 = new ArrayList<String>();
-        fillList(path1, arr1);
-        expected.add(path1);
-
         String[] arr2 = new String[]{"dog", "dag", "dad"};
-        ArrayList<String> path2 = new ArrayList<String>();
-        fillList(path2, arr2);
-        expected.add(path2);
+        expected.add(fillList(arr1));
+        expected.add(fillList(arr2));
 
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
@@ -90,24 +85,13 @@ public class wordladderUnitTest{
         ArrayList<ArrayList<String>> expected = new ArrayList<ArrayList<String>>();
 
         String[] arr1 = new String[]{"hit", "hot", "dot", "dog", "cog"};
-        ArrayList<String> path1 = new ArrayList<String>();
-        fillList(path1, arr1);
-        expected.add(path1);
-
         String[] arr2 = new String[]{"hit", "hot", "lot", "log", "cog"};
-        ArrayList<String> path2 = new ArrayList<String>();
-        fillList(path2, arr2);
-        expected.add(path2);
-
         String[] arr3 = new String[]{"hit", "dit", "dig", "dog", "cog"};
-        ArrayList<String> path3 = new ArrayList<String>();
-        fillList(path3, arr3);
-        expected.add(path3);
-
         String[] arr4 = new String[]{"hit", "dit", "dot", "dog", "cog"};
-        ArrayList<String> path4 = new ArrayList<String>();
-        fillList(path4, arr4);
-        expected.add(path4);
+        expected.add(fillList(arr1));
+        expected.add(fillList(arr2));
+        expected.add(fillList(arr3));
+        expected.add(fillList(arr4));
 
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
@@ -116,11 +100,12 @@ public class wordladderUnitTest{
         Assert.assertTrue(assertArrayListExt(result, expected));
     }
 
-    private void fillList(ArrayList<String> dst, String[] arr){
+    private ArrayList<String> fillList(String[] arr){
+        ArrayList<String> dst = new ArrayList<String>();
         for(int i=0; i < arr.length; i++){
             dst.add(arr[i]);
         }
-        return;
+        return dst;
     }
 
     /*

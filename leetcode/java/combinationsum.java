@@ -1,6 +1,7 @@
 /*
- * given a set of candidate numbers(C) and a target number(T), find all unique combinations where the candidate numbers sums to T
- * the same repeated number may be chosen from C unlimited number of times.
+ * given a set of candidate numbers(C) and a target number(T), find all unique combinations where the candidate numbers sums to T.
+ * the same number may be chosen from C unlimited times.
+ *
  * note:
  * 1.all numbers(including target) will be positive integers
  * 2.elements in a combination must be non-decending order
@@ -14,19 +15,21 @@ import java.io.*;
 import java.util.*;
 
 public class combinationsum{
-    private ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
-    private Stack<Integer> stk = new Stack<Integer>();        //put candidate value
+    private Stack<Integer> stk = new Stack<Integer>();  // put candidate numbers
     
-    private void plusSum(int[] candidates, int target){
+    private void plusSum(int[] candidates, int target, ArrayList<ArrayList<Integer>> result){
         if(target == 0){
-            res.add(new ArrayList<Integer>(stk));
+            result.add(new ArrayList<Integer>(stk));
             return;
         }
-        for(int d : candidates){
+        for(int d : candidates){ // candidates in ascending order
             if(target < d)        break;
-            if(!stk.isEmpty() && stk.peek() > d)        continue;
+            if(!stk.isEmpty()
+               && stk.peek() > d){ // ensure numbers in stk is in ascending from bottom to top
+                continue;
+            }
             stk.push(d);
-            plusSum(candidates, target - d);
+            plusSum(candidates, target - d, result);
             stk.pop();
         }
         return;
@@ -34,13 +37,15 @@ public class combinationsum{
 
     public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target){
         Arrays.sort(candidates); // sort in ascending order
-        res.clear();
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
         stk.clear();
-        plusSum(candidates, target);
+        plusSum(candidates, target, res);
         return res;
     }
 
-    public void displayArrArr(ArrayList<ArrayList<Integer>> combinations){
+    /*    unit test code is in ../java_unittest/combinationsum_junit/   */
+
+    private void displayArrArr(ArrayList<ArrayList<Integer>> combinations){
         System.out.println("combinations:");
         for(ArrayList<Integer> arr : combinations){
             for(Integer i : arr){
@@ -50,7 +55,7 @@ public class combinationsum{
         }
     }
 
-    public void test_01(){
+    private void test_01(){
         Scanner scan = new Scanner(System.in);
         while(true){
             System.out.println("please input integer candidates:");
