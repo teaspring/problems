@@ -107,7 +107,7 @@ public class wordladderUnitTest{
         String[] arr4 = new String[]{"hit", "dit", "dot", "dog", "cog"};
         ArrayList<String> path4 = new ArrayList<String>();
         fillList(path4, arr4);
-        expected.add(path3);
+        expected.add(path4);
 
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
