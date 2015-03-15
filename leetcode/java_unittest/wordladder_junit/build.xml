@@ -55,9 +55,9 @@
   <!-- create the build, docs and dist directory -->
   <target name="init">
     <mkdir dir="${src.dir}"/>
-    <copy file="${init.dir}/combinationsum.java" todir="${src.dir}"/>
+    <copy file="${init.dir}/wordladder.java" todir="${src.dir}"/>
     <mkdir dir="${testcase.dir}"/>
-    <copy file="combinationsumUnitTest.java" todir="${testcase.dir}"/>
+    <copy file="wordladderUnitTest.java" todir="${testcase.dir}"/>
 
     <mkdir dir="${target.classes.dir}"/>
     <mkdir dir="${test.classes.dir}"/>

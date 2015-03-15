@@ -26,7 +26,7 @@
 
  - implementation of problems on oj.leetcode.com, including C++, java and python
  - C++ unit test via googletest
- - java unit test via junit + ant
+ - java unit test via junit, coverage via emma, both integrated in ant
  - python unit test via unittest module
 
 ###InterviewQ

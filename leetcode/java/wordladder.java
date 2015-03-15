@@ -166,7 +166,7 @@ public class wordladder{
     }
 
     /* unit test code is in ../java_unittest/wordladder_junit */
-
+    /*
     private static HashSet<String> parseStrArray(String str){
         HashSet<String> st = new HashSet<String>();
         StringTokenizer t = new StringTokenizer(str, " ,");
@@ -202,4 +202,5 @@ public class wordladder{
         }
         return;
     }
+    */
 }

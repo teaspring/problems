@@ -45,7 +45,7 @@ public class combinationsum{
     }
 
     /*    unit test code is in ../java_unittest/combinationsum_junit/   */
-
+    /*
     private void displayArrArr(ArrayList<ArrayList<Integer>> combinations){
         System.out.println("combinations:");
         for(ArrayList<Integer> arr : combinations){
@@ -76,5 +76,6 @@ public class combinationsum{
             displayArrArr(combinationSum(arr, x));
         }
     }
+    */
 }
 
