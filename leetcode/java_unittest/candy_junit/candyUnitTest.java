@@ -7,7 +7,6 @@ import java.util.Arrays;
 import org.junit.*;
 import org.junit.Assert;
 
-
 public class candyUnitTest{
     private candy game;
 
