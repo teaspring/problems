@@ -105,7 +105,7 @@
     </junit>
   </target>
 
-  <!--~~~~~~~~~~~~~~~~~~~ assume task <compile> has been executed ~~~~~~~~~~~~~~~~~~-->
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
   <target name="junit_emma" depends="compile, emma" description="runs junit test case against instrumented src class">
     <!-- ~~~~~~~~EMMA instrumentation~~~~~~ -->
     <emma enabled="${emma.enabled}">
