@@ -6,18 +6,20 @@
  * */
 import java.io.*;
 import java.util.*;
+import java.lang.IllegalArgumentException;
+import java.util.EmptyStackException;
 
 public class evalRPN{
     public int eval(String[] tokens){
         Stack<Integer> stk = new Stack<Integer>();
         int n = tokens.length;
-        for(int i=0;i<n;++i){
-            if(tokens[i].isEmpty())        continue;
+        for(int i = 0; i < n; ++i){
+            if(tokens[i].isEmpty())    continue;
             if(tokens[i].length() > 1 || Character.isLetterOrDigit(tokens[i].charAt(0))){
                 stk.push(Integer.parseInt(tokens[i]));
                 continue;
             }
-            int x1=0, x2=0;
+            int x1 = 0, x2 = 0;
             switch (tokens[i].charAt(0)){
                 case '+':
                     x1 = stk.pop();
@@ -44,23 +46,9 @@ public class evalRPN{
             }
         }
         if(stk.isEmpty()){
-            System.out.println("error");
-            return 0;
+            throw new IllegalArgumentException("invalid argument");
         }
         return stk.peek();
     }
-
-    public void test_01(){
-        String[] exp = new String[5];
-        exp[0] = new String("4");
-        exp[1] = new String("-13");
-        exp[2] = new String("5");
-        exp[3] = new String("/");
-        exp[4] = new String("+");
-        System.out.println(eval(exp));
-    }
-    public static void main(String[] args){
-        evalRPN rpn = new evalRPN();
-        rpn.test_01();
-    }
+    /* unit test code is in ../java_unittest/evalRPN_junit  */
 }
