@@ -7,11 +7,11 @@
 
 using namespace std;
 
-const double eps = 1e-5;
+const float eps = 1e-5;
 
 class Utility{
 public:
-    void quick_sort(double* values, int n, char** names);  // recurse method should not be static
+    void quick_sort(float* values, int n, char** names);  // recurse method should not be static
 
     static void swap_cstr(char** pcstr1, char** pcstr2){
         char* tmp = *pcstr2;
@@ -21,8 +21,8 @@ public:
         return;
     }
 
-    static void swap_double(double* pd1, double* pd2){
-        double tmp = *pd2;
+    static void swap_float(float* pd1, float* pd2){
+        float tmp = *pd2;
         *pd2 = *pd1;
         *pd1 = tmp;
         return;
@@ -30,21 +30,21 @@ public:
 };
 
     /*
-     * quick sort char*[] and double[] with key of double[]
+     * quick sort char*[] and float[] with key of float[]
      * */
-    void Utility::quick_sort(double* values, int n, char** names){
+    void Utility::quick_sort(float* values, int n, char** names){
         if(n < 2)    return;
-        double *p = values, *q = values - 1, *t = values + n-1;
+        float *p = values, *q = values - 1, *t = values + n-1;
         while(p < t){
             if((*p - *t) < eps){
                 q++;
-                swap_double(q, p);
+                swap_float(q, p);
                 swap_cstr(names + (q - values), names + (p - values));
             }
             p++;
         }
         q++;
-        swap_double(q, t);
+        swap_float(q, t);
         swap_cstr(names + (q - values), names + (t - values));
 
         quick_sort(values, (q - values), names);
@@ -53,11 +53,11 @@ public:
 
 class MaxHeap{
 public:
-    MaxHeap(double* keys, char** values, int n){
+    MaxHeap(float* keys, char** values, int n){
         Keys = keys;
         Values = values;
         N = n;
-        sorted = false;
+        heapified = false;
     }
     virtual ~MaxHeap(){
         Keys = NULL;
@@ -66,9 +66,9 @@ public:
 
     void heap_build();
 
-    void heap_insert(double nkey, char* nval);
+    void heap_insert(float nkey, char* nval);
 
-    void heap_sort_asce();
+    void heap_sort();
 
 private:
     void max_heapify(int idx, int length);
@@ -82,10 +82,10 @@ private:
     }
 
 private:
-    double* Keys;  // double[N] in use for invoker
-    char** Values; // char*[N] in use for invoker
+    float* Keys;  // float[N] managed by invoker
+    char** Values; // char*[N] managed by invoker
     int N;
-    bool sorted;
+    bool heapified;
 };
 
     /*
@@ -102,27 +102,27 @@ private:
             largest = r;
         }
         if(largest != i){
-            Utility::swap_double(Keys + largest, Keys + i);
+            Utility::swap_float(Keys + largest, Keys + i);
             Utility::swap_cstr(Values + largest, Values + i);
             max_heapify(largest, length);
         }
     }
 
     /*
-     * build whole heap sorted
+     * build whole heap heapified
      * */
     void MaxHeap::heap_build(){
         for(int i = N >> 1; i >= 0; i--){
             max_heapify(i, N);
         }
-        sorted = true;
+        heapified = true;
     }
 
     /*
-     * attempt to insert a new key/value to a sorted heap
+     * attempt to insert a new key/value to a heapified heap
      * */
-    void MaxHeap::heap_insert(double nkey, char* nval){
-        if(!sorted)        heap_build();
+    void MaxHeap::heap_insert(float nkey, char* nval){
+        if(!heapified)        heap_build();
         if(nkey - Keys[0] >= eps)    return;
 
         Keys[0] = nkey;
@@ -134,15 +134,15 @@ private:
      * sort the heap(array) in ascending order in place
      * after that, [0] is NOT the max of whole tree
      * */
-    void MaxHeap::heap_sort_asce(){
-        if(!sorted)    heap_build();
+    void MaxHeap::heap_sort(){
+        if(!heapified)    heap_build();
         int hsize = N;
         for(int i = N-1; i >= 0; i--){
-            Utility::swap_double(Keys + i, Keys + 0);
+            Utility::swap_float(Keys + i, Keys + 0);
             Utility::swap_cstr(Values + i, Values + 0);
             hsize--;
             max_heapify(0, hsize);
         }
-        sorted = false;  // donot forget
+        heapified = false;  // donot forget
     }
 

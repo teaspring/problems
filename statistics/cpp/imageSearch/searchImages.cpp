@@ -20,7 +20,6 @@
 #include <fts.h>
 #include <fnmatch.h>
 
-#include "opencv2/imgcodecs.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/core/core.hpp"
@@ -38,7 +37,7 @@ public:
     SearchEngine(int h, int s, int v): h_bins(h), s_bins(s), v_bins(v){}
     virtual ~SearchEngine(){}
 
-    void searchHist(const char* base, const char* toSearchPath, const char* topN);
+    void searchHist(const char* base, const char* test1, const char* test2);
 
     int searchImages(char* srcImgName, char** paths, char** pImgNames /* out */, int topN);
 
@@ -47,12 +46,12 @@ public:
 private:
     int getMaskedHists(const char* srcName /* in */, Mat* hists /* out */);
 
-    void generateFiveMasks(const Size& size, Mat* masks);
+    void generateSegMasks(const Size& size, Mat* masks);
 
     void calcMaskedHists(const Mat* hsvSrc, int nimages, Mat* hists, int n, Mat* masks, const int* channels,
                 const int dims, const int* histSize, const float** ranges);
 
-    double compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, double alpha);
+    float compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha);
 
     inline bool isImage(char* name){
         return (fnmatch("*.jpg", name, FNM_CASEFOLD) == 0
@@ -77,11 +76,11 @@ private:
         getMaskedHists(test2, test2Hists);
 
         /// compare histogram in weighted
-        double alpha = 0.28;     // our 5 weights are [alpha, (1 - alpha)/(n-1),...]
+        float alpha = 0.28;     // our 5 weights are [alpha, (1 - alpha)/(n-1),...]
         int compare_method = 1;  // 1 for CV_COMP_CHISQR
-        double base_base  = compareHistWeighted(baseHists, SEG_COUNT, baseHists, compare_method, alpha);
-        double base_test1 = compareHistWeighted(baseHists, SEG_COUNT, test1Hists, compare_method, alpha);
-        double base_test2 = compareHistWeighted(baseHists, SEG_COUNT, test2Hists, compare_method, alpha);
+        float base_base  = compareHistWeighted(baseHists, SEG_COUNT, baseHists, compare_method, alpha);
+        float base_test1 = compareHistWeighted(baseHists, SEG_COUNT, test1Hists, compare_method, alpha);
+        float base_test2 = compareHistWeighted(baseHists, SEG_COUNT, test2Hists, compare_method, alpha);
         printf("weighted compare hitogram perfect, Base-Test(1), Base-Test(2): %f, %f, %f \n",
                     base_base, base_test1, base_test2);
         return;
@@ -98,12 +97,12 @@ private:
         }
 
         const int method_idx = 1;
-        const double alpha = 0.28;
+        const float alpha = 0.28;
 
-        double sqrValues[MAX_COUNT];
+        float sqrValues[MAX_COUNT];
         int soldCount = 0;
 
-        double t = (double)getTickCount();
+        float t = (float)getTickCount();
 
         /// iterate <dstPath> for image
         FTS *tree = fts_open(dstPath, FTS_NOCHDIR, 0);
@@ -151,10 +150,10 @@ private:
             Utility util;
             util.quick_sort(sqrValues, soldCount, pImgNames);
         }else{
-            mheap.heap_sort_asce();
+            mheap.heap_sort();
         }
 
-        double seconds = ((double)getTickCount() - t) / getTickFrequency();
+        float seconds = ((float)getTickCount() - t) / getTickFrequency();
 
         printf("base file: %s\n", base);
         printf("==========================================================\n");
@@ -163,7 +162,7 @@ private:
         }
         printf("==========================================================\n");
         printf("engine channel bins:  H-%d, S-%d, V-%d\n", h_bins, s_bins, v_bins);
-		printf("search + sort time: %f seconds\n", seconds);
+        printf("search + sort time: %f seconds\n", seconds);
 
         return min(topN, soldCount);
     }
@@ -176,14 +175,17 @@ private:
         Mat matSrc, hsvSrc;
         matSrc = imread(nameSrc, 1);
         /*
-		if(!(matSrc.channels() == 3 || matSrc.channels() == 4)){
+        if(!(matSrc.channels() == 3 || matSrc.channels() == 4)){
             printf("ERROR: image %s channels %d!\n", nameSrc, matSrc.channels());
             return 1;
         }
-		*/
-
+        */
         cvtColor(matSrc, hsvSrc, COLOR_BGR2HSV);  // BGR -> HSV, here V = R
 
+        /// we have 5 segment histograms for each image
+        Mat srcMasks[5];
+        generateSegMasks(hsvSrc.size(), srcMasks);
+        
         /// histogram size consisting of multiple channel bins
         int histSize[] = { this->h_bins, this->s_bins, this->v_bins };
 
@@ -195,9 +197,6 @@ private:
         int channels[] = {0, 1, 2};  // H, S and V
         const int dims = sizeof(channels) / sizeof(int);
 
-        /// we have 5 segment histograms for each image
-        Mat srcMasks[5];
-        generateFiveMasks(hsvSrc.size(), srcMasks);
         calcMaskedHists(&hsvSrc, 1, hists, 5, srcMasks, channels, dims, histSize, ranges);
         return 0;
     }
@@ -205,7 +204,7 @@ private:
     /*
     * generate 5 masks dependent on size: mid, left-up corner(rectangle), right-up corner, left-down corner, right-down corner
     * */
-    void SearchEngine::generateFiveMasks(const Size& size, Mat* masks){
+    void SearchEngine::generateSegMasks(const Size& size, Mat* masks){
         int h = size.height, w = size.width;
         int cx = w/2, cy = h/2;
         Size axes((int)w/8*3, (int)h/8*3); // half of size of ellipse's main axes
@@ -224,7 +223,7 @@ private:
             rectangle(cornerMask, 
                       Point(XYs[i*4], XYs[i*4 + 1]), 
                       Point(XYs[i*4 + 2], XYs[i*4 + 3]), 
-                      Scalar(255), -1);
+                      Scalar(255), -1);  // get a corner mask whihc field is 1/4 of initial rectangle
             subtract(cornerMask, ellipMask, cornerMask);  // subtract ellipMask from cornerMask
             masks[i+1] = cornerMask;
         }
@@ -251,9 +250,9 @@ private:
     * @param alpha: weight of 1st element
     * @param methodIdx: one of CV_COMP_XXX
     * */
-    double SearchEngine::compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, double alpha){
-        double beta = (1 - alpha) / (n-1);
-        double res = compareHist(histsBase[0], histsTest[0], methodIdx) * alpha;
+    float SearchEngine::compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha){
+        float beta = (1 - alpha) / (n-1);
+        float res = compareHist(histsBase[0], histsTest[0], methodIdx) * alpha;
         for(int i=1; i < n; i++){
             res += compareHist(histsBase[i], histsTest[i], methodIdx) * beta;
         }
