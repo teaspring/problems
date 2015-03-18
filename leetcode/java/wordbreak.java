@@ -15,20 +15,22 @@ import java.util.*;
 public class wordbreak{
     public boolean canBreak(String s, Set<String> dict){
         final int n = s.length();
-        if(n==0)    return true;
+        if(n == 0)    return true;
         boolean[] inDict = new boolean[n];
-        for(int i=0;i<n;++i){
+        for(int i = 0; i < n; ++i){
             inDict[i] = false;
         }
-        for(int i=0;i<n;++i){
-            if(!inDict[i] && dict.contains(s.substring(0,i+1)))        inDict[i] = true;
+        for(int i = 0; i < n; ++i){
+            if(!inDict[i] && dict.contains(s.substring(0, i+1))){ // str.substring(startIdx, endIdx)
+                inDict[i] = true;
+            }
             if(inDict[i]){
-                for(int j=i+1;j<n;++j){        //str.substring(i,j) means [i,j), both i and j are index
-                    if(!inDict[j] && dict.contains(s.substring(i+1,j+1))){
-                        inDict[j]=true;
+                for(int j = i+1; j < n; ++j){
+                    if(!inDict[j] && dict.contains(s.substring(i+1, j+1))){
+                        inDict[j] = true;
                     }
                 }
-                if(inDict[n-1])        return true;
+                if(inDict[n-1])    return true;
             }
         }
         return inDict[n-1];
@@ -110,29 +112,29 @@ public class wordbreak{
 
     /*
      * efficient solution to problem 2.
-     * 1. a traverse of O(n^2) is necessary and a ArrayList<ArrayList<Integer>> is used for the traverse result; 
+     * 1. a traverse of O(n^2) is necessary and a List<List<int>> is used for the traverse result;
      * 2. utilize the structure to find all consecutive composition
      *
      * test data:
      * dict={a,aa,aaa,aaaa,aaaaa...}, str=aaaaaaaaaaaaaaab
      * dict={a,aa,aaa,aaaa,aaaaa...}, str=baaaaaaaaaaaaaaa
-     * think about how to skip as much useless clauses as possible during preparement(fill the ArrayList<ArrayList<Integer>>)
+     * think about how to skip duplicate parts during preparement(fill the List<List<int>>)
      * 
-     * why it can skip some steps in traverse? because this problem asks to find "word break" instead of "word occurance", any word
-     * occurance which cannot contribute to a complete breaking option does not need to cover
+     * why it can skip some steps in traverse? because the Q asks to find "word break" instead of "word occurance",
+     * any word occurance which cannot contribute to a complete breaking option does not need to cover
      * */
     public ArrayList<String> wordbreakall_02(String s, Set<String> dict){
         ArrayList<String> res = new ArrayList<String>();
         int n = s.length();
-        if(n==0 || dict.size()==0)    return res;
+        if(n == 0 || dict.isEmpty())    return res;
         ArrayList<ArrayList<Integer>> arr = new ArrayList<ArrayList<Integer>>(n);
-        for(int i=0;i<n;++i){
+        for(int i = 0; i < n; ++i){
             arr.add(i, new ArrayList<Integer>());            
         }
-        for(int stop=n;stop>0;--stop){ //as collect() start from [0] later, here traverse from [n-1] will skip more clauses?
-            if(stop<n && arr.get(stop).isEmpty())
+        for(int stop = n; stop > 0; --stop){ //as collect() start from [0] later, here traverse from [n-1] will skip more clauses?
+            if(stop < n && arr.get(stop).isEmpty())
                 continue;   //key and most smart statement, skip the index which can not arrive in end
-            for(int start = stop-1;start>=0;--start){
+            for(int start = stop-1; start >= 0; --start){
                 if(dict.contains(s.substring(start,stop))){
                     arr.get(start).add(stop);
                 }
@@ -142,12 +144,13 @@ public class wordbreak{
         return res;
     }
 
-    protected void collect(ArrayList<ArrayList<Integer>> arr, int start, String str, String prev, ArrayList<String> res){
+    protected void collect(ArrayList<ArrayList<Integer>> arr, int start, String str,
+            String prev, ArrayList<String> res){
         if(start >= arr.size())    return;
         for(int stop : arr.get(start)){
             String prefix = prev;
-            prefix += start==0 ? str.substring(start, stop) : " "+str.substring(start, stop);
-            if(stop==str.length()){
+            prefix += (start == 0 ? str.substring(start, stop) : " " + str.substring(start, stop));
+            if(stop == str.length()){
                 res.add(prefix);
             }else{ 
                 collect(arr, stop, str, prefix, res);
@@ -155,45 +158,6 @@ public class wordbreak{
         }
     }
 
-    static int parseIntArray(String s, int[] arr){
-        int i=0;
-        int len=s.length();
-        StringTokenizer t = new StringTokenizer(s, " ,");
-        while(t.hasMoreTokens()){
-            arr[i++] = Integer.parseInt(t.nextToken().toString());
-        }
-        return i;
-    }
-
-    static HashSet<String> parseStrArray(String str){
-        HashSet<String> st = new HashSet<String>();
-        StringTokenizer t = new StringTokenizer(str, " ,");
-        while(t.hasMoreTokens()){
-            String s = t.nextToken().toString();
-            if(!st.contains(s)){
-                st.add(s);
-            }
-        }
-        return st;
-    }
-
-    public static void main(String[] args){
-        Scanner scan = new Scanner(System.in);
-        wordbreak wb = new wordbreak();
-        while(true){            
-            System.out.println("input dictionary strings:");
-            String dictStr = scan.nextLine();
-            if(dictStr.length()==0)        break;
-            HashSet<String> dict = parseStrArray(dictStr);
-            
-            System.out.println("input string to break:");
-            String str = scan.nextLine();
-            if(str.length()==0)        break;
-            ArrayList<String> result = wb.wordbreakall_02(str, dict);
-            for(String s : result){
-                System.out.println(s);
-            }
-        }
-    }
+    /* unittest code is in ../java_unittest/wordbreak_junit/ */
 }
 
