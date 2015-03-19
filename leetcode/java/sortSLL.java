@@ -57,10 +57,7 @@ public class sortSLL{
 
     //append real head to prehead, return real tail
     private ListNode merge(ListNode l1, ListNode l2, ListNode prehead){ //in ascending order
-        if(l1 == null){
-            prehead.next = l2;
-            return findtail(l2);
-        }
+        /// as l1 is cut ahead of l2, l1 never be null
         if(l2 == null){
             prehead.next = l1;
             return findtail(l1);
