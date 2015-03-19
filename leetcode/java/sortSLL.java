@@ -1,6 +1,7 @@
 /*
  * sort Single Linked List in time O(nlgn) and space O(1)
- * option 1. merge sort; 2. insertion sort
+ * option 1. merge sort;
+ * option 2. insertion sort
  * */
 import java.io.*;
 import java.util.*;
@@ -19,7 +20,7 @@ public class sortSLL{
      * merge sort 
      * */
     public ListNode mergesort(ListNode head){
-        int n=0;
+        int n = 0;
         ListNode prev = new ListNode(0);    //the one to link real head
         prev.next = head;
         ListNode curr = prev.next;
@@ -46,7 +47,7 @@ public class sortSLL{
     }
 
     private ListNode findtail(ListNode head){
-        if(head==null)    return null;
+        if(head == null)    return null;
         ListNode h = head;
         while(h.next != null){
             h = h.next;
@@ -55,7 +56,7 @@ public class sortSLL{
     }
 
     //append real head to prehead, return real tail
-    private ListNode merge(ListNode l1, ListNode l2, ListNode prehead){//in ascending order
+    private ListNode merge(ListNode l1, ListNode l2, ListNode prehead){ //in ascending order
         if(l1 == null){
             prehead.next = l2;
             return findtail(l2);
@@ -87,7 +88,7 @@ public class sortSLL{
     }
 
     private ListNode ruler(ListNode head, int len){
-        if(head==null)    return null;
+        if(head == null)    return null;
         --len;
         while(head.next != null && len>0){
             head = head.next;
@@ -97,11 +98,11 @@ public class sortSLL{
         head.next = null;
         return res;
     }
-    
+
     /*
      * insertion sort
      * */
-    ListNode insertionsort(ListNode head){
+    public ListNode insertionsort(ListNode head){
         if(head==null)    return null;
         ListNode curr = head.next, start = head, cprev = head;
         while(curr != null){
@@ -127,50 +128,5 @@ public class sortSLL{
         }
         return start;
     }
-
-    /*
-     * for test
-     * */
-    public void displaySLL(ListNode head){
-        System.out.print(head.val);
-        while(head.next != null){
-            head = head.next;
-            System.out.print(" -> " + head.val);
-        }
-        System.out.println();
-    }
-
-    private ListNode makeSLL(String str){
-        StringTokenizer st = new StringTokenizer(str, " ,");
-        ListNode head= null;
-        if(st.hasMoreTokens()){
-            head = new ListNode(Integer.parseInt(st.nextToken()));
-        }
-        ListNode h = head;
-        while(st.hasMoreTokens()){
-            h.next = new ListNode(Integer.parseInt(st.nextToken()));
-            h = h.next;
-        }
-        return head;
-    }
-
-    public void test_01(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            System.out.println("please input SLL:");
-            String str1 = scan.nextLine().trim();
-            if(str1.isEmpty())    break;
-            ListNode l1 = makeSLL(str1);
-            
-            //System.out.println("merge sort:");
-            //displaySLL(mergesort(l1));
-            System.out.println("insertion sort:");
-            displaySLL(insertionsort(l1));
-        }
-    }
-
-    public static void main(String[] args){
-        sortSLL ss = new sortSLL();
-        ss.test_01();
-    }
+    /* unit test case is in ../java_unittest/sortSLL_junit */
 }
