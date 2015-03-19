@@ -23,6 +23,7 @@ public class addTwoNumbers{
             next = null;
         }
     }
+
     private ListNode copyList(ListNode head){
         if(head == null)    return null;
         ListNode h = new ListNode(head.val);
@@ -160,21 +161,6 @@ public class addTwoNumbers{
         }
         return head;
     }
-    /*
-    private void display(ListNode head){
-        if(head == null){
-            System.out.println();
-            return;
-        }
-        System.out.print(head.val);
-        head = head.next;
-        while(head != null){
-            System.out.print(" -> " + head.val);
-            head = head.next;
-        }
-        System.out.println();
-    }
-    */
 
     /* unit test will be executed in ../java_unittest/addTwoNumbers_unittest/ */
 }

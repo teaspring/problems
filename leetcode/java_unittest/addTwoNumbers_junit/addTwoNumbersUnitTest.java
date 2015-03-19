@@ -5,7 +5,6 @@
 import org.junit.*;
 import org.junit.Assert;
 
-
 public class addTwoNumbersUnitTest{
     private addTwoNumbers game;
 
@@ -24,16 +23,11 @@ public class addTwoNumbersUnitTest{
         p2.next = game.new ListNode(3);
         p2.next.next = game.new ListNode(4);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p1, p2);
+        addTwoNumbers.ListNode result = game.addTwo(p1, p2);
 
         // c = 530
-        int[] arr = new int[]{0, 3, 5};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{0, 3, 5};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -43,16 +37,11 @@ public class addTwoNumbersUnitTest{
         // b = 5
         addTwoNumbers.ListNode p2 = game.new ListNode(5);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p1, p2);
+        addTwoNumbers.ListNode result = game.addTwo(p1, p2);
 
         // c = 13
-        int[] arr = new int[]{3, 1};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{3, 1};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -64,16 +53,11 @@ public class addTwoNumbersUnitTest{
         addTwoNumbers.ListNode p2 = game.new ListNode(7);
         p2.next = game.new ListNode(8);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p1, p2);
+        addTwoNumbers.ListNode result = game.addTwo(p1, p2);
 
         // c = 106
-        int[] arr = new int[]{6, 0, 1};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{6, 0, 1};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -83,15 +67,10 @@ public class addTwoNumbersUnitTest{
 
         addTwoNumbers.ListNode p2 = null;
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p1, p2);
+        addTwoNumbers.ListNode result = game.addTwo(p1, p2);
 
-        int[] arr = new int[]{9, 1};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{9, 1};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -101,16 +80,11 @@ public class addTwoNumbersUnitTest{
         // b = -8
         addTwoNumbers.ListNode p2 = game.new ListNode(-8);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p1, p2);
+        addTwoNumbers.ListNode result = game.addTwo(p1, p2);
 
         // c = -13
-        int[] arr = new int[]{-3, 1};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{-3, 1};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -122,16 +96,11 @@ public class addTwoNumbersUnitTest{
         addTwoNumbers.ListNode p2 = game.new ListNode(8);
         p2.next = game.new ListNode(3);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p1, p2);
+        addTwoNumbers.ListNode result = game.addTwo(p1, p2);
 
         // c = -57
-        int[] arr = new int[]{-7, 5};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{-7, 5};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -143,16 +112,11 @@ public class addTwoNumbersUnitTest{
         addTwoNumbers.ListNode p2 = game.new ListNode(8);
         p2.next = game.new ListNode(3);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p2, p1);
+        addTwoNumbers.ListNode result = game.addTwo(p2, p1);
 
         // c = -57
-        int[] arr = new int[]{-7, 5};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{-7, 5};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -164,16 +128,11 @@ public class addTwoNumbersUnitTest{
         addTwoNumbers.ListNode p2 = game.new ListNode(3);
         p2.next = game.new ListNode(9);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p1, p2);
+        addTwoNumbers.ListNode result = game.addTwo(p1, p2);
 
         // c = 12
-        int[] arr = new int[]{2, 1};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{2, 1};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -185,16 +144,11 @@ public class addTwoNumbersUnitTest{
         addTwoNumbers.ListNode p2 = game.new ListNode(3);
         p2.next = game.new ListNode(9);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p2, p1);
+        addTwoNumbers.ListNode result = game.addTwo(p2, p1);
 
         // c = 12
-        int[] arr = new int[]{2, 1};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{2, 1};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -206,16 +160,11 @@ public class addTwoNumbersUnitTest{
         addTwoNumbers.ListNode p2 = game.new ListNode(1);
         p2.next = game.new ListNode(8);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p1, p2);
+        addTwoNumbers.ListNode result = game.addTwo(p1, p2);
 
         // c = 0
-        int[] arr = new int[]{0};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{0};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -226,16 +175,11 @@ public class addTwoNumbersUnitTest{
         // b = 0
         addTwoNumbers.ListNode p2 = game.new ListNode(0);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p1, p2);
+        addTwoNumbers.ListNode result = game.addTwo(p1, p2);
 
         // c = -81
-        int[] arr = new int[]{-1, 8};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
-            Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
-            h = h.next;
-        }
+        int[] expected = new int[]{-1, 8};
+        assertListValues(expected, result);
     }
 
     @Test
@@ -246,16 +190,21 @@ public class addTwoNumbersUnitTest{
         // b = 0
         addTwoNumbers.ListNode p2 = game.new ListNode(0);
 
-        addTwoNumbers.ListNode p3 = game.addTwo(p2, p1);
+        addTwoNumbers.ListNode result = game.addTwo(p2, p1);
 
         // c = -81
-        int[] arr = new int[]{-1, 8};
-        addTwoNumbers.ListNode h = p3;
-        for(int i = 0; i < arr.length; i++){
+        int[] expected = new int[]{-1, 8};
+        assertListValues(expected, result);
+    }
+
+    private boolean assertListValues(int[] expected, addTwoNumbers.ListNode head){
+        addTwoNumbers.ListNode h = head;
+        for(int v : expected){
             Assert.assertNotNull(h);
-            Assert.assertEquals(arr[i], h.val);
+            Assert.assertEquals(v, h.val);
             h = h.next;
         }
+        return true;
     }
 
     @After
