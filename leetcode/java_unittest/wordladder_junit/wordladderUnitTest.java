@@ -4,6 +4,7 @@
  * wordladderII: ArrayList<ArrayList<String>> findLadders(String, String, HashSet<String>)
  * */
 
+import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -26,9 +27,8 @@ public class wordladderUnitTest{
         String end = new String("oak");
         HashSet<String> dict = new HashSet<String>();
         String[] arr = new String[]{"dog", "dig", "dad", "oad", "oig", "oag"};
-        for(String s : arr){
-            dict.add(s);
-        }
+        fillCollection(arr, dict);
+
         Assert.assertEquals(5, game.ladderLength(start, end, dict));
     }
 
@@ -37,6 +37,7 @@ public class wordladderUnitTest{
         String start = new String("dig");
         String end = new String("dig");
         HashSet<String> dict = new HashSet<String>();
+
         Assert.assertEquals(1, game.ladderLength(start, end, dict));
     }
 
@@ -45,25 +46,33 @@ public class wordladderUnitTest{
         String start = new String("dig");
         String end = new String("dog");
         HashSet<String> dict = new HashSet<String>();
+
         Assert.assertEquals(2, game.ladderLength(start, end, dict));
+    }
+
+    @Test
+    public void wordladderI_negativeTest(){
+        String start = new String("dig");
+        String end = new String("dot");
+        HashSet<String> dict = new HashSet<String>();
+
+        Assert.assertEquals(0, game.ladderLength(start, end, dict));
     }
 
     @Test
     public void wordladderII_positiveTest_1(){
         String start = new String("dog");
         String end = new String("dad");
+
         HashSet<String> dict = new HashSet<String>();
         String[] arr = new String[]{"dod", "dag", "did"};
-        for(String s : arr){
-            dict.add(s);
-        }
+        fillCollection(arr, dict);
 
         ArrayList<ArrayList<String>> expected = new ArrayList<ArrayList<String>>();
-
         String[] arr1 = new String[]{"dog", "dod", "dad"};
         String[] arr2 = new String[]{"dog", "dag", "dad"};
-        expected.add(fillList(arr1));
-        expected.add(fillList(arr2));
+        expected.add(fillArrayList(arr1));
+        expected.add(fillArrayList(arr2));
 
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
@@ -79,9 +88,7 @@ public class wordladderUnitTest{
         HashSet<String> dict = new HashSet<String>();
         String[] arr = new String[]{"hot", "dot", "dog", "lot", "log", "hat", "bit",
             "big", "dit", "dig", "cat", "hak", "cak", "cok", "dok"};
-        for(String s : arr){
-            dict.add(s);
-        }
+        fillCollection(arr, dict);
 
         ArrayList<ArrayList<String>> expected = new ArrayList<ArrayList<String>>();
 
@@ -89,10 +96,10 @@ public class wordladderUnitTest{
         String[] arr2 = new String[]{"hit", "hot", "lot", "log", "cog"};
         String[] arr3 = new String[]{"hit", "dit", "dig", "dog", "cog"};
         String[] arr4 = new String[]{"hit", "dit", "dot", "dog", "cog"};
-        expected.add(fillList(arr1));
-        expected.add(fillList(arr2));
-        expected.add(fillList(arr3));
-        expected.add(fillList(arr4));
+        expected.add(fillArrayList(arr1));
+        expected.add(fillArrayList(arr2));
+        expected.add(fillArrayList(arr3));
+        expected.add(fillArrayList(arr4));
 
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
@@ -101,10 +108,18 @@ public class wordladderUnitTest{
         Assert.assertTrue(assertArrayListExt(result, expected));
     }
 
-    private ArrayList<String> fillList(String[] arr){
+    private void fillCollection(String[] arr, Collection<String> coll){
+        coll.clear();
+        for(String str : arr){
+            coll.add(str);
+        }
+        return;
+    }
+
+    private ArrayList<String> fillArrayList(String[] arr){
         ArrayList<String> dst = new ArrayList<String>();
-        for(int i=0; i < arr.length; i++){
-            dst.add(arr[i]);
+        for(String str : arr){
+            dst.add(str);
         }
         return dst;
     }
