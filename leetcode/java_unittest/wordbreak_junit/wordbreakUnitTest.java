@@ -52,6 +52,7 @@ public class wordbreakUnitTest{
         String S = new String();
         Set<String> dict = new HashSet<String>();
         dict.add("o");
+
         Assert.assertTrue(game.canBreak(S, dict));
     }
 
@@ -66,6 +67,7 @@ public class wordbreakUnitTest{
         String[] expectedArr = new String[]{"cats and dog", "cat sand dog"};
         List<String> expected = new ArrayList<String>();
         fillCollection(expectedArr, expected);
+
         assertListExt(expected, result);
     }
 
@@ -95,6 +97,7 @@ public class wordbreakUnitTest{
                                             "aaaaa b"};
         List<String> expected = new ArrayList<String>();
         fillCollection(expectedArr, expected);
+
         assertListExt(expected, result);
     }
 

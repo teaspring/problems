@@ -27,7 +27,6 @@ public class combinationsumUnitTest{
         expected.add(fillList(arr1));
         expected.add(fillList(arr2));
 
-        Assert.assertEquals(expected.size(), result.size());
         Assert.assertTrue(assertArrayListExt(expected, result));
         Assert.assertTrue(assertArrayListExt(result, expected));
     }
@@ -54,7 +53,6 @@ public class combinationsumUnitTest{
         expected.add(fillList(arr5));
         expected.add(fillList(arr6));
 
-        Assert.assertEquals(expected.size(), result.size());
         Assert.assertTrue(assertArrayListExt(expected, result));
         Assert.assertTrue(assertArrayListExt(result, expected));
     }
@@ -72,6 +70,7 @@ public class combinationsumUnitTest{
      * */
     private boolean assertArrayListExt(ArrayList<ArrayList<Integer>> expected,
             ArrayList<ArrayList<Integer>> result){
+        Assert.assertEquals(expected.size(), result.size());
         for(ArrayList<Integer> listExp : expected){
             boolean contains = false;
             for(ArrayList<Integer> listRes : result){

@@ -29,7 +29,6 @@ public class combinationsumIIUnitTest{
         expected.add(fillList(arr2));
         expected.add(fillList(arr3));
 
-        Assert.assertEquals(expected.size(), result.size());
         Assert.assertTrue(assertArrayListExt(expected, result));
         Assert.assertTrue(assertArrayListExt(result, expected));
     }
@@ -43,10 +42,11 @@ public class combinationsumIIUnitTest{
     }
 
     /*
-     * to assert two ArrayList<ArrayList<Integer>> objects equals or not
+     * to assert two ArrayList<ArrayList<Integer>> objects equals
      * */
     private boolean assertArrayListExt(ArrayList<ArrayList<Integer>> expected,
             ArrayList<ArrayList<Integer>> result){
+        Assert.assertEquals(expected.size(), result.size());
         for(ArrayList<Integer> listExp : expected){
             boolean contains = false;
             for(ArrayList<Integer> listRes : result){

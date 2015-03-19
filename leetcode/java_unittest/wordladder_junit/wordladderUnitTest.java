@@ -76,7 +76,6 @@ public class wordladderUnitTest{
 
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
-        Assert.assertEquals(expected.size(), result.size());
         Assert.assertTrue(assertArrayListExt(expected, result));
         Assert.assertTrue(assertArrayListExt(result, expected));
     }
@@ -103,7 +102,6 @@ public class wordladderUnitTest{
 
         ArrayList<ArrayList<String>> result = game.findLadders(start, end, dict);
 
-        Assert.assertEquals(expected.size(), result.size());
         Assert.assertTrue(assertArrayListExt(expected, result));
         Assert.assertTrue(assertArrayListExt(result, expected));
     }
@@ -129,6 +127,7 @@ public class wordladderUnitTest{
      * */
     private boolean assertArrayListExt(ArrayList<ArrayList<String>> expected,
             ArrayList<ArrayList<String>> result){
+        Assert.assertEquals(expected.size(), result.size());
         for(ArrayList<String> listExp : expected){
             boolean contains = false;
             for(ArrayList<String> listRes : result){

@@ -17,10 +17,13 @@ public class MaximumGapUnitTest{
     @Test
     public void positiveTest(){
         int arr1[] = new int[]{3, 4, 1, -1, 2, 0, 8};
-        Assert.assertEquals(4, mg.maximumGap(arr1));
+        int expected = 4;
+
+        Assert.assertEquals(expected, mg.maximumGap(arr1));
 
         int arr2[] = new int[]{-1, -1, -1, -1};
-        Assert.assertEquals(0, mg.maximumGap(arr2));
+        expected = 0;
+        Assert.assertEquals(expected, mg.maximumGap(arr2));
     }
 
     @After
