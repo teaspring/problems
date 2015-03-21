@@ -3,6 +3,18 @@
 
 /* int Solution::findMedianSortedArrays(int *A, int m, int *B, int n) */
 
+TEST(findmedianTest, Zero){
+    Solution s;
+
+    int A[] = {};
+    int B[] = {};
+    int m = sizeof(A) / sizeof(int);
+    int n = sizeof(B) / sizeof(int);
+    double expected = 0;
+
+    EXPECT_EQ(expected, s.findMedianSortedArrays(A, m, B, n));
+}
+
 TEST(findmedianTest, SameSize01){
     Solution s;
 
