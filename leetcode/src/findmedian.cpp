@@ -1,7 +1,7 @@
 /*
-* integer array A[m], B[n] are sorted in ascending both, find the median of all integers in time O(lg(m+n))
-* 
-* note: 
+* int array A[m], B[n] are sorted already(ascending), find the median of all integers in time O(lg(m+n))
+*
+* note:
 * 1.case of m==n is in <IntroductionToAlgorithm> chapter9 median and order statistics, exercise 9.3-8
 * 2.case of m!= n is an interview problem
 * 
@@ -25,8 +25,8 @@
 * {1,3}, {2,4}
 * {1,2}, {1,2}
 * {1,4}, {2,3}
-* 
-* ----- m != n ------
+*
+* ----- m != n -----
 * {1,3,5,8}, {2,4,6,7}
 * {1,1}, {2,3,4,5}
 * {1,2,3}, {4,5}
@@ -39,7 +39,7 @@
 
 class Solution{
 
-    double find(int *a, int n, int *b, int m, int th){ //th is 0-based
+    double find(int *a, int n, int *b, int m, int th){ // th is 0-based
         if(n == 0)    return (double)b[th];
         if(m == 0)    return (double)a[th];
     
