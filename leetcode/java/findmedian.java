@@ -71,11 +71,11 @@ public class findmedian{
             return find(B, startB, lengthB, A, startA, lengthA, th);  // ensure greater median is in @param A[]
         }
 
-        if(midA + 1 + midB + 1 <= th + 1){ // skip lower half of B[]
+        if(midA + 1 + midB + 1 <= th + 1){ // skip lower half of B[] of length (midB + 1)
             return find(A, startA, lengthA,
                         B, startB + midB + 1, lengthB - (midB + 1),
                         th - (midB + 1));
-        }else{  // skip upper half of A[]
+        }else{  // skip upper half of A[] of length (midA + 1), meanwhile keeping length midA
             return find(A, startA, midA,
                         B, startB, lengthB,
                         th);
