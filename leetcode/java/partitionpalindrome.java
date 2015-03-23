@@ -20,14 +20,14 @@ public class partitionpalindrome{
         char[] arr = s.toCharArray();
         int n = arr.length;
 
-        for(int i = 0; i < n; i++){  // alpalin[i] has ends of all palindrome which starts at [i]
+        for(int i = 0; i < n; i++){  // alpalin[i] has exclusive ends of all palindrome which starts at [i]
             alpalin.add(new ArrayList<Integer>());
-            alpalin.get(i).add(i + 1); // end is exclusive
+            alpalin.get(i).add(i + 1);
         }
 
         for(int l = 2; l <= n; l++){
             for(int end = n; end - l >= 0; end--){
-                if(l < 4 || alpalin.get(end - l + 1).contains(end - 1)){
+                if(l < 4 || alpalin.get(end - l + 1).contains(end - 1)){ // [end-l+1, end-1) is palindrome
                     if(arr[end - l] == arr[end - 1]){
                         alpalin.get(end - l).add(end);
                     }
@@ -62,13 +62,14 @@ public class partitionpalindrome{
     public ArrayList<ArrayList<String>> partition(String s){
         ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
         if(s == null || s.isEmpty())    return res;
-        int n = s.length();
 
         ArrayList<ArrayList<Integer>> alpalin = make_alpalin(s);
+
         Stack<Integer> stk = new Stack<Integer>();
         stk.push(0);
         partition_palin(res, alpalin, s, 0, stk);
         stk.pop();
+
         return res;
     }
 

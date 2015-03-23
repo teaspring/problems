@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<project name="JUNIT" default="main" basedir=".">
+  <!-- the values of a property is accessed via ${} -->
+  <property name="init.dir" location="../../java"/>
+  <property name="src.dir" location="src"/>
+  <property name="testcase.dir" location="tests"/>
+  <property name="target.dir" location="target"/>
+  <property name="target.classes.dir" location="${target.dir}/classes"/>
+  <!--~~~~~~~~ junit dir ~~~~~~~~~-->
+  <property name="test.classes.dir" location="${target.dir}/testclasses"/>
+  <property name="test.report.dir" location="testreport"/>
+  <!--~~~~~~~~~~~~~~ emma instrumentation dir ~~~~~~~~~~~~-->
+  <property name="instr.classes.dir" location="${target.dir}/emmainstr"/>
+  <!--~~~~~~~~~~~~~~ emma report dir ~~~~~~~~~~~~-->
+  <property name="coverage.dir" value="coverage" />
+  <!--~~~~~~~~~~~~~~~~~~ emma lib ~~~~~~~~~~~~~~~-->
+  <property name="emma.dir" location="/home/bruyu/IDE/tools/emma/lib"/>
+
+  <!-- path element used by EMMA taskdef below: -->
+  <path id="emma.lib" >
+    <pathelement location="${emma.dir}/emma.jar" />
+    <pathelement location="${emma.dir}/emma_ant.jar" />
+  </path>
+
+  <!-- define which classes are reported in coverage reports -->
+  <path id="emma.coverage.classes">
+    <pathelement location="${target.classes.dir}" />
+  </path>
+
+  <!-- load <emma>(for off-line) and <emmajava>(for on-fly) custom tasks of ant -->
+  <taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+
+  <!--~~~~~~~~~~~~~~~~~~ junit lib ~~~~~~~~~~~~~~~~~~~~-->
+  <property name="junit.jar.dir" location="/home/bruyu/IDE/jars"/>
+
+  <path id="junit.class.path">
+    <pathelement location="${junit.jar.dir}/junit-4.12.jar"/>
+    <pathelement location="${junit.jar.dir}/hamcrest-core-1.3.jar"/>
+  </path>
+
+  <path id="src.class.path">
+    <pathelement path="${target.classes.dir}"/>
+  </path>
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <!-- deletes the existing build, doc and dist directory -->
+  <target name="clean">
+    <delete dir="${src.dir}"/>
+    <delete dir="${testcase.dir}"/>
+    <delete dir="${target.dir}"/>
+    <delete dir="${test.report.dir}" />
+    <delete dir="${coverage.dir}"/>
+  </target>
+
+  <!-- create the build, docs and dist directory -->
+  <target name="init">
+    <mkdir dir="${src.dir}"/>
+    <copy file="${init.dir}/partitionpalindromeII.java" todir="${src.dir}"/>
+    <mkdir dir="${testcase.dir}"/>
+    <copy file="partitionpalindromeIIUnitTest.java" todir="${testcase.dir}"/>
+
+    <mkdir dir="${target.classes.dir}"/>
+    <mkdir dir="${test.classes.dir}"/>
+    <mkdir dir="${test.report.dir}"/>
+  </target>
+
+  <!-- compiles the java code(including usage of junit lib) -->
+  <target name="compile" depends="clean, init">
+    <javac srcdir="${src.dir}" destdir="${target.classes.dir}" includeantruntime="true" debug="on"/>
+    <javac srcdir="${testcase.dir}" destdir="${test.classes.dir}" includeantruntime="true" debug="on">
+      <classpath refid="junit.class.path"/>
+      <classpath refid="src.class.path"/>
+    </javac>
+  </target>
+
+  <!-- if <emmajava> is disabled, it acts as a simple pass-through to
+       the original ANT <java> task: this is convenient, because it avoids
+       having to branch the build execution depending on whether you want
+       code coverage or not. Note that <emmajava> inherits all of <java>'s
+       attributes and nested elements.-->
+  <target name="emma" description="turns on EMMA's on-the-fly instrumentation mode" >
+    <property name="emma.enabled" value="true" />
+    <mkdir dir="${instr.classes.dir}" />
+    <mkdir dir="${coverage.dir}" />
+    <!-- this property, if overriden via -Demma.filter=<list of filter specs>
+         on ANT's command line, will set the coverage filter -->
+    <property name="emma.filter" value="" />
+  </target>
+
+  <!-- run the junit test against raw source classes -->
+  <target name="junit" depends="compile" description="run junit with emma instrumentation class">
+    <junit printsummary="on" fork="true" haltonfailure="yes">
+      <classpath>
+        <pathelement location="${target.classes.dir}" />
+        <pathelement location="${test.classes.dir}"/>
+        <path refid="junit.class.path"/>
+      </classpath>
+      <!-- <test name="" haltonfailure="no" todir="" outfile=""><formatter type="xml"/></test>-->
+      <formatter type="xml"/>
+        <batchtest todir="${test.report.dir}">
+          <fileset dir="${testcase.dir}">
+            <include name="*Test.java"/>
+          </fileset>
+        </batchtest>
+    </junit>
+  </target>
+
+  <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+  <target name="junit_emma" depends="compile, emma" description="runs junit test case against instrumented src class">
+    <!-- ~~~~~~~~EMMA instrumentation~~~~~~ -->
+    <emma enabled="${emma.enabled}">
+      <instr instrpathref="emma.coverage.classes"
+             destdir="${instr.classes.dir}"
+             metadatafile="${coverage.dir}/metadata.emma"
+             merge="true">
+        <filter value="${emma.filter}"/>
+      </instr>
+    </emma>
+    <!-- ~~~~~~~~~~~~ run junit test case with intrumented target classess ~~~~~~~~~~~~~ -->
+    <junit printsummary="on" fork="true" haltonfailure="yes">
+      <classpath>
+        <pathelement location="${instr.classes.dir}"/>
+        <pathelement location="${test.classes.dir}"/>
+        <path refid="junit.class.path"/>
+        <path refid="emma.lib"/>
+      </classpath>
+      <formatter type="xml" />
+      <batchtest todir="${test.report.dir}">
+        <fileset dir="${testcase.dir}">
+          <include name="*Test.java"/>
+        </fileset>
+      </batchtest>
+      <jvmarg value="-XX:-UseSplitVerifier" />  <!-- necessary tag for jdk1.7! -->
+      <jvmarg value="-Demma.coverage.out.file=${coverage.dir}/coverage.emma" />
+      <jvmarg value="-Demma.coverage.out.merge=false" />
+    </junit>
+    <!--~~~~~~~~~~~~~~~ EMMA report generation ~~~~~~~~~~~~~~~~~~-->
+    <emma enabled="${emma.enabled}">
+      <report sourcepath="${src.dir}"
+              sort="+block,+name,+line,+method,+class">
+        <fileset dir="${coverage.dir}">
+          <include name="*.emma" />
+        </fileset>
+        <txt outfile="${coverage.dir}/coverage.txt" />
+        <html outfile="${coverage.dir}/coverage.html" depth="method" columns="name,class,method,block,line" />
+      </report>
+    </emma>
+  </target>
+
+  <!-- final trigger -->
+  <target name="main" depends="junit_emma" description="Main Target"/>
+</project>
