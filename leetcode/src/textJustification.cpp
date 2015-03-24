@@ -13,113 +13,63 @@
 #include <vector>
 using namespace std;
 
-/*
- * NOTE: distribute benefit in left slots evenly!!
- * * */
-string fillLine(vector<string>& words, int L, int start, int count, int benefit, int interval){
-    char arr[L+1];
-    int t=0;
-    for(int i=start; i < start + count; ++i){
-        if(i==start){
-            for(size_t j=0; j<words[i].size(); ++j){
-                arr[t++] = words[i][j];
+class Solution{
+
+public:
+    vector<string> fullJustify(vector<string>& words, int L){
+        vector<string> res;
+        int i = 0, n = words.size();
+        while(i < n){
+            int solidL = words[i].size();
+            int gap = 1, cw = 1;
+
+            while(i + cw < n){  // (i + cw) equals to counts of covered words, and next available word index both
+                int delta = gap + words[i + cw].length();
+                if(solidL + delta > L)    break;
+                solidL += delta;
+                ++cw;
             }
-        }else{
-            if(benefit > 0){
+
+            // construct the interval spaces array
+            int intervals[cw];
+            int rest = L - solidL;
+            if(cw == 1){
+                intervals[cw - 1] = rest;
+            }else{
+                int evenSpace = gap + rest / (cw - 1);
+                intervals[0]  = evenSpace + rest % (cw - 1);
+                for(int j = 1; j < cw - 1; j++){
+                    intervals[j] = evenSpace;
+                }
+                intervals[cw - 1] = 0;
+            }
+
+            res.push_back(fillLine(words, L, i, cw, intervals));
+            i += cw;
+        }
+        return res;
+    }
+
+private:
+    /*
+    * NOTE: distribute benefit in left slots evenly!!
+    * * */
+    string fillLine(vector<string>& words, int L, int start, int count, int* spaces){
+        char arr[L+1];
+        int t = 0;
+        for(int i = 0; i < count; ++i){
+            for(size_t j = 0; j < words[start + i].size(); j++){
+                arr[t++] = words[start + i][j];
+            }
+
+            int x = spaces[i];
+            while(x-- > 0){
                 arr[t++] = ' ';
-                --benefit;
-            }
-            for(int j=0; j<interval; ++j){
-                arr[t++] = ' ';
-            }
-            for(size_t j=0; j<words[i].size(); ++j){
-                arr[t++] = words[i][j];
             }
         }
+        arr[L] = '\0';
+        return string(arr);
     }
-    while(t<L){    // for last line
-        arr[t++] = ' ';
-    }
-    arr[L] = '\0';
-    return string(arr, arr+L);
-}
+};
 
-vector<string> fullJustify(vector<string>& words, int L){
-    vector<string> res;
-    int i=0, j=0, n=words.size();
-    while(i < n){
-        int solidL = words[i].size();
-        if(solidL > L)    break;
-        int interval = 1, cw = 1;
-        j = i+1;
-        for(; solidL < L && j < n; ++j){
-            solidL += (interval + words[j].size());
-            ++cw;
-        }
-        if(solidL > L){
-            solidL -= (interval + words[j-1].size());
-            --cw;
-            --j;
-        }
-        int extras = 0;
-        if(cw == 1){    // with only 1 word, left justified
-            interval = 0;
-            extras   = L - solidL;
-        }else if(j < n){    // not the last line
-            interval += (L - solidL) / (cw - 1);  // solidL contains one space for (n-1) slots already
-            extras    = (L - solidL) % (cw - 1);
-        }
-        //printf("i = %d, cw = %d, benefit = %d, interval = %d\n", i, cw, benefit, interval);
-        string line = fillLine(words, L, i, cw, extras, interval);
-        res.push_back(line);
-        i += cw;
-    }
-    return res;
-}
-
-void display(vector<string>& lines){
-    for(size_t i = 0; i<lines.size(); ++i){
-        cout << lines[i] << endl;
-    }
-}
-
-void test_01(){
-    string arr[] = {"this","would","be","justification"};
-    vector<string> words(arr, arr + sizeof(arr)/sizeof(string));
-    int L = 14;
-    vector<string> lines = fullJustify(words, L);
-    display(lines);
-}
-
-void test_02(){
-    string arr[] = {"to","a","few."};
-    vector<string> words(arr, arr + sizeof(arr)/sizeof(string));
-    int L = 6;
-    vector<string> lines = fullJustify(words, L);
-    display(lines);
-}
-
-void test_03(){
-    string arr[] = {"what", "must", "be", "shall", "be."};
-    vector<string> words(arr, arr + sizeof(arr)/sizeof(string));
-    int L = 12;
-    vector<string> lines = fullJustify(words, L);
-    display(lines);
-}
-
-void test_04(){
-    string arr[] = {"Don't","go","around","saying","the","world","owes","you","a","living;",
-                "the","world","owes","you","nothing;","it","was","here","first."};
-    vector<string> words(arr, arr + sizeof(arr)/sizeof(string));
-    int L = 30;
-    vector<string> lines = fullJustify(words, L);
-    display(lines);
-}
-
-int main(int, char**){
-    test_01();
-    test_02();
-    test_03();
-    test_04();
-    return 0;
-}
+/* unit test is in ../cpp_unittest/textJustification_unittest/ */
