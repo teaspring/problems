@@ -18,51 +18,6 @@ using namespace std;
 
 class Solution{
 public:
-    int calculateMinimumHP_bug(vector<vector<int> > &dungeon){
-        int n = dungeon.size();
-        if(n == 0)    return 0;
-        int m = dungeon[0].size();
-        int P[n][m];  // P[i][j] is minimum initial health point for knight move from top left to [i][j]
-        int Sum[n][m];  // Sum[i][j] is the sum of health points of knight move from top left with initial P[i][j]
-        memset(P, 0, sizeof(P)/sizeof(int));
-        memset(Sum, 0, sizeof(Sum)/sizeof(int));
-        P[0][0]   = 1 + (dungeon[0][0] > 0 ? 0 : 0 - dungeon[0][0]);
-        Sum[0][0] = 1 + (dungeon[0][0] > 0 ? dungeon[0][0] : 0);
-        for(int i = 1; i<n; ++i){
-            P[i][0] = P[i-1][0] + max(0, 1 - dungeon[i][0] - Sum[i-1][0]);
-            Sum[i][0] = Sum[i-1][0] + (P[i][0] - P[i-1][0]) + dungeon[i][0];
-        }
-        for(int j = 1; j<m; ++j){
-            P[0][j] = P[0][j-1] + max(0, 1 - dungeon[0][j] - Sum[0][j-1]);
-            Sum[0][j] = Sum[0][j-1] + (P[0][j] - P[0][j-1]) + dungeon[0][j];
-        }
-
-        for(int i=1; i<n; ++i){
-            for(int j=1; j<m; ++j){
-                if(dungeon[i][j] > 0){
-                    if(P[i-1][j] < P[i][j-1]){  // downward
-                        P[i][j] = P[i-1][j];
-                        Sum[i][j] = Sum[i-1][j] + dungeon[i][j];
-                    }else{  // rightward
-                        P[i][j] = P[i][j-1];
-                        Sum[i][j] = Sum[i][j-1] + dungeon[i][j];
-                    }
-                }else{
-                    int delta1 = max(0, 1 - dungeon[i][j] - Sum[i-1][j]);
-                    int delta2 = max(0, 1 - dungeon[i][j] - Sum[i][j-1]);
-                    if(delta1 + P[i-1][j] < delta2 + P[i][j-1]){ // downward
-                        P[i][j] = delta1 + P[i-1][j];
-                        Sum[i][j] = Sum[i-1][j] + delta1 + dungeon[i][j];
-                    }else{  // rightward
-                        P[i][j] = delta2 + P[i][j-1];
-                        Sum[i][j] = Sum[i][j-1] + delta2 + dungeon[i][j];
-                    }
-                }
-            }
-        }
-        return P[n-1][m-1];
-    }
-
     /*
      * solution 2:
      * [ 1, -3, 3;         
@@ -200,4 +155,6 @@ private:
         return;
     }
 };
+
+/* unit test is in ../cpp_unittest/dungeonGame_unittest/ */
 
