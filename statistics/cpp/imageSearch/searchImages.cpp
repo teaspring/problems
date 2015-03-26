@@ -46,12 +46,12 @@ public:
 private:
     int getMaskedHists(const char* srcName /* in */, Mat* hists /* out */);
 
-    void generateSegMasks(const Size& size, Mat* masks);
+    void generateSegMasks(int height, int width, Mat* masks);
 
     void calcMaskedHists(const Mat* hsvSrc, int nimages, Mat* hists, int n, Mat* masks, const int* channels,
                 const int dims, const int* histSize, const float** ranges);
 
-    float compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha);
+    int compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha);
 
     inline bool isImage(char* name){
         return (fnmatch("*.jpg", name, FNM_CASEFOLD) == 0
@@ -99,7 +99,7 @@ private:
         const int method_idx = 1;
         const float alpha = 0.28;
 
-        float sqrValues[MAX_COUNT];
+        int sqrValues[MAX_COUNT];
         int soldCount = 0;
 
         float t = (float)getTickCount();
@@ -158,7 +158,7 @@ private:
         printf("base file: %s\n", base);
         printf("==========================================================\n");
         for(int i = 0 ; i < min(topN, soldCount); i++){
-            printf("image %s, chi-square value: %f\n", pImgNames[i], sqrValues[i]);
+            printf("image %s, chi-square value: %d\n", pImgNames[i], sqrValues[i]);
         }
         printf("==========================================================\n");
         printf("engine channel bins:  H-%d, S-%d, V-%d\n", h_bins, s_bins, v_bins);
@@ -174,17 +174,11 @@ private:
     int SearchEngine::getMaskedHists(const char* nameSrc /* in */, Mat* hists /* out */){
         Mat matSrc, hsvSrc;
         matSrc = imread(nameSrc, 1);
-        /*
-        if(!(matSrc.channels() == 3 || matSrc.channels() == 4)){
-            printf("ERROR: image %s channels %d!\n", nameSrc, matSrc.channels());
-            return 1;
-        }
-        */
         cvtColor(matSrc, hsvSrc, COLOR_BGR2HSV);  // BGR -> HSV, here V = R
 
         /// we have 5 segment histograms for each image
         Mat srcMasks[5];
-        generateSegMasks(hsvSrc.size(), srcMasks);
+        generateSegMasks(hsvSrc.rows, hsvSrc.cols, srcMasks);
         
         /// histogram size consisting of multiple channel bins
         int histSize[] = { this->h_bins, this->s_bins, this->v_bins };
@@ -204,8 +198,8 @@ private:
     /*
     * generate 5 masks dependent on size: mid, left-up corner(rectangle), right-up corner, left-down corner, right-down corner
     * */
-    void SearchEngine::generateSegMasks(const Size& size, Mat* masks){
-        int h = size.height, w = size.width;
+    void SearchEngine::generateSegMasks(int height, int width, Mat* masks){
+        int h = height, w = width;
         int cx = w/2, cy = h/2;
         Size axes((int)w/8*3, (int)h/8*3); // half of size of ellipse's main axes
     
@@ -250,7 +244,7 @@ private:
     * @param alpha: weight of 1st element
     * @param methodIdx: one of CV_COMP_XXX
     * */
-    float SearchEngine::compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha){
+    int SearchEngine::compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha){
         float beta = (1 - alpha) / (n-1);
         float res = compareHist(histsBase[0], histsTest[0], methodIdx) * alpha;
         for(int i=1; i < n; i++){
