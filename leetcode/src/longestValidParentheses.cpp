@@ -1,6 +1,6 @@
 /*
  * given a string containing just the characters '(' and ')', find the length of longest valid(well-formed) parentheses substring
- * 
+ *
  * test case:
  * (()(), result is 4
  * ((())()(, result is 6
@@ -124,8 +124,9 @@ public:
                         m--; // necessary to update m if m is used later
                     }else{   // without new tail ')' contribution to stk, preceding is only positive int
                         stk.clear();
+                        continue;
                     }
-                    sumPrecedingPosi(stk, ans);
+                    ans = max(ans, sumPrecedingPosi(stk));
                 }
             }
         }
@@ -133,19 +134,18 @@ public:
     }
 
 private:
-    void sumPrecedingPosi(vector<int>& stk, int& ans){
-        int m = stk.size();
-        if(m > 0 && stk[m - 1] > 0){
-            if(m > 1 && stk[m - 2] > 0){
-                int sum = stk[m - 1] + stk[m - 2];
-                stk.pop_back();
-                stk.pop_back();
-                stk.push_back(sum);
+    int sumPrecedingPosi(vector<int>& vect){
+        int m = vect.size();
+        if(m > 0 && vect[m - 1] > 0){
+            if(m > 1 && vect[m - 2] > 0){
+                int sum = vect[m - 1] + vect[m - 2];
+                vect.pop_back();
+                vect.pop_back();
+                vect.push_back(sum);
                 m--; // necessary to update m if m is used later
             }
-            ans = max(ans, stk[m - 1]);
         }
-        return;
+        return vect[m-1];
     }
 };
 /* unit test is in ../cpp_unittest/longestValidParentheses_unittest/ */
