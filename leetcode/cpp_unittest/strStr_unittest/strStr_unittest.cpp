@@ -13,6 +13,26 @@ TEST(strStrTest, Negative01){
     EXPECT_EQ(expected, s.strStr(str, pattern));
 }
 
+TEST(strStrTest, Negative02){
+    Solution s;
+
+    const char *str = "abaaba";
+    const char *pattern = "";
+
+    const char *expected = "abaaba";
+    EXPECT_EQ(expected, s.strStr(str, pattern));
+}
+
+TEST(strStrTest, Negative03){
+    Solution s;
+
+    const char *str = "abaa";
+    const char *pattern = "ababa";
+
+    const char *expected = NULL;
+    EXPECT_EQ(expected, s.strStr(str, pattern));
+}
+
 TEST(strStrTest, Positive01){
     Solution s;
 

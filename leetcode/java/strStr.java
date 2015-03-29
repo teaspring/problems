@@ -6,15 +6,20 @@ import java.io.*;
 import java.util.*;
 
 public class strStr{
-    private void setPrefix(String pattern, int[] prefix){ //prefix.length == n
+    /*
+     * prefix[i] = l means prefix with length l of s can be suffix of s, while s is prefix with length i+1 of pattern
+     * */
+    private void setPrefix(String pattern, int[] prefix){
         final int n = pattern.length();
         prefix[0] = 0;
-        for(int i=1; i<n; ++i){
+
+        char[] arr = pattern.toCharArray();
+        for(int i = 1; i < n; ++i){
             int k = prefix[i-1];
-            Character ch = new Character(pattern.charAt(i));
-            for(; !ch.equals(pattern.charAt(k)) && k>0; k = prefix[k-1]);
-            if(ch.equals(pattern.charAt(k))){
-                prefix[i] = k+1;
+            char ch = arr[i];
+            for(; ch != arr[k] && k > 0; k = prefix[k-1]);
+            if(ch == arr[k]){
+                prefix[i] = k + 1;
             }else{
                 prefix[i] = 0;
             }
@@ -22,49 +27,44 @@ public class strStr{
         return;
     }
 
+    /*
+     * use KMP algorithm to search string
+     * */
     public String strstr(String haystack, String needle){
         final int n = haystack.length();
         final int m = needle.length();
-        if(m==0)    return haystack;
-        if(n<m || n==0)        return null;
+
+        if(m == 0)    return haystack;
+        if(n < m || n == 0)        return null;
+
         int[] prefix = new int[m];
         setPrefix(needle, prefix);
-        int i=0, s=0;
+
+        char[] hArr = haystack.toCharArray();
+        char[] nArr = needle.toCharArray();
+        int i = 0, s = 0;  // i is cursor offset in haystack while s is needle offset in haystack
         boolean bfind = false;
-        while(i<n){
-            int k=i-s;
-            Character ch = new Character(haystack.charAt(i));
-            if(k<0 || (k<m && ch.equals(needle.charAt(k)))){
+        while(i < n){
+            if(i < s){
                 ++i;
-            }else if(k==m){
+                continue;
+            }else if(i - s == m){
                 bfind = true;
                 break;
+            }
+
+            int k = i - s; // k is prefix length inside needle which has been compared equal already
+            if(hArr[i] == nArr[k]){
+                ++i; // needle stays while cursor moving
             }else{
-                s += (k<1) ? 1 : k - prefix[k-1];
+                s += (k == 0) ? 1 : k - prefix[k-1];  // needle moves
             }
         }
-        if(bfind || i-s == m){
+
+        if(bfind || i - s == m){
             return haystack.substring(s, n);
         }
         return null;
     }
-
-    public void test_01(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            System.out.println("please input string to match in:");
-            String haystack = scan.nextLine().trim();
-            if(haystack.isEmpty())    break;
-            System.out.println("please input pattern string:");
-            String needle = scan.nextLine().trim();
-            if(needle.isEmpty())    break;
-            System.out.println(strstr(haystack, needle));
-        }
-        return;
-    }
-
-    public static void main(String[] args){
-       strStr ss = new strStr();
-       ss.test_01();
-    }
+    /* unit test is in ../../java_unittest/strStr_junit/ */
 }

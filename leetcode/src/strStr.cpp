@@ -16,19 +16,18 @@ using namespace std;
 
 class Solution{
     /*
-    * for KMP algorithm, the most important part is the preprocess of pattern P, to get int prefix[P]
-    * it means for P[0...i], the greatest k that prefix of P(P[0..k-1]) matches suffix of P(P[i-k+1, i])
-    * generally, this pattern preprocess is in time O(P)
+    * with KMP algorithm, perform preprocess pattern P to get int prefix[P]
+    * prefix[i] = l means prefix with length l of s can be suffix of s, while s is prefix with length i+1 of pattern
     * */
     void setPrefix(const char *pattern, int *prefix){ // prefix should be [n]
         const int n = strlen(pattern);
         prefix[0] = 0;
         for(int i = 1; i < n; i++){
-            int k = prefix[i-1]; // index is 0-based, and length is 1-based. so k=prefix[i-1] is just the next potential matched char
+            int k = prefix[i-1]; // index is 0-based, and length is 1-based. so k = prefix[i-1] is the next char index to compare
             for(; pattern[k] != pattern[i] && k > 0; k = prefix[k-1]);
 
             if(pattern[k] == pattern[i]){
-                prefix[i] = k+1;    //k is index of 0-based, prefix[i] should be 1-based, prefix[i]<=i
+                prefix[i] = k + 1;
             }else{
                 prefix[i] = 0;
             }
@@ -51,21 +50,26 @@ public:
         memset(prefix, 0, sizeof(prefix)/sizeof(int));
         setPrefix(pattern, prefix); // get prefix array
 
-        int i = 0, s = 0;
+        int i = 0, s = 0; // i is cursor offset in str while s is pattern offset in str
         bool bfind = false;
         while(i < n){
-            int k = i-s; // k is 0-based
-            if(k < 0||(k < m && pattern[k] == str[i])){
+            if(i < s){
                 ++i;
-            }else if(k == m){
+                continue;
+            }else if(i - s == m){
                 bfind = true;
                 break;
-            }else{    // prefix[k] <= k
-                s += (k < 1)? 1 : k - prefix[k-1];  // shift pattern either 1 or k-prefix[k-1] !!!
+            }
+
+            int k = i - s; // k is prefix length inside pattern which has been compared equal already
+            if(pattern[k] == str[i]){
+                ++i;  // pattern stays while cursor moving
+            }else{
+                s += (k == 0)? 1 : k - prefix[k-1];  // pattern move
             }
         }
 
-        if(bfind || i-s == m){ // detect i-s if it reaches tail of str
+        if(bfind || i - s == m){ // detect i-s if it reaches tail of str
             return str + s;
         }
         return NULL;
