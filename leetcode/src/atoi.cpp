@@ -47,6 +47,7 @@ public:
         return isminus ? -preted : preted;
     }
 
+    /*
     void test_01(){
         vector<string> vec;
         vec.push_back("+2");      // 2
@@ -60,20 +61,16 @@ public:
         vec.push_back(" 14dof");  // 14
         vec.push_back("fx");
         vec.push_back("-(1+2)");  // 0
-        vec.push_back(" 2147483648");   // in: 2^31,      out: -2^31
-        vec.push_back(" 2147483649");   // in: 2^31 + 1,  out: -2^31 + 1
-        vec.push_back(" 2147483650");   // in: 2^31 + 2,  out: -2^31 + 2
-        vec.push_back(" -2147483649");  // in: -2^31 - 1, out: 2^31 - 1 
-        vec.push_back(" -2147483650");  // in: -2^31 - 2, out  2^31 - 2
+        vec.push_back(" 2147483648");   // in: 2^31
+        vec.push_back(" 2147483649");   // in: 2^31 + 1
+        vec.push_back(" 2147483650");   // in: 2^31 + 2
+        vec.push_back(" -2147483649");  // in: -2^31 - 1
+        vec.push_back(" -2147483650");  // in: -2^31 - 2
         for(int i=0; i<(int)vec.size(); i++){
             cout << vec[i] << ": std atoi() " << atoi(vec[i].c_str()) << ", my atoi() " << myatoi(vec[i].c_str()) << endl;
         }
         return;
     }
+    */
 };
 
-int main(){
-    Solution s;
-    s.test_01();
-    return 0;
-}
