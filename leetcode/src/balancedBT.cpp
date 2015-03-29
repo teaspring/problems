@@ -12,18 +12,17 @@ public:
         return balancedDepth(root, d);
     }
 
+private:
     bool balancedDepth(TreeNode *root, int &depth){
         if(!root)    return true;
-        int dl = 0, dr = 0;
-        bool isleft = balancedDepth(root->left, dl);
-        if(!isleft)    return false;
-        bool isright = balancedDepth(root->right, dr);
-        if(!isright)    return false;
+
+        int dl = 1, dr = 1;
+
+        if(!balancedDepth(root->left, dl))    return false;
+
+        if(!balancedDepth(root->right, dr))    return false;
+
+        depth += max(dl, dr);
         return max(dl, dr) - min(dl, dr) <= 1;
     }
 };
-
-int main(){
-    return 0;
-}
-
