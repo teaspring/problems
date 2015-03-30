@@ -6,33 +6,22 @@
 #include <iostream>
 using namespace std;
 
-class ClimbStairs{
+class Solution{
 public:
     /*
      * recurse is avoided as it has too much redundancy
      * the state transfer is s[i] = s[i-1] + s[i-2], Fibonacci serial
      * */
     int climbStairs(int n){
-        if(n <= 0)    return 0;
-        int a = 1, b = 1, c=0;
-        for(int i = 2; i<=n; ++i){
+        if(n <= 1)    return n;
+
+        int a = 1, b = 1, c = 0;
+        for(int i = 2; i < n+1; ++i){
             c = a + b;
             a = b;
             b = c;
         }
         return c;
     }
-
-    void test_01(){
-        cout << "for 3 steps:  " << climbStairs(3)  << " ways" << endl;
-        cout << "for 10 steps: " << climbStairs(10) << " ways" << endl;
-    }
 };
 
-int main(){
-    ClimbStairs *cs = new ClimbStairs();
-    cs->test_01();
-    delete cs;
-    cs = 0;
-    return 0;
-}
