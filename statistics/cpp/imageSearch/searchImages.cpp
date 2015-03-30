@@ -41,7 +41,7 @@ public:
 
     int searchImages(char* srcImgName, char** paths, char** pImgNames /* out */, int topN);
 
-    const static int MAX_COUNT = 200;
+    static const int MAX_COUNT = 200;
 
 private:
     int getMaskedHists(const char* srcName /* in */, Mat* hists /* out */);
@@ -49,7 +49,7 @@ private:
     void generateSegMasks(int height, int width, Mat* masks);
 
     void calcMaskedHists(const Mat* hsvSrc, int nimages, Mat* hists, int n, Mat* masks, const int* channels,
-                const int dims, const int* histSize, const float** ranges);
+                const int dims, const int* histSize, const float** ppRanges);
 
     int compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha);
 
@@ -60,6 +60,9 @@ private:
 
 private:
     int h_bins, s_bins, v_bins;
+
+    static const float alpha = 0.28f; // weights are [alpha, beta, beta ...] where beta = (1 - alpha) / (n-1)
+    static const int method_idx = HISTCMP_CHISQR;  // CHI-SQUARE compare, enum value equals to 1
 };
 
     /*
@@ -76,11 +79,9 @@ private:
         getMaskedHists(test2, test2Hists);
 
         /// compare histogram in weighted
-        float alpha = 0.28;     // our 5 weights are [alpha, (1 - alpha)/(n-1),...]
-        int compare_method = 1;  // 1 for CV_COMP_CHISQR
-        float base_base  = compareHistWeighted(baseHists, SEG_COUNT, baseHists, compare_method, alpha);
-        float base_test1 = compareHistWeighted(baseHists, SEG_COUNT, test1Hists, compare_method, alpha);
-        float base_test2 = compareHistWeighted(baseHists, SEG_COUNT, test2Hists, compare_method, alpha);
+        float base_base  = compareHistWeighted(baseHists, SEG_COUNT, baseHists, method_idx, alpha);
+        float base_test1 = compareHistWeighted(baseHists, SEG_COUNT, test1Hists, method_idx, alpha);
+        float base_test2 = compareHistWeighted(baseHists, SEG_COUNT, test2Hists, method_idx, alpha);
         printf("weighted compare hitogram perfect, Base-Test(1), Base-Test(2): %f, %f, %f \n",
                     base_base, base_test1, base_test2);
         return;
@@ -95,9 +96,6 @@ private:
             printf("source image fail to calculate masked histograms!\n");
             return 0;
         }
-
-        const int method_idx = 1;
-        const float alpha = 0.28;
 
         int sqrValues[MAX_COUNT];
         int soldCount = 0;
@@ -114,7 +112,7 @@ private:
         MaxHeap mheap(sqrValues, pImgNames, topN);
         bool isKMinimum = true;
         FTSENT *node;
-        while(node = fts_read(tree)){
+        while(node = fts_read(tree)){ // use <fts.h> to iterate image files
             if(MAX_COUNT == soldCount)    break;
             if(node->fts_level > 0 && node->fts_name[0] == '.'){
                 fts_set(tree, node, FTS_SKIP);
@@ -180,16 +178,16 @@ private:
         Mat srcMasks[5];
         generateSegMasks(hsvSrc.rows, hsvSrc.cols, srcMasks);
         
-        /// histogram size consisting of multiple channel bins
-        int histSize[] = { this->h_bins, this->s_bins, this->v_bins };
+        const float h_ranges[] = { 0, 180 };
+        const float s_ranges[] = { 0, 256 };
+        const float v_ranges[] = { 0, 256 };
+        const float* ranges[] = { h_ranges, s_ranges, v_ranges };
 
-        float h_ranges[] = { 0, 180 };
-        float s_ranges[] = { 0, 256 };
-        float v_ranges[] = { 0, 256 };
-        const float* ranges[] = { h_ranges, s_ranges, v_ranges};
-
-        int channels[] = {0, 1, 2};  // H, S and V
+        const int channels[] = {0, 1, 2}; // H, S and V
         const int dims = sizeof(channels) / sizeof(int);
+
+        /// histogram size consisting of multiple channel bins
+        const int histSize[] = { this->h_bins, this->s_bins, this->v_bins };
 
         calcMaskedHists(&hsvSrc, 1, hists, 5, srcMasks, channels, dims, histSize, ranges);
         return 0;
@@ -201,7 +199,7 @@ private:
     void SearchEngine::generateSegMasks(int height, int width, Mat* masks){
         int h = height, w = width;
         int cx = w/2, cy = h/2;
-        Size axes((int)w/8*3, (int)h/8*3); // half of size of ellipse's main axes
+        Size axes(w*3/8, h*3/8); // half of size of ellipse's main axes
     
         Mat ellipMask = Mat::zeros(h, w, CV_8UC1);  // mask type must be CV_8UC1(0)
         ellipse(ellipMask, Point(cx, cy), axes, 0, 0, 360, Scalar(255), -1);
@@ -212,7 +210,7 @@ private:
                      cx,  0,  w, cy,
                       0, cy, cx,  h,
                      cx, cy,  w,  h};
-        for(int i=0; i<4; i++){
+        for(int i = 0; i < 4; i++){
             Mat cornerMask = Mat::zeros(h, w, CV_8UC1);
             rectangle(cornerMask, 
                       Point(XYs[i*4], XYs[i*4 + 1]), 
@@ -229,10 +227,10 @@ private:
     * @param channels, histSize and ranges have same size of dims
     * */
     void SearchEngine::calcMaskedHists(const Mat* hsvSrc, int nimages, Mat* hists, int n, Mat* masks, const int* channels,
-                const int dims, const int* histSize, const float** ranges){
-        for(int i=0; i < n; i++){
+                const int dims, const int* histSize, const float** ppRanges){
+        for(int i = 0; i < n; i++){
             Mat hist;
-            calcHist(hsvSrc, nimages, channels, masks[i], hist, dims, histSize, ranges);
+            calcHist(hsvSrc, nimages, channels, masks[i], hist, dims, histSize, ppRanges);
             normalize(hist, hist);
             hists[i] = hist;
         }
@@ -247,7 +245,7 @@ private:
     int SearchEngine::compareHistWeighted(const Mat* histsBase, int n, const Mat* histsTest, int methodIdx, float alpha){
         float beta = (1 - alpha) / (n-1);
         float res = compareHist(histsBase[0], histsTest[0], methodIdx) * alpha;
-        for(int i=1; i < n; i++){
+        for(int i = 1; i < n; i++){
             res += compareHist(histsBase[i], histsTest[i], methodIdx) * beta;
         }
         return res;
