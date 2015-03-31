@@ -27,7 +27,7 @@ node* constructCircularDLL(){
 
     node *head = NULL, *p = NULL;
     for(int i = 0; i < n; i++){
-        if(!head){
+        if(!p){
             head = new node(arr[i]);
             p = head;
         }else{
