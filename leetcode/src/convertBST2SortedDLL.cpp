@@ -1,7 +1,9 @@
 /*
- * from leetcode. convert a BST to a sorted circular DLL in-place. think of the left and right pointers as synonymous to the 
- * previous and next pointers in a DLL
- * all of the 3 solutions here use recursion.solution 1 and 2 are modifications based on in-order traverse. solution 3 uses divide-and-conquer
+ * convert a binary search tree (BST) to a sorted circular double linked list (DLL) in-place.
+ * consider the left and right of BST node as synonymous to be prev and next of a DLL node
+ *
+ * all of the 3 solutions use recurse.
+ * solution 1 and 2 are modifications based on in-order traverse. solution 3 uses divide-and-conquer
  * */
 #include "stdio.h"
 #include <iostream>
@@ -10,144 +12,131 @@ using namespace std;
 
 struct node{
     int val;
-    node* left;        //to be prev for DLL
-    node* right;    //to be next for DLL
-    node(int v):val(v),left(0),right(0){}
+    node* left;  // to be prev for DLL
+    node* right; // to be next for DLL
+    node(int v): val(v), left(NULL), right(NULL){}
     virtual ~node(){
-        left = 0;
-        right = 0;
+        left = NULL;
+        right = NULL;
     }
 };
 
-void outputDLL(node* pEnd, int asc){        //asc = 1 for ascending from head, and 0 for descending from tail
-    if(pEnd==0)    return;
-    node *curr = pEnd;
-    printf("the sorted DLL in ascending are: ");
-    printf("%d", curr->val);
-    curr = asc ? curr->right : curr->left;
-    while(curr != pEnd){
-        printf(" -> %d", curr->val);
-        curr = asc ? curr->right : curr->left;
-    }
-    printf("\n");
-    return;
-}
+class Solution{
 
-/*
- * implementation of my own
- * */
-node* getTail(node* curr, node*& pPrev){
-    if(curr==0)        return 0;
-    node* tmp = getTail(curr->left, pPrev);
-    if(tmp==0){
-        if(pPrev==0){
-            pPrev = curr;    //head of sorted DLL
-        }else{
-            pPrev->right = curr;
-            curr->left = pPrev;
+public:
+    /*
+     * solution 1
+     * */
+    node* BST2SortedDLL_01(node* root){
+        node *head = NULL;
+        node *tail = getTail(root, &head);
+        if(!head || !tail){
+            return NULL;
         }
-    }else{
-        tmp->right = curr;
-        curr->left = tmp;
+
+        tail->right = head;
+        head->left = tail;
+        return head;
     }
 
-    tmp = getTail(curr->right, curr);
-    return tmp==0 ? curr : tmp;
-}
-
-node* BST2SortedDLL_01(node* root){
-    node *head = 0, *tail = 0;
-    tail = getTail(root, head);
-    if(head==0 || tail==0){
-        return 0;
+    /*
+    * solution 2, modification based on recursive in-order traverse as well.
+    * */
+    node* BST2SortedDLL_02(node* root){
+        node *prev = NULL;
+        node *head = NULL;
+        bstToDLL(root, &prev, &head);
+        return head;
     }
-    tail->right = head;
-    head->left = tail;
-    return head;
-}
 
-/*
- * author's implementation. modification based on recursive in-order traverse as well.
- * */
-void bstToDLL(node *p, node*& prev, node*& head){
-    if(!p)        return;
-    bstToDLL(p->left, prev, head);
-    p->left = prev;        //link p and its predecessor(prev)
-    if(prev)
-      prev->right = p;
-    else
-      head = p;
+    /*
+    * solution 3, via divide-and-conque, from cslibrary.stanford.edu/109/TreeListRecursion.html.
+    * */
+    node* BST2SortedDLL_03(node* root){
+        if(!root)        return NULL;
 
-    node *right = p->right;     //head stays as the real "head" of DLL, it linked to p in every statement call. as a result, it is linked to 
-    head->left = p;             //real "tail" in final function call
-    p->right = head;
+        node *aList = BST2SortedDLL_03(root->left); // left subtree becomes circular
+        node *bList = BST2SortedDLL_03(root->right); // right subtree becomes circular
 
-    prev = p;        //p as the prev of next function call
-    bstToDLL(right, prev, head);
-}
+        root->left = root;  // root becomes self-circular
+        root->right = root;
 
-node* BST2SortedDLL_02(node* root){
-    node *prev = 0;
-    node *head = 0;
-    bstToDLL(root, prev, head);
-    return head;
-}
+        aList = append(aList, root);
+        aList = append(aList, bList);
+        return aList;
+    }
 
-/*
- * solution with idea of divide-and-conque, from cslibrary.stanford.edu/109/TreeListRecursion.html.
- * */
-void join(node* a, node* b){    //link a to b as predecessor of b
-    a->right = b;
-    b->left = a;
-}
+private:
+    /*
+     * used by solution 1
+     * @param ppPrev: pointing to prev of curr ?
+     * @return: tail node of converted DLL
+     * */
+    node* getTail(node* curr, node** pPrev){
+        if(!curr)   return NULL;
 
-node* append(node* a, node* b){//convert alast->a,blast->b to alast->b, blast->a 
-    if(a==0)    return b;
-    if(b==0)    return a;
-    node *aLast = a->left;
-    node *bLast = b->left;
-    join(aLast, b);
-    join(bLast, a);
-    return a;
-}
+        node* tail = getTail(curr->left, pPrev);
+        if(!tail){
+            if( !(*pPrev) ){
+                *pPrev = curr;    // to be head of whole sorted DLL
+            }else{
+                (*pPrev)->right = curr;
+                curr->left = *pPrev;
+            }
+        }else{
+            tail->right = curr;
+            curr->left = tail;
+        }
 
-node* BST2SortedDLL_03(node* root){
-    if(root==0)        return 0;
-    node *aList = BST2SortedDLL_03(root->left);
-    node *bList = BST2SortedDLL_03(root->right);
-    root->left = root;        //unlink root to append to left half, and append right half to left half seperately 
-    root->right = root;
-    aList = append(aList, root);
-    aList = append(aList, bList);
-    return aList;
-}
+        tail = NULL;
+        tail = getTail(curr->right, &curr);
+        return !tail ? curr : tail;
+    }
 
-/*
- * test
- * */
-int main(int, char**){
-    node *p4 = new node(4);
-    node *p6 = new node(6);
-    p4->right = p6;
-    node *p5 = new node(5);
-    p6->left = p5;
-    node *p7 = new node(7);
-    p6->right = p7;
-    node *p2 = new node(2);
-    p4->left = p2;
-    node *p1 = new node(1);
-    p2->left = p1;
-    node *p3 = new node(3);
-    p2->right = p3;
-    
-    node* h = BST2SortedDLL_03(p4);
-    outputDLL(h, 1);
-    outputDLL(h, 0);
+    /*
+     * used by solution 2
+     * */
+    void bstToDLL(node *p, node **pPrev, node **pHead){
+        if(!p)        return;
 
-    delete p4;
-    delete p5;
-    delete p2;
-    delete p1;
-    delete p3;
-    return 0;
-}
+        bstToDLL(p->left, pPrev, pHead); // *pPrev will be prev of all left sub tree
+        p->left = *pPrev; // link p and its predecessor(*pPrev)
+        if(*pPrev)
+            (*pPrev)->right = p;
+        else
+            *pHead = p; // head of whole sorted DLL
+
+        node *right = p->right; // save right of p
+
+        (*pHead)->left = p; // p becomes "tail" of left sub tree. this link between p and *pHead enables circular
+        p->right = *pHead;
+
+        *pPrev = p; // p is prev of next function call
+        bstToDLL(right, pPrev, pHead);
+    }
+
+    /*
+     * used by solution 3
+     * */
+    void join(node* a, node* b){ // join a and b and a becomes prev of b
+        a->right = b;
+        b->left = a;
+    }
+
+    /*
+     * merge two circular to one, a becomes head of whole merged circular
+     * */
+    node* append(node* a, node* b){
+        if(!a)    return b;
+        if(!b)    return a;
+
+        node *aLast = a->left;
+        node *bLast = b->left;
+
+        join(aLast, b); // aLast is prev of b
+        join(bLast, a); // bLast is prev of a
+        return a;
+    }
+};
+
+/* unit test is in ../cpp_unittest/convertBST2SortedDLL_unittest */
