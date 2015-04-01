@@ -2,7 +2,6 @@
  * max-heap implementation for searchImages.cpp
  * to solve K-minimum problem, we need a max-heap
  *
- * @ Mar26, 2015, since daily life photo compare does not need so accurate, use int instead of float as key
  * */
 #include "stdio.h"
 #include <cstring>
@@ -132,10 +131,14 @@ void MaxHeap::heap_build(){
 * */
 void MaxHeap::heap_insert(int nkey, char *nval){
     if(!heapified)    heap_build();
+
     if(nkey >= Keys[0])    return;
 
     Keys[0] = nkey;
+
+    delete Values[0]; // this char* will be replaced, so delete it to avoid memory leak
     Values[0] = nval;
+
     max_heapify(0, N);
 }
 
