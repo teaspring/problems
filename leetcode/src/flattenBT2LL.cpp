@@ -1,5 +1,5 @@
 /*
- * given a binary tree, flatten it to a linked list in-place.
+ * given a binary tree, flatten it to a linked list in-place, in pre-order traverse
  * e.g 
  *        1           1
  *      /   \          \
@@ -29,25 +29,30 @@ struct TreeNode{
     TreeNode(int x) : val(x), left(NULL), right(NULL){}
 };
 
-void flatten(TreeNode *root){
-    if(!root)    return;
-    TreeNode *curr = NULL, *last = NULL;
-    stack<TreeNode*> stk;
-    stk.push(root);
-    while(!stk.empty()){
-        curr = stk.top();
-        stk.pop();
-        if(curr->right)        stk.push(curr->right);
-        if(curr->left)         stk.push(curr->left);
-        if(last){
-            last->right = curr;
-            last->left = NULL;
-        }
-        last = curr;
-    }
-    return;
-}
+class Solution{
 
-int main(int, char**){
-    return 0;
-}
+public:
+
+    void flatten(TreeNode *root){
+        if(!root)    return;
+
+        TreeNode *curr = NULL, *last = NULL;
+        stack<TreeNode*> stk;
+        stk.push(root);
+
+        while(!stk.empty()){
+            curr = stk.top();
+            stk.pop();
+
+            if(curr->right)    stk.push(curr->right); // left is pushed above right, so left will be "last" when right is "curr"
+            if(curr->left)     stk.push(curr->left);
+
+            if(last){
+                last->right = curr; // right of last is curr,
+                last->left = NULL;
+            }
+            last = curr; // when left is "curr", its parent will be "last"
+        }
+        return;
+    }
+};
