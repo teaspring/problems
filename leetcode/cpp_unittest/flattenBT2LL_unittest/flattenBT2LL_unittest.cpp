@@ -45,6 +45,8 @@ bool assertLL(TreeNode *head1, TreeNode *head2){
     TreeNode *p1 = head1, *p2 = head2;
     do{
         EXPECT_EQ(p1->val, p2->val);
+        EXPECT_EQ(NULL, p1->left);
+        EXPECT_EQ(NULL, p2->left);
 
         p1 = p1->right;
         p2 = p2->right;

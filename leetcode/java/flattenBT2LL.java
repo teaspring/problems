@@ -27,23 +27,26 @@ public class flattenBT2LL{
     
     public void flatten(TreeNode root){
         if(root == null)    return;
+
         TreeNode curr = null, last = null;
         Stack<TreeNode> stk = new Stack<TreeNode>();
         stk.push(root);
+
         while(!stk.isEmpty()){
             curr = stk.pop();
-            if(curr.right != null)       stk.push(curr.right);
-            if(curr.left  != null)       stk.push(curr.left);
+
+            if(curr.right != null)    stk.push(curr.right);
+            if(curr.left  != null)    stk.push(curr.left); // left is pushed above right, so left will be "last" when right is "curr"
+
             if(last != null){
-                last.right = curr;
+                last.right = curr; // right of last is curr
                 last.left = null;
             }
-            last = curr;
+            last = curr; // when left is "curr", its parent will be "last"
         }
-        return;
-    }
 
-    public static void Main(String[] args){
         return;
     }
 }
+
+/* unit test is in ../java_unittest/flattenBT2LL_junit */
