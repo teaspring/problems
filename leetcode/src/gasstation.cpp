@@ -20,8 +20,8 @@ public:
         int tank = gas[i] - cost[i];
 
         while(1){
-            if(tank < 0){
-                while(tank < 0){ // move current start station backward
+            if(tank < 0){ // current start station is not qualified, move it backward
+                while(tank < 0){
                     --start;
                     if(start < 0)     start += n;
                     if(start == i)    break;
@@ -29,9 +29,10 @@ public:
                 }
                 if(start == i)    return -1;
             }
-            ++i;
 
+            ++i; // move forward
             if(i >= n)    i -= n;
+
             if(i == start)    break;
             tank += gas[i] - cost[i];
         }
