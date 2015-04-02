@@ -23,68 +23,59 @@
 #include <string>
 #include <vector>
 #include "stdlib.h"
+
 using namespace std;
 
-/*
- * @parameters:
- *        n: digit count of Gray Code
- *        return: vector of gray code
- * */
-vector<int> grayCode_01(int n){
-    vector<int> res;
-    if(n<1)    return res;
-    int x=0, bin=0;
-    res.push_back(x);
-    while(1){
-        bin = 1-bin;
-        if(bin==1){    //odd indexed
-            x ^= 1;
-        }else{         //even indexed
-            int a=1, i=0;
-            while(i<n-1 && !(x & a)){  //find the first 1 bit from low to high on
-                a = a << 1;
-                ++i;
-            }
-            if(i==n-1)    break;
-            x ^= (a<<1);
-        }
+class Solution{
+
+public:
+    /*
+    * @param:
+    *   n: digit count of Gray Code
+    *   return: vector of gray code
+    * */
+    vector<int> grayCode_1(int n){
+        vector<int> res;
+        if(n < 1)    return res;
+
+        int x = 0, bin = 0;
         res.push_back(x);
+
+        while(1){
+            bin = 1 - bin;
+            if(bin == 1){ //odd indexed
+                x ^= 1;
+            }else{       //even indexed
+                int a = 1, i = 0;
+                while(i < n-1 && !(x & a)){  //find the first 1 bit from low to high on
+                    a = a << 1;
+                    ++i;
+                }
+
+                if(i == n-1)    break;
+                x ^= (a << 1);
+            }
+            res.push_back(x);
+        }
+        return res;
     }
-    return res;
-}
 
-void show(const vector<int>& vec){
-    int n = vec.size();
-    for(int i=0;i<n;i++){
-        printf("%d , ", vec[i]);
+    /*
+    * method 2, find gray code by index
+    * */
+    vector<int> grayCode_2(int n){
+        vector<int> res;
+        res.push_back(0);
+        for(int i = 1;i < (1 << n); i++){
+            res.push_back(indexedGrayCode(i));
+        }
+        return res;
     }
-    printf("\n");
-}
 
-/*
- * method 2, find gray code by index
- * */
-int indexedGrayCode(int k){
-    return k ^ (k >> 1);
-}
-
-vector<int> grayCode_02(int n){
-    vector<int> res;
-    res.push_back(0);
-    for(int i=1;i < (1 << n);i++){
-        res.push_back(indexedGrayCode(i));
+private:
+    int indexedGrayCode(int k){
+        return k ^ (k >> 1);
     }
-    return res;
-}
+};
 
-int main(int, char**){
-    string str;
-    while(1){
-        if(getline(cin, str)==0 || str.empty())    break;
-        int n = atoi(str.c_str());
-        show(grayCode_01(n));
-        show(grayCode_02(n));
-    }
-    return 0;
-}
-
+/* unit test is in ../cp_unittest/graycode_unittest */
