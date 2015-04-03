@@ -2,62 +2,36 @@
  * generate all combinations of well-formed parentheses with given n pairs
  * */
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Stack;
 
 public class generateParentheses{
-    /*
-     * method 1
-     * */
-    private String makeout(Stack<Integer> stk){
-        StringBuilder builder = new StringBuilder();
-        for(Integer i : stk){
-            builder.append(i == 1 ? "(" : ")");
-        }
-        return builder.toString();
+
+    public ArrayList<String> generate(int n){
+        ArrayList<String> result = new ArrayList<String>();
+        char[] pool = new char[2*n];
+        outputParentheses(n, n, pool, 0, result);
+
+		return result;
     }
 
-    private void append(ArrayList<String> res, Stack<Integer> stk, int l, int r){
-        if(l==0 && r==0){
-            res.add(makeout(stk));
+    private void outputParentheses(int l, int r, char[] arr,
+            int count, ArrayList<String> result){
+        if(l == 0 && r == 0){
+            result.add(new String(arr));
             return;
         }
+
         if(l > 0){
-            stk.push(1);
-            append(res, stk, l-1, r);
-            stk.pop();
+            arr[count] = '(';
+            outputParentheses(l - 1, r, arr, count + 1, result);
         }
+
         if(l < r){
-            stk.push(-1);
-            append(res, stk, l, r-1);
-            stk.pop();
+            arr[count] = ')';
+            outputParentheses(l, r - 1, arr, count + 1, result);
         }
-    }
 
-    public ArrayList<String> generate_01(int n){
-        ArrayList<String> arr = new ArrayList<String>();
-        if(n < 1)    return arr;
-        Stack<Integer> stk = new Stack<Integer>();        
-        append(arr, stk, n, n);
-        return arr;
-    }
-    
-    public void test_01(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            System.out.println("please input integer n:");
-            String str = scan.nextLine().trim();
-            if(str.isEmpty())    break;
-            int n = Integer.parseInt(str);
-            ArrayList<String> res = generate(n);
-            for(String s : res){
-                System.out.print(s + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    public static void main(String[] args){
-        generateParentheses gp = new generateParentheses();
-        gp.test_01();
+        return;
     }
 }
