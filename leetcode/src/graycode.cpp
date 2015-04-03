@@ -78,4 +78,4 @@ private:
     }
 };
 
-/* unit test is in ../cp_unittest/graycode_unittest */
+/* unit test is in ../cpp_unittest/graycode_unittest */

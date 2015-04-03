@@ -19,48 +19,48 @@ import java.io.*;
 import java.util.*;
 
 public class graycode{
-    public ArrayList<Integer> grayCode(int n){
-        int x=0, bin=0;
+
+    public ArrayList<Integer> generate_01(int n){
+        int x = 0, bin = 0;
         ArrayList<Integer> res = new ArrayList<Integer>();
         res.add(x);
-        if(n<1)        return res;
+        if(n < 1)    return res;
+
         while(true){
-            bin = 1-bin;
-            if(bin==1){
+            bin = 1 - bin;
+            if(bin == 1){
                 x ^= 1;
             }else{
-                int a=1, i=0;
-                while(i<n-1 && (x & a)==0){
-                    a = a<<1;
+                int a = 1, i = 0;
+                while(i < n-1 && (x & a) == 0){
+                    a = a << 1;
                     ++i;
                 }
-                if(i==n-1)    break;
-                x = x ^ (a<<1);
+
+                if(i == n-1)    break;
+                x = x ^ (a << 1);
             }
             res.add(x);
         }
+
         return res;
     }
 
-    public void test(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            String str = scan.nextLine().trim();
-            if(str.isEmpty())    break;
-            int n = Integer.parseInt(str);
-            ArrayList<Integer> arr = grayCode(n);
-            for(Integer i : arr){
-                System.out.print(i);
-                System.out.print(" ");
-            }
-            System.out.println();
+    public ArrayList<Integer> generate_02(int n){
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        res.add(0);
+
+        final int count = 1 << n;
+        for(int i = 1; i < count; i++){
+            res.add(indexedGrayCode(i));
         }
-        return;
+
+		return res;
     }
 
-    public static void main(String[] args){
-        graycode gcd = new graycode();
-        gcd.test();
-        return;
+    private int indexedGrayCode(int k){
+        return k ^ (k >> 1);
     }
-} 
+}
+
+/* unit test is in ../java_unittest/grayCode_junit/ */
