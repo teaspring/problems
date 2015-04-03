@@ -56,3 +56,5 @@ public:
         return;
     }
 };
+
+/* unit test is in ../cpp_unittest/flattenBT2LL_unittest */
