@@ -47,15 +47,17 @@ public:
             int h = (i == n ? 0 : heights[i]);
             while(!stk.empty()){
                 int p = stk.top();
-                if(heights[p] < h)    break;
+                if(heights[p] <= h)    break;
 
                 stk.pop();
-                int start = (stk.empty() ? -1 : stk.top());  // start is exclusive index in left
+                if(!stk.empty() && heights[stk.top()] == heights[p])    continue;
 
-                int tmp = (i-1 - start) * heights[p]; // i-1 is inclusive index
+                int start = (stk.empty() ? -1 : stk.top());  // start is exclusive left index
+
+                int tmp = (i-1 - start) * heights[p]; // i-1 is inclusive right index
                 res = max(res, tmp);
             }
-            stk.push(i); // push greater height
+            stk.push(i); // push height which is greater than or equal to [stk.top()]
         }
         return res;
     }

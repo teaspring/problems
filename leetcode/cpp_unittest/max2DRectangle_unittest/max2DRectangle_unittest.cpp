@@ -27,6 +27,16 @@ TEST(largestRectangleAreaTest, Positive02){
     EXPECT_EQ(expected, s.largestRectangleArea(heights));
 }
 
+TEST(largestRectangleAreaTest, Positive03){
+    Solution s;
+
+    int arr[] = {1, 2, 2, 3, 2, 2, 1, 2};
+    vector<int> heights(arr, arr + sizeof(arr)/sizeof(int));
+
+    int expected = 10;
+    EXPECT_EQ(expected, s.largestRectangleArea(heights));
+}
+
 TEST(maximumRectangleTest, Positive01){
     Solution s;
 
