@@ -20,6 +20,15 @@ void constructMatrix_01(vector<vector<int> >& matrix){
     return;
 }
 
+void cleanMatrix(vector<vector<int> >& matrix){
+    const int rows = matrix.size();
+    for(int i = 0; i < rows; i++){
+        matrix[i].clear();
+    }
+    matrix.clear();
+    return;
+}
+
 TEST(search2DMatrixTest, Positive_01){
     Solution s;
 
@@ -28,6 +37,8 @@ TEST(search2DMatrixTest, Positive_01){
 
     EXPECT_TRUE(s.searchMatrix_01(matrix, 3));
     EXPECT_TRUE(s.searchMatrix_02(matrix, 3));
+
+    cleanMatrix(matrix);
 }
 
 TEST(search2DMatrixTest, Positive_02){
@@ -38,6 +49,8 @@ TEST(search2DMatrixTest, Positive_02){
 
     EXPECT_TRUE(s.searchMatrix_01(matrix, 11));
     EXPECT_TRUE(s.searchMatrix_02(matrix, 11));
+
+    cleanMatrix(matrix);
 }
 
 TEST(search2DMatrixTest, Positive_03){
@@ -48,6 +61,8 @@ TEST(search2DMatrixTest, Positive_03){
 
     EXPECT_TRUE(s.searchMatrix_01(matrix, 50));
     EXPECT_TRUE(s.searchMatrix_02(matrix, 50));
+
+    cleanMatrix(matrix);
 }
 
 TEST(search2DMatrixTest, Positive_04){
@@ -58,6 +73,8 @@ TEST(search2DMatrixTest, Positive_04){
 
     EXPECT_TRUE(s.searchMatrix_01(matrix, 1));
     EXPECT_TRUE(s.searchMatrix_02(matrix, 1));
+
+    cleanMatrix(matrix);
 }
 
 TEST(search2DMatrixTest, Positive_05){
@@ -68,6 +85,8 @@ TEST(search2DMatrixTest, Positive_05){
 
     EXPECT_TRUE(s.searchMatrix_01(matrix, 23));
     EXPECT_TRUE(s.searchMatrix_02(matrix, 23));
+
+    cleanMatrix(matrix);
 }
 
 TEST(search2DMatrixTest, Negative_01){
@@ -78,6 +97,8 @@ TEST(search2DMatrixTest, Negative_01){
 
     EXPECT_FALSE(s.searchMatrix_01(matrix, 4));
     EXPECT_FALSE(s.searchMatrix_02(matrix, 4));
+
+    cleanMatrix(matrix);
 }
 
 TEST(search2DMatrixTest, Negative_02){
@@ -88,6 +109,8 @@ TEST(search2DMatrixTest, Negative_02){
 
     EXPECT_FALSE(s.searchMatrix_01(matrix, 8));
     EXPECT_FALSE(s.searchMatrix_02(matrix, 8));
+
+    cleanMatrix(matrix);
 }
 
 TEST(search2DMatrixTest, Negative_03){
@@ -96,7 +119,20 @@ TEST(search2DMatrixTest, Negative_03){
     vector<vector<int> > matrix;
     constructMatrix_01(matrix);
 
-    EXPECT_FALSE(s.searchMatrix_01(matrix, 9));
-    EXPECT_FALSE(s.searchMatrix_02(matrix, 9));
+    EXPECT_FALSE(s.searchMatrix_01(matrix, 51));
+    EXPECT_FALSE(s.searchMatrix_02(matrix, 51));
+
+    cleanMatrix(matrix);
 }
 
+TEST(search2DMatrixTest, Negative_04){
+    Solution s;
+
+    vector<vector<int> > matrix;
+    constructMatrix_01(matrix);
+
+    EXPECT_FALSE(s.searchMatrix_01(matrix, 0));
+    EXPECT_FALSE(s.searchMatrix_02(matrix, 0));
+
+    cleanMatrix(matrix);
+}

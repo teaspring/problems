@@ -7,47 +7,57 @@ import java.io.*;
 import java.util.*;
 
 public class search2DMatrix{
-    public boolean searchMatrix_01(int[][] matrix, int target){
-        int n = matrix.length;
+
+    public boolean search_01(int[][] matrix, int target){
+        final int n = matrix.length;
         if(n < 1)    return false;
-        int m = matrix[0].length;
-        int v=0, u=m*n, mid=v, i=0, j=0;    //search range [v,u)
+
+        final int m = matrix[0].length;
+        int v = 0, u = m*n;    //search range [v,u)
+
         while(v < u){
-            mid = (v+u)/2;
-            i = mid / m;
-            j = mid % m;
-            if(target == matrix[i][j]){
+            int mid = (v + u) / 2;
+            int i = mid / m;
+            int j = mid % m;
+
+            if(matrix[i][j] == target){
                 return true;
-            }else if(target < matrix[i][j]){
-                u = mid;
+            }
+
+            if(matrix[i][j] > target){
+                u = mid;  // u decreases
             }else{
-                v = mid+1;
+                v = mid + 1; // v increases
             }
         }
+
         return false;
     }
 
-    public boolean searchMatrix_02(int[][] matrix, int target){
-        int n = matrix.length;
+    public boolean search_02(int[][] matrix, int target){
+        final int n = matrix.length;
         if(n < 1)    return false;
-        int m = matrix[0].length;
-        int v=0, u=m*n-1, mid=v, i=0, j=0;    //search range [v,u]
+
+        final int m = matrix[0].length;
+        int v = 0, u = m*n - 1;    //search range [v,u]
         while(v <= u){
-            mid = (v+u)/2;
-            i = mid / m;
-            j = mid % m;
-            if(target == matrix[i][j]){
+            int mid = (v + u) / 2;
+            int i = mid / m;
+            int j = mid % m;
+
+            if(matrix[i][j] == target){
                 return true;
-            }else if(target < matrix[i][j]){
-                u = mid-1;
+            }
+
+            if(matrix[i][j] > target){
+                u = mid - 1; // u decreases
             }else{
-                v = mid+1;
+                v = mid + 1;  // v increases
             }
         }
-        return false;
-    }
 
-    public static void main(String[] args){
-        return;
+        return false;
     }
 }
+
+/* unit test is in ../java_unittest/search2DMatrix_junit/ */
