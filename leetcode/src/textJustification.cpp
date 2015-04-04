@@ -31,7 +31,7 @@ public:
             }
 
             // construct the interval spaces array
-            int intervals[cw];
+            int intervals[cw]; // in this line, cw words, (cw-1) valid intervals. create int[cw] to facilitate iterate
             int rest = L - solidL;
             if(cw == 1){
                 intervals[cw - 1] = rest;
