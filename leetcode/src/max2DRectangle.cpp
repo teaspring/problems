@@ -45,11 +45,10 @@ public:
 
         for(int i = 0; i <= n; i++){  // include i == n avoids the appendix process
             int h = (i == n ? 0 : heights[i]);
-            while(!stk.empty()){
-                int p = stk.top();
-                if(heights[p] <= h)    break;
-
+            while(!stk.empty() && heights[stk.top()] > h){ // before lower height push to stack, pop higher height
+                int p = stk.top();                         // and calculate their rectangle
                 stk.pop();
+
                 if(!stk.empty() && heights[stk.top()] == heights[p])    continue;
 
                 int start = (stk.empty() ? -1 : stk.top());  // start is exclusive left index
