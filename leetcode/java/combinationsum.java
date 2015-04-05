@@ -43,39 +43,6 @@ public class combinationsum{
         plusSum(candidates, target, res);
         return res;
     }
-
-    /*    unit test code is in ../java_unittest/combinationsum_junit/   */
-    /*
-    private void displayArrArr(ArrayList<ArrayList<Integer>> combinations){
-        System.out.println("combinations:");
-        for(ArrayList<Integer> arr : combinations){
-            for(Integer i : arr){
-                System.out.print(i + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    private void test_01(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            System.out.println("please input integer candidates:");
-            String str = scan.nextLine().trim();
-            if(str.isEmpty())    break;
-            StringTokenizer t = new StringTokenizer(str, " ,");
-            int[] arr = new int[t.countTokens()];
-            int i=0;
-            while(t.hasMoreTokens()){
-                arr[i++] = Integer.parseInt(t.nextToken().toString());
-            }
-            
-            System.out.println("please input integer target:");
-            str = scan.nextLine().trim();
-            if(str.isEmpty())    break;
-            int x = Integer.parseInt(str);
-            displayArrArr(combinationSum(arr, x));
-        }
-    }
-    */
 }
 
+/*    unit test code is in ../java_unittest/combinationsum_junit/   */

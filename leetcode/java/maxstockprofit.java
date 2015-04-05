@@ -5,36 +5,35 @@
  * */
 import java.io.*;
 import java.util.*;
+import java.lang.Math;
 
 public class maxstockprofit{
-    private int min(int a, int b){
-        return a<b ? a:b;
-    }
-    private int max(int a, int b){
-        return a>b ? a:b;
-    }
 
     public int maxProfitIII(ArrayList<Integer> prices){
-        int n = prices.size();
-        if(n<2)        return 0;
+        final int n = prices.size();
+        if(n < 2)    return 0;
+
+        final Integer[] arr = prices.toArray(new Integer[0]);
         int[] historyprofit = new int[n];
         int[] futureprofit = new int[n];
-        int valley = prices.get(0), peak = prices.get(n-1), sum=0;
-        for(int i=1;i<n;++i){
-            int pr = prices.get(i);
-            valley = min(valley, pr);
-            historyprofit[i] = max(historyprofit[i-1], pr - valley);
+
+        int valley = arr[0];
+        for(int i = 1;i < n; ++i){
+            valley = Math.min(valley, arr[i]);
+
+            historyprofit[i] = Math.max(historyprofit[i-1], arr[i] - valley); // max profit for days [0, i]
         }
-        for(int i=n-2;i>=0;--i){
-            int pr = prices.get(i);
-            peak = max(peak, pr);
-            futureprofit[i] = max(futureprofit[i+1], peak - pr);
-            sum = max(sum, historyprofit[i] + futureprofit[i]);  //at most twice transactions, may degrade to once
+
+        int peak = arr[n-1], sum = 0;
+        for(int i = n-2; i >= 0; --i){
+            peak = Math.max(peak, arr[i]);
+            futureprofit[i] = Math.max(futureprofit[i+1], peak - arr[i]); // max profit for days [i, n-1]
+
+            // as the investment can only buy low and sell high, so he can transact sell and buy at same day[i]
+            sum = Math.max(sum, historyprofit[i] + futureprofit[i]);
         }
         return sum;
     }
-    
-    public static void main(String[] args){
-        return;
-    }
 }
+
+/* unit test is in ../java_unittest/maxstockprofit_junit */
