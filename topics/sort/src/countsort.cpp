@@ -10,41 +10,29 @@
  */
 #include "../header/preliminary.h"
 
-int* countsort(int* A, int n){    
-    int k = 1;                        //Arr[] is [0,k)
-    for(int i=0;i<n;i++){
-        if(A[i] > k)
-          k = A[i];
+int* countsort(int *A, int n){
+    int k = 1;
+    for(int i = 0; i < n; i++){
+        k = max(A[i] + 1, k); // k is maximum A[] + 1
     }
-    k++;      
-    int* C = new int[k]();
-    for(int i=0;i<n;i++)
-      C[A[i]] += 1;
-    for(int i=1;i<k;i++)
-      C[i] += C[i-1];
-    int* B = new int[n]();
-    for(int i=n-1;i>-1;i--){    //key of descending iteration: stable!
-        B[C[A[i]]-1] = A[i];
-        C[A[i]]--;
-    }
-    delete[] C;
-    C = 0;
-    return B;
-}
 
-int main(int argc, char* argv[]){
-    string str;
-    while(1){
-        if(getline(cin, str) == 0 || str.empty())
-          break;
-        int* arr = new int[str.size()]();
-        int N = splitStr2IntArray(str, arr);
-        int* res = countsort(arr, N);
-        for(int i=0;i<N;i++)
-          printf("%d ", res[i]);
-        printf("\n");
-        delete[] res;
-        res = 0;
+    int C[k]; // index of C[] is value of A[]
+    memset(C, 0, sizeof(C));
+
+    for(int i = 0; i < n; i++){
+        C[A[i]] += 1;  // C[A[i]] is count of integer A[i] appearance in A[]
     }
-    return 0;
+    for(int i = 1; i < k; i++){
+        C[i] += C[i-1]; // C[i] is count of all int [0, i] appearance in A[]
+    }
+
+    int B[n]; // to place sorted A[]
+    memset(B, 0, sizeof(B));
+    for(int i = n-1; i > -1; i--){ // reverse scan to keep stable sort
+        int v = A[i];
+        B[C[v] - 1] = v;
+        C[v]--;
+    }
+
+    return B;
 }
