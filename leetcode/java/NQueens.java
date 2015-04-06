@@ -6,15 +6,64 @@ import java.io.*;
 import java.util.*;
 
 public class NQueens{
+    public NQueens(int n){
+        N = n;
+    }
+
+    // dimension size of board
     private int N;
+
+    // elegent data structure to save queen placement position
     private int[] columnForRow;
+
+    // valid N queens placement options in total
     private int total;
-    
+
+    public int totalOptions(){
+        total = 0;
+        solve();
+        return total;
+    }
+
+    public ArrayList<String[]> solve(){
+        columnForRow = new int[N];
+        ArrayList<String[]> res = new ArrayList<String[]>();
+        placeQueen(0, res);
+        return res;
+    }
+
+    private void placeQueen(int r, ArrayList<String[]> res){
+        if(r == N){
+            printBoard(res);
+            return;
+        }
+
+        for(int i = 0; i < N; i++){
+            columnForRow[r] = i;
+            if(check(r))    placeQueen(r+1, res);
+        }
+    }
+
+    /*
+     * if Queen is put in columnForRow[r], check if it conflict with rows [0, r) with Queens
+     * */
+    private boolean check(int r){
+        for(int i = 0; i < r; i++){
+            int tmp = columnForRow[i] - columnForRow[r];
+            if(tmp == 0        //same column
+              || tmp == (i-r)  // '/' diagnol
+              || tmp == (r-i)){ // '\' diagnol
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void printBoard(ArrayList<String[]> res){
         String[] board = new String[N];
-        for(int i=0;i<N;i++){
+        for(int i = 0; i < N; i++){
             StringBuilder builder = new StringBuilder();
-            for(int j=0;j<N;j++){
+            for(int j = 0; j < N; j++){
                 builder.append(j==columnForRow[i] ? 'Q' : '.');
             }
             board[i] = builder.toString();
@@ -22,64 +71,6 @@ public class NQueens{
         res.add(board);
         ++total;
     }
-
-    private boolean check(int r){
-        for(int i=0;i<r;i++){
-            int tmp = columnForRow[i] - columnForRow[r];
-            if(tmp==0        //same column
-            || tmp == (i-r)  // '/' diagnol
-            || tmp == (r-i)){ // '\' diagnol
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void placeQueen(int r, ArrayList<String[]> res){
-        if(r==N){
-            printBoard(res);
-            return;
-        }
-        for(int i=0;i<N;i++){
-            columnForRow[r] = i;
-            if(check(r))    placeQueen(r+1, res);
-        }
-    }
-    
-    public ArrayList<String[]> solve(int n){
-        N=n;
-        columnForRow = new int[N];
-        ArrayList<String[]> res = new ArrayList<String[]>();
-        placeQueen(0, res);
-        return res;
-    }
-    
-    public int totalNQueens(int n){
-        total = 0;
-        solve(n);
-        return total;
-    }
-
-    public void test_01(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            System.out.println("please input n:");
-            String str = scan.nextLine().trim();
-            if(str.isEmpty())    break;
-            int n = Integer.parseInt(str);
-            ArrayList<String[]> res = solve(n);
-            for(String[] board : res){
-                for(String s : board){
-                    System.out.println(s);
-                }
-                System.out.println("-----------------");
-            }
-            System.out.println("total combinations: " + res.size());
-        }
-    }
-
-    public static void main(String[] args){
-        NQueens nq = new NQueens();
-        nq.test_01();
-    }
 }
+
+/* unit test is in ../java_unittest/NQueens_junit */
