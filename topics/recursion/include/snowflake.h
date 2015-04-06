@@ -2,7 +2,7 @@
  * *******************<DataStructure&AlgorithmInC++> chapter5 recursion*********************
  * non-tail recursion
  * von Koch snowflake, constructed via recursion idealy
- * 
+ *
  * code not ready due to lack of "graphics.h" of Turbo C
  * */
 #include <iostream>
@@ -43,7 +43,7 @@ void RecursiveCurve::drawFourLines(double side, int level){
         drawFourLines(side/3.0, level-1);
         left(60);
         drawFourLines(side/3.0, level-1);
-        
+
         right(120);
         drawFourLines(side/3.0, level-1);
         left(60);
