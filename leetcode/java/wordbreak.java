@@ -20,20 +20,24 @@ public class wordbreak{
     public boolean canBreak(String s, Set<String> dict){
         final int n = s.length();
         if(n == 0)    return true;
+
         boolean[] inDict = new boolean[n];
         for(int i = 0; i < n; ++i){
             inDict[i] = false;
         }
+
         for(int i = 0; i < n; ++i){
             if(!inDict[i] && dict.contains(s.substring(0, i+1))){ // str.substring(startIdx, endIdx)
                 inDict[i] = true;
             }
+
             if(inDict[i]){
                 for(int j = i+1; j < n; ++j){
                     if(!inDict[j] && dict.contains(s.substring(i+1, j+1))){
                         inDict[j] = true;
                     }
                 }
+
                 if(inDict[n-1])    return true;
             }
         }
@@ -55,39 +59,56 @@ public class wordbreak{
      * */
     public ArrayList<String> wordbreakall(String s, Set<String> dict){
         ArrayList<String> res = new ArrayList<String>();
-        int n = s.length();
+        final int n = s.length();
         if(n == 0 || dict.isEmpty())    return res;
+
         ArrayList<ArrayList<Integer>> arr = new ArrayList<ArrayList<Integer>>(); // arr[s] = e means substr[s, e) in dict
         for(int i = 0; i < n; ++i){
             arr.add(i, new ArrayList<Integer>());            
         }
-        for(int stop = n; stop > 0; --stop){ //as collect() start from [0] later, traverse from [n-1] will skip more clauses?
-            if(stop < n && arr.get(stop).isEmpty())
-                continue;   // key statement to skip the stop which can not jump to end as start
+
+        for(int stop = n; stop > 0; --stop){
+            if(stop < n && arr.get(stop).isEmpty()) // to skip the stop which can not jump to end as start
+                continue;
+
             for(int start = stop - 1; start >= 0; --start){
                 if(dict.contains(s.substring(start,stop))){
                     arr.get(start).add(stop);
                 }
             }
-        }      
-        collect(arr, 0, s, "", res);
+        }
+
+        Stack<String> stk = new Stack<String>();
+        stk.push("");
+        collect(arr, 0, s, stk, res); // construct result
+
         return res;
     }
 
+    /*
+     * construct result ArrayList<String>
+     * */
     protected void collect(ArrayList<ArrayList<Integer>> arr, int start, String str,
-            String prev, ArrayList<String> res){
+            Stack<String> stk, ArrayList<String> res){
+        stk.push(start == 0 ? "" : " ");
         for(int stop : arr.get(start)){
-            String prefix = prev;
-            prefix += (start == 0 ? "" : " ");
-            prefix += str.substring(start, stop);
-            if(stop == str.length()){
-                res.add(prefix);
-            }else{ 
-                collect(arr, stop, str, prefix, res);
-            }
-        }
-    }
+            stk.push(str.substring(start, stop));
 
-    /* unittest code is in ../java_unittest/wordbreak_junit/ */
+            if(stop == str.length()){
+                StringBuilder builder = new StringBuilder();
+                for(String s : stk){
+                    builder.append(s);
+                }
+
+                res.add(builder.toString());
+            }else{ 
+                collect(arr, stop, str, stk, res);
+            }
+
+            stk.pop(); // str pushed in this iteration
+        }
+        stk.pop(); // "" or " " which is pushed in beginning of the method
+    }
 }
 
+/* unittest code is in ../java_unittest/wordbreak_junit/ */
