@@ -32,7 +32,7 @@ CXXFLAGS += -g -Wall -Wextra
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = radixsort_unittest
+TESTS = nutsInOasis_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -80,13 +80,13 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $@: own name of the target
 # $^: names of the dependencies
 #
-radixsort.o: $(GTEST_HEADERS)
+nutsInOasis.o: $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/radixsort.cpp
+		$(USER_DIR)/src/nutsInOasis.cpp
 
-radixsort_unittest.o : $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/radixsort_unittest.cpp
+nutsInOasis_unittest.o : $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/nutsInOasis_unittest.cpp
 
-radixsort_unittest : radixsort.o radixsort_unittest.o gtest_main.a
+nutsInOasis_unittest : nutsInOasis.o nutsInOasis_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $^ -o $@
 
