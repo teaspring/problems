@@ -22,50 +22,28 @@ public class kthPermutation{
     public String getPermutation(int n, int k){
         int[] num = new int[n];
         int count = 1;
-        for(int i=0; i<n; ++i){    // in maximum, count is 9!, not exceed int length yet
+
+        for(int i = 0; i < n; ++i){ // in maximum, count is 9!, not exceed int length yet
             num[i] = i+1;
             count *= num[i];  
         }
+
         if(k > count)    return null;
-        --k;    // because argument k is 1 based
+        --k;    // k is 1 based
+
         StringBuilder builder = new StringBuilder();
-        for(int i=0; i<n; ++i){
+        for(int i = 0; i < n; ++i){
             count /= (n-i);
-            int selected = k/count;
+            int selected = k / count;
             builder.append(num[selected]);  // selected is 0-based
             
             k = k % count;
-            for(int j = selected+1; j < n-i; ++j){    //reconstruct num[] as one integer is picked up already
+            for(int j = selected + 1; j < n-i; ++j){    //reconstruct num[] as one integer is picked up already
                 num[j-1] = num[j];
             }
         }
         return builder.toString();
     }
-
-    public void test_01(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            System.out.println("please input n:");
-            String str = scan.nextLine().trim();
-            if(str.isEmpty())        break;
-            int n = Integer.parseInt(str);
-            if(n<1 || n>9)        break;
-
-            System.out.println("please input k:");
-            str = scan.nextLine().trim();
-            if(str.isEmpty())        break;
-            int k = Integer.parseInt(str);
-            if(k<1)        break;
-
-            System.out.println("kth permutation is " + getPermutation(n, k));
-        }
-        return;
-    }
-
-    public static void main(String[] args){
-        kthPermutation kP = new kthPermutation();
-        kP.test_01();
-        return;
-    }
 }
 
+/* unit test is in ../java_unittest/kthPermutation_junit */
