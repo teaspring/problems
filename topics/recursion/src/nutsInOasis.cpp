@@ -86,6 +86,8 @@ public:
     }
 };
 
+/* unit test is in ../unittest/nutsInOasis_unittest */
+
 /*
 int main(int, char**){
     Solution s;
