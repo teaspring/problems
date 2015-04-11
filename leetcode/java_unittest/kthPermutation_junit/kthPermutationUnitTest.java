@@ -1,6 +1,9 @@
 /*
  * n is in [1, 9], k is in [1, n!]
- * String kthPermutation.getPermutation(int n, int k)
+ *
+ * String kthPermutation.getPermutation_1(int n, int k) // correct but inefficient
+ *
+ * String kthPermutation.getPermutation_2(int n, int k) // efficient than solution1
  * */
 
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ public class kthPermutationUnitTest{
     }
 
     @Test
-    public void positiveTest_01(){
+    public void solution1_positiveTest_01(){
         int n = 3;
         String[] answers = new String[]{
             "123",
@@ -30,7 +33,33 @@ public class kthPermutationUnitTest{
 
         for(int k = 1; k < 7; k++){
             String expected = answers[k-1];
-            Assert.assertEquals(expected, game.getPermutation(n, k));
+            Assert.assertEquals(expected, game.getPermutation_1(n, k));
+        }
+    }
+
+    @Test
+    public void solution2_positiveTest_01(){
+        int n = 4;
+        final int maxK = game.nFactorial(n);
+
+        for(int k = 1; k < maxK ; k++){
+            String expected = game.getPermutation_1(n, k);
+            String result   = game.getPermutation_2(n, k);
+
+            Assert.assertEquals(expected, result);
+        }
+    }
+
+    @Test
+    public void solution2_positiveTest_02(){
+        int n = 7;
+        final int maxK = game.nFactorial(n);
+
+        for(int k = 1; k < maxK ; k++){
+            String expected = game.getPermutation_1(n, k);
+            String result   = game.getPermutation_2(n, k);
+
+            Assert.assertEquals(expected, result);
         }
     }
 

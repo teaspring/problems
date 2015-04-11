@@ -14,6 +14,8 @@
 #include <cstring>
 #include <string>
 #include <cstdlib>
+#include <cmath>
+#include <vector>
 
 using namespace std;
 
@@ -26,7 +28,7 @@ public:
      *
      * but there should be recursion implementation for this problem
      * */
-    string getPermutation(int n, int k){
+    string getPermutation_1(int n, int k){
         char num[n];
         memset(num, 0, sizeof(num));
 
@@ -56,6 +58,43 @@ public:
         string str(cstr);
 
         return str;
+    }
+
+    /*
+     * efficient solution, in time O(n)
+     * */
+    string getPermutation_2(int n, int k){
+        if(n == 0)    return string();
+
+        char cstr[n+1];
+        memset(cstr, 0, sizeof(cstr));
+
+        vector<int> num;
+        for(int i = 0; i < n+1; i++){ // why [0...n] ?
+            num.push_back(i);
+        }
+
+        for(int i = n-1; i > -1; i--){
+
+            int factorial = nFactorial(i);
+
+            int index = (int)ceil(k / (double)factorial); // ceil() is critical important !
+
+            cstr[n-1 - i] = '0' + num[index];
+
+            num.erase(num.begin() + index);
+
+            k %= factorial;
+            if(k == 0)    k = factorial;
+        }
+
+        cstr[n] = '\0';
+        return string(cstr);
+    }
+
+    int nFactorial(int n){
+        if(n == 0)    return 1;
+        return n * nFactorial(n-1);
     }
 };
 

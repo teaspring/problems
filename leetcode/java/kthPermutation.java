@@ -19,7 +19,10 @@ import java.lang.Math;
 
 
 public class kthPermutation{
-    public String getPermutation(int n, int k){
+    /*
+     * correct but inefficient
+     * */
+    public String getPermutation_1(int n, int k){
         int[] num = new int[n];
         int count = 1;
 
@@ -29,7 +32,7 @@ public class kthPermutation{
         }
 
         if(k > count)    return null;
-        --k;    // k is 1 based
+        --k;    // k is 1-based
 
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < n; ++i){
@@ -43,6 +46,44 @@ public class kthPermutation{
             }
         }
         return builder.toString();
+    }
+
+    /*
+     * efficient solution, in time O(n)
+     * */
+    public String getPermutation_2(int n, int k){
+        if(n == 0)    return "";
+
+        String res = "";
+
+        List<Integer> num = new ArrayList<Integer>();
+
+        for(int i = 0; i < n+1; i++){ // why [0...n] ?
+            num.add(i);
+        }
+
+        for(int i = n-1; i > -1; i--){
+
+            int factorial = nFactorial(i);
+
+            int index = (int)Math.ceil(k / (double)factorial); // Math.ceil() is critical important here
+
+            res += num.get(index); // res is populated from high digit
+
+            num.remove(index);
+
+            k %= factorial;
+            if(k == 0)    k = factorial;
+        }
+        return res;
+    }
+
+    /*
+     * return n!
+     * */
+    public int nFactorial(int n){
+        if(n == 0)    return 1;
+        return n * nFactorial(n-1);
     }
 }
 
