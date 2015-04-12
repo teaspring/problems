@@ -10,6 +10,8 @@
 # include <iostream>
 # include <string>
 # include <vector>
+# include <cstring>
+
 using namespace std;
 
 /*
@@ -19,62 +21,80 @@ using namespace std;
 class Solution{
 public:
     string largestNumber(vector<int> &num){
-        int n = num.size();
+        const int n = num.size();
         if(n < 1)    return string();
+
         vector<int> vec;
-        char* seq[n];
-        int lengths[n];
+        char* seq[n]; // store cstr expression of each num[i]
+        int lengths[n]; // working wirh seq[], lengths[i] is length of c string seq[i]
+        memset(lengths, 0, sizeof(lengths));
+
         int L = 0;    // total length of all char*
         bool allZero = true;
-        for(int i=0; i<n; i++){ // init char* for int element
-            int val = num[i];
-            if(val == 0){
+
+        for(int i = 0; i < n; i++){ // convert int num[i] to char* seq[i]
+            if(num[i] == 0){
                 vec.push_back(0);
             }else{
+                int val = num[i];
                 allZero = false;
                 while(val > 0){  // save 123 in vector<> as 3,2,1
                     vec.push_back(val % 10);
                     val /= 10;
                 }
             }
+
             int l = vec.size();
             char* curr = new char[l+1];
+            memset(curr, 0, sizeof(curr));
             curr[l] = '\0';
-            for(int j=0; j < l; j++){  // save reversed vec in curr
+
+            for(int j = 0; j < l; j++){  // save cstr of int in correct order
                 curr[j] = '0' + vec[l-1 - j];
             }
             seq[i] = curr;
             lengths[i] = l;
+
             L += l;
             vec.clear();
         }
+
         if(allZero){  // all zero case is special
-            for(int i=0; i<n; i++){
+            for(int i = 0; i < n; i++){ // delete all temporary created cstring
                 delete[] seq[i];
                 seq[i] = 0;
             }
             return string("0");
         }
+
         quick_sort(seq, n, lengths);
+
         // generate string from seq[]
         char result[L+1];
+        memset(result, 0, sizeof(result));
         result[L] = '\0';
+
         int t = 0;
-        for(int i=0; i<n; ++i){
-            for(int j=0; j < lengths[i]; ++j){
+        for(int i = 0; i < n; ++i){ // catenate all segment cstr to whole result string
+            for(int j = 0; j < lengths[i]; ++j){
                 result[t++] = seq[i][j];
             }
         }
-        for(int i=0; i<n; i++){
+
+        for(int i = 0; i < n; i++){
             delete[] seq[i];
             seq[i] = 0;
         }
+
         return string(result);
     }
 
 private:
+    /*
+     * compare two char* of integers, used by quick_sort()
+     * */
     int compDeciFromHigh(char* decL, int nL, char* decR, int nR){
-        int i=0;
+        int i = 0;
         while(i < nL && i < nR){
             if(decL[i] != decR[i]){
                 return decL[i] > decR[i] ? 1 : -1;
@@ -84,6 +104,7 @@ private:
         int res = 0;
         if(nL == nR)    return res;
         int deltaLen = max(nL, nR) - i;  // i == min(nL, nR)
+
         // next: compare the tail of long str and the short str
         if(i == nL){  // left str is short
             res = compDeciFromHigh(decL, nL, decR + nL, deltaLen);
@@ -93,12 +114,16 @@ private:
         return res;
     }
 
-    void quick_sort(char* seq[], int n, int* lengths){
+    /*
+     * quick sort char* seq[] by comparing integer digitals
+     * */
+    void quick_sort(char* seq[], int n, int *lengths){
         if(n < 2)    return;
+
         int p = 0, q = -1, t = n-1;
         while(p < t){
             if(compDeciFromHigh(seq[p], lengths[p],
-                    seq[t], lengths[t]) > 0){  // move higher decimal ahead
+                                seq[t], lengths[t]) > 0){  // move higher decimal ahead
                 q++;
                 swap_chpp(&(seq[q]), &(seq[p]));
                 swap_ip(lengths + q, lengths + p);
@@ -106,7 +131,7 @@ private:
             p++;
         }
         q++;
-        swap_chpp(&(seq[q]), &(seq[t]));
+        swap_chpp(seq + q, seq + t);
         swap_ip(lengths + q, lengths + t);
 
         quick_sort(seq, q, lengths);
