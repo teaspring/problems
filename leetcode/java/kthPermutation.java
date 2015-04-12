@@ -1,13 +1,15 @@
 /*
- * the set [1,2,3,...,n] contains a total of n! unique permutations. by listing and labelling all of the permutations in order.
- * we get the following sequences: for n=3
- * 123
- * 132,
- * 213,
- * 231,
- * 312,
- * 321
- * Q: given n and k, return the kth permutation sequence. n will be between [1,9]
+ * the set [1,2,3,...,n] contains a total of n! unique permutations.
+ * by listing and labelling all of the permutations in order, we get the following sequences
+ * e.g. n=3
+ * 123, k == 1
+ * 132, k == 2
+ * 213, k == 3
+ * 231, k == 4
+ * 312, k == 5
+ * 321  k == 6
+ *
+ * Q: given n and k, return the kth permutation sequence. n is in [1...9] and k is in [1...n!]
  *
  * Note: normal solution to output all of the permutation will cause Time Limit Exceed exception. Correct solution to this problem is very
  * important which prunes useless branches(剪枝) from sum k. 
@@ -54,11 +56,11 @@ public class kthPermutation{
     public String getPermutation_2(int n, int k){
         if(n == 0)    return "";
 
-        String res = "";
+        StringBuilder res = new StringBuilder();
 
         List<Integer> num = new ArrayList<Integer>();
 
-        for(int i = 0; i < n+1; i++){ // why [0...n] ?
+        for(int i = 0; i < n+1; i++){ // note [0...n] is pushed to num, where [0] = 0 is placeholder
             num.add(i);
         }
 
@@ -66,16 +68,20 @@ public class kthPermutation{
 
             int factorial = nFactorial(i);
 
-            int index = (int)Math.ceil(k / (double)factorial); // Math.ceil() is critical important here
+            /*
+             * 1. Math.ceil() is critical important, it returns like 0.2 up to 1
+             * 2. besides 1, with k is 1-based, index will skip [0] definitely
+             * */
+            int index = (int)Math.ceil(k / (double)factorial);
 
-            res += num.get(index); // res is populated from high digit
+            res.append(num.get(index)); // res is populated from high digit
 
             num.remove(index);
 
             k %= factorial;
             if(k == 0)    k = factorial;
         }
-        return res;
+        return res.toString();
     }
 
     /*

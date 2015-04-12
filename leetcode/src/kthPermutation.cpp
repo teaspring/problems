@@ -1,13 +1,15 @@
 /*
- * the set [1,2,3,...,n] contains a total of n! unique permutations. by listing and labelling all of the permutations in order.
- * we get the following sequences: for n = 3
- * 123
- * 132,
- * 213,
- * 231,
- * 312,
- * 321
- * Q: given n and k, return the kth permutation sequence. n will be between [1,9]
+ * the set [1,2,3,...,n] contains a total of n! unique permutations.
+ * by listing and labelling all of the permutations in order, we can get following sequences.
+ * e.g. n = 3
+ * 123,  k == 1
+ * 132,  k == 2
+ * 213,  k == 3
+ * 231,  k == 4
+ * 312,  k == 5
+ * 321   k == 6
+ *
+ * Q: given n and k, return the kth permutation sequence. n is [1...9], and k in [1...n!]
  * */
 #include <cstdio>
 #include <iostream>
@@ -70,7 +72,7 @@ public:
         memset(cstr, 0, sizeof(cstr));
 
         vector<int> num;
-        for(int i = 0; i < n+1; i++){ // why [0...n] ?
+        for(int i = 0; i < n+1; i++){ // note [0...n] is pushed to num, where [0] = 0 is placeholder
             num.push_back(i);
         }
 
@@ -78,7 +80,11 @@ public:
 
             int factorial = nFactorial(i);
 
-            int index = (int)ceil(k / (double)factorial); // ceil() is critical important !
+            /*
+             * 1. ceil() is critical important, it returns like 0.2 up to 1
+             * 2. besides 1, with k is 1-based, index will skip [0] definitely
+             * */
+            int index = (int)ceil(k / (double)factorial);
 
             cstr[n-1 - i] = '0' + num[index];
 
