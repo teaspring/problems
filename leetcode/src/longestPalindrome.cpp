@@ -100,12 +100,13 @@ public:
 
         char cstr[2*p[id] + 1];
         memset(cstr, 0, sizeof(cstr));
-        cstr[2 * p[id]] = '\0';
 
-        for(int k = 0, i = id - p[id] + 1; i < id + p[id]; i++){
+        int k = 0; // get the valid char array length
+        for(int i = id - p[id] + 1; i < id + p[id]; i++){
             if(pMix[i] == '#')    continue;
             cstr[k++] = pMix[i];
         }
+        cstr[k] = '\0';
 
         return string(cstr);
     }
