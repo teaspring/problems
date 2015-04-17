@@ -24,7 +24,7 @@ public:
     /*
      * this solution come from the idea of "minWindow", with a sliding window range
      * */
-    vector<int> findSubstring_1(const string& S, vector<string>& L){
+    vector<int> findSubstring(const string& S, vector<string>& L){
 
         if(S.empty() || L.empty())    return vector<int>();
 
@@ -107,90 +107,6 @@ public:
             }
         }
         return res;
-    }
-
-    /*
-     *
-     * */
-    vector<int> findSubstring_2(const string& S, vector<string>& L){
-        if(S.empty() || L.empty() || L[0].empty())    return vector<int>();
-
-        const int l = L.size();
-        const int m = L[0].size();
-        const int n = S.size();
-        if(n < l * m)    return vector<int>();
-
-        vector<int> res;
-
-        vector<int> headpos[256];
-        for(int i = 0; i < 256; i++){
-            headpos[i] = vector<int>();
-        }
-
-        int used[l];
-        memset(used, 0, sizeof(used));
-
-        for(int i = 0; i < l; i++){
-            if(L[i].empty())    continue;
-            headpos[(int)L[i][0]].push_back(i);
-        }
-
-        for(int i = 0; i < n; i++){
-            string str = S.substr(i, n-i);
-            checkOnce(str, L, used, headpos, i, res);
-        }
-
-        return res;
-    }
-
-private:
-    /*
-     * used by findSubstring_2()
-     * */
-    void checkOnce(const string& str, vector<string>& L, int *used, vector<int> *headpos,
-            int start, vector<int>& res){
-
-        if(isfull(used, L.size())){
-            res.push_back(start);
-            return;
-        }
-
-        if(str.empty())     return;
-        const int n = str.size();
-
-        vector<int> options = headpos[(int)str[0]];
-        const int k = options.size();
-
-        for(int i = 0; i < k; i++){
-            int t = options[i];    // index in L
-
-            if(used[t] == 1)    continue;    // if used already
-
-            string src = L[t];
-            const int m = src.size();
-
-            if(n < m)    continue;    // if length overflow
-
-            int j = m-1;
-            while(j >= 0 && src[j] == str[j])    j--;
-            if(j >= 0)    continue;
-
-            used[t] = 1;
-
-            string sub = str.substr(m, n-m);
-            checkOnce(sub, L, used, headpos, start, res);
-
-            used[t] = 0;
-        }
-
-        return;
-    }
-
-    bool isfull(int *arr, int n){
-        for(int i = 0; i < n; i++){
-            if(arr[i] == 0)    return false;
-        }
-        return true;
     }
 };
 
