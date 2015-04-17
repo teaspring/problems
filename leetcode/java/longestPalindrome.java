@@ -60,3 +60,5 @@ public class longestPalindrome{
         return new String(Arrays.copyOfRange(res, 0, k));
     }
 }
+
+/* unit test is in ../java_unit/longestPalindrome_junit */
