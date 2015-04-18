@@ -42,7 +42,7 @@ TEST(findMin_Test, Edge){
     EXPECT_EQ(1, s.findMinII(vec3));
 }
 
-TEST(searchI_Test, Positive){
+TEST(searchI_Test, Positive01){
     Solution s;
 
     int arr1[] = {5, 6, 1, 2, 3};
@@ -59,10 +59,23 @@ TEST(searchI_Test, Positive){
     EXPECT_EQ(-1, s.search(arr1, n, 7));
 }
 
-TEST(searchII_Test, Positive){
+TEST(searchI_Test, Positive02){
     Solution s;
 
-    int arr1[] = {1, 1, 5, 1, 1, 1};
+    int arr1[] = {2, 3, 4, 6, 8, 1};
+    int n = sizeof(arr1)/sizeof(int);
+
+    for(int i = 0; i < n; i++){
+        int expected = i;
+        int key = arr1[i];
+        EXPECT_EQ(expected, s.search(arr1, n, key));
+    }
+}
+
+TEST(searchII_Test, Positive01){
+    Solution s;
+
+    int arr1[] = {1, 1, 5, 1, 1, 1, 1, 1};
     int n = sizeof(arr1)/sizeof(int);
 
     int key = 5;
@@ -73,4 +86,26 @@ TEST(searchII_Test, Positive){
     EXPECT_EQ(-1, s.search(arr1, n, 2));
     EXPECT_EQ(-1, s.search(arr1, n, 4));
     EXPECT_EQ(-1, s.search(arr1, n, 8));
+}
+
+TEST(searchII_Test, Positive02){
+    Solution s;
+
+    int arr1[] = {5, 5, 6, 1, 2, 2, 3, 4, 4};
+    int n = sizeof(arr1)/sizeof(int);
+
+    EXPECT_EQ(2, s.searchII(arr1, n, 6));
+    EXPECT_EQ(3, s.searchII(arr1, n, 1));
+    EXPECT_EQ(6, s.searchII(arr1, n, 3));
+}
+
+TEST(searchII_Test, Positive03){
+    Solution s;
+
+    int arr1[] = {2, 2, 3, 4, 5, 5, 1};
+    int n = sizeof(arr1)/sizeof(int);
+
+    EXPECT_EQ(2, s.searchII(arr1, n, 3));
+    EXPECT_EQ(3, s.searchII(arr1, n, 4));
+    EXPECT_EQ(6, s.searchII(arr1, n, 1));
 }
