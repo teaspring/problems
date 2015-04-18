@@ -1,10 +1,18 @@
 #include "rotatedSortedArray.cpp"
 #include "gtest/gtest.h"
 
-// Test case: rotatedSortedArrayTest
-// Test name: positive
-TEST(rotatedSortedArrayTest, Positive){
+/*
+ * int search(int A[], int n, int key) // find key, the rotated sorted array has no duplicate
+ *
+ * int searchII(int A[], int n, int key) // find key, the rotated sorted array has duplicate
+ *
+ * int findMinII(vector<int>&)
+ *
+ *
+ * */
+TEST(findMin_Test, Positive){
     Solution s;
+
     int arr1[] = {1,3,3,3};
     vector<int> vec1(arr1, arr1 + sizeof(arr1)/sizeof(int));
     EXPECT_EQ(1, s.findMinII(vec1));
@@ -18,10 +26,9 @@ TEST(rotatedSortedArrayTest, Positive){
     EXPECT_EQ(1, s.findMinII(vec3));
 }
 
-// Test case: rotatedSortedArrayTest
-// Test name: edge
-TEST(rotatedSortedArrayTest, Edge){
+TEST(findMin_Test, Edge){
     Solution s;
+
     int arr1[] = {1,1};
     vector<int> vec1(arr1, arr1 + sizeof(arr1)/sizeof(int));
     EXPECT_EQ(1, s.findMinII(vec1));
@@ -33,4 +40,37 @@ TEST(rotatedSortedArrayTest, Edge){
     int arr3[] = {3,1};
     vector<int> vec3(arr3, arr3 + sizeof(arr3)/sizeof(int));
     EXPECT_EQ(1, s.findMinII(vec3));
+}
+
+TEST(searchI_Test, Positive){
+    Solution s;
+
+    int arr1[] = {5, 6, 1, 2, 3};
+    int n = sizeof(arr1)/sizeof(int);
+
+    for(int i = 0; i < n; i++){
+        int expected = i;
+        int key = arr1[i];
+        EXPECT_EQ(expected, s.search(arr1, n, key));
+    }
+
+    EXPECT_EQ(-1, s.search(arr1, n, 0));
+    EXPECT_EQ(-1, s.search(arr1, n, 4));
+    EXPECT_EQ(-1, s.search(arr1, n, 7));
+}
+
+TEST(searchII_Test, Positive){
+    Solution s;
+
+    int arr1[] = {1, 1, 5, 1, 1, 1};
+    int n = sizeof(arr1)/sizeof(int);
+
+    int key = 5;
+    int expected = 2;
+    EXPECT_EQ(expected, s.searchII(arr1, n, key));
+
+    EXPECT_EQ(-1, s.search(arr1, n, 0));
+    EXPECT_EQ(-1, s.search(arr1, n, 2));
+    EXPECT_EQ(-1, s.search(arr1, n, 4));
+    EXPECT_EQ(-1, s.search(arr1, n, 8));
 }

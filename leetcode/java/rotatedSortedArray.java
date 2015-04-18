@@ -2,19 +2,25 @@
  * search in a rotated sorted array
  *
  * test case
- * 5,1,3   x=4, return -1
- * 5,4,1,2,3  x=5, return 0
+ * 5,1,3   x = 4, return -1
+ * 5,4,1,2,3  x = 5, return 0
  * */
 import java.io.*;
 import java.util.*;
 
 public class rotatedSortedArray{
+    /*
+     * to problem I: no duplicate in sorted array
+     * */
     public int search(int[] A, int key){  // problem I: no duplicate
-        int n = A.length;
-        int l=0, r=n-1;
+        final int n = A.length;
+        int l = 0, r = n-1;
+
         while(l <= r){
-            int m = l + (r-l)/2;
+            int m = l + (r - l)/2;
+
             if(key == A[m])    return m;
+
             if(A[l] < A[m]){  // left half is sorted
                 if(A[l] <= key && key < A[m]){
                     r = m-1;
@@ -34,12 +40,18 @@ public class rotatedSortedArray{
         return -1;
     }
 
-    public int searchII(int[] A, int key  // problem II: duplicate is allowed
-        int n = A.length;
+    /*
+     * to problem II: duplicate is allowed in sorted array
+     * */
+    public int searchII(int[] A, int key){
+        final int n = A.length;
         int l = 0, r = n-1;
+
         while(l <= r){
-            int m = l + (r-l)/2;
+            int m = l + (r - l)/2;
+
             if(A[m] == key)    return m;
+
             if(A[l] < A[m]){    // left half is sorted
                 if(A[l] <= key && key < A[m]){
                     r = m-1;
@@ -58,8 +70,6 @@ public class rotatedSortedArray{
         }
         return -1;
     }
-
-    public static void main(String[] args){
-        return;
-    }
 }
+
+/* unit test is in ../java_unittest/rotatedSortedArray_junit */
