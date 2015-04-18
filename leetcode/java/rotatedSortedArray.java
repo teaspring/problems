@@ -10,11 +10,11 @@ import java.util.*;
 
 public class rotatedSortedArray{
     /*
-     * to problem I: no duplicate in sorted array
+     * problem I: search key in a rotated sorted array which has no duplicate
      * */
-    public int search(int[] A, int key){  // problem I: no duplicate
+    public int search(int[] A, int key){
         final int n = A.length;
-        int l = 0, r = n-1;
+        int l = 0, r = n-1; // r is inclusive right boundary
 
         while(l <= r){
             int m = l + (r - l)/2;
@@ -22,18 +22,18 @@ public class rotatedSortedArray{
             if(key == A[m])    return m;
 
             if(A[l] < A[m]){  // left half is sorted
-                if(A[l] <= key && key < A[m]){
+                if(A[l] <= key && key < A[m]){ // key is in [l, m)
                     r = m-1;
-                }else{
+                }else{ // key is in (m, r]
                     l = m+1;
                 }
             }else if(A[l] > A[m]){  // right half is sorted
-                if(A[m] < key || key <= A[r]){
+                if(A[m] < key && key <= A[r]){ // key in (m, r]
                     l = m+1;
-                }else{
+                }else{ // key in [l, m)
                     r = m-1;
                 }
-            }else{  // l == m
+            }else{ // A[l] == A[] ! since duplicate is not allowed, it must be l == m
                 l = m+1;
             }
         }
@@ -41,11 +41,11 @@ public class rotatedSortedArray{
     }
 
     /*
-     * to problem II: duplicate is allowed in sorted array
+     * problem II: search key in a rotated sorted array in which duplicate is allowed
      * */
     public int searchII(int[] A, int key){
         final int n = A.length;
-        int l = 0, r = n-1;
+        int l = 0, r = n-1; // r is inclusive right boundary
 
         while(l <= r){
             int m = l + (r - l)/2;
@@ -53,18 +53,18 @@ public class rotatedSortedArray{
             if(A[m] == key)    return m;
 
             if(A[l] < A[m]){    // left half is sorted
-                if(A[l] <= key && key < A[m]){
+                if(A[l] <= key && key < A[m]){ // in [l, m)
                     r = m-1;
-                }else{
+                }else{ // in (m, r]
                     l = m+1;
                 }
             }else if(A[l] > A[m]){  // right half is sorted
-                if(A[m] < key && key <= A[r]){
+                if(A[m] < key && key <= A[r]){ // in (m, r]
                     l = m+1;
-                }else{
+                }else{ // in [l, m)
                     r = m-1;
                 }
-            }else{    // e.g. {1,1,5,1,1,1} with key is 5, no sense it is in which side
+            }else{ // remember duplicate is allowed
                 l++;
             }
         }
