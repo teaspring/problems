@@ -90,12 +90,18 @@ public:
          * */
         for(int i = 1; i < n; i++){
             for(int j = 1; j < m; j++){
-                // how to set dp[i-1][j][i][j-1]?
-                dp[i][j-1][i-1][j] = (j > 1 ? dp[i][j-2][i-1][j-1] : dp[i-1][j-1][i-1][j-1]) + pool[i-1][j] + pool[i][j-1];
+                // how to set dp[i][j-1][i-1][j] ?
+                dp[i][j-1][i-1][j] =  pool[i-1][j] + pool[i][j-1];
+
+                int leftmid  = j > 1 ? dp[i][j-2][i-1][j-1] : 0;
+                int midupper = i > 1 ? dp[i-1][j-1][i-2][j] : 0;
+                int leftupper = (i > 1 && j > 1) ? dp[i][j-2][i-2][j] : dp[i-1][j-1][i-1][j-1];
+                dp[i][j-1][i-1][j] += max(leftmid, max(midupper, leftupper));
+
                 dp[i-1][j][i][j-1] = dp[i][j-1][i-1][j];
 
-                int tmp = max(dp[i-1][j][i-1][j], dp[i][j-1][i][j-1]);
-                dp[i][j][i][j] = max(tmp, dp[i][j-1][i-1][j]) + pool[i][j];
+                // definitely dp[i][j-1][i-1][j] >= max(dp[i-1][j][i-1][j], dp[i][j-1][i][j-1])
+                dp[i][j][i][j] = dp[i][j-1][i-1][j] + pool[i][j];
             }
         }
 
