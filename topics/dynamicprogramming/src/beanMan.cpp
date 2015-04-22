@@ -83,25 +83,34 @@ public:
         /*
          * above process is for single bean man max score
          *
-         * dp[i][j][i][j] = max{dp[i-1][j][i-1][j], dp[i][j-1][i][j-1], dp[i][j-1][i-1][j]} + pool[i][j];
+         * idea 1:
+         * dp[i][j][i][j] = dp[i][j-1][i-1][j] + pool[i][j], this value has no option
          * and dp[i][j-1][i-1][j] needs be set ahead of it
          *
-         * unfortunately, it does not pass UT case beanManIITest.Positive02
          * */
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                dp[i][0][0][j] = dp[i][0][0][0] + dp[0][0][0][j] - pool[0][0];
+                dp[0][j][i][0] = dp[i][0][0][j];
+            }
+        }
+
         for(int i = 1; i < n; i++){
             for(int j = 1; j < m; j++){
                 // how to set dp[i][j-1][i-1][j] ?
-                dp[i][j-1][i-1][j] =  pool[i-1][j] + pool[i][j-1];
+                int tmp =  pool[i-1][j] + pool[i][j-1];
 
-                int leftmid  = j > 1 ? dp[i][j-2][i-1][j-1] : 0;
-                int midupper = i > 1 ? dp[i-1][j-1][i-2][j] : 0;
-                int leftupper = (i > 1 && j > 1) ? dp[i][j-2][i-2][j] : dp[i-1][j-1][i-1][j-1];
-                dp[i][j-1][i-1][j] += max(leftmid, max(midupper, leftupper));
+                int leftmid   = j > 1 ? dp[i][j-2][i-1][j-1] : 0;
+                int midupper  = i > 1 ? dp[i-1][j-1][i-2][j] : 0;
+                int leftupper = (i > 1 && j > 1) ? dp[i][j-2][i-2][j] : 0;
+                int midmid    = dp[i-1][j-1][i-1][j-1];
+                tmp += max(max(leftmid, max(midupper, leftupper)), midmid);
 
-                dp[i-1][j][i][j-1] = dp[i][j-1][i-1][j];
+                dp[i][j-1][i-1][j] = tmp;
 
                 // definitely dp[i][j-1][i-1][j] >= max(dp[i-1][j][i-1][j], dp[i][j-1][i][j-1])
                 dp[i][j][i][j] = dp[i][j-1][i-1][j] + pool[i][j];
+                dp[i][j][i-1][j] = dp[i][j][i][j];
             }
         }
 

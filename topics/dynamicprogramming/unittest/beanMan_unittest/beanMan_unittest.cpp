@@ -33,9 +33,9 @@ TEST(beanManIITest, Positive01){
 
     const int rows = 3, cols = 3;
     int poolArr[][cols] ={
+        {1, 1, 1},
         {1, 0, 1},
-        {1, 1, 0},
-        {0, 0, 1}
+        {1, 1, 1}
     };
 
     vector<vector<int> > pool;
@@ -43,7 +43,7 @@ TEST(beanManIITest, Positive01){
         pool.push_back(vector<int>(poolArr[i], poolArr[i] + cols));
     }
 
-    int expected = 5;
+    int expected = 8;
     EXPECT_EQ(expected, s.beanManII(pool));
 }
 
