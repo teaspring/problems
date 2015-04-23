@@ -10,7 +10,7 @@
  * */
 #include "../header/preliminary.h"
 
-const int MINUSLIMIT = -0xff;
+const int MINUSLIMIT = -0xffff;
 
 template<typename T>
 void myswap(T* pa, T* pb){
@@ -33,7 +33,7 @@ inline int Parent(int i){
 }
 
 /*
- * enable [i] is max of subtree as root of it, via top-down swap
+ * enable [i] is max of subtree as its root, via top-down swap
  * time O(lgn)
  * */
 void max_heapify(int *A, const int n, int i){
@@ -113,6 +113,8 @@ void heap_increase_key(int *A, const int n, int i, int key){
  * build a priority queue of max-heap via insert
  * precedence: the basic array support [n+1] boundary
  * time O(lgn)
+ *
+ * note: A[] should be allocated enough space already to afford [n+1]
  * */
 void max_heap_insert(int *A, const int n, int key){   //build a priority queue(max heap) via insert
     A[n+1] = MINUSLIMIT;

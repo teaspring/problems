@@ -18,27 +18,30 @@
 class Solution{
 
 public:
+    /*
+     * standard implementation of count sort
+     * */
     int* countSort(int *A, int n){
-        int k = 1;
+        int k = 0; // max of A[]
         for(int i = 0; i < n; i++){
-            k = max(A[i] + 1, k); // k is maximum A[] + 1
+            k = max(A[i], k);
         }
 
-        int C[k]; // index of C[] is value of A[]
+        int C[k + 1]; // index of C[] is value of A[]
         memset(C, 0, sizeof(C));
 
         for(int i = 0; i < n; i++){
             C[A[i]] += 1;  // C[A[i]] is count of integer A[i] appearance in A[]
         }
-        for(int i = 1; i < k; i++){
-            C[i] += C[i-1]; // C[i] is count of all int [0, i] appearance in A[]
+        for(int v = 1; v <= k; v++){
+            C[v] += C[v-1]; // C[v] is count of all integers in A[] which <= v
         }
 
-        int *B = new int[n](); // return array, so create a new array instance
+        int *B = new int[n](); // array to return, create a new array instance
 
         for(int i = n-1; i > -1; i--){ // reverse scan to keep stable sort
             int v = A[i];
-            B[C[v] - 1] = v;
+            B[C[v] - 1] = v; // C[v] is the position where v should be, 1-based
             C[v]--;
         }
 
@@ -46,23 +49,22 @@ public:
     }
 
     /*
-    * radix sort, scan from LSD to MSD using count sort for every digit.
-    * as count sort is stable, radix sort is stable as well 
-    */
+     * radix sort, scan from LSD to MSD using count sort for every digit.
+     * as count sort is stable, radix sort is stable as well
+     * */
     void radixSort(int *A, int n){
         int digits = 1;
         int key[n];
         while(1){
             memset(key, 0, sizeof(key)); // clear key[]
-            bool end = true;
+            bool done = true;
 
             for(int i = 0; i < n; i++){
                 key[i] = (A[i] / digits) % 10;
-                if(key[i] > 0)    end = false;
+                if(key[i] > 0)    done = false;
             }
 
-            if(end)    break; // all A[i] are less than digits
-
+            if(done)     break; // all A[i] are less than digits
             radixOnce(A, n, key);
             digits *= 10;
         }
@@ -101,4 +103,4 @@ private:
     }
 };
 
-/* unit test is in */
+/* unit test is in ../unittest/radixsort_unittest */
