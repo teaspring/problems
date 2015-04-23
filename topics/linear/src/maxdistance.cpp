@@ -2,14 +2,11 @@
 * from leetcode. given an integer array A, find maximum j-i subjected to the constraint of A[i] < A[j]
 * solution 1: binary search with linear scan
 * solution 2: twice linear scan, key is the Rmax[]
-* 
-* test data:
-* 1 4 3 5 2 7 5 4
-* 6 5 4 3 2 1
-* 1 2 3 4 5 6
+*
 */
 
 #include <cstring>
+#include <algorithm>
 using namespace std;
 
 class Solution{
@@ -27,7 +24,7 @@ public:
         for(int i = n-2; i >= 0; i--){ // once scan
             Rmax[i] = max(A[i], Rmax[i+1]);
         }
- 
+
         int i = 0, j = 1, maxDiff = 0;
         while(j < n){ // once more scan
             if(A[i] < Rmax[j]){ // index x exists in range [j, n) that A[i] < A[x] and i < x
@@ -44,3 +41,5 @@ public:
         return maxDiff;
     }
 };
+
+/* unit test is in ../unittest/maxdistance_unittest/ */
