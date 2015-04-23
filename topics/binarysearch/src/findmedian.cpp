@@ -35,36 +35,41 @@
 * {4,5,6,7}, {3,8,9}
 */
 
-#include "../include/preliminary.h"
-
 class Solution{
-
-    double find(int *a, int n, int *b, int m, int th){ // th is 0-based
-        if(n == 0)    return (double)b[th];
-        if(m == 0)    return (double)a[th];
-    
-        int mida = (n-1) >> 1;
-        int midb = (m-1) >> 1;
-        if(a[mida] < b[midb])    return find(b, m, a, n, th); //ensure greater median in a[]
-        if(mida + 1 + midb + 1 <= th + 1){ // case 1: skip half of b[]
-            return find(a, n, b + (midb + 1), m - (midb + 1), th - (midb + 1));
-        }else{  // case 2: skip half elements in a[], it always happens after case 1
-            return find(a, mida, b, m, th);
-        }
-    }
 
 public:
     double findMedianSortedArrays(int *A, int m, int *B, int n){
         if(m == 0 && n == 0)    return 0;
-        if((m+n) & 1){  // (m+n)%2 == 1, including m+n == 1
+
+        if((m+n) & 1){  // (m+n) % 2 == 1, including m+n == 1
             int mid = (m+n) >> 1;
             return find(A, m, B, n, mid);
-        }else{  // (m+n)%2 == 0
+        }else{  // (m+n) % 2 == 0
             int r = (m+n) >> 1;
             int l = r - 1;
             return (find(A, m, B, n, l) + find(A, m, B, n, r)) / 2.0;
         }
     }
+
+private:
+    /*
+     * @param n, m are sizes, th is 0-based index
+     * */
+    double find(int *A, int n, int *B, int m, int th){
+        if(n == 0)    return (double)B[th];
+        if(m == 0)    return (double)A[th];
+
+        int mida = (n-1) >> 1; // upper mid index
+        int midb = (m-1) >> 1;
+        if(A[mida] < B[midb])    return find(B, m, A, n, th); // ensure greater median is in A[]
+
+        if(mida + 1 + midb + 1 <= th + 1){ // both pre halves sum count is less than total mid, skip pre half of B[]
+            int skipped = midb + 1; // skipped size, including B[midb]
+            return find(A, n, B + skipped, m - skipped, th - skipped);
+        }else{  // total mid (th) should be in sum set of both pre halves, skip latter half of A[] which includes A[mida]
+            return find(A, mida, B, m, th);
+        }
+    }
 };
 
-/* unit test is in ../cpp_unittest/findmedian_unittest */
+/* unit test is in ../unittest/findmedian_unittest */
