@@ -1,39 +1,31 @@
-#include <iostream>
-
 /*
-* transform whole binary tree to one tree of single right line via append root to rightmost of left subtree 
-*/
-template<typename TreeNode>
+ * in order output is LVR
+ *
+ * transform whole binary tree to one tree of single right line
+ * via append root to rightmost of left subtree
+ * */
 void MorrisInorder(TreeNode* root){
-    TreeNode *p = root, *tmp;
-    while(p != 0){
-        if(p->left == 0){           //root of transformation completed tree, or just with no left child
-            visit(p);
+    TreeNode *p = root, *tmp = NULL;
+    while(p != NULL){
+        if(p->left == NULL){  // without left child
+            visit(p); // p is left most node which has no left child
             p = p->right;
-        }
-        else{
-            tmp = p->left;          //right most node of left half
-            while(tmp->right != 0 &&        
-                    tmp->right != p){
+        }else{
+            tmp = p->left;  // right most leaf in left subtree of p
+            while(tmp->right != NULL
+                && tmp->right != p){
                 tmp = tmp->right;
             }
-            
-            if(tmp->right == 0){    //go to rightmost leaf (of left subtree), append p to it
-                tmp->right = p;                
+
+            if(tmp->right == NULL){  // tmp is right most leaf in left subtree, append p to it
+                tmp->right = p; // plug p to be right of tmp
                 p = p->left;
-            }
-            else{
-                visit(p);           //tmp->right == p, this link is appended
-                tmp->right = 0;
+            }else{  // tmp->right == p
+                visit(p);  // visit p as 'V' of 'LVR'
+                tmp->right = NULL; // unplug tmp and its right
                 p = p->right;
-            }            
+            }
         }
-    }    
+    }
 }
 
-void test_01(){
-}
-
-int main(int, char**){
-    test_01();
-}
