@@ -4,66 +4,55 @@
  * */
 #include "../include/preliminary.h"
 
-void swap(int *pa, int *pb){
-    int tmp = *pa;
-    *pa = *pb;
-    *pb = tmp;
-    return;
-}
+class Solution{
 
-void sortColors_01(int A[], int n){
-    if(n<=1)    return;
-    int *p = A-1, *q = A, *t = A+n;
-    while(q != t){
-        if(*q == 2){        // check 2 firstly
-            t--;
-            swap(q, t);
-            continue;        // NOTE: value swapped from [t] is at right of q which has not been checked yet
-        }else if(*q == 0){
-            p++;
-            if(q > p)    swap(q, p);
+public:
+    void sortColors_1(int A[], int n){
+        if(n <= 1)    return;
+
+        int *p = A-1; // to put element 0
+        int *q = A;   // cursor
+        int *t = A + n;  // to put element 2
+
+        while(q != t){
+            if(*q == 2){
+                t--;
+                swap(q, t);
+                continue;   // NOTE: value swapped from [t] is at right of q which has not been checked yet
+            }else if(*q == 0){
+                p++;
+                if(q > p)    swap(q, p);
+            }
+            q++;
         }
-        q++;
     }
-    return;
-}
 
-void sortColors_02(int A[], int n){
-    if(n<=1)    return;
-    int *p = A-1, *q = A, *t = A+n;
-    while(q != t){
-        if(*q == 0){        // check 0 firstly
-            p++;
-            if(q > p)    swap(q, p);
-        }else if(*q == 2){
-            t--;
-            swap(q, t);
-            continue;      //NOTE: recheck of the swapped value from *t is necessary
+    void sortColors_2(int A[], int n){
+        if(n <= 1)    return;
+
+        int *p = A-1; // to put element 0
+        int *q = A;   // cursor
+        int *t = A + n; // to put element 2
+
+        while(q != t){
+            if(*q == 0){
+                p++;
+                if(q > p)    swap(q, p);
+            }else if(*q == 2){
+                t--;
+                swap(q, t);
+                continue;   // NOTE: recheck of the swapped value from [t] is necessary
+            }
+            q++;
         }
-        q++;
     }
-    return;
-}
 
-void test(){
-    string str;
-    while(1){
-        cout << "please input initial integer array of 0,1,2" << endl;
-        if(getline(cin, str)==0 || str.empty())    break;
-        int *arr = new int[str.size()]();
-        int n = splitStr2IntArray(str, arr);
-        sortColors_02(arr, n);
-        for(int i=0; i<n; ++i){
-            printf("%d ", arr[i]);
-        }
-        printf("\n");
-        delete arr;
-        arr = 0;
+private:
+    void swap(int *pa, int *pb){
+        int tmp = *pa;
+        *pa = *pb;
+        *pb = tmp;
     }
-    return;
-}
+};
 
-int main(){
-    test();
-    return 0;
-}
+/* unit test is in ../cpp_unittest/sortColor_unittest */
