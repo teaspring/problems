@@ -9,72 +9,64 @@
  * 1,3,10,8,12,5,15,7,2,11
  * 5,2,11,3,8,12,1,15,10,7
  * */
-#include "../header/preliminary.h"
+#include <cstdio>
+using namespace std;
 
-template<typename T>
-void swap(T* pa, T* pb){
-    T tmp = *pb;
-    *pb = *pa;
-    *pa = tmp;
-    tmp = 0;
-}
+class Solution{
 
-void sortjugs(int *A, int *B, int n){
-    if(n < 2)    return;
+public:
+    /*
+     * extended quick sort
+     * */
+    void sortjugs(int *A, int *B, int n){
+        if(n < 2)    return;
 
-    int *p = B, *q = B-1, t = A[n-1], *S = 0;
-    while(p < B+n){  // quick sort B[] with sentinel of A[n-1]
-        while(p < B+n && *p > t){
-            p++;
-        }
-        if(p < B+n){
-            if(*p == t){
-                S = p;
-            }else{                //*p < t
+        int leftSize1 = quickSortOnce(B, n, A + n-1); // use A[n-1] as sentinel to split A[] and B[]
+        quickSortOnce(A, n, B + leftSize1); // leftSize1 must equals to leftSize2
+
+        sortjugs(A, B, leftSize1);
+        sortjugs(A + leftSize1 + 1, B + leftSize1 + 1, n-1 - leftSize1);
+    }
+
+private:
+    // swap values of two int*
+    void myswap(int *pa, int *pb){
+        int tmp = *pb;
+        *pb = *pa;
+        *pa = tmp;
+    }
+
+    /*
+     * use argument sentinel as delimeter, split A[] of length n to two parts
+     * return left partition length
+     * */
+    int quickSortOnce(int *A, int n, int *sentinel){
+        int x = *sentinel;
+        int *p = A, *q = A-1, *s = NULL;
+        while(p < A + n){  // quick sort B[] with sentinel of A[n-1]
+            if(*p == x){
+                s = p;
+            }else if(*p < x){
                 q++;
-                if(S == q)
-                  q++;
-                swap<int>(p,q);
+                myswap(p, q);
+                if(s == q){
+                    s = p;
+                }
             }
             p++;
         }
-    }
 
-    if(S < q){
-        while(S < q){
-            *S = *(S + 1);
-            S++;
+        /*
+         * now s must be ahead of q, q pointing to last element which is less than sentinel
+         * if s == q+1, nothing to do, s becomes the delimeter char naturally
+         * if s > q+1, insert s to position of q+1
+         * */
+        q++;
+        if(s > q){ // *s = x
+            myswap(s, q);
         }
-        *S = t;                    //S moves to q+1
-        q = S-1;
-    }else{
-        while(S > q+1){            //S moves to q+1
-            *S = *(S-1);
-            S--;
-        }
-        *S = t;
+        return q - A;
     }
-    
-    p = A;  // quick sort A[] with sentinel of B[S]
-    q = A - 1;
-    t = *S;
-    while(p < A + n - 1){
-        while(p < A+n-1 && *p > t){
-            p++;
-        }
-        if(p < A+n-1){
-            q++;
-            swap<int>(p,q);
-            p++;
-        }
-    }
-    q++;
-    swap<int>(p, q);
-    if(S-B != q-A){
-        printf("error!!!\n");
-        return;
-    }
-    sortjugs(A,B,S-B);
-    sortjugs(q+1,S+1,n-1-(S-B));
-    p=0,q=0,S=0;
-}
+};
+
+/* unit test in ../unittest/waterjug_unittest */
