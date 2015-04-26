@@ -49,7 +49,7 @@ private:
             }else if(*p < x){
                 q++;
                 myswap(p, q);
-                if(s == q){
+                if(s == q){ // NOTE: as initial element of *p which is less than x is swpped to *q, keep s pointing to initial value
                     s = p;
                 }
             }

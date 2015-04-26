@@ -1,49 +1,57 @@
 /*
  * set matrix zeroes. given a m*n matrix, if an element is 0, set its entire row and column to 0. do it in place
  * */
-#include "stdio.h"
-#include <iostream>
+#include <cstdio>
 #include <vector>
+#include <set>
+
 using namespace std;
 
-void setZeroes(vector<vector<int> >& grid){
-    int m = grid.size();
-    if(m==0)    return;
-    int n = grid[0].size();
-    if(n==0)    return;
-    bool row = false, col = false;
-    
-    for(int i=0; i<m; ++i){
-        for(int j=0; j<n; ++j){
-            if(grid[i][j] == 0){
-                 if(i==0)    row = true;
-                 if(j==0)    col = true;
-                 grid[i][0] = 0;   // projection to column 0
-                 grid[0][j] = 0;   // projection to row 0
+class Solution{
+
+public:
+    /*
+     * record [row, col] of each element 0, then reset the related rows and columns
+     * this solution source code looks more readable and easier to maintain
+     * */
+    void setZeroes(vector<vector<int> >& grid){
+        if(grid.empty())    return;
+
+        const int m = grid.size();
+        const int n = grid[0].size();
+        set<int> brushRows;
+        set<int> brushColumns;
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 0){
+                    brushRows.insert(i);
+                    brushColumns.insert(j);
+                }
             }
         }
-    }
-    for(int i=1; i<m; ++i){
-        for(int j=1; j<n; ++j){
-            if(grid[i][0] == 0 || grid[0][j] == 0){
-                grid[i][j] = 0;
-            }
-        }
-    }
-    if(row){    // set row 0 to all zeroes
-        for(int j=0; j<n; ++j){
-            grid[0][j] = 0;
-        }
-    }
-    if(col){
-        for(int i=0; i<m; ++i){
-            grid[i][0] = 0;
-        }
-    }
-    return;
-}
 
-int main(){
-    return 0;
-}
+        for(set<int>::iterator it = brushRows.begin(); it != brushRows.end(); it++){
+            resetRow(grid, *it);
+        }
 
+        for(set<int>::iterator it = brushColumns.begin(); it != brushColumns.end(); it++){
+            resetColumn(grid, *it);
+        }
+    }
+
+private:
+    void resetRow(vector<vector<int> >& grid, int r){
+        const int m = grid[0].size();
+        for(int j = 0; j < m; j++){
+            grid[r][j] = 0;
+        }
+    }
+
+    void resetColumn(vector<vector<int> >& grid, int c){
+        const int n = grid.size();
+        for(int i = 0; i < n; i++){
+            grid[i][c] = 0;
+        }
+    }
+};
