@@ -15,6 +15,8 @@ public:
      * @param begin and end are index both, making up a range of [begin, end]
      * prepare space O(n), time O(n)
      * operation time O(l) where l is length of range
+     *
+     * simple version: assume there is no repeating peak
      * */
     int maxInRange_1(int *A, int n, int begin, int end){
         vector<int> peaks = getPeaks(A, n); // elements in peaks is index of A[]
@@ -112,9 +114,11 @@ private:
      * for beginning at i, return max of range with length 1,2,4,8,16...
      * sub problem is: in array of length n, for range of fixed length l, maximum inside such sliding range
      * */
-    vector<vector<int> > getBrickRangesMax(A, n, bricks){
+    vector<vector<int> > getBrickRangesMax(int *A, int n, const vector<int>& bricks){
         vector<vector<int> > res;
 
         return res;
     }
 };
+
+/* unit test is in ../unittest/maxInRange_unittest */
