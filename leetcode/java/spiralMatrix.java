@@ -10,110 +10,68 @@
  * output in spiral order: 1,2,3,4,8,12,16,20,19,18,17,13,9,5,6,7,11,15,14,10
  * */
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
 
 public class spiralMatrix{
     public ArrayList<Integer> spiralOrder(int[][] matrix){
-        ArrayList<Integer> res = new ArrayList<Integer>();
-        int d = matrix.length;
-        if(d==0)    return res;
-        int w = matrix[0].length;
-        if(w==0)    return res;
-        
-        int[] step = new int[]{1,-1,-1,1};
-        int i=0, j=0, k=0;
-        while(w>0 && d>0){
-            if(k % 2 == 0){
-                if(k==0){
-                    for(int cnt=0; cnt<w; ++cnt){
-                        res.add(matrix[i][j++]);
-                    }
-                    --j;
-                }else if(k==2){
-                    for(int cnt=0; cnt<w; ++cnt){
-                        res.add(matrix[i][j--]);
-                    }
-                    ++j;
-                }
-                i += step[k];
-                --d;
-            }else{
-                if(k==1){
-                    for(int cnt=0; cnt<d; ++cnt){
-                        res.add(matrix[i++][j]);
-                    }
-                    --i;
-                }else if(k==3){
-                    for(int cnt=0; cnt<d; ++cnt){
-                        res.add(matrix[i--][j]);
-                    }
-                    ++i;
-                }
-                j += step[k];
-                --w;
+        ArrayList<Integer> result = new ArrayList<Integer>();
+
+        final int n = matrix.length;
+        final int m = matrix[0].length;
+
+        int[] edgeLengths = new int[]{m, n-1};
+        final int[] xStep = new int[]{0, 1, 0, -1};
+        final int[] yStep = new int[]{1, 0, -1, 0};
+
+        int currX = 0, currY = -1;
+        int mode = 0;
+        while(true){
+            mode %= 4;
+            int l = edgeLengths[mode % 2];
+            if(l == 0)    break;
+
+            for(int i = 0; i < l; i++){
+                currX += xStep[mode];
+                currY += yStep[mode];
+                result.add(matrix[currX][currY]);
             }
-            k = (k+1)%4;
+
+            edgeLengths[mode % 2]--;
+            mode++;
         }
-        return res;
+
+        return result;
     }
 
     /*
      * spiral matrix II: given n, generate a square matrix filled with elements from 1 to n^2 in spiral order
      * */
-    public int[][] generateMatrix(int n){
-        if(n<1)    return new int[0][0];   //note the invalid case
-        int[][] matrix = new int[n][n];
-        for(int i=0; i<n; ++i){
-            for(int j=0; j<n; ++j){
-                matrix[i][j] = 0;
-            }
-        }
-        
-        int d=n, w=d;
-        int[] step = new int[]{1,-1,-1,1};
-        int i=0, j=0, k=0, a=1;
-        boolean horizon = true;
-        while(w>0 && d>0){
-            if(horizon){
-                if(k==0){
-                    for(int cnt=0; cnt<w; ++cnt, ++j){
-                        matrix[i][j] = a++;
-                    }
-                    --j;
-                }else if(k==2){
-                    for(int cnt=0; cnt<w; ++cnt, --j){
-                        matrix[i][j] = a++;
-                    }
-                    ++j;
-                }else{
-                    break;
-                }
-                i += step[k];
-                --d;
-            }else{
-                if(k==1){
-                    for(int cnt=0; cnt<d; ++cnt, ++i){
-                        matrix[i][j] = a++;
-                    }
-                    --i;
-                }else if(k==3){
-                    for(int cnt=0; cnt<d; ++cnt, --i){
-                        matrix[i][j] = a++;
-                    }
-                    ++i;
-                }else{
-                    break;
-                }
-                j += step[k];
-                --w;
-            }
-            k = (k+1)%4;
-            horizon = !horizon;
-        }
-        return matrix;
-    }
+    public int[][] generateMatrix(int n, int m){
+        int[][] result = new int[n][m];
 
-    public static void main(String[] args){
-        return;
+        int[] edgeLengths = new int[]{m, n-1};
+        final int[] xStep = new int[]{0, 1, 0, -1};
+        final int[] yStep = new int[]{1, 0, -1, 0};
+
+        int currX = 0, currY = -1;
+        int mode = 0, val = 1;
+        while(true){
+            mode %= 4;
+            int l = edgeLengths[mode % 2];
+            if(l == 0)    break;
+
+            for(int i = 0; i < l; i++){
+                currX += xStep[mode];
+                currY += yStep[mode];
+                result[currX][currY] = val++;
+            }
+
+            edgeLengths[mode % 2]--;
+            mode++;
+        }
+
+        return result;
     }
 }
+
+/* unit test is in ../java_unittest/spiralMatrix_junit */
