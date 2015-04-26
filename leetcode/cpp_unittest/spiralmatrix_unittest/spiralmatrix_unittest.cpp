@@ -5,9 +5,12 @@
  * vector<int> spiralOrder_1(vector<vector<int> >& matrix)
  * vector<int> spiralOrder_2(vector<vector<int> >& matrix)
  *
+ * vector<vector<int> > generateMatrix(int n, int m)
+ *
  * */
 
-void assertVector(vector<int>& expected, vector<int>& result){
+// helper assert method
+void assertVector(const vector<int>& expected, const vector<int>& result){
     EXPECT_EQ(expected.size(), result.size());
 
     const int n = expected.size();
@@ -16,6 +19,20 @@ void assertVector(vector<int>& expected, vector<int>& result){
     }
 }
 
+void assertVecVec(const vector<vector<int> >& expected, const vector<vector<int> >& result){
+    EXPECT_EQ(expected.size(), result.size());
+    const int n = expected.size();
+    EXPECT_EQ(expected[0].size(), result[0].size());
+    const int m = expected[0].size();
+
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            EXPECT_EQ(expected[i][j], result[i][j]);
+        }
+    }
+}
+
+/* test cases of spiralOrder() */
 TEST(spiralOrder_Test, Positive01){
     Solution s;
 
@@ -157,4 +174,22 @@ TEST(spiralOrder_Test, Positive05){
     expected.clear();
     result1.clear();
     result2.clear();
+}
+
+/* test cases of generateMatrix() */
+TEST(generateMatrix_Test, Positive01){
+    Solution s;
+
+    const int rows = 4, cols = 4;
+    int mat[][cols] = {{1,  2, 3, 4},
+                       {12,13,14, 5},
+                       {11,16,15, 6},
+                       {10, 9, 8, 7}};
+    vector<vector<int> > expected;
+    for(int i = 0; i < rows; i++){
+        expected.push_back(vector<int>(mat[i], mat[i] + cols));
+    }
+
+    vector<vector<int> > result = s.generateMatrix(rows, cols);
+    assertVecVec(expected, result);
 }
