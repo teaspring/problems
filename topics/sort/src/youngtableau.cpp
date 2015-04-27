@@ -1,13 +1,15 @@
 /*
  * "IntroductionToAlgorithm, chapter6 heap sort, problem 6-3 YoungTableau"
  *
- * test data input:
- * 11 10 9 8 7 6 5 4 3 2 1
- * 2 3 10 31 21 14 6 1 11 23 30 9 18 
+ * --from Wiki:
+ * a 'standard' Young Tableau is a Young Tableau in which the numbers from an increasing sequence along each line and along each column.
+ * the number of standard Young Tableau of size 1,2,3... are 1,2,4,10,26,...
+ *
+ * I think it is should not be refactored to be STANDARD until we confirm the definition of such Young Tableau
  * */
 #include "../header/preliminary.h"
 
-const static int LIMIT = 0x0fff;
+const static int LIMIT = 0xffff;
 
 void myswap(int& a, int& b){
     int tmp = b;
@@ -18,71 +20,68 @@ void myswap(int& a, int& b){
 class YoungTableau{
 public:
     YoungTableau(int m, int n):M(m), N(n), ppTab(0){
-        init();
+        ppTab = new int*[M];
+        for(int i = 0; i < M; i++){
+            ppTab[i] = new int[N]();
+            for(int j = 0; j < N; j++){
+                ppTab[i][j] = LIMIT;
+            }
+        }
     }
-    ~YoungTableau(){
-        clean();
+
+    virtual ~YoungTableau(){
+        for(int i = 0; i < M; i++){
+            delete[] ppTab[i];
+            ppTab[i] = NULL;
+        }
+        delete[] ppTab;
+        ppTab = NULL;
     }
+
     void insert(int key);
+
     int  extract_max();
+
     int  extract_min();
+
     void showAll();
-    bool search(int);
+
 private:
     int M;
     int N;
     int** ppTab;
-    void clean();
-    void init();
+
+private:
     void min_heapify(int i, int j);
+
     void getTailer(int& tailx, int& taily);
-    bool searchInBound(int x, int y, int key);        
-    bool searchInBoundRecur(int x, int y, int key);
-        
-    inline int downx(int x){
+
+    inline int downX(int x){
         return x+1;
     }
 
-    inline int upx(int x){
+    inline int upX(int x){
         return x-1;
     }
 
-    inline int lefty(int y){
+    inline int leftY(int y){
         return y-1;
     }
 
-    inline int righty(int y){
+    inline int rightY(int y){
         return y+1;
     }
 };
 
-void YoungTableau::init(){
-    ppTab = new int*[M];
-    for(int i = 0; i < M; i++){
-        ppTab[i] = new int[N]();
-        for(int j = 0; j < N; j++){
-            ppTab[i][j] = LIMIT;
-        }
-    }
-}
-
-void YoungTableau::clean(){
-    for(int i = 0; i < M; i++){
-        delete[] ppTab[i];
-        ppTab[i] = 0;
-    }
-    delete[] ppTab;
-    ppTab = 0;
-}
-
 /*
- * find tailer of the young tableau, the last valid element
+ * find tailer of the young tableau which is the last valid element
+ * it should use binary search
  * */
 void YoungTableau::getTailer(int& tailx, int& taily){
     tailx = 0;
     taily = N-1;
 
-    for(;tailx < M && ppTab[tailx][0] < LIMIT; tailx++);
+    for(;tailx < M && ppTab[tailx][0] != LIMIT; tailx++);
 
     tailx--;
     if(tailx < 0)    return;
@@ -91,6 +90,9 @@ void YoungTableau::getTailer(int& tailx, int& taily){
     return;
 }
 
+/*
+ * insert a new element into Young Tableau
+ * */
 void YoungTableau::insert(int key){
     int x = 0, y = 0;
     getTailer(x,y);
@@ -99,7 +101,7 @@ void YoungTableau::insert(int key){
         y = 0;
         x++;
     }else{
-      y++;
+        y++;
     }
 
     if(x >= M)    return;   //full
@@ -110,20 +112,21 @@ void YoungTableau::insert(int key){
 
 /*
  *  __| find largest element next to (i,j) and swap it to here
+ *  use recurse
  * */
 void YoungTableau::min_heapify(int i, int j){
     if(i == 0 && j == 0)    return;
     while(1){
         int largestx = i, largesty = j;
 
-        if(upx(i) >= 0 && ppTab[upx(i)][j] > ppTab[i][j]){
-            largestx = upx(i);
+        if(upX(i) >= 0 && ppTab[upX(i)][j] > ppTab[i][j]){
+            largestx = upX(i);
             largesty = j;
         }
 
-        if(lefty(j) >= 0 && ppTab[i][lefty(j)] > ppTab[largestx][largesty]){
+        if(leftY(j) >= 0 && ppTab[i][leftY(j)] > ppTab[largestx][largesty]){
             largestx = i;
-            largesty = lefty(j);
+            largesty = leftY(j);
         }
 
         if(largestx != i || largesty != j){
@@ -136,6 +139,9 @@ void YoungTableau::min_heapify(int i, int j){
     }
 }
 
+/*
+ * find maximum element and pop it out
+ * */
 int YoungTableau::extract_max(){
     int x = 0, y = 0;
     getTailer(x, y);
@@ -168,14 +174,14 @@ int YoungTableau::extract_min(){
     int x = 0, y = 0;
     while(1){ // move (x,y) downside if it larger than any element less than it
         int leastx = x, leasty = y;
-        if(downx(x)<M && ppTab[downx(x)][y] < ppTab[x][y]){
-            leastx = downx(x);
+        if(downX(x)<M && ppTab[downX(x)][y] < ppTab[x][y]){
+            leastx = downX(x);
             leasty = y;
         }
 
-        if(righty(y)<N && ppTab[x][righty(y)] < ppTab[leastx][leasty]){
+        if(rightY(y)<N && ppTab[x][rightY(y)] < ppTab[leastx][leasty]){
             leastx = x;
-            leasty = righty(y);
+            leasty = rightY(y);
         }
 
         if(leastx != x || leasty != y){
@@ -190,72 +196,6 @@ int YoungTableau::extract_min(){
 }
 
 /*
- * this iterative function has bug.
- *
- * 1  2  5
- * 3  4  8
- * 6  7  11
- * 9  10
- * when search 5 in the box of 1<-->11, it returns false because it choose to 7's branch.
- * when 8's and 7's are all greater than 5, both should be searched
- *
- * this solution is recurse
- * */
-bool YoungTableau::searchInBound(int x, int y, int key){
-    while(x > -1 && y > -1 && ppTab[x][y] >= key){
-        if(ppTab[x][y] == key)    return true;
-
-        if(x == 0 || ppTab[x-1][y] < key){
-            y = y-1;
-            continue;
-        }
-
-        if(y == 0 || ppTab[x][y-1] < key){
-            x = x-1;
-            continue;
-        }
-
-        if(ppTab[x-1][y] > ppTab[x][y-1]){
-            y = y-1;
-        }else{
-            x = x-1;
-        }        
-    }
-    return false;
-}
-
-bool YoungTableau::searchInBoundRecur(int x, int y, int key){
-    if(x > -1 && y > -1 && ppTab[x][y] >= key){
-        if(ppTab[x][y] == key)    return true;
-        return searchInBoundRecur(x-1, y, key) || searchInBound(x, y-1, key);
-    }
-    return false;
-}
-
-bool YoungTableau::search(int key){
-    int tailx = 0, taily = 0;
-
-    getTailer(tailx, taily);
-    if(tailx < 0)    return false;
-
-    int i = tailx, j = taily;
-    return searchInBoundRecur(i,j,key) || (taily<N-1 ? searchInBoundRecur(tailx-1, N-1, key) : false);
-}
-
-void YoungTableau::showAll(){
-    printf("the Young Tableau is:\n");
-    for(int i = 0;i < M; i++){
-        for(int j = 0; j < N; j++){
-            if(ppTab[i][j] == LIMIT)
-              printf("%c ", '*');
-            else
-              printf("%d ", ppTab[i][j]);
-        }
-        printf("\n");
-    }
-}
-
-/*
  * decompose N to around a*b which is a little greater than N
  * */
 void decomposeInt(int num, int& m, int& n){
@@ -263,48 +203,4 @@ void decomposeInt(int num, int& m, int& n){
     for(; num/m >= m; m++);
     n = num/m + 1;
     return;
-}
-
-int main(int argc, char* argv[]){
-    string str;
-    while(1){
-        if(getline(cin, str) == 0 || str.empty())
-          break;
-        int* arr = new int[str.size()]();   // limited by test case, input count < 6
-        int size = splitStr2IntArray(str, arr);
-        int m=1, n=1;
-        decomposeInt(size, m, n);
-        
-        YoungTableau* pYTable = new YoungTableau(m, n);
-        for(int i=0; i<size;i++){
-            pYTable->insert(arr[i]);
-        }
-        pYTable->showAll();
-        
-        for(int i=0;i<size;i++){
-            int res = pYTable->search(arr[i]);
-            printf("now %d should be in Young Tableau: %s\n", arr[i], res ? "true" : "false");
-        }
-        
-        for(int i=0;i<3;i++){   //extract top 3 max elements
-            int max = pYTable->extract_max();
-            printf("current maximum element is %d\n", max);
-            
-            int res = pYTable->search(max);
-            printf("now %d should not be in Young Tableau: %s\n", max, res ? "true" : "false");
-        }
-        pYTable->showAll();
-
-        for(int i=0;i<2;i++){
-            int min = pYTable->extract_min();
-            printf("current minimum element is %d\n", min);
-            pYTable->showAll();
-        }
-            
-        delete pYTable;
-        pYTable = 0;
-        delete[] arr;
-        arr = 0;
-    }
-    return 0;
 }
