@@ -14,13 +14,13 @@ class Solution{
 
 public:
     /*
-     * move p1 and p2 together where p2 of Nth back from p1
+     * move p1 and p2 together where p2 is Nth back from p1
      * */
     ListNode* removeNthFromEnd(ListNode *head, int n){
         if(!head)    return NULL;
 
         ListNode *p1 = head; // p1 is the leading node
-        for(int i = 1; i < n && p1 != NULL; i++){ // n > 1 so p1 and p2 cannot be same node
+        for(int i = 1; i < n && p1 != NULL; i++){
             p1 = p1->next;
         }
 
