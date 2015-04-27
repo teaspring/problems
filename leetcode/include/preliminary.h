@@ -28,7 +28,7 @@ vector<string> splitStr2Vector(const string& str);
 /*
 * time O(lgm) to get index m == lgn
 */
-int getindex(int num, int& t, int e =10);
+int getindex(int num, int& t, int e);
 
 void showarray(int *A, int n);
 
