@@ -1,84 +1,68 @@
 /*
  * given a binary tree, find the largest BST.
  * Note: the result BST may not be balanced; and it may or may not include all of its descendants
- * idea of this solution looks like "top-down". if root p's value breaks BST(compare with min and max), it cannot contribute
- * to parent as subtree. it has to consider as an independent subtree.
+ *
+ * idea of this solution looks like "top-down". if root p's value breaks BST(compare with min and max),
+ * it cannot contribute to parent as subtree. it has to be considered as an independent subtree.
  * */
-
 #include "../include/preliminary.h"
 
 class Solution{
+
 public:
+    TreeNode* findLargestBST(TreeNode* root){
+        TreeNode *largestBST= NULL, *child = NULL;
+        int maxNodes = INT_MIN;
+
+        findLargestBST(root, INT_MIN, INT_MAX, maxNodes, &largestBST, &child);
+        return largestBST;
+    }
+
+private:
     /*
      * since result BST may or may not include all of its descendants, we need to create copy of nodes dynamically.
      * but the release operation is not involved here.
+     *
      * @param p: in,
      *        min: in
      *        max: in
      *        maxNodes: inout
      *        largestBST: out,
-     *        child: out
+     *        child: out  # very important, it is passed to above to tree as child
+     * @return: total nodes in valid BST with root of p
      * */
     int findLargestBST(TreeNode *p, int min, int max, int &maxNodes,
-                TreeNode* &largestBST, TreeNode* &child){
+                TreeNode **pLargestBST, TreeNode **pChild){
         if(!p)    return 0;
-        if(!(min < p->val) || !(max > p->val)){ // p's value breaks BST definition
-            findLargestBST(p, INT_MIN, INT_MAX, maxNodes, largestBST, child);  // consider p an independent subtree
+
+        if(!(min < p->val && p->val < max)){ // p's value breaks BST definition
+            findLargestBST(p, INT_MIN, INT_MAX, maxNodes, pLargestBST, pChild);  // consider p an independent subtree
             return 0;   // return 0 means p cannot contribute to parent as subtree of BST
         }
 
-        int totalNodes = 1;
-        int leftNodes = findLargestBST(p->left, min, p->val, maxNodes, largestBST, child);
-        TreeNode *leftChild = NULL;
+        TreeNode *curr = new TreeNode(p->val);  // create copy to update child
+        int totalNodes = 1; // p is countable
+
+        int leftNodes = findLargestBST(p->left, min, p->val, maxNodes, pLargestBST, pChild);
         if(leftNodes > 0){
-            leftChild = child;
+            curr->left = *pChild;
             totalNodes += leftNodes;
         }
-        int rightNodes = findLargestBST(p->right, p->val, max, maxNodes, largestBST, child);
-        TreeNode *rightChild = NULL;
+
+        int rightNodes = findLargestBST(p->right, p->val, max, maxNodes, pLargestBST, pChild);
         if(rightNodes > 0){
-            rightChild = child;
+            curr->right = *pChild;
             totalNodes += rightNodes;
         }
 
-        TreeNode *curr = new TreeNode(p->val);  // create copy to update child
-        curr->left = leftChild;
-        curr->right = rightChild;
-        child = curr;    // pass curr as child to above tree
-
         if(maxNodes < totalNodes){  // update maxNodes and largestBST
             maxNodes = totalNodes;
-            largestBST = curr;
+            *pLargestBST = curr;
         }
-        return totalNodes;
-    }
 
-    TreeNode* findLargestBST(TreeNode* root){
-        TreeNode* largestBST= NULL, *child = NULL;
-        int maxNodes = INT_MIN;
-        findLargestBST(root, INT_MIN, INT_MAX, maxNodes, largestBST, child);
-        return largestBST;
+        *pChild = curr; // this is purpose of @param child: it can be passed to above tree as child
+        return totalNodes;
     }
 };
 
-void test_01(){
-    TreeNode *root = new TreeNode(15);
-    root->right = new TreeNode(20);
-    root->left = new TreeNode(10);
-    root->left->left = new TreeNode(5);
-    root->left->right = new TreeNode(7);
-    root->left->right->left = new TreeNode(2);
-    root->left->right->right = new TreeNode(5);
-    root->left->right->left->left = new TreeNode(0);
-    root->left->right->left->right = new TreeNode(8);
-    root->left->right->right->left = new TreeNode(3);
-    Solution s;
-    TreeNode *p = s.findLargestBST(root);
-    showPre(p);
-    showIn(p);
-}
-
-int main(){
-    test_01();
-    return 0;
-}
+/* unit test is in ../cpp_unittest/largestBSTInBT_unittest */
