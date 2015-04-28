@@ -1,73 +1,79 @@
 /*
- * given a binary tree, find the largest subtree which is BST. Note, a subtree all of its descendants.
- * Idea: 'bottom-up' solution. when subtree with node A is validated not BST, and node above A with A as child will not be BST definitely
- * NOTE: recurse method calling is 'top-down' from root to child with no doubt. "bottom-up" means denying child as BST will deny parent immediately
+ * given a binary tree, find the largest subtree which is BST. Note, a subtree has all of its descendants.
+ *
+ * Idea: 'bottom-up' solution.
+ * if subtree with root A is not BST, any above nodes with A as its child cannot be BST
+ *
+ * NOTE:
+ * recurse method calling is 'top-down' from root to child
+ * "bottom-up" means denying child as BST will deny parent immediately
  * */
 #include "../include/preliminary.h"
 
 class Solution{
-public:
-    /*
-     * @param p: in, current node to handle
-     * @return : node count of largest subtree with root of p
-     * @param min, inout: minimum value of subtree with root of p
-     *        max, inout: maximum ...
-     *        maxNodes, inout: global largest subtree node count
-     *        largestBST, inout: root of global largest subtree
-     * */
-    int findLargestBSTSubtree(TreeNode *p, int &min, int &max,
-                int &maxNodes, TreeNode* &largestBST){
-        if(!p)    return 0;
-        bool isBST = true;
-        int leftNodes = findLargestBSTSubtree(p->left, min, max, maxNodes, largestBST);
-        int currMin = (leftNodes == 0) ? p->val : min;
-        if(leftNodes == -1 ||
-           (leftNodes != 0 && p->val <= min)){
-            isBST = false;
-        }
-        int rightNodes = findLargestBSTSubtree(p->right, min, max, maxNodes, largestBST);
-        int currMax = (rightNodes == 0) ? p->val : max;
-        if(rightNodes == -1 ||
-           (rightNodes != 0 && p->val >= min)){
-            isBST = false;
-        }
-        if(isBST){
-            min = currMin;
-            max = currMax;
-            int totalNodes = leftNodes + rightNodes + 1;
-            if(totalNodes > maxNodes){
-                maxNodes = totalNodes;
-                largestBST = p;
-            }
-            return totalNodes;
-        }else{
-            return -1;   // this subtree with root of p is not BST
-        }
-    }
 
+public:
     TreeNode *findLargestBSTSubtree(TreeNode *root){
         TreeNode *largestBST = NULL;
-        int min = 0, max = 0;
+        int currMin = INT_MAX;  // invalid minimum
+        int currMax = INT_MIN;  // invalid maximum
         int maxNodes = 0;
-        findLargestBSTSubtree(root, min, max, maxNodes, largestBST);
+
+        findLargestBSTSubtree(root, currMin, currMax, maxNodes, &largestBST);
         return largestBST;
+    }
+
+private:
+    /*
+     * key is check root with min/max of its left subtree, and min/max of its right subtree
+     *
+     * @param p: in, current node to handle
+     *
+     * @return n: > 0  means count of largest subtree with root of p
+     *            = -1 means it breaks the BST definition
+     *            = 0  means it has no child
+     *
+     * @param min, inout: minimum value of subtree with root of p
+     *        max, inout: maximum ~
+     *        maxNodes, inout: global largest subtree node count
+     *        pLargestBST, inout: root of global largest subtree
+     * */
+    int findLargestBSTSubtree(TreeNode *p, int &currMin, int &currMax, int &maxNodes, TreeNode **pLargestBST){
+        if(!p)    return 0;
+
+        int lSubMin = INT_MAX;  // invalid minimum
+        int lSubMax = INT_MIN;  // invalid maximum
+        int leftNodes = findLargestBSTSubtree(p->left, lSubMin, lSubMax, maxNodes, pLargestBST);
+
+        int rSubMin = INT_MAX;
+        int rSubMax = INT_MIN;
+        int rightNodes = findLargestBSTSubtree(p->right, rSubMin, rSubMax, maxNodes, pLargestBST);
+
+        bool isBST = true;
+
+        if(leftNodes == -1 ||
+            (leftNodes > 0 && !(p->val > lSubMax))){
+                isBST = false;  // p and its left subtree breaks BST definition
+        }
+
+        if(rightNodes == -1 ||
+            (rightNodes > 0 && !(p->val < rSubMin))){
+                isBST = false;  // p and its right subtree breaks BST definition
+        }
+
+        if(!isBST)    return -1; // subtree beneath p is invalid BST, contributing nothing to above
+
+        currMin = min(p->val, lSubMin);  // update currMin with min in left subtree
+        currMax = max(p->val, rSubMax);  // update currMax with max in right subtree
+
+        int totalNodes = 1 + leftNodes + rightNodes;
+        if(totalNodes > maxNodes){
+            maxNodes = totalNodes;
+            *pLargestBST = p;
+        }
+
+        return totalNodes;
     }
 };
 
-void test_01(){
-    TreeNode* root = new TreeNode(10);
-    root->left = new TreeNode(5);
-    root->right = new TreeNode(15);
-    root->left->left = new TreeNode(1);
-    root->left->right = new TreeNode(8);
-    root->right->right = new TreeNode(7);
-    Solution s;
-    TreeNode *p = s.findLargestBSTSubtree(root);
-    showPre(p);
-    showIn(p);
-}
-
-int main(){
-    test_01();
-    return 0;
-}
+/* unit test is in ../cpp_unittest/largestSubtreeIsBST_unittest */
