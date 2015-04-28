@@ -82,11 +82,14 @@ gtest_main.a : gtest-all.o gtest_main.o
 #
 mergeKSortedList.o: $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/mergeKSortedList.cpp $(USER_DIR)/src/preliminary.cpp
+		$(USER_DIR)/src/mergeKSortedList.cpp
+
+preliminary.o : $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/preliminary.cpp
 
 mergeKSortedList_unittest.o : $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/mergeKSortedList_unittest.cpp
 
-mergeKSortedList_unittest : mergeKSortedList.o mergeKSortedList_unittest.o gtest_main.a
+mergeKSortedList_unittest : mergeKSortedList.o mergeKSortedList_unittest.o preliminary.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $^ -o $@
 

@@ -66,4 +66,9 @@ TEST(mergeKSortedListTest, Positive01){
     }
 
     assertList(expected, result);
+
+    lists.clear();  // every ListNode object is in SLL with head of result
+    expectedVector.clear();
+    delSLL(expected);
+    delSLL(result);
 }
