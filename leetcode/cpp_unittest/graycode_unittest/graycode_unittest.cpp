@@ -26,7 +26,7 @@ bool assertVectorInt(vector<int>& expected, vector<int>& result){
     return true;
 }
 
-/* test case */
+/* ------------- test case -------------- */
 TEST(grayCode_Test, Positive01){
     Solution s;
 

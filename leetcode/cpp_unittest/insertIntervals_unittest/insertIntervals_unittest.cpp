@@ -23,6 +23,8 @@ void assertIntervals(const vector<Interval>& expected, const vector<Interval>& r
     }
 }
 
+/* ----------------- test body ---------------- */
+
 // insert intermedia position
 TEST(insertIntervalsTest, Positive01){
     Solution s;
@@ -39,6 +41,10 @@ TEST(insertIntervalsTest, Positive01){
 
     vector<Interval> result = s.insert(intervals, nElement);
     assertIntervals(expected, result);
+
+    intervals.clear();
+    expected.clear();
+    result.clear();
 }
 
 // insert after tail
@@ -57,6 +63,10 @@ TEST(insertIntervalsTest, Positive02){
 
     vector<Interval> result = s.insert(intervals, nElement);
     assertIntervals(expected, result);
+
+    intervals.clear();
+    expected.clear();
+    result.clear();
 }
 
 // insert in front of head
@@ -75,4 +85,8 @@ TEST(insertIntervalsTest, Positive03){
 
     vector<Interval> result = s.insert(intervals, nElement);
     assertIntervals(expected, result);
+
+    intervals.clear();
+    expected.clear();
+    result.clear();
 }

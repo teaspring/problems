@@ -12,8 +12,10 @@ TEST(gasstationTest, Positive01){
     vector<int> cost(costArr, costArr + sizeof(costArr)/sizeof(int));
 
     int expected = 3;
-
     EXPECT_EQ(expected, s.gasstation(gas, cost));
+
+    gas.clear();
+    cost.clear();
 }
 
 TEST(gasstationTest, Positive02){
@@ -25,8 +27,10 @@ TEST(gasstationTest, Positive02){
     vector<int> cost(costArr, costArr + sizeof(costArr)/sizeof(int));
 
     int expected = 1;
-
     EXPECT_EQ(expected, s.gasstation(gas, cost));
+
+    gas.clear();
+    cost.clear();
 }
 
 TEST(gasstationTest, Negative01){
@@ -38,8 +42,10 @@ TEST(gasstationTest, Negative01){
     vector<int> cost(costArr, costArr + sizeof(costArr)/sizeof(int));
 
     int expected = -1;
-
     EXPECT_EQ(expected, s.gasstation(gas, cost));
+
+    gas.clear();
+    cost.clear();
 }
 
 TEST(gasstationTest, Negative02){
@@ -51,6 +57,8 @@ TEST(gasstationTest, Negative02){
     vector<int> cost(costArr, costArr + sizeof(costArr)/sizeof(int));
 
     int expected = -1;
-
     EXPECT_EQ(expected, s.gasstation(gas, cost));
+
+    gas.clear();
+    cost.clear();
 }

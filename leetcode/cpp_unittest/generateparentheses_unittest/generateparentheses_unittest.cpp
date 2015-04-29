@@ -24,14 +24,18 @@ bool assertVectorStr(vector<string>& expected, vector<string>& result){
     return true;
 }
 
-/* test cases */
+/* ---------------- test cases ----------------- */
 TEST(generateparenthesesTest, Positive01){
     Solution s;
 
     int n = 3;
+
     string arr[5] = {"((()))", "(()())", "()(())", "()()()", "(())()"};
     vector<string> expected(arr, arr + 5);
 
     vector<string> result = s.generate(n);
     EXPECT_TRUE(assertVectorStr(expected, result));
+
+    expected.clear();
+    result.clear();
 }

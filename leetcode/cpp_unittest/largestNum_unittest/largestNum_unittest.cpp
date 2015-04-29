@@ -1,94 +1,121 @@
 #include "largestNum.cpp"
 #include "gtest/gtest.h"
 
-// Test case: Function_Test
-// Test name: Positive01
 TEST(Function_Test, Positive01){
     Solution s;
+
     int arr[] = {3, 30, 34, 5, 9};
     vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
-    string str = s.largestNumber(num);
-    EXPECT_EQ("9534330", str);
+
+    string expected("9534330");
+    string result = s.largestNumber(num);
+    EXPECT_EQ(expected, result);
+
+    num.clear();
 }
 
-// Test case: Function_Test
-// Test name: Positive02
 TEST(Function_Test, Positive02){
     Solution s;
+
     int arr[] = {824, 8247};
     vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
-    string str = s.largestNumber(num);
-    EXPECT_EQ("8248247", str);
+
+    string expected("8248247");
+    string result = s.largestNumber(num);
+    EXPECT_EQ(expected, result);
+
+    num.clear();
 }
 
-// Test case: Function_Test
-// Test name: Positive03
 TEST(Function_Test, Positive03){
     Solution s;
+
     int arr[] = {12, 121};
     vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
-    string str = s.largestNumber(num);
-    EXPECT_EQ("12121", str);
+
+    string expected("12121");
+    string result = s.largestNumber(num);
+    EXPECT_EQ(expected, result);
+
+    num.clear();
 }
 
-// Test case: Function_Test
-// Test name: Positive04
 TEST(Function_Test, Positive04){
     Solution s;
+
     int arr[] = {12, 121, 122};
     vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
-    string str = s.largestNumber(num);
-    EXPECT_EQ("12212121", str);
+
+    string expected("12212121");
+    string result = s.largestNumber(num);
+    EXPECT_EQ(expected, result);
+
+    num.clear();
 }
 
-// Test case: Function_Test
-// Test name: Positive05
 // very good unit test case which is not in scope of oj.leetcode judge :)
 TEST(Function_Test, Positive05){
     Solution s;
+
     int arr[] = {121, 12113};
     vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
-    string str = s.largestNumber(num);
-    EXPECT_EQ("12113121", str);
+
+    string expected("12113121");
+    string result = s.largestNumber(num);
+    EXPECT_EQ(expected, result);
+
+    num.clear();
 }
 
-// Test case: Function_Test
-// Test name: Positive05
 // spawned case of Positive05
 TEST(Function_Test, Positive06){
     Solution s;
+
     int arr[] = {121, 1211212};
     vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
-    string str = s.largestNumber(num);
-    EXPECT_EQ("1211212121", str);
+
+    string expected("1211212121");
+    string result = s.largestNumber(num);
+    EXPECT_EQ(expected, result);
+
+    num.clear();
 }
 
-// Test case: Edge_Test
-// Test name: Zero
 TEST(Edge_Test, Zero){
     Solution s;
+
     int arr[] = {1, 2, 0, 0, 3};
     vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
-    string str = s.largestNumber(num);
-    EXPECT_EQ("32100", str);
+
+    string expected("32100");
+    string result = s.largestNumber(num);
+    EXPECT_EQ(expected, result);
+
+    num.clear();
 }
 
-// Test case: Edge_Test
-// Test name: AllZero
 TEST(Edge_Test, AllZero){
     Solution s;
+
     int arr[] = {0, 0, 0, 0};
     vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
-    string str = s.largestNumber(num);
-    EXPECT_EQ("0", str);
+
+    string expected("0");
+    string result = s.largestNumber(num);
+    EXPECT_EQ(expected, result);
+
+    num.clear();
 }
 
-// Test case: Edge_Test
-// Test name: MultiZero
 TEST(Edge_Test, MultiZero){
     Solution s;
+
     int arr[] = {0, 0, 0, 1, 0};
     vector<int> num(arr, arr + sizeof(arr)/sizeof(int));
-    string str = s.largestNumber(num);
-    EXPECT_EQ("10000", str);
+
+    string expected("10000");
+    string result = s.largestNumber(num);
+    EXPECT_EQ(expected, result);
+
+    num.clear();
 }
