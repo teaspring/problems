@@ -53,6 +53,7 @@ TEST(combinationsumIITest, Positive01){
     int option2[] = {1, 2, 3};
     int option3[] = {2, 2, 2};
     vector<vector<int> > expected;
+
     expected.push_back(vector<int>(option1, option1 + sizeof(option1) / sizeof(int)));
     expected.push_back(vector<int>(option2, option2 + sizeof(option2) / sizeof(int)));
     expected.push_back(vector<int>(option3, option3 + sizeof(option3) / sizeof(int)));
@@ -60,4 +61,8 @@ TEST(combinationsumIITest, Positive01){
     vector<vector<int> > result = s.combinationSumII(candidates, target);
 
     EXPECT_TRUE(equalsDuoVector(expected, result));
+
+    candidates.clear();
+    expected.clear();
+    result.clear();
 }

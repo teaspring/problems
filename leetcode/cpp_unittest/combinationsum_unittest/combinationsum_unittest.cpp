@@ -58,4 +58,8 @@ TEST(combinationsumTest, Positive01){
     vector<vector<int> > result = s.combinationSum(candidates, target);
 
     EXPECT_TRUE(equalsDuoVector(expected, result));
+
+    candidates.clear();
+    expected.clear();
+    result.clear();
 }

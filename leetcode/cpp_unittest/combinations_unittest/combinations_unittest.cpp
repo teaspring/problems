@@ -57,6 +57,9 @@ TEST(combinationsTest, Positive01){
 
     vector<vector<int> > result = s.combinations(n, k);
     EXPECT_TRUE(equalsDuoVector(expected, result));
+
+    expected.clear();
+    result.clear();
 }
 
 TEST(combinationsTest, Positive02){
@@ -81,4 +84,7 @@ TEST(combinationsTest, Positive02){
 
     vector<vector<int> > result = s.combinations(n, k);
     EXPECT_TRUE(equalsDuoVector(expected, result));
+
+    expected.clear();
+    result.clear();
 }

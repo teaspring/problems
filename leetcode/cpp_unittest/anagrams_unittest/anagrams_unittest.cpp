@@ -46,6 +46,10 @@ TEST(anagramsTest, Positive01){
 
     vector<string> result = s.anagrams(dict);
     EXPECT_TRUE(assertTwoStrVectors(expected, result));
+
+    dict.clear();
+    expected.clear();
+    result.clear();
 }
 
 TEST(anagramsTest, Positive02){
@@ -61,4 +65,8 @@ TEST(anagramsTest, Positive02){
 
     vector<string> result = s.anagrams(dict);
     EXPECT_TRUE(assertTwoStrVectors(expected, result));
+
+    dict.clear();
+    expected.clear();
+    result.clear();
 }
