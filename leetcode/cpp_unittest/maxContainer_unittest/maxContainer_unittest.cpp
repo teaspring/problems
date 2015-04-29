@@ -11,6 +11,8 @@ TEST(maxContainerTest, Positive01){
 
     int expected = 2;
     EXPECT_EQ(expected, s.maxWater(height));
+
+    height.clear();
 }
 
 TEST(maxContainerTest, Positive02){
@@ -21,6 +23,8 @@ TEST(maxContainerTest, Positive02){
 
     int expected = 6;
     EXPECT_EQ(expected, s.maxWater(height));
+
+    height.clear();
 }
 
 TEST(maxContainerTest, Positive03){
@@ -31,4 +35,6 @@ TEST(maxContainerTest, Positive03){
 
     int expected = 10;
     EXPECT_EQ(expected, s.maxWater(height));
+
+    height.clear();
 }

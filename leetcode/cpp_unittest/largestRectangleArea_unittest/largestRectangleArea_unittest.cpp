@@ -15,6 +15,8 @@ TEST(largestRectangleAreaTest, Positive01){
     int expected = 6;
     EXPECT_EQ(expected, s.largestRectangleArea_1(height));
     EXPECT_EQ(expected, s.largestRectangleArea_2(height));
+
+	height.clear();
 }
 
 TEST(largestRectangleAreaTest, Positive02){
@@ -26,6 +28,8 @@ TEST(largestRectangleAreaTest, Positive02){
     int expected = 10;
     EXPECT_EQ(expected, s.largestRectangleArea_1(height));
     EXPECT_EQ(expected, s.largestRectangleArea_2(height));
+
+	height.clear();
 }
 
 TEST(largestRectangleAreaTest, Positive03){
@@ -37,4 +41,6 @@ TEST(largestRectangleAreaTest, Positive03){
     int expected = 11;
     EXPECT_EQ(expected, s.largestRectangleArea_1(height));
     EXPECT_EQ(expected, s.largestRectangleArea_2(height));
+
+	height.clear();
 }

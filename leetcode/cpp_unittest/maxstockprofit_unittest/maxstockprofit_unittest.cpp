@@ -11,4 +11,6 @@ TEST(maxstockprofitTest, Positive01){
 
     int expected = 7;
     EXPECT_EQ(expected, s.maxProfitIII(prices));
+
+    prices.clear();
 }

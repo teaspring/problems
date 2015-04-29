@@ -15,6 +15,8 @@ TEST(largestRectangleAreaTest, Positive01){
 
     int expected = 8;
     EXPECT_EQ(expected, s.largestRectangleArea(heights));
+
+    heights.clear();
 }
 
 TEST(largestRectangleAreaTest, Positive02){
@@ -25,6 +27,8 @@ TEST(largestRectangleAreaTest, Positive02){
 
     int expected = 6;
     EXPECT_EQ(expected, s.largestRectangleArea(heights));
+
+    heights.clear();
 }
 
 TEST(largestRectangleAreaTest, Positive03){
@@ -35,33 +39,45 @@ TEST(largestRectangleAreaTest, Positive03){
 
     int expected = 10;
     EXPECT_EQ(expected, s.largestRectangleArea(heights));
+
+    heights.clear();
 }
 
 TEST(maximumRectangleTest, Positive01){
     Solution s;
 
-    char arr[][5] = {{'1', '0', '1', '1', '1'},
-                     {'0', '1', '1', '1', '0'},
-                     {'1', '0', '1', '1', '1'}};
+    const int rows = 3, cols = 5;
+    char arr[][cols] = {
+        {'1', '0', '1', '1', '1'},
+        {'0', '1', '1', '1', '0'},
+        {'1', '0', '1', '1', '1'}};
+
     vector<vector<char> > matrix;
-    for(int i = 0; i < 3; i++){
-        matrix.push_back(vector<char>(arr[i], arr[i] + 5));
+    for(int i = 0; i < rows; i++){
+        matrix.push_back(vector<char>(arr[i], arr[i] + cols));
     }
 
     int expected = 6;
     EXPECT_EQ(expected, s.maximumRectangle(matrix));
+
+    matrix.clear();
 }
 
 TEST(maximumRectangleTest, Negative01){
     Solution s;
 
-    char arr[][2] = {{'1', '0'},
-                     {'0', '1'}};
+    const int rows = 2, cols = 2;
+    char arr[][cols] = {
+        {'1', '0'},
+        {'0', '1'}};
+
     vector<vector<char> > matrix;
-    for(int i = 0; i < 2; i++){
-        matrix.push_back(vector<char>(arr[i], arr[i] + 2));
+    for(int i = 0; i < rows; i++){
+        matrix.push_back(vector<char>(arr[i], arr[i] + cols));
     }
 
     int expected = 1;
     EXPECT_EQ(expected, s.maximumRectangle(matrix));
+
+    matrix.clear();
 }
