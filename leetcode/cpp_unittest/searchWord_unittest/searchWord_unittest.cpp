@@ -13,6 +13,7 @@ TEST(searchWordTest, Positive01){
         {'A', 'B', 'C', 'D'},
         {'B', 'F', 'C', 'H'},
         {'A', 'C', 'B', 'A'}};
+
     vector<vector<char> > board;
     for(int i = 0; i < rows; i++){
         board.push_back(vector<char>(arr[i], arr[i] + cols));
@@ -29,4 +30,6 @@ TEST(searchWordTest, Positive01){
 
     string word4("BCCB");
     EXPECT_TRUE(s.exist(board, word4));
+
+    board.clear();
 }

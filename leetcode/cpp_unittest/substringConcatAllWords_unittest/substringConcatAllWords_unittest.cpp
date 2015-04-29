@@ -6,17 +6,16 @@
  * int Solution::findSubstring(const string& S, vector<string>& L)
  * */
 
-bool assertIntVector(vector<int>& expected, vector<int>& result){
+void assertIntVector(vector<int>& expected, vector<int>& result){
     EXPECT_EQ(expected.size(), result.size());
 
     const int n = expected.size();
     for(int i = 0; i < n; i++){
         EXPECT_EQ(expected[i], result[i]);
     }
-    return true;
 }
 
-/********* solution1 test body *********/
+/* --------------- solution1 test body ---------------- */
 TEST(Function_Test, Positive01){
     Solution s;
 
@@ -30,7 +29,10 @@ TEST(Function_Test, Positive01){
     vector<int> result = s.findSubstring(S, L);
     sort(result.begin(), result.end());
 
-    EXPECT_TRUE(assertIntVector(expected, result));
+    assertIntVector(expected, result);
+
+    expected.clear();
+    result.clear();
 }
 
 TEST(Function_Test, Positive02){
@@ -46,7 +48,10 @@ TEST(Function_Test, Positive02){
     vector<int> result = s.findSubstring(S, L);
     sort(result.begin(), result.end());
 
-    EXPECT_TRUE(assertIntVector(expected, result));
+    assertIntVector(expected, result);
+
+    expected.clear();
+    result.clear();
 }
 
 TEST(Function_Test, Positive03){
@@ -62,7 +67,10 @@ TEST(Function_Test, Positive03){
     vector<int> result = s.findSubstring(S, L);
     sort(result.begin(), result.end());
 
-    EXPECT_TRUE(assertIntVector(expected, result));
+    assertIntVector(expected, result);
+
+    expected.clear();
+    result.clear();
 }
 
 TEST(Function_Test, Negative01){
@@ -75,4 +83,3 @@ TEST(Function_Test, Negative01){
     vector<int> result = s.findSubstring(S, L);
     EXPECT_TRUE(result.empty());
 }
-

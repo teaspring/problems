@@ -30,7 +30,7 @@ bool containsVector(vector<vector<string> >& duoList, vector<string>& list){
     return false;
 }
 
-bool equalsDuoVector(vector<vector<string> >& duoList1, vector<vector<string> >& duoList2){
+void assertDuoVector(vector<vector<string> >& duoList1, vector<vector<string> >& duoList2){
     EXPECT_EQ(duoList1.size(), duoList2.size());
 
     const int n = duoList1.size();
@@ -38,7 +38,6 @@ bool equalsDuoVector(vector<vector<string> >& duoList1, vector<vector<string> >&
         EXPECT_TRUE(containsVector(duoList1, duoList2[i]));
         EXPECT_TRUE(containsVector(duoList2, duoList1[i]));
     }
-    return true;
 }
 
 /*---------------------- test case ----------------------*/
@@ -48,9 +47,9 @@ TEST(partitionpalindromeTest, Positive01){
 
     string str("abba");
 
-    string arr1[] = {"a", "b", "b", "a"};
-    string arr2[] = {"abba"};
-    string arr3[] = {"a", "bb", "a"};
+    string arr1[4] = {"a", "b", "b", "a"};
+    string arr2[1] = {"abba"};
+    string arr3[3] = {"a", "bb", "a"};
 
     vector<vector<string> > expected;
     expected.push_back(vector<string>(arr1, arr1 + 4));
@@ -59,7 +58,10 @@ TEST(partitionpalindromeTest, Positive01){
 
     vector<vector<string> > result = s.partition(str);
 
-    EXPECT_TRUE(equalsDuoVector(expected, result));
+    assertDuoVector(expected, result);
+
+    expected.clear();
+    result.clear();
 }
 
 TEST(partitionpalindromeTest, Positive02){
@@ -82,7 +84,10 @@ TEST(partitionpalindromeTest, Positive02){
 
     vector<vector<string> > result = s.partition(str);
 
-    EXPECT_TRUE(equalsDuoVector(expected, result));
+    assertDuoVector(expected, result);
+
+    expected.clear();
+    result.clear();
 }
 
 TEST(partitionpalindromeTest, Positive03){
@@ -107,5 +112,8 @@ TEST(partitionpalindromeTest, Positive03){
 
     vector<vector<string> > result = s.partition(str);
 
-    EXPECT_TRUE(equalsDuoVector(expected, result));
+    assertDuoVector(expected, result);
+
+    expected.clear();
+    result.clear();
 }

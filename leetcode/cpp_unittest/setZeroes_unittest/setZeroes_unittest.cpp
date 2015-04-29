@@ -17,6 +17,7 @@ void assertMatrix(const vector<vector<int> >& expected, const vector<vector<int>
     }
 }
 
+/* ------------------- test body ------------------ */
 TEST(setZeroes_Test, Positive01){
     Solution s;
 
@@ -26,6 +27,7 @@ TEST(setZeroes_Test, Positive01){
         {1, 1, 1, 0, 1},
         {1, 1, 1, 1, 1},
         {0, 1, 1, 1, 1}};
+
     vector<vector<int> > grid;
     for(int i = 0; i < rows; i++){
         grid.push_back(vector<int>(mat[i], mat[i] + cols));
@@ -37,6 +39,7 @@ TEST(setZeroes_Test, Positive01){
         {0, 0, 1, 0, 1},
         {0, 0, 0, 0, 0}
     };
+
     vector<vector<int> > expected;
     for(int i = 0; i < rows; i++){
         expected.push_back(vector<int>(final[i], final[i] + cols));
@@ -44,4 +47,7 @@ TEST(setZeroes_Test, Positive01){
 
     s.setZeroes(grid);
     assertMatrix(expected, grid);
+
+    grid.clear();
+    expected.clear();
 }

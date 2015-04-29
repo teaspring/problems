@@ -72,4 +72,7 @@ TEST(NQueensTest, Positive02){
 
     vector<vector<string> > result = game.solve();
     EXPECT_TRUE(equalsDuoVector(expected, result));
+
+    expected.clear();
+    result.clear();
 }

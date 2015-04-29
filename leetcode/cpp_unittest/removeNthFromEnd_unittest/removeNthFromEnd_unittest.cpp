@@ -20,6 +20,7 @@ void assertSLL(ListNode* head, int A[], int n){
     EXPECT_EQ(NULL, h);
 }
 
+/* ------------------ test body ---------------- */
 TEST(removeNthFromEndTest, Positive01){
     Solution s;
 

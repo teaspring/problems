@@ -32,7 +32,7 @@ void assertVecVec(const vector<vector<int> >& expected, const vector<vector<int>
     }
 }
 
-/* test cases of spiralOrder() */
+/*--------------- test body ---------------*/
 TEST(spiralOrder_Test, Positive01){
     Solution s;
 
@@ -40,6 +40,7 @@ TEST(spiralOrder_Test, Positive01){
     int arr[][cols] = {{1, 2, 3, 4},
                        {5, 6, 7, 8},
                        {9, 10, 11, 12}};
+
     vector<vector<int> > matrix;
     for(int i = 0; i < rows; i++){
         matrix.push_back(vector<int>(arr[i], arr[i] + cols));
@@ -67,6 +68,7 @@ TEST(spiralOrder_Test, Positive02){
     const int rows = 2, cols = 5;
     int arr[][cols] = {{1, 2, 3, 4, 5},
                        {6, 7, 8, 9, 10}};
+
     vector<vector<int> > matrix;
     for(int i = 0; i < rows; i++){
         matrix.push_back(vector<int>(arr[i], arr[i] + cols));
@@ -97,6 +99,7 @@ TEST(spiralOrder2_Test, Positive03){
                        {5, 6},
                        {7, 8},
                        {9, 10}};
+
     vector<vector<int> > matrix;
     for(int i = 0; i < rows; i++){
         matrix.push_back(vector<int>(arr[i], arr[i] + cols));
@@ -123,6 +126,7 @@ TEST(spiralOrder_Test, Positive04){
 
     const int rows = 1, cols = 10;
     int arr[][cols] = {{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}};
+
     vector<vector<int> > matrix;
     for(int i = 0; i < rows; i++){
         matrix.push_back(vector<int>(arr[i], arr[i] + cols));
@@ -155,6 +159,7 @@ TEST(spiralOrder_Test, Positive05){
                        {5},
                        {6},
                        {7}};
+
     vector<vector<int> > matrix;
     for(int i = 0; i < rows; i++){
         matrix.push_back(vector<int>(arr[i], arr[i] + cols));
@@ -185,6 +190,7 @@ TEST(generateMatrix_Test, Positive01){
                        {12,13,14, 5},
                        {11,16,15, 6},
                        {10, 9, 8, 7}};
+
     vector<vector<int> > expected;
     for(int i = 0; i < rows; i++){
         expected.push_back(vector<int>(mat[i], mat[i] + cols));
