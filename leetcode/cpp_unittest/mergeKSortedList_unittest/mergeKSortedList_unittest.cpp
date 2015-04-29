@@ -35,7 +35,9 @@ TEST(mergeKSortedListTest, Positive01){
     for(int i = 0; i < rows; i++){
         ListNode *head = NULL, *h = NULL;
         for(int j = 0; j < cols; j++){
+
             int x = arr[i][j];
+
             if(!head){
                 head = new ListNode(x);
                 h = head;
@@ -53,16 +55,11 @@ TEST(mergeKSortedListTest, Positive01){
 
     sort(expectedVector.begin(), expectedVector.end()); // <algorithm>, std::sort()
 
-    ListNode *expected = NULL, *h = NULL;
-    const int n = expectedVector.size();
-    for(int i = 0; i < n; i++){
-        if(!expected){
-            expected = new ListNode(expectedVector[i]);
-            h = expected;
-        }else{
-            h->next = new ListNode(expectedVector[i]);
-            h = h->next;
-        }
+    ListNode *expected = new ListNode(expectedVector[0]);
+    ListNode *h = expected;
+    for(int i = 1; i < rows * cols; i++){
+        h->next = new ListNode(expectedVector[i]);
+        h = h->next;
     }
 
     assertList(expected, result);
