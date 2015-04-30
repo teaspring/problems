@@ -6,83 +6,118 @@
 
 #include "../include/preliminary.h"
 
-/*
- * for duplicate nodes, remove them other than one
- * input:  1->1->2
- * output: 1->2
- * */
-ListNode* remove(ListNode *head){
-    if(!head)    return NULL;
-    ListNode *pre = NULL, *curr = head, *post = curr->next;
-    while(curr && post){
-        if(curr->val == post->val){
-            if(!pre){
-                head = post;
-            }else{
-                pre->next = post;
-            }
-            curr->next = NULL;
-            delete curr;
-        }else{
-            pre = curr;
-        }
-        curr = post;
-        post = curr->next;
-    }
-    return head;
-}
+class Solution{
 
-/*
- * given a sorted SLL, remove all the nodes with duplicates
- * input:  1->1->2
- * output: 2
- * */
-ListNode* delPart(ListNode *pre, ListNode *start, ListNode *end){
-    if(pre)    pre->next = end->next;
-    for(ListNode *h = start; h != end;){
-        ListNode *after = h->next;
-        delete h;
-        h = after;
-    }
-    delete end;
-    return pre;
-}
+public:
+    /*
+     * problem I: for duplicate nodes, remove them other than one
+     * input:  1->1->2
+     * output: 1->2
+     * */
+    ListNode* remove(ListNode *head){
+        if(!head)    return NULL;
 
-ListNode* removeII(ListNode *head){
-    if(!head || !(head->next))    return head;
-    ListNode *pre = NULL, *curr = head, *post = head->next;
-    ListNode *start = NULL, *end = NULL;
-    while(curr){
-        post = curr->next;
-        end  = curr;
-        if(!post || curr->val != post->val){
-            if(start){
-                if(head == start)    head = post;
-                pre = delPart(pre, start, end);
-                start = NULL;
+        ListNode *pre = NULL, *curr = head;
+        while(curr && curr->next){
+            ListNode *post = curr->next;
+
+            if(curr->val == post->val){ // if curr == post, remove curr
+                if(!pre){
+                    head = post;
+                }else{
+                    pre->next = post;
+                }
+                curr->next = NULL;
+                delete curr;
             }else{
                 pre = curr;
             }
-        }else{
-            if(!start)    start = curr;
+
+            curr = post;
         }
-        curr = post;
+        return head;
     }
-    if(pre)    pre->next = NULL;
-    return head;
-}
 
-void test_01(){
-    int arr[6] = {1,1,1,2,3,3};
-    ListNode *head = createSLL(arr, sizeof(arr)/sizeof(int));
-    displaySLL(head);
-    head = removeII(head);
-    displaySLL(head);
+    /*
+     * problem II: given a sorted SLL, remove all the nodes with duplicates
+     * input:  1->1->2
+     * output: 2
+     * */
+    ListNode* removeII_1(ListNode *head){
+        if(!head || !(head->next))    return head; // empty or only one node
 
-    delSLL(head);
-    return;
-}
+        ListNode *pre = NULL, *curr = head->next;
+        ListNode *start = head, *end = NULL;
 
-int main(){
-    return 0;
-}
+        while(1){
+            if(end && (!curr || curr->val != end->val)){ // duplicates nodes range is found
+                if(!pre){
+                    head = curr;
+                }else{
+                    pre->next = end->next;
+                }
+
+                end->next = NULL;  // cut a separate SLL of start to end, and delete them
+                delPart(start);
+
+                start = curr;
+                end = NULL;
+            }else if(curr){
+                if(curr->val != start->val){ // duplicates nodes range has not appeared yet
+                    pre = (!pre) ? start : pre->next;
+                    start = start->next;
+                }else{ // duplicates nodes range exists
+                    end = curr;
+                }
+            }
+
+            if(!curr)    break;
+            curr = curr->next;
+        }
+        return head;
+    }
+
+    ListNode* removeII_2(ListNode *head){
+        if(!head || !(head->next))    return head;
+
+        ListNode *pre = NULL, *curr = head;
+        ListNode *start = NULL, *end = NULL;
+
+        while(curr){
+            ListNode *post = curr->next;
+            end = curr;
+
+            if(!post || end->val != post->val){
+                if(start){ // duplicates nodes range is found [start, end]
+                    if(!pre){
+                        head = post;
+                    }else{
+                        pre->next = post;
+                    }
+                    end->next = NULL;
+
+                    delPart(start);
+                    start = NULL;
+                }else{  // duplicates nodes range has not appeared yet
+                    pre = curr;
+                }
+            }else{  // duplicates nodes range exists
+                if(!start)    start = end;
+            }
+
+            curr = post;
+        }
+        return head;
+    }
+
+private:
+    void delPart(ListNode *start){
+        for(ListNode *h = start; NULL != h;){
+            ListNode *after = h->next;
+            delete h;
+            h = after;
+        }
+    }
+};
+
+/* unit test is in ../cpp_unittest/removeDuplicatesSLL_unittest */
