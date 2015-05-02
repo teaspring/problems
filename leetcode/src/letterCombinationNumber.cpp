@@ -63,7 +63,10 @@ public:
         int index[n];
         memset(index, 0, sizeof(index));
 
-        // alternative solution is push optional char to vector<char> like stack<>
+        /*
+         * alternative solution is push optional char to vector<char> like stack<>
+         * this block demonstrates how to use cursors instead of stack<>
+         * */
         while(1){
             char cstr[n+1];
             memset(cstr, 0, sizeof(cstr));
@@ -71,6 +74,8 @@ public:
 
             for(int i = 0; i < n; i++){
                 if(number[i] == 1)    continue;
+
+                // index[] initialized value is 0
                 cstr[i] = character[number[i]][index[i]];
             }
 
@@ -82,7 +87,7 @@ public:
                 continue;
             }
 
-            while(k >= 0 && index[k] >= count[number[k]] - 1){
+            while(k >= 0 && index[k] == count[number[k]] - 1){
                 index[k] = 0;
                 k--;
             }

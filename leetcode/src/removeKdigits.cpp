@@ -24,6 +24,7 @@ public:
 
     /*
      * bool (a, b) returns true if a should go before b in such strict weak order
+     * and in priority_queue, top() is [end - 1]
      * */
     bool operator() (const element& lhs, const element& rhs){
         return reverse ? lhs.ch > rhs.ch : lhs.ch < rhs.ch;

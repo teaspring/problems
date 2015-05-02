@@ -1,7 +1,7 @@
 /*
  * given an unsorted array of integers, find the length of the longest consecutive elements sequence.
  * complete it in time O(n)
- * 
+ *
  * test case:
  * [100, 4, 200, 1, 3, 2], the longest consecutive sequence is [1,2,3,4], length is 4
  *
