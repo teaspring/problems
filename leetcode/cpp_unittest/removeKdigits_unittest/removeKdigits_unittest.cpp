@@ -42,3 +42,15 @@ TEST(removeKdigits3_Test, Positive01){
     string result3 = s.removechar_03(str, k);
     EXPECT_STREQ(expected.c_str(), result3.c_str());
 }
+
+TEST(removeKdigits3_Test, Positive02){
+    Solution s;
+
+    string str("14532431");
+    int k = 4;
+
+    string expected("1231");
+
+    string result3 = s.removechar_03(str, k);
+    EXPECT_STREQ(expected.c_str(), result3.c_str());
+}

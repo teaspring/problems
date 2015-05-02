@@ -1,6 +1,6 @@
 /*
  * given a string of integer, ask to remove k from it to keep the left integers becomes the least option.
- * Note: their interactive order cannot be destroyed
+ * Note: initial order of chars cannot be broken
  *
  * test data:
  * 13243221, k = 5, result is 121
@@ -19,15 +19,23 @@ public:
 };
 
 class mycomparision{
-    bool reverse;
 public:
     mycomparision(const bool& b = false): reverse(b){}
+
+    /*
+     * bool (a, b) returns true if a should go before b in such strict weak order
+     * */
     bool operator() (const element& lhs, const element& rhs){
-        if(reverse)     return (lhs.ch > rhs.ch);
-        else            return (lhs.ch < rhs.ch);
+        return reverse ? lhs.ch > rhs.ch : lhs.ch < rhs.ch;
     }
+
+private:
+    bool reverse;
 };
 
+/*
+ * priority_queue: the 1st element should be the greatest one in container - top()
+ * */
 typedef priority_queue<element, vector<element>, mycomparision> pq_element;
 
 class Solution{
@@ -42,7 +50,7 @@ public:
 
         while(k){   // start scanning from left (i=0) every time
             int i = 0;
-            for(; i < len-1 && res[i] <= res[i+1]; i++);
+            for(; i < len-1 && res[i] <= res[i+1]; i++); // breaking at res[i] > res[i+1]
 
             for(;i < len-1; i++){
                 res[i] = res[i+1];
@@ -73,7 +81,7 @@ public:
         while(k > 0){
             if(i < 0)    i = 0;
 
-            for(;i < len-1 && str[i] <= str[i+1]; i++);
+            for(;i < len-1 && str[i] <= str[i+1]; i++); // breaking at str[i] > str[i+1]
 
             for(int j = i; j < len-1; j++){    // remove str[i]
                 str[j] = str[j+1];
@@ -98,23 +106,19 @@ public:
         if(k >= n)        return string();
 
         char cstr[n - k + 1];
-        memset(cstr, 0, sizeof(char)*(n - k + 1));
+        memset(cstr, 0, sizeof(cstr));
 
         pq_element pq(mycomparision(true));  // greater-than returns true and put in back, top is minimum
+
         for(int i = 0; i < k; i++){
             pq.push(element(str[i], i));
         }
 
         for(int i = k; i < n; i++){
             pq.push(element(str[i], i));
+
             cstr[i-k] = pq.top().ch;
-
-            int curr = pq.top().index;
             pq.pop();
-
-            while(!pq.empty() && pq.top().index < curr){
-                pq.pop();
-            }
         }
 
         cstr[n-k] = '\0';
