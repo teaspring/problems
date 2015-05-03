@@ -16,34 +16,33 @@ class Solution{
 
 public:
     /*
-     * linear scan in O(n)
+     * time O(n) but a little complex
      * */
     int maxSubArray_01(int A[], int n){
-        int sum = 0, msm = 0;
-        int t = n-1, mx = A[n-1];
+        int sum = 0; // max sum of sub array including A[i]
+        int mx = A[n-1]; // max element in A[]
+        int msm = 0; // max sum of sub array in whole A[]
 
         for(int i = n-1; i >= 0; --i){
-            mx = max(mx, A[i]);    //save the max element of all
+            mx = max(mx, A[i]);  // max element of all, used to alert if all are negative
+
             if(A[i] <= 0){
-                if(t == i){
-                    t = i-1;
-                }else if(A[i] + sum <= 0){
+                if(A[i] + sum <= 0){
                     sum = 0;
-                    t = i-1;
                 }else{
                     sum += A[i];
                 }
             }else{
                 sum += A[i];
-                msm = max(msm, sum);
+                msm = max(msm, sum); // msm can only be updated when A[i] > 0 because sum = 0 may be invalid
             }
         }
 
-        return mx < 0 ? mx : msm;   //msm is 0 at least, so return value depends on mx
+        return mx < 0 ? mx : msm;  // msm is 0 at least, return value depends on mx
     }
 
     /*
-     * from discussion on oj.leetcode
+     * time O(n)
      * */
     int maxSubArray_02(int A[], int n){
         int mSum = A[0];   // max sum
@@ -52,14 +51,14 @@ public:
         for(int i = 1; i < n; ++i){
             cSum += A[i];
             mSum = max(mSum, cSum);
-            cSum = max(cSum, 0);
+            cSum = max(cSum, 0);  // reset if negative currently
         }
 
         return mSum;
     }
 
     /*
-     * from discussion on oj.leetcode
+     * time O(n), less variabls than solution2
      * */
     int maxSubArray_03(int A[], int n){
         int best = A[0];    // max sum
@@ -74,37 +73,28 @@ public:
     }
 
     /*
-     * divide-and-conquer
+     * divide-and-conquer, time O(nlgn)
      * */
-    int maxSubArray_04(int A[], int n){
-        if(n == 1)    return A[0];
-        return split(A, n);
-    }
-
-private:
-    /*
-     * used by maxSubArray_04()
-     * divide-and-conquer, worse than linear solution, in time O(nlgn)
-     * */
-    int split(int A[], int n){  // return max sum among the range of A[]
+    int maxSubArray_04(int A[], int n){  // return max sum among the range of A[]
         if(n == 1)    return A[0];
 
         int l = n >> 1;
 
-        int lmx = split(A, l);
-        int rmx = split(A+l, n-l);
+        int lmx = maxSubArray_04(A, l);
+        int rmx = maxSubArray_04(A+l, n-l);
 
-        int lhalf = A[l-1], rhalf = A[l]; // initial value of lhalf and rhalf is important avoiding returning 0 when negative
+        // lhalf and rhalf must be initialized as bounds A[l-1] and A[l], avoiding returning 0 when negative !
+        int lhalf = A[l-1], rhalf = A[l];
         int tmp = lhalf;
 
-        for(int i = l-2; i >= 0; --i){  // leftward from middle line
+        for(int i = l-2; i >= 0; --i){  // leftward from middle bound
             tmp += A[i];
             lhalf = max(lhalf, tmp);
         }
 
         tmp = rhalf;
 
-        for(int i = l+1; i < n; ++i){
+        for(int i = l+1; i < n; ++i){  // rightward from middle bound
             tmp += A[i];
             rhalf = max(rhalf, tmp);
         }
