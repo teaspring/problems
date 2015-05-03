@@ -23,7 +23,7 @@ public class maxPoints{
         if(points.length <= 2)    return points.length;
 
         Map<Integer, Map<Integer, Integer>> map = new HashMap<Integer, Map<Integer, Integer>>();
-        int result = 0;
+        int result = 2;
 
         for(int i = 0; i < points.length; i++){
             map.clear();
