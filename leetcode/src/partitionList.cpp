@@ -6,30 +6,50 @@
  * */
 #include "../include/preliminary.h"
 
-ListNode* partition(ListNode *head, int x){
-    if(!head || !(head->next))    return head;
-    ListNode *curr = head, *post = head->next, *r = 0, *s = head, *toDel = 0;
-    for(; post; curr = post, post = curr->next){
-        if(curr->val < x  && post->val < x)     continue;
-        if(curr->val >= x && post->val >= x)    continue;
-        if(curr->val < x  && post->val >= x){ //position between r and s is the place to insert node less than x
-            r = curr;
-            s = post;
-        }else{  // curr->val >= x and post < x, post is the node to insert ahead        
-            toDel = post;
-            post = post->next;
-            curr->next = post;
-            toDel->next = 0;
-            if(r){
-                r->next = toDel;
-            }else{
-                head = toDel;
-            }
-            toDel->next = s;
-            r = toDel;
-            toDel = 0;
-        }
-    }
-    return head;
-}
+class Solution{
 
+public:
+    /*
+     * this operation reminds once scan during quick sort. but swap in SLL is more complex than elements
+     * */
+    ListNode* partition(ListNode *head, int x){
+        if(!head || !(head->next))    return head;
+
+        ListNode *curr = head, *post = head->next;
+        ListNode *r = NULL, *s = head;
+
+        for(; NULL != post; curr = post, post = post->next){
+            if(curr->val < x  && post->val < x)     continue;
+
+            if(curr->val >= x && post->val >= x)    continue;
+
+            if(curr->val < x  && post->val >= x){  // between r and s is where to insert node less than x
+                r = curr;
+                s = post;
+                continue;
+            }else{  // curr >= x && post < x, post is the one to insert ahead
+                ListNode *it = post;
+
+                curr->next = post->next; // post-next is a new element which has not been verified yet
+                post = curr;
+
+                it->next = NULL;
+
+                if(!r){
+                    head = it;
+                }else{
+                    r->next = it;
+                }
+
+                it->next = s;
+                r = it;
+
+                it = NULL;
+            }
+        }
+
+        return head;
+    }
+};
+
+/* unit test is in ../cpp_unittest/partitionList_unittest */

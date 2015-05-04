@@ -27,10 +27,7 @@ public:
         }
 
         int j = n-1, x = num[i];
-        while(j >= i+1){ // j == i+1 at least
-            if(num[j] > x)    break;
-            --j;
-        }
+        for(; j >= i+1 && num[j] <= x; --j);  // j == i+1 at least
 
         swap(num[i], num[j]);
         quicksort(num, i+1, n-1);
