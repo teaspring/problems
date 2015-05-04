@@ -12,11 +12,10 @@
  * solution: BFS, traverse every horizontal level once, using two queue to save traversed node. this solution has no dependence on the binary tree shape, either perfect BST or not does not matter.
  * */
 
-#include "stdio.h"
-#include <iostream>
 #include <string>
 #include <cstring>
 #include <queue>
+
 using namespace std;
 
 struct TreeLinkNode{
@@ -27,38 +26,53 @@ struct TreeLinkNode{
 
 typedef TreeLinkNode* pTLN;
 
-void pushChildren(TreeLinkNode* root, queue<TreeLinkNode*>& q){
-    if(!root)    return;
-    if(root->left){
-        q.push(root->left);
-    }
-    if(root->right){
-        q.push(root->right);
-    }
-    return;
-}
 
-void connect(TreeLinkNode *root){
-    if(!root)    return;
-    queue<TreeLinkNode*> qArr[2];
-    int idx = 0;
-    qArr[idx].push(root);
-    while(!qArr[idx].empty()){
-        for(TreeLinkNode *curr = qArr[idx].front(), *last = NULL;  // remember queue.front() is the oldest element, eqauls to removed by pop()
-            !qArr[idx].empty();
-            last = curr, curr = qArr[idx].front())
-        {
-            qArr[idx].pop();
-            pushChildren(curr, qArr[1-idx]);
-            if(last)    last->next = curr;
+class Solution{
+
+public:
+    /*
+     *
+     * */
+    void connect(TreeLinkNode *root){
+        if(!root)    return;
+
+        queue<TreeLinkNode*> qArr[2];
+
+        int idx = 0;
+        qArr[idx].push(root);
+
+        while(!qArr[idx].empty()){
+            // remember queue.front() is the eldest element, equals to the one removed by pop()
+            for(TreeLinkNode *curr = qArr[idx].front(), *last = NULL;
+                !qArr[idx].empty();
+                last = curr, curr = qArr[idx].front()){
+
+                qArr[idx].pop();
+
+                pushChildren(curr, qArr[1 - idx]);
+
+                if(NULL != last)    last->next = curr;
+            }
+
+            idx = 1 - idx;
         }
-        idx = 1-idx;
     }
-    return;
-}
 
+    /*
+     * used to push left child and right child of root to queue
+     * */
+    static void pushChildren(TreeLinkNode* root, queue<TreeLinkNode*>& q){
+        if(!root)    return;
 
-int main(int, char**){
-    return 0;
-}
+        if(NULL != root->left){
+            q.push(root->left);
+        }
 
+        if(NULL != root->right){
+            q.push(root->right);
+        }
+    }
+
+};
+
+/* unit test is in ../cpp_unittest/populateNextRight_unittest */

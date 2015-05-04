@@ -32,7 +32,7 @@ CXXFLAGS += -g -Wall -Wextra
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = candy_unittest
+TESTS = populateNextRight_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -80,12 +80,12 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $@: own name of the target
 # $^: names of the dependencies
 #
-candy.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/candy.cpp
+populateNextRight.o: $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/populateNextRight.cpp
 
-candy_unittest.o : $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/candy_unittest.cpp
+populateNextRight_unittest.o : $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/populateNextRight_unittest.cpp
 
-candy_unittest : candy.o candy_unittest.o gtest_main.a
+populateNextRight_unittest : populateNextRight.o populateNextRight_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $^ -o $@
 
