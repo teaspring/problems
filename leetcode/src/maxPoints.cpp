@@ -103,22 +103,21 @@ public:
                 }
 
                 int gcd = getGCD(x, y);
+
                 if(gcd != 0){
                     x /= gcd;
                     y /= gcd;
                 }
 
                 if(mp.find(x) != mp.end()){
-                    map<int, int> innerMap = mp.find(x)->second;
-                    if(innerMap.find(y) != innerMap.end()){
-                        innerMap[y] = innerMap[y] + 1;
+                    map<int, int> innerMap = mp.find(x)->second; // NOTE: here innerMap is a copy of map<> in mp!
+                    if(innerMap.find(y) == innerMap.end()){
+                        mp[x][y] = 1;
                     }else{
-                        innerMap[y] = 1;
+                        mp[x][y]++;
                     }
                 }else{
-                    map<int, int> imp;
-                    imp[y] = 1;
-                    mp[x] = imp;
+                    mp[x][y] = 1;
                 }
 
                 cmax = max(cmax, mp[x][y]);

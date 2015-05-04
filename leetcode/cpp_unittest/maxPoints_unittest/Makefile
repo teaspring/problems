@@ -81,8 +81,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $^: names of the dependencies
 #
 maxPoints.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/maxPoints.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/maxPoints.cpp
 
 maxPoints_unittest.o : $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/maxPoints_unittest.cpp
