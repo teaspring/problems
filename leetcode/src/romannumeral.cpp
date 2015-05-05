@@ -1,19 +1,72 @@
 /*
  * write functions to convert integer2roman and roman2integer
- * 
+ * I, II, III, IV, V, VI, VII, VIII, IX, X
  * note: in Roman numeral's definition, integer >= 3999 is invalid
  * */
-#include "stdio.h"
-#include <iostream>
-#include <string>
-#include <cstring>
-#include "stdlib.h"
+#include "romannumeral.h"
 
-using namespace std;
+/*
+ * convert integer to Roman numeral string
+ * */
+string Solution::int2Roman(int num){
+    char res[MaxSize];
+    memset(res, 0, sizeof(MaxSize));
 
-const int MaxSize = 50;
-int digits[] = {1,4,5,9,10,40,50,90,100,400,500,900,1000};    // for int a[] initialization, OK for C code, local var in C++, but not for data member in C++ class
-char alphas[][13] = {
+    int j = 0;
+    int i = tags - 1;   // scan optional tag from greatest to least
+
+    while(num > 0){
+        if(num < digits[i]){
+            --i;
+        }else{
+            res[j++] = alphas[i][0];
+
+            if(i & 1){  // odd indexed Roman numeral tag has two chars
+                res[j++] = alphas[i][1];
+            }
+
+            num -= digits[i];
+        }
+    }
+    res[j] = '\0';
+
+    return string(res);
+}
+
+/*
+ * Roman numeral string places most significant numeral in most left
+ * */
+int Solution::roman2Int(const string& str){ // split string by fixed segment, plus to sum
+    const int n = str.size();
+
+    int res = 0;
+    int i = 0;
+    int j = tags - 1; // scan optional tag from greatest to least
+
+    while(i < n && j >= 0){
+        if(j & 1){ // to match two chars
+            if(i < n-1 && str[i] == alphas[j][0] && str[i+1] == alphas[j][1]){
+                res += digits[j];
+                i += 2;
+            }else{
+                --j;
+            }
+        }else{  // to match one char
+            if(str[i] == alphas[j][0]){
+                res += digits[j];
+                ++i;
+            }else{
+                --j;
+            }
+        }
+    }
+
+    return res;
+}
+
+const int Solution::digits[13] = {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
+
+const char Solution::alphas[13][3] = {
         "I",   //1
         "IV",  //4
         "V",   //5
@@ -29,72 +82,4 @@ char alphas[][13] = {
         "M"    //1000
 };
 
-/*
- * method 1, direct strategy
- * */
-string int2Roman_01(int num){
-    char *res = new char[MaxSize];
-    memset(res, 0, sizeof(char)*MaxSize);
-    int j=0, i=12;
-    while(num > 0){
-        if(num < digits[i]){
-            --i;
-        }else{
-            res[j++] = alphas[i][0];
-            if(i & 1){  // i%2 == 1
-                res[j++] = alphas[i][1];
-            }
-            num -= digits[i];
-        }
-    }
-    res[j] = '\0';
-    string str(res);
-    delete[] res;
-    return str;
-}
-
-int roman2Int(const string& str){ //split string by fixed segment, plus to sum 
-    int res = 0, n = str.size(), i=0, j=12;
-    while(i<n && j>=0){
-        if(j & 1){ // to match 2 chars
-            if(i<n-1 && str[i]==alphas[j][0] && str[i+1] == alphas[j][1]){
-                res += digits[j];
-                i += 2;
-            }else{
-                --j;
-            }
-        }else{     // to match 1 char  
-            if(str[i] == alphas[j][0]){
-                res += digits[j];
-                ++i;
-            }else{
-                --j;
-            }
-        }
-    }
-    return res;
-}
-
-void test_int2roman(){
-    string str;
-    while(1){
-        printf("please input integer:\n");
-        if(getline(cin, str)==0 || str.empty())        break;
-        int n = atoi(str.c_str());
-        printf("%s\n", int2Roman_01(n).c_str());
-    }
-}
-
-void test_roman2int(){
-    string str;
-    while(1){
-        printf("please input roman numeral in upper case:\n");
-        if(getline(cin, str)==0 || str.empty())        break;
-        printf("%d\n", roman2Int(str));
-    }
-}
-
-int main(int, char**){
-    test_roman2int();
-    return 0;
-}
+/* unit test is in ../cpp_unittest/romannumeral_unittest */
