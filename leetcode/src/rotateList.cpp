@@ -1,66 +1,83 @@
 /*
  * given a list, rotate the list to right by k places, where K >= 0
- * 
+ *
+ * open question:
+ * if k > n, what will happen ?
+ *
  * test case:
  * 1->2->3->4->5, k = 2, return 4->5->1->2->3
  * */
-#include "../include/preliminary.h"  //struct ListNode, displayList()
+#include "../include/preliminary.h"
 
-ListNode* rotateRight(ListNode *head, int k){    //twice traverse   
-    if(head == NULL || k==0)    return head;
-    ListNode *curr = head;
-    int n = 1;
-    while(curr->next != NULL){    //1st traverse to get length of SLL
-        curr = curr->next;
-        ++n;
+class Solution{
+
+public:
+    /*
+     * once scan, and it does not handle case of k < n
+     * */
+    ListNode* rotateRight_01(ListNode *head, int k){
+        if(!head)    return NULL;
+
+        ListNode *l1 = head, *l2 = NULL;
+
+        for(int i = 1; i < k && NULL != l1; i++){  // start from head, walk k-1 steps
+            l1 = l1->next;
+        }
+
+        if(!l1)    return head;  // whole SLL has less than k nodes
+
+        ListNode *pre1 = l1;  // prev node of l1
+        l1 = l1->next;  // now l2 is k nodes ahead of l1
+
+        ListNode *pre2 = NULL;  // prev node of l2
+        l2 = head;   // now l2 is k nodes ahead of l1
+
+        while(NULL != l1){ // move all 4 nodes by one step
+            pre1 = l1;
+            l1 = l1->next;
+
+            pre2 = !pre2 ? head : l2;
+            l2 = l2->next;
+        }
+
+        if(!pre2)    return head; // NOTE: pre2 == NULL tells while-clause has not accessed yet, it means k == n !
+
+        pre2->next = NULL;  // new tail
+
+        pre1->next = head;
+
+        return l2;
     }
-    curr->next = head;   //enable it loop
-    int l = n - (k%n);
-    
-    while(l > 0){   //2nd traverse, curr starts at tail
-        curr = curr->next;
-        --l;
+
+    /*
+     * walking a loop, it supports case of k > n
+     * */
+    ListNode* rotateRight_02(ListNode *head, int k){
+        if(!head)    return NULL;
+
+        ListNode *l1 = head;
+        int n = 1;  // nodes count of SLL
+
+        while(NULL != l1->next){
+            l1 = l1->next;
+            n++;
+        }
+
+        if(n == k)    return head;
+
+        l1->next = head;  // make it loop
+
+        int t = abs(n - k);  // rest steps to walk
+
+        while(t-- > 0){
+            l1 = l1->next;
+        }
+
+        head = l1->next; // new head
+        l1->next = NULL;  // cut the loop
+
+        return head;
     }
-    ListNode *h = curr->next;
-    curr->next = NULL;
-    return h;
-}
+};
 
-ListNode* generateList(int *arr, int n){
-    if(n<1)        return NULL;
-    ListNode *head = new ListNode(arr[0]);
-    ListNode *h = head;
-    for(int i=1; i<n; ++i){
-        h->next = new ListNode(arr[i]);
-        h = h->next;
-    }
-    return head;
-}
-
-void test_01(){
-    string str;
-    while(1){
-        printf("please input integer array of List:\n");
-        if(getline(cin, str)==0 || str.empty())        break;
-        int *arr = new int[str.size()]();
-        int n = splitStr2IntArray(str, arr);
-        ListNode *head = generateList(arr, n);
-        delete[] arr;
-        arr = 0;
-
-        printf("input k offset to rotate right:\n");
-        if(getline(cin, str)==0 || str.empty())        continue;
-        int k = atoi(str.c_str());
-        ListNode *h = rotateRight(head, k);
-        displaySLL(h);
-
-        delSLL(h);
-    }
-    return;
-}
-
-int main(int, char**){
-    test_01();
-    return 0;
-}
-
+/* unit test is in ../cpp_unittest/rotateList_unittest */

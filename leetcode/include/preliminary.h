@@ -9,7 +9,7 @@
 #include <vector>
 #include <map>
 #include <set>
-#include "math.h"
+#include <cmath>
 #include <stack>
 #include <algorithm>
 
