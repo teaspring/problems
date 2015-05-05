@@ -2,7 +2,12 @@
 #include "gtest/gtest.h"
 
 /*
+ * largestBSTInBT.cpp:
  * TreeNode* findLargestBST(TreeNode* root)
+ *
+ * preliminary.cpp:
+ * struct TreeNode
+ * delTree(TreeNode*)
  * */
 
 // in-order iteration to assert two binary tree
@@ -15,19 +20,6 @@ void assertBinaryTree(TreeNode *p1, TreeNode *p2){
     EXPECT_EQ(p1->val, p2->val);
     assertBinaryTree(p1->left, p2->left);
     assertBinaryTree(p1->right, p2->right);
-}
-
-// clean
-void deleteBinaryTree(TreeNode* root){
-    if(!root)    return;
-
-    deleteBinaryTree(root->left);
-    deleteBinaryTree(root->right);
-
-    root->left = NULL;
-    root->right = NULL;
-    delete root;
-    root = NULL;
 }
 
 /* ------------- test body -------------- */
@@ -54,7 +46,7 @@ TEST(largestBSTInBT_Test, Positive01){
 
     assertBinaryTree(expected, result);
 
-    deleteBinaryTree(root);
-    deleteBinaryTree(expected);
-    deleteBinaryTree(result);
+    delTree(root);
+    delTree(expected);
+    delTree(result);
 }

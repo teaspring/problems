@@ -32,7 +32,7 @@ CXXFLAGS += -g -Wall -Wextra
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = largestBSTInBT_unittest
+TESTS = sameTree_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -80,15 +80,15 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $@: own name of the target
 # $^: names of the dependencies
 #
-largestBSTInBT.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/largestBSTInBT.cpp
+sameTree.o: $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/sameTree.cpp
 
 preliminary.o: $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/preliminary.cpp
 
-largestBSTInBT_unittest.o : $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/largestBSTInBT_unittest.cpp
+sameTree_unittest.o : $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/sameTree_unittest.cpp
 
-largestBSTInBT_unittest : largestBSTInBT.o preliminary.o largestBSTInBT_unittest.o gtest_main.a
+sameTree_unittest : sameTree.o preliminary.o sameTree_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $^ -o $@
 
