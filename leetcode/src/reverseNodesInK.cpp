@@ -1,79 +1,86 @@
 /*
  * given a SLL, reverse the nodes of k at a time, return its modified head.if number less than k, remain them.
+ *
  * e.g 1->2->3->4->5,
- * k=2, 2->1->4->3->5
- * k=3, 3->2->1->4->5
- * {1}, k=2 => return {1}
+ * k = 2, return 2->1->4->3->5
+ * k = 3, return 3->2->1->4->5
+ *
+ * for {1}, k = 2 return {1}
+ *
  * */
 #include "../include/preliminary.h"
 
-void reverse(ListNode *pre, ListNode *h, ListNode *e, ListNode *post){ //pre->h->...->e->post => pre->e->...->h->post
-    if(!h)    return;
-    ListNode *l1 = h, *l2 = h->next, *after = l2->next;
-    while(l2 != post){  //l1->l2->after => l1<-l2  after
-        l2->next = l1;
-        if(!after)        break;
-        l1 = l2;    //move one step forward
-        l2 = after;
-        after = l2->next;
-    }
-    if(pre)        pre->next = e;
-    h->next = post;
-    return;
-}
+class Solution{
 
-ListNode *reverseKGroups(ListNode *head, int k){
-    if(!head || k<2)    return head;
-    ListNode *pre=0, *h = head, *post=0;
-    head = NULL;
-    while(h != NULL){
-        ListNode *e = h;
-        int i = 0;
-        for(i=1;i<k && e->next != NULL;++i){
-            e = e->next;
+public:
+    /*
+     *
+     * */
+    ListNode* reverseKGroups(ListNode *head, int k){
+        if(!head || k < 2)    return head;
+
+        ListNode *pre = NULL, *h = head, *post = NULL;
+
+        head = NULL;
+
+        while(h != NULL){
+            ListNode *ln = h;
+
+            int i = 1;
+            for(; i < k && ln->next != NULL; ++i){
+                ln = ln->next;
+            }
+
+            if(i < k)    break;  // remaining nodes is less than k
+
+            post = ln->next;
+
+            ListNode* nh = reverse(h, post);
+
+            if(!pre){
+                head = nh;
+            }else{
+                pre->next = nh;
+            }
+
+            pre = h;  // after reverse, h becomes exclusive prev of next partial SLL
+
+            h = post; // inclusive head of next partial SLL
         }
-        if(i<k)        break;    //less than k nodes
-        post = e->next;
-        reverse(pre, h, e, post);
-        if(!head)    head = e;    
 
-        pre = h;    //after reverse, h becomes prev of post
-        h = post;
+        if(!head)    return h;  // whole length is less than k, nothing happened
+
+        return head;
     }
-    if(!head)    return h;
-    return head;
-}
 
-void test_01(){
-    ListNode *l1 = new ListNode(1);
-    ListNode *l2 = new ListNode(2);
-    l1->next = l2;
-    ListNode *l3 = new ListNode(3);
-    l2->next = l3;
-    ListNode *l4 = new ListNode(4);
-    l3->next = l4;
-    ListNode *l5 = new ListNode(5);
-    l4->next = l5;
+private:
+    /*
+     * @param ListNode *h: inclusive head of this partial SLL
+     *        ListNode *post: exclusive end of this partial SLL
+     * @return: new head of reversed SLL
+     * */
+    ListNode* reverse(ListNode *h, ListNode *post){
+        if(!h)    return NULL;
 
-    displaySLL(reverseKGroups(l1, 2));
-}
+        ListNode *l1 = h, *l2 = h->next, *after = l2->next;
 
-void test_02(){
-    ListNode *l1 = new ListNode(1);
-    ListNode *l2 = new ListNode(2);
-    l1->next = l2;
-    ListNode *l3 = new ListNode(3);
-    l2->next = l3;
-    ListNode *l4 = new ListNode(4);
-    l3->next = l4;
-    ListNode *l5 = new ListNode(5);
-    l4->next = l5;
+        while(l2 != post){  // once loop clause to process l2
 
-    displaySLL(reverseKGroups(l1, 3));
-}
+            l2->next = l1;
 
-int main(int, char**){
-    test_01();
-    test_02();
-    return 0;
-}
+            l1 = l2;
+
+            l2 = after;
+
+            if(!after)    break;
+
+            after = l2->next;
+        }
+
+        h->next = post;
+
+        return l1;
+    }
+};
+
+/* unit test is in ../cpp_unittest/reverseNodesInK_unittest */
