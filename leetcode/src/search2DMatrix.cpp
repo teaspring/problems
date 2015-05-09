@@ -21,16 +21,16 @@ public:
      * typical binary search problem
      * */
     bool searchMatrix_01(vector<vector<int> >& matrix, int target){
-        const int n = matrix.size();
+        const int n = matrix.size();  // row
         if(n < 1)    return false;
 
-        const int m = matrix[0].size();
+        const int m = matrix[0].size();  // column
         int v = 0, u = m*n - 1, mid = v;  // init u is inclusive
 
         while(v < u){ // as v equals to u in maximum, both v and u are inclusive forever, even breaking loop
             mid = (v + u) >> 1;
-            int i = mid / m;  // row
-            int j = mid % m;  // col
+            int i = mid / m;  // row, n-1 in maximum
+            int j = mid % m;  // col, m-1 in maximum
             if(target == matrix[i][j]){
                 return true;
             }else if(target < matrix[i][j]){
@@ -53,8 +53,8 @@ public:
 
         while(v < u){ // as v equals to u in maximum and u is exclusive, all the valid [i,j] compare must be inside the clause
             int mid = (v + u) >> 1;
-            int i = mid / m;  // row
-            int j = mid % m;  // col
+            int i = mid / m;  // row, n-1 in maximum
+            int j = mid % m;  // col, m-1 in maximum
             if(target == matrix[i][j]){
                 return true;
             }else if(target < matrix[i][j]){

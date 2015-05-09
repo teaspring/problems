@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 
 /*
- * int Solution::solveSudoku(vector<int>&)
+ * void Solution::solveSudoku(vector<vector<char> >& board)
  * */
 
 void assertBoard(vector<vector<char> >& expected, vector<vector<char> >& result){

@@ -44,17 +44,17 @@ private:
     bool validate(vector<vector<char> >& board, int pos){
         const int n = board.size();
 
-        int x = pos / n, y = pos % n; // both x and y are n-1 in maximum
+        int x = pos / n, y = pos % n; // [x][y] is real position on board, both x and y are n-1 in maximum
 
         char ch = board[x][y];
 
-        for(int i = 0; i < n; i++){  // that row and column that [x][y] resides
-            if(i != x && board[i][y] == ch)    return false;
-            if(i != y && board[x][i] == ch)    return false;
+        for(int i = 0; i < n; i++){
+            if(i != x && board[i][y] == ch)    return false;  // the column that [x][y] resides
+            if(i != y && board[x][i] == ch)    return false;  // the row that [x][y] resides
         }
 
-        int cx = x/3 * 3;  // 3 is the height and width of the 3*3 cubic of sudoku
-        int cy = y/3 * 3;
+        int cx = x / 3 * 3;  // [cx][cy] is the left up corner of the 3*3 cubic
+        int cy = y / 3 * 3;
 
         for(int i = cx; i < cx + 3; i++){
             for(int j = cy; j < cy + 3; j++){
