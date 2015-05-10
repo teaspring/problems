@@ -15,32 +15,35 @@
  * 2^15 = 32768
  */
 
-#include "stdio.h"
-#include <iostream>
-#include <cstring>
-#include <string>
-#include "stdlib.h"
-#include <algorithm>
 using namespace std;
 
-class Sqrt{
+class Solution{
+
 public:
-    int mysqrt(int x){
+    int sqrt(int x){
         if(x <= 0)    return 0;
+
         if(x >= 2147395600)    return 46340;
+
         int a = 1, b = 2;
+
         while(b * b < x){
             a = b;
             b *= 2;
+
             if(b > 46340){    // it has to code hard :(
                 b = 46340;
                 break;
             }
         }
+
         if(b * b == x)    return b;
-        int m = 0;
+
+        // now a*a < x && b*b > x while b = 2*a
+        // find suitable int between a and b by binary search
         while(a < b){
-            m = (a+b)/2;
+            int m = (a + b) >> 1;
+
             if(m * m == x){
                 return m;
             }else if(m * m < x){
@@ -50,25 +53,9 @@ public:
                 b = m;
             }
         }
-        return a;
-    }
 
-    void test_01(){
-        string str;
-        while(1){
-            cout << "please input integer x:" << endl;
-            if(getline(cin, str)==0 || str.empty())    break;
-            int x = atoi(str.c_str());
-            printf("sqrt is %d\n", mysqrt(x));
-        }
-        return;
+        return a;
     }
 };
 
-int main(){
-    Sqrt *st = new Sqrt();
-    st->test_01();
-    delete st;
-    st = 0;
-    return 0;
-}
+/* unit test is in ../cpp_unittest/sqrt_unittest */
