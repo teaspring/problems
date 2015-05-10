@@ -81,8 +81,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $^: names of the dependencies
 #
 combinationsum.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/combinationsum.cpp $(USER_DIR)/src/preliminary.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/combinationsum.cpp
 
 combinationsum_unittest.o : $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/combinationsum_unittest.cpp

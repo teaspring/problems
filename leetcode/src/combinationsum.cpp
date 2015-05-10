@@ -7,8 +7,10 @@
  * S=[2,3,7], target=7
  * output: [2,2,3], [7]
  * */
-#include "../include/preliminary.h"
+#include <vector>
 #include <algorithm>
+
+using namespace std;
 
 class Solution{
 
@@ -30,20 +32,19 @@ private:
             return;
         }
 
-        int n = candidates.size();
+        const int n = candidates.size();
+
         int start = lastIdx < 0 ? 0 : lastIdx;
+
         for(int i = start; i < n; ++i){
             int d = candidates[i];
             if(target < d)    break;
-
-            //if(!vec.empty() && vec[vec.size() - 1] > d)        continue;
 
             vec.push_back(d);
             plusSum(res, candidates, vec, i, target - d);
             vec.pop_back();
         }
-        return;
     }
-
-    /* unit test is in ../cpp_unittest/combinationsum_unittest */
 };
+
+/* unit test is in ../cpp_unittest/combinationsum_unittest */
