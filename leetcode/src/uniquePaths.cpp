@@ -1,50 +1,57 @@
 /*
- * given a matrix of m*n, for a robot, it needs to walk from left top corner [0,0] to right bottom corner [m-1,n-1]
+ * given a matrix of m*n, for a robot, it needs to walk from left top corner to right bottom corner
  * find count of the distinct walkings
- *
  */
 
-#include "stdio.h"
-#include <iostream>
 #include <cstring>
-#include <string>
+
 using namespace std;
 
-class UniquePaths{
+class Solution{
+
 public:
-    int oncePath(int x, int y, int m, int n){   // recurse should be avoided here since it has too much redundancy
-        if(x==m && y==n)    return 1;
-        if(x>m || y>n)      return 0;
-        return oncePath(x+1, y, m, n) + oncePath(x, y+1, m, n);
-    }
-
+    /*
+     * recurse. this solution time complexity is bad
+     * */
     int uniquePaths_01(int m, int n){
-        return oncePath(1, 1, m, n);
+        return onePath(1, 1, m, n);
     }
 
+    /*
+     * DP
+     * */
     int uniquePaths_02(int m, int n){
         int dp[m][n];
-        for(int i=0; i<m; ++i){
+        memset(dp, 0, sizeof(dp));
+
+        for(int i = 0; i < m; ++i){
             dp[i][0] = 1;
         }
-        for(int j=0; j<n; ++j){
+
+        for(int j = 0; j < n; ++j){
             dp[0][j] = 1;
         }
 
-        for(int i=1; i<m; ++i){
-            for(int j=1; j<n; ++j){
+        for(int i = 1; i < m; ++i){
+            for(int j = 1; j < n; ++j){
                 dp[i][j] = dp[i-1][j] + dp[i][j-1];
             }
         }
+
         return dp[m-1][n-1];
     }
 
+private:
+    /*
+     * used by solution 1
+     * */
+    int onePath(int x, int y, int m, int n){
+        if(x > m || y > n)    return 0;  // necessary clause
+
+        if(x == m && y == n)    return 1;
+
+        return onePath(x+1, y, m, n) + onePath(x, y+1, m, n);
+    }
 };
 
-int main(int, char**){
-    UniquePaths *up = new UniquePaths();
-    printf("%d\n", up->uniquePaths_02(3, 3));
-    delete up;
-    up = 0;
-    return 0;
-}
+/* unit test is in ../cpp_unittest/uniquePaths_unittest */
