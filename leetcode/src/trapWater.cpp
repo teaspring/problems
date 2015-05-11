@@ -1,46 +1,45 @@
 /*
- * given a non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
- *
+ * given an array of non-negative integers representing an elevation map where the width of each bar is 1,
+ * compute how much water it is able to trap after raining.
  * */
-#include "../include/preliminary.h"
 
-/*
- * one-pass solution: scan leftward and rightward at the same time, start from lower of the two.  
- * */
-int trap(int A[], int n){
-    if(n <= 2)    return 0;
-    int l=0, r=n-1, sum=0;
-    while(l < r){
-        bool leftMove = A[l] < A[r];
-        int w = 0;
-        if(leftMove){
-            int h = A[l++];
-            while(h > A[l]){
-                w += h - A[l];
-                ++l;
+class Solution{
+
+public:
+    /*
+     * one-pass solution: scan leftward and rightward depending on which of left/right wall is lower
+     * */
+    int trapWater(int A[], int n){
+        if(n <= 2)    return 0;
+
+        int l = 0, r = n-1;  // cursors
+        int sum = 0;
+
+        while(l < r){
+
+            int w = 0;
+
+            if(A[l] < A[r]){ // scan from lower wall of left/right walls
+                int h = A[l++];  // left wall height
+
+                while(h > A[l]){
+                    w += h - A[l];
+                    ++l;
+                }
+            }else{
+                int h = A[r--]; // right wall height
+
+                while(h > A[r]){
+                    w += h - A[r];
+                    --r;
+                }
             }
-        }else{
-            int h = A[r--];
-            while(h > A[r]){
-                w += h - A[r];
-                --r;
-            }
+
+            sum += w;
         }
-        sum += w;
-    }
-    return sum;
-}
 
-int main(){
-    string str;
-    while(1){
-        cout << "please input non-negative integer array as wall:" << endl;
-        if(getline(cin, str)==0 || str.empty())    break;
-        int *arr = new int[str.size()]();
-        int n = splitStr2IntArray(str, arr);
-        printf("trapped water is %d\n", trap(arr, n));
-        delete[] arr;
+        return sum;
     }
-    return 0;
-}
+};
 
+/* unit test is in ../cpp_unittest/trapWater_unittest */
