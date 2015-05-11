@@ -33,24 +33,19 @@ public:
 
             const int n = vecArr[idx].size();
 
-            bool l2r = (idx == 0);  // flag of scanning from left to right or opposite
-
-            // next level push in positive order, curr level push in reverse order, and curr level pop in positive order
-            int i = l2r ? 0 : n-1;
-
-            for(; i < n && i >= 0; l2r ? ++i : --i){
+            for(int i = 0; i < n; ++i){
 
                 TreeNode *curr = vecArr[idx][i];
-                TreeNode *oppo = vecArr[idx][n-1 - i];
 
-                if(!curr && !oppo)    continue;
+                if(i < (n >> 1)){ // avoid duplicate compare
+                    TreeNode *oppo = vecArr[idx][n-1 - i];
 
-                if( !curr || ! oppo || (curr->val != oppo->val))    break;
+                    if(!curr && !oppo)    continue;
+                    if( !curr || ! oppo || (curr->val != oppo->val) )    return false;
+                }
 
-                pushChildren(curr, vecArr[1-idx], l2r);
+                pushChildren(curr, vecArr[1-idx]);
             }
-
-            if(i >=0 && i < n)    return false;
 
             vecArr[idx].clear();
 
@@ -95,16 +90,12 @@ public:
 private:
     /*
      * used by solution 01
-     * @param l2r decides whether to save left prior to right or reversely
      * */
-    void pushChildren(TreeNode *root, vector<TreeNode*>& vec, bool l2r){    // NULL is pushed as well to take place
+    void pushChildren(TreeNode *root, vector<TreeNode*> &vec){  // NULL is pushed to vec as well
         if(!root)    return;
 
-        if(l2r)    vec.push_back(root->left);
-
+        vec.push_back(root->left);
         vec.push_back(root->right);
-
-        if(!l2r)    vec.push_back(root->left);
     }
 
     /*
