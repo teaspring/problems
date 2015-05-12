@@ -7,18 +7,20 @@
  * 4. if a line other than the last line contains only one word, left justified
  */
 
-#include "stdio.h"
-#include <iostream>
 #include <string>
+#include <cstring>
 #include <vector>
+
 using namespace std;
 
 class Solution{
 
 public:
     vector<string> fullJustify(vector<string>& words, int L){
+        const int n = words.size();
         vector<string> res;
-        int i = 0, n = words.size();
+        int i = 0;
+
         while(i < n){
             int solidL = words[i].size();
             int gap = 1, cw = 1;
@@ -32,15 +34,19 @@ public:
 
             // construct the interval spaces array
             int intervals[cw]; // in this line, cw words, (cw-1) valid intervals. create int[cw] to facilitate iterate
+            memset(intervals, 0, sizeof(intervals));
+
             int rest = L - solidL;
             if(cw == 1){
                 intervals[cw - 1] = rest;
             }else{
                 int evenSpace = gap + rest / (cw - 1);
                 intervals[0]  = evenSpace + rest % (cw - 1);
+
                 for(int j = 1; j < cw - 1; j++){
                     intervals[j] = evenSpace;
                 }
+
                 intervals[cw - 1] = 0;
             }
 
@@ -56,17 +62,22 @@ private:
     * * */
     string fillLine(vector<string>& words, int L, int start, int count, int* spaces){
         char arr[L+1];
-        int t = 0;
+        memset(arr, 0, sizeof(arr));
+
+        int t = 0;  // shared cursor to fill all words and interval spaces into one line
         for(int i = 0; i < count; ++i){
-            for(size_t j = 0; j < words[start + i].size(); j++){
-                arr[t++] = words[start + i][j];
-            }
+            string word = words[start + i];
+
+            strcpy(arr + t, word.c_str());
+
+            t += word.size();
 
             int x = spaces[i];
             while(x-- > 0){
                 arr[t++] = ' ';
             }
         }
+
         arr[L] = '\0';
         return string(arr);
     }

@@ -38,10 +38,12 @@ public:
                 TreeNode *curr = vecArr[idx][i];
 
                 if(i < (n >> 1)){ // avoid duplicate compare
+
                     TreeNode *oppo = vecArr[idx][n-1 - i];
 
                     if(!curr && !oppo)    continue;
-                    if( !curr || ! oppo || (curr->val != oppo->val) )    return false;
+
+                    if(!curr || !oppo || curr->val != oppo->val)    return false;
                 }
 
                 pushChildren(curr, vecArr[1-idx]);

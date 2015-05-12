@@ -81,8 +81,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $^: names of the dependencies
 #
 textJustification.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/textJustification.cpp $(USER_DIR)/src/preliminary.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/textJustification.cpp
 
 textJustification_unittest.o : $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/textJustification_unittest.cpp
