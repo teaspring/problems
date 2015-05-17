@@ -6,10 +6,11 @@ class shortestPath{
 public:
     shortestPath(){}
     ~shortestPath(){}
+
     //one to all shortest
-    void DijkstraShortest(genGraph*, int start);    
+    void DijkstraShortest(genGraph*, int start);
     void FordShortest(genGraph*, int start);
-    
+
     //all to all shortest
     void WFIShortest(genGraph*);
 
@@ -17,25 +18,31 @@ public:
     void digraphCycleDetectionDFS(genGraph*, int v);
 
     void WFIUngraphLongest(genGraph*);
+
     void WFIGraphLongest(genGraph*);
 };
 
 class cycleDetection{
 public:
     cycleDetection()
-    :num(new int[BoundMax]())
-    ,edgeIterated(new int[BoundMax]())
-    ,cnt(0){
-    }
+                :num(new int[BoundMax]())
+                ,edgeIterated(new int[BoundMax]())
+                ,cnt(0){}
+
     ~cycleDetection(){
         delete[] num;
         delete[] edgeIterated;
     }
+
     void digraphCycleDetectionDFS(genGraph*, int);
+
     void undigraphCycleDetectionDFS(genGraph*, int);
-    int* num;            //array to mark vertex being iterated
-    int* edgeIterated;  //array to mark edge being iterated
-    int cnt;            //external variable of digraphCycleDetectionDFS(),mark the iterated vertex
+
+    int* num;  // array to mark vertex being iterated
+
+    int* edgeIterated;  // array to mark edge being iterated
+
+    int cnt;  // external variable of digraphCycleDetectionDFS(),mark the iterated vertex
 };
 
 class spanningTree{

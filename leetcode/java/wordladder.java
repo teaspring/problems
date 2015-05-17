@@ -76,7 +76,7 @@ public class wordladder{
         unVisited.add(end);  // ensure end in unVisited
         unVisited.remove(start);
 
-        /// [values] are all optional ladders transform to [key] with one char change
+        // [values] are all optional ladders transform to [key] with one char change
         HashMap<String, Queue<String>> adjMap = new HashMap<String, Queue<String>>();
         for(String word : unVisited){
             adjMap.put(word, new LinkedList<String>());
@@ -97,15 +97,17 @@ public class wordladder{
                     nextLev++;
                     q.offer(nextLadder);
                 }
+
                 adjMap.get(nextLadder).offer(currLadder);  // save in map: nextLadder --> currLadder
-                if(nextLadder.equals(end) && !found){
-                    found = true;
-                }    
+
+                if(nextLadder.equals(end) && !found)    found = true;
             }
 
             if(--currLev == 0){ // ladders of current level have been processed already
                 depth++;
+
                 if(found)    break; // break only if all ladders at current level have been processed already
+
                 unVisited.removeAll(visitedThisLev); // later ladders not include this level ladders
                 visitedThisLev.clear();
                 currLev = nextLev;
@@ -129,18 +131,21 @@ public class wordladder{
         ArrayList<String> nextLadders = new ArrayList<String>();
         char[] wordChar = currLadder.toCharArray();
         final int n = wordChar.length;
-        for(int i=0; i < n; i++){
+
+        for(int i = 0; i < n; i++){
             char saved = wordChar[i];
             for(char ch = 'a'; ch <= 'z'; ch++){
                 if(ch == saved)    continue;
+
                 wordChar[i] = ch;
+
                 String str = new String(wordChar);
-                if(unVisited.contains(str)){
-                    nextLadders.add(str);
-                }
+                if(unVisited.contains(str))    nextLadders.add(str);
             }
+
             wordChar[i] = saved;
         }
+
         return nextLadders;
     }
 
@@ -154,7 +159,6 @@ public class wordladder{
             ArrayList<String> path = new ArrayList<String>(stk);
             Collections.reverse(path); // to put [start] at head
             result.add(path);
-            return;
         }else if(len > 0){
             Queue<String> adjs = adjMap.get(curr); // [values] are all laddders which can transform to [key] in one char change
             for(String lad : adjs){
@@ -164,43 +168,6 @@ public class wordladder{
             }
         }
     }
-
-    /* unit test code is in ../java_unittest/wordladder_junit */
-    /*
-    private static HashSet<String> parseStrArray(String str){
-        HashSet<String> st = new HashSet<String>();
-        StringTokenizer t = new StringTokenizer(str, " ,");
-        while(t.hasMoreTokens()){
-            st.add(t.nextToken().toString().trim());
-        }
-        return st;
-    }
-
-    public void test(){
-        Scanner scan = new Scanner(System.in);
-        while(true){            
-            System.out.println("input start string:");
-            String start = scan.nextLine().trim();
-            if(start.isEmpty())       break;
-            
-            System.out.println("input end string:");
-            String end = scan.nextLine().trim();
-            if(end.isEmpty())         break;
-            
-            System.out.println("input dictionary strings:");
-            String dictStr = scan.nextLine();
-            if(dictStr.isEmpty())     break;
-            HashSet<String> dict = parseStrArray(dictStr);
-            
-            int steps = ladderLength(start, end, dict);
-            System.out.println("the shortest ladder is " + steps);
-            
-            ArrayList<ArrayList<String>> result = findLadders(start, end, dict);
-            for(int i=0; i < result.size(); ++i){
-                System.out.println(result.get(i).toString());
-            }
-        }
-        return;
-    }
-    */
 }
+
+/* unit test code is in ../java_unittest/wordladder_junit */
