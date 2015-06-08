@@ -1,6 +1,6 @@
-//************************main.cpp for method test******************
-//
-
+/*
+ * test cases
+ * */
 #include "algorithmHeader.h"
 
 int main(int argc, char* argv[]){    
@@ -43,6 +43,7 @@ int main(int argc, char* argv[]){
             delete pGraph2;
             pGraph2=0;
         }
+
         if(0){
             int mtx3[BoundMax][BoundMax] = {    //case3 for WFI algorithm(all2all), negative weight digraph
                 {0,2,MAX,-4,MAX},
@@ -57,6 +58,7 @@ int main(int argc, char* argv[]){
             delete pGraph3;
             pGraph3=0;
         }
+
         if(0){
             int mtx4[BoundMax][BoundMax] = {    //diagraph
                 {0,2,MIN,1,MIN},
