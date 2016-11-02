@@ -52,7 +52,7 @@ public:
 /*
  * idea:
  * forward and backward iterate to assign the ascending range in their eyes
- * compared to method1, this should be better to read with less time
+ * compared to method1, method2 is better to read with less time complexity
  * */
     int candy_2(vector<int>& ratings) {
         const int n = ratings.size();
@@ -63,26 +63,25 @@ public:
         int sum = candies[0];
         for(int i = 1; i < n; i++){  // forward iterate
             if(ratings[i] > ratings[i-1]){
-                candies[i-1] = max(candies[i-1], 1);
                 candies[i] = candies[i-1] + 1;
-            }else if(ratings[i] == ratings[i]) {
+            }else if(ratings[i] <= ratings[i-1]) { // anyway, it must be 1 at least
                 candies[i] = 1;
             }
             sum += candies[i];
         }
 
-        if(candies[n-1] == 0){  // backward iterate
+        if(candies[n-1] == 0){
             candies[n-1] = 1;
             sum += candies[n-1];
         }
-        for(int i = n-2; i >= 0; i--){
-            sum -= candies[i];
+        for(int i = n-2; i >= 0; i--){  // backward iterate
             if(ratings[i] > ratings[i+1]){
-                candies[i] = max(candies[i], candies[i+1] + 1);
-            }else if(ratings[i] == ratings[i+1]){
-                candies[i] = max(candies[i], 1);
-            }
-            sum += candies[i];
+                if (candies[i] < candies[i+1] + 1){
+                    sum -= candies[i];
+                    candies[i] = candies[i+1] + 1;
+                    sum += candies[i];
+                }
+            }      // right now, no need to handle other cases of [i] <= [i+1]
         }
 
         delete[] candies;
