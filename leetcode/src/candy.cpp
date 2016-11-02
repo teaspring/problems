@@ -8,8 +8,8 @@
  * hidden point: for 4 4 3, the minimum candies can be 1+2+1 = 4 
  *
  * test data:
- * 2 5 7 6 5 4 2 3 6 9 4 2
- * 4 4 5 7 6 5 4 4 3 3 2 1 4 6 9 3 2 
+ * 2 4 2 3 1 2
+ * 4 2 3 4 1
  * */
 #include "../include/preliminary.h"
 
@@ -32,7 +32,7 @@ public:
                 if(ki > -1)    continue;  // within decending range
                 candies[i] = 1;
             }else if(ratings[i] > ratings[i-1]){
-                if(ki > -1){ // [i-1] is start of previous preceding range
+                if(ki > -1){  // [i-1] is start of previous preceding range
                     sum += backtrack(ratings, ki, i-1, candies);
                     ki = -1;
                 }
