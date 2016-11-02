@@ -17,11 +17,11 @@ class Solution{
 
 public:
 /*
- * key: 
+ * idea: 
  * 1. do not start backtrack until the decending range closes
  * 2. if [i]=[i-1], neighbor's candy can be 1 in minimum
  * */
-    int candy(vector<int>& ratings){
+    int candy_1(vector<int>& ratings){
         int n = ratings.size();
         if(n < 2)    return n;  // 0 or 1
         int *candies = new int[n]();
@@ -49,6 +49,46 @@ public:
         candies = NULL;
         return sum;
     }
+/*
+ * idea:
+ * forward and backward iterate to assign the ascending range in their eyes
+ * compared to method1, this should be better to read with less time
+ * */
+    int candy_2(vector<int>& ratings) {
+        const int n = ratings.size();
+        if (n < 2)    return n; // 0 for 0, 1 for 1
+        int *candies = new int[n]();
+        
+        candies[0] = 1;
+        int sum = candies[0];
+        for(int i = 1; i < n; i++){  // forward iterate
+            if(ratings[i] > ratings[i-1]){
+                candies[i-1] = max(candies[i-1], 1);
+                candies[i] = candies[i-1] + 1;
+            }else if(ratings[i] == ratings[i]) {
+                candies[i] = 1;
+            }
+            sum += candies[i];
+        }
+
+        if(candies[n-1] == 0){  // backward iterate
+            candies[n-1] = 1;
+            sum += candies[n-1];
+        }
+        for(int i = n-2; i >= 0; i--){
+            sum -= candies[i];
+            if(ratings[i] > ratings[i+1]){
+                candies[i] = max(candies[i], candies[i+1] + 1);
+            }else if(ratings[i] == ratings[i+1]){
+                candies[i] = max(candies[i], 1);
+            }
+            sum += candies[i];
+        }
+
+        delete[] candies;
+        candies = NULL;
+        return sum;
+    }
 
 private:
     /*
@@ -72,21 +112,4 @@ private:
         return sum;
     }
 };
-  /* unit test code is in ../cpp_unittest/candy_unittest */
-/*
-void test_01(){
-    string str;
-    while(1){
-        printf("please input rating values of children in a row:\n");
-        if(getline(cin, str)==0 || str.empty())        break;
-        int *arr = new int[str.size()]();
-        int n = splitStr2IntArray(str, arr);
-        vector<int> ratings;
-        for(int i=0;i<n;i++){
-            ratings.push_back(arr[i]);
-        }
-        printf("minimum sum is %d\n", candy(ratings));
-    }
-    return;
-}
-*/
+/* unit test code is in ../cpp_unittest/candy_unittest */
