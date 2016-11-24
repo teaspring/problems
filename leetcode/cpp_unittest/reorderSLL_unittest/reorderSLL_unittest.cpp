@@ -25,7 +25,7 @@ void assertList(ListNode *expected, ListNode *result){
     EXPECT_EQ(NULL, h2);
 }
 
-/* ------------------ test body ---------------- */
+/* --------- test case of reorderSLL() ---------- */
 TEST(reorderTest, Positive01){
     Solution s;
 
@@ -102,6 +102,7 @@ TEST(reorderTest, Positive04){
     delSLL(result);
 }
 
+/* --------- test case of reverseSLL() ---------- */
 TEST(reverseTest, Positive01){
     Solution s;
 
@@ -119,4 +120,45 @@ TEST(reverseTest, Positive01){
 
     delSLL(expected);
     delSLL(result);
+}
+
+/* --------- test case of halveSLL() ---------- */
+TEST(halveTest, Positive01){
+    Solution s;
+
+    int A[] = {3, 5};
+    const int n1 = sizeof(A) / sizeof(int);
+    ListNode *l1 = createSLL(A, n1);
+
+    ListNode *res = s.halveSLL(l1);
+
+    int B[] = {3};
+    const int n2 = sizeof(B) / sizeof(int);
+    ListNode *l2 = createSLL(B, n2);
+    assertList(l2, l1);
+
+    int C[] = {5};
+    const int n3 = sizeof(C) / sizeof(int);
+    ListNode *l3 = createSLL(C, n3);
+    assertList(l3, res);
+}
+
+TEST(halveTest, Positive02){
+    Solution s;
+
+    int A[] = {3, 5, 4};
+    const int n1 = sizeof(A) / sizeof(int);
+    ListNode *l1 = createSLL(A, n1);
+
+    ListNode *res = s.halveSLL(l1);
+
+    int B[] = {3, 5};
+    const int n2 = sizeof(B) / sizeof(int);
+    ListNode *l2 = createSLL(B, n2);
+    assertList(l2, l1);
+
+    int C[] = {4};
+    const int n3 = sizeof(C) / sizeof(int);
+    ListNode *l3 = createSLL(C, n3);
+    assertList(l3, res);
 }
