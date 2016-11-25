@@ -64,24 +64,20 @@ public:
         for(int i = 1; i < n; i++){  // forward iterate
             if(ratings[i] > ratings[i-1]){
                 candies[i] = candies[i-1] + 1;
-            }else if(ratings[i] <= ratings[i-1]) { // anyway, it must be 1 at least
+            }else{  // either [i]==[i-1] or [i]<[i-1], candies[i] has 1 at least
                 candies[i] = 1;
             }
             sum += candies[i];
         }
 
-        if(candies[n-1] == 0){
-            candies[n-1] = 1;
-            sum += candies[n-1];
-        }
-        for(int i = n-2; i >= 0; i--){  // backward iterate
+        for(int i = n-2; i >= 0; i--){  // backward iterate to modify reversely ascending ones
             if(ratings[i] > ratings[i+1]){
                 if (candies[i] < candies[i+1] + 1){
                     sum -= candies[i];
                     candies[i] = candies[i+1] + 1;
                     sum += candies[i];
                 }
-            }      // right now, no need to handle other cases of [i] <= [i+1]
+            }
         }
 
         delete[] candies;

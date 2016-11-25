@@ -11,15 +11,33 @@
 using namespace std;
 
 /*
- * columnForRow[i] means column x possessed for queen stands on row i.
- * 1. conflict in column: ColumnsForRow[i] = ColumnForRow[j]
- * 2. conflict in diagonal: ColumnForRow[i] - ColumnForRow[j] == i-j || ColumnForRow[i] - ColumnForRow[j] == j-i
+ * columnForRow[i] = x means one queen standing on position of [row, col] as [i, x]
+ * 1. conflict in one column: ColumnsForRow[i] = ColumnForRow[j]
+ * 2. conflict in one diagonal: 
+ * 2.1 (i-j) == ColumnForRow[i] - ColumnForRow[j]
+ * |\
+ * | \
+ * |  \
+ * -----
+ * 2.2 (i-j) == ColumnForRow[j] - ColumnForRow[i]
+ *    /|
+ *   / |
+ *  /  |
+ *  ----
  * */
 
+/**
+ * open question: how many times is check() called? and what about placeQueen()?
+ * Answer:
+ * 1.C(check) = N * C(placeQ);
+ * 2.for once placeQueen(r), internal placeQueen(r+1) will be called around (N-r) times(here r is 1-based); then each placeQueen(r+1) will
+ * lead to placeQueen(r+2) is called (N-r-1) times;
+ * 3.so C(placeQ) = N*(N-1)*(N-2)..*2*1 = N!
+ * */
 class NQueens{
-
 public:
     NQueens(int n): N(n), total(0){
+        total = 0;
         columnForRow = new int[N]();
     }
 
@@ -38,7 +56,7 @@ public:
     }
 
     /*
-    * return total options count
+    * rerun to get the total options count
     * */
     int totalNQueens(){
         total = 0;
@@ -70,14 +88,14 @@ private:
     }
 
     /*
-    * if queen put in (r, columnForRow[r]), whether will conflict with all the placed queens in rows [0, r)
+    * if a new queen lands in (r, columnForRow[r]), does it conflict with the existing (r-1) queens?
     * */
     bool check(int r){
         for(int i = 0; i < r; i++){ // avoid check of same row
-            int tmp = columnForRow[i] - columnForRow[r];
-            if(tmp == 0     // same column
-            ||tmp == (i-r)  // '/' diagnol
-            ||tmp == (r-i)){ // '\' diagnol, same to r1 + c1 = r2 + c2
+            int distance = columnForRow[i] - columnForRow[r];
+            if(distance == 0     // in one column
+            || distance == (i-r)  // '/' diagnol
+            || distance == (r-i)){ // '\' diagnol
                 return false;
             }
         }
@@ -85,7 +103,7 @@ private:
     }
 
     /*
-    * try to put queen on row r, r is 0-based
+    * recursive method to try to put queen on 0-based row r
     * */
     void placeQueen(int r, vector<vector<string> >& res){
         if(r == N){
@@ -94,18 +112,15 @@ private:
         }
 
         for(int i = 0; i < N; i++){
-            columnForRow[r] = i; // try any column of this row to put queen
+            columnForRow[r] = i; // try to put one new queen on row r, column i
             if(check(r)){
-                placeQueen(r + 1, res);
+                placeQueen(r+1, res);
             }
         }
     }
 
-    int N; // dimension size of board
-
+    int N; // N * N board
     int total; // total valid options
-
-    // columnForRow[i] = x means column x possessed for queen stands on row i.
     int *columnForRow;
 };
 
