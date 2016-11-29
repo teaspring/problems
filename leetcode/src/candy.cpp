@@ -64,8 +64,8 @@ public:
         for(int i = 1; i < n; i++){  // forward iterate
             if(ratings[i] > ratings[i-1]){
                 candies[i] = candies[i-1] + 1;
-            }else{  // either [i]==[i-1] or [i]<[i-1], candies[i] has 1 at least
-                candies[i] = 1;
+            }else{  // assign child with lower rating as only the one with higher rating will be updated later
+                candies[i] = 1; // either [i]==[i-1] or [i]<[i-1], candies[i] is 1 at least
             }
             sum += candies[i];
         }
