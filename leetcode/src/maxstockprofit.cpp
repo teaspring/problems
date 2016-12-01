@@ -45,9 +45,7 @@ public:
     int maxProfitIV_01(int k, const vector<int>& prices) {
         int cnt = 0;
         int sum = getAllProfit(prices, cnt);
-        if (k >= cnt) {
-            return sum;
-        }
+        if (k >= cnt)    return sum;
 
         const int n = prices.size();
         int dp[k+1][n+1]; // dp[i][j] means max profit among days[1...n] with i transactions mostly
@@ -84,22 +82,21 @@ public:
 
     /*
      * from discuss on leetcode.com. very clever!
+     * tmpMax is an awesome var
      * */
     int maxProfitIV_02(int k, const vector<int>& prices) {
         int cnt = 0;
         int sum = getAllProfit(prices, cnt);
-        if (k >= cnt) {
-            return sum;
-        }
+        if (k >= cnt)    return sum;
 
         const int n = prices.size();
-        int dp[k+1][n];
+        int dp[k+1][n];  // dp[i][j] means max profit of mostly i-1 transactions among prices[0...j-1]
         memset(dp, 0, sizeof(dp));
 
         for(int i=1; i <= k; i++) {
-            int tmpMax = 0 - prices[0]; // tmpMax means max profit of doing i-1 transactions mostly among first j-1 prices, and buy at prices[j] which is ready for later loop
+            int tmpMax = 0 - prices[0]; // tmpMax means max profit of mostly i-1 transactions among prices[0...j-1], and buy at prices[j] to be ready for later
             for(int j=1; j < n; j++) {
-                dp[i][j] = max(dp[i][j-1], prices[j] + tmpMax);
+                dp[i][j] = max(dp[i][j-1], prices[j] + tmpMax); // dp[i][j] is based on dp[i][j-1]
                 tmpMax = max(tmpMax, dp[i-1][j-1] - prices[j]);
             }
         }
@@ -107,8 +104,8 @@ public:
     }
 
     /**
-     * get all profit if all the available transactions are executed
-     * Two output: total profit, and minimum transaction count; profit is easy to get in every iterate step
+     * get total profit if all the available transactions are executed
+     * Two output: total profit, and minimum transaction count;
      * */
     int getAllProfit(const vector<int>& prices, int& count) {
         count = 0;
@@ -126,7 +123,7 @@ public:
                 if(lowIdx == -1) {
                     lowIdx = i-1;
                 }
-                sum += prices[i] - prices[i-1];
+                sum += prices[i] - prices[i-1]; // if prices[i] > [i-1], this step counts for total profit
             }
         }
         return sum;
