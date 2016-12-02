@@ -16,83 +16,36 @@
 #include <vector>
 
 /*
- * problem 1, solution 1:
- * deque is good structure for this problem: only one element(lower) at head and one(higher) at tail need to consider
- * in time O(n), space O(n)
- * disadvantage: deque store elements all time, but only the one at front and back possible useful. this structure is overused absolutely
+ * Problem 1: time O(n), memory O(1)
  * */
-int bestbuysellstock01_01(const int *A, int n, int& buy, int& sell){
-    if(n<2)        return 0;
-    deque<int> q;    //store index of price
-    for(int i=0;i<n;++i){
-        if(q.empty()){
-            q.push_back(i);
-        }else if(A[i] < A[q.front()]){  //store index of lower price in front
-            q.push_front(i);
-        }else if(A[i] > A[q.back()]){   //store index of higher price in back
-            if(q.size() > 1){   //pop abandoned potential sell price
-                q.pop_back();
-            }
-            q.push_back(i);
-        }
-    }
-
-    while(q.size() > 2 && q.front() > q.back()){
-        q.pop_front();
-    }
-    if(q.back() < q.front()){    //q.back() is supposed to be later than q.front()
-        return 0;            //no sell price higher than bit, no operation to do
-    }
-    sell = q.back();
-    buy = q.front();
-    q.clear();
-    int res = A[sell] - A[buy];
-    return res;
-}
-
-/*
- * problem 1, solution 2: mention as i traverse from left(earlier) to right(later), we just need to update index of min, and max diff
- * remain time O(n) without data strucure. 
- * */
-int bestbuysellstock01_02(const int *A, int n, int& buy, int& sell){
-    int min=0, maxDiff=0;
+int bestbuysellstock(const int *A, int n, int& buy, int& sell){
+    int low = 0, sum = 0;
     buy = sell = 0;
-    for(int i=1;i<n;++i){
-        if(A[i] < A[min]){
-            min = i;
-        }else{
-            int diff = A[i] - A[min];
-            if(diff > maxDiff){
-                maxDiff = diff;
-                buy = min;
+    for(int i = 1; i < n; ++i) {
+        if(A[i] < A[low]){
+            low = i;
+        } else {
+            int diff = A[i] - A[low];
+            if(sum < diff){
+                sum = diff;
+                buy = low;
                 sell = i;
             }
         }
     }
-    return maxDiff;
+    return sum;
 }
 
 /*
- * problem 2: if permit keep buying and selling
- * as a personal investor, this is easy. ideal solution is buying at all lowest and selling at all highest
+ * Problem 2: no limit of buying and selling counts
  * */
 int keepbuysellstock(int *A, int n){
-    int sum=0, buy=0, sell=0;
-    for(int i=1;i<n;++i){
-        if(A[i] >= A[i-1]){     //increasing
-            if(buy == sell){
-                buy = i-1;
-            }
-            sell = i;
-        }else{      //falling down
-            if(sell > buy){
-                sum += A[sell] - A[buy];
-                sell = buy = i-1;
-            }
+    int sum = 0;
+    for(int i = 1; i < n; ++i){
+        if(A[i] >= A[i-1]) {
+            sum += A[i] - A[i-1]; // every increasing days counts
         }
     }
-    if(sell > buy)
-        sum += A[sell] - A[buy];
     return sum;
 }
 

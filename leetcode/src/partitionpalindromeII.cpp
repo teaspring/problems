@@ -23,7 +23,7 @@ public:
         const int n = s.size();
         if(n < 2)        return 0;
 
-        int dp[n][n+1];    // dp[i][j] == 1 means substr [i,j) is palindrome
+        int dp[n][n+1];    // dp[i][j] == 1 means s.substr(i,j-i) is palindrome, both of i and j are char index
         for(int i = 0; i < n; ++i){
             memset(dp[i], 0, sizeof(dp[i]));
             dp[i][i+1] = 1;
@@ -31,7 +31,7 @@ public:
 
         for(int len = 2; len <= n; ++len){
             for(int start = 0; start + len <= n; ++start){
-                if(len < 4 || dp[start + 1][start + len - 1]==1){
+                if(len < 4 || dp[start + 1][start + len - 1] == 1){
                     if(s[start] == s[start + len - 1]){
                         dp[start][start + len] = 1;
                     }
@@ -39,20 +39,19 @@ public:
             }
         }
 
-        int mc[n+1];  // mc[i] means min cuts of substring [0,i) of length i
+        int mc[n+1];  // mc[i] means min cuts of substring [0,i)
         memset(mc, 0, sizeof(mc));
 
-        for(int i = 2; i <= n;++i){
-            if(dp[0][i] == 1){
-                mc[i] = 0;
+        for(int e = 2; e <= n; ++e){
+            if(dp[0][e] == 1){
+                mc[e] = 0;
             }else{
-                int ic = i-2;   // minimize ic and mc[i] is ic+1 at least
-                for(int j = i-1; j > 0; --j){ // now i as end of range, so j has to scan reversely from right to left
-                    if(dp[j][i] == 1){
-                        ic = min(ic, mc[j]);
+                mc[e] = mc[e-1] + 1;   // default value
+                for(int j = e-1; j > 0; --j){ // iterate j backward to make use of previously fixed mc[j]
+                    if(dp[j][e] == 1){
+                        mc[e] = min(mc[e], mc[j] + 1);
                     }
                 }
-                mc[i] = ic + 1;
             }
         }
 

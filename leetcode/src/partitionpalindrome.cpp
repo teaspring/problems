@@ -50,10 +50,10 @@ private:
     /*
     * make substring palindrome vector<>, via dynamic programming, in time O(n^2)
     * */
-    void make_vpalin(const string& s, vector<vector<int> >& vpalin){
-        const int n = s.size();
+    void make_vpalin(const string& str, vector<vector<int> >& vpalin){
+        const int n = str.size();
 
-        int dp[n][n+1]; // dp[][] tells whether s.substr() is palindrome or not
+        int dp[n][n+1]; // dp[i][j] tells whether s.substr(i,j-i) is palindrome or not, both of i and j are char index among str
         for(int i = 0; i < n; i++){
             memset(dp[i], 0, sizeof(dp[i]));
         }
@@ -63,12 +63,12 @@ private:
             vpalin[i].push_back(i+1); // vpalin[i] tells for substr starting at [i], which is palindrome
         }
 
-        for(int l = 2; l <= n; l++){
-            for(int end = n; end-l >= 0; end--){
-                if(l < 4 || dp[end - l + 1][l-2] == 1){ // dp is necessary since vector<> not support contains()
-                    if(s[end-l] == s[end-1]){
-                        dp[end-l][l] = 1;
-                        vpalin[end-l].push_back(end);
+        for(int l = 2; l <= n; l++){ // iterate the length from short to long
+            for(int s = 0; s + l <= n; ++s) {  // s is start char index
+                if(l < 4 || dp[s+1][s + l-1] == 1){ // dp[][] facilitates vpalin[]
+                    if(str[s] == str[s + l-1]){
+                        dp[s][s+l] = 1;
+                        vpalin[s].push_back(s+l);
                     }
                 }
             }

@@ -1,5 +1,5 @@
 /*
- * int candy.minCandy(int[])
+ * int candy.minCandy_01(int[])
  * */
 
 import java.util.ArrayList;
@@ -23,7 +23,8 @@ public class candyUnitTest{
         for(int c : candies){
             expected += c;
         }
-        Assert.assertEquals(expected, game.minCandy(ratings));
+        Assert.assertEquals(expected, game.minCandy_01(ratings));
+        Assert.assertEquals(expected, game.minCandy_02(ratings));
     }
 
     @Test
@@ -34,13 +35,15 @@ public class candyUnitTest{
         for(int c : candies){
             expected += c;
         }
-        Assert.assertEquals(expected, game.minCandy(ratings));
+        Assert.assertEquals(expected, game.minCandy_01(ratings));
+        Assert.assertEquals(expected, game.minCandy_02(ratings));
     }
 
     @Test
     public void zeroTest(){
-        int ratings1[] = new int[]{1};
-        Assert.assertEquals(1, game.minCandy(ratings1));
+        int ratings[] = new int[]{1};
+        Assert.assertEquals(1, game.minCandy_01(ratings));
+        Assert.assertEquals(1, game.minCandy_02(ratings));
     }
 
     @After

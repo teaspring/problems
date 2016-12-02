@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.*;
 
 public class candy{
-    public int minCandy(int[] ratings){
+    public int minCandy_01(int[] ratings){
         int n = ratings.length;
         if(n < 2)    return n;  // 0 or 1
         int[] candies = new int[n];
@@ -65,24 +65,38 @@ public class candy{
         return sum;
     }
 
-    /* unittest code in ../java_unittest/candy_junit/ */
     /*
-    public void test(){
-        Scanner scan = new Scanner(System.in);
-        while(true){
-            System.out.println("please input string: ");
-            String s = scan.nextLine().trim();
-            if(s.isEmpty())        break;
-            StringTokenizer t = new StringTokenizer(s, " ,");
-            int[] arr = new int[t.countTokens()];    //define int[] 
-            int i = 0;
-            while(t.hasMoreTokens()){
-                arr[i++] = Integer.parseInt(t.nextToken());
+     * forward and backward iterate to assign the ascending range in their eyes
+     * */
+    public int minCandy_02(int[] ratings) {
+        final int n = ratings.length;
+        if(n < 2)    return n; // 0 or 1
+
+        int[] candies = new int[n];
+        candies[0] = 1;
+        int sum = candies[0];
+        for(int i = 1; i < n; ++i) {
+            if(ratings[i] > ratings[i-1]) {
+                candies[i] = candies[i-1] + 1;
+            } else { // assign the child with lower rating as only the child with higher rating will be updated later
+                candies[i] = 1; // either [i]==[i-1] or [i]<[i-1], candies[i] is 1 at least
             }
-            int sum = minCandy(arr);
-            System.out.println(sum);
+            sum += candies[i];
         }
+
+        for(int i = n-2; i >= 0; --i) {
+            if(ratings[i] > ratings[i+1]) {
+                if(candies[i] < candies[i+1] + 1) {
+                    sum -= candies[i];
+                    candies[i] = candies[i+1] + 1;
+                    sum += candies[i];
+                }
+            }
+        }
+
+        return sum;
     }
-    */
+
+    /* unittest code in ../java_unittest/candy_junit/ */
  }
  
