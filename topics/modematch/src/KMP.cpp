@@ -25,8 +25,7 @@ public:
         const int n = str.size();
         const int m = pattern.size();
         if(n < m)    return false;
-        if(n == 0 && m == 0)    return true;
-        if(m == 0)    return false;
+		if (m == 0)    return n == 0;
 
         int prefix[m];
         memset(prefix, 0, sizeof(prefix));
@@ -36,7 +35,7 @@ public:
         int i = 0, s = 0; // s is start of substr, i is cursor to iterate
         while(i <= n){
             int k = i-s;  // k is 0-based
-            if(k < 0|| (k < m && i < n && pattern.at(k) == str.at(i))){
+            if(k < 0 || (k < m && i < n && pattern.at(k) == str.at(i))){
                 ++i;
             }else if(k == m){
                 return true;
