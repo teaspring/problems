@@ -10,7 +10,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <unordered_set>
 
 using namespace std;
 
@@ -23,7 +23,7 @@ public:
      * str[i] & 7 to get the last decimal digit
      * */
     vector<string> findRepeatedDnaSequences(const string& str) {
-        unordered_map<int, int> mp;
+        unordered_set<int> st;
         vector<string> res;
         const int n = str.size();
         int t = 0,  i = 0;
@@ -36,7 +36,9 @@ public:
         for(; i < n; ++i) {
             // if the 10-char str occurs more than once, this if-clause will be true only once
             // 0x3fffffff as 30 bits bitmask, 3 bits for each octal digit
-            if(mp[t = (t << 3 & 0x3fffffff) | (str[i] & 7)]++ == 1) {
+            t = (t << 3 & 0x3fffffff) | (str[i] & 7);
+            // another option of this container is unordered_map<int, int> mp, if(mp[t]++ == 1)...
+            if(!st.insert(t).second) {
                 res.push_back(str.substr(i - 9, 10));
             }
         }

@@ -3,6 +3,7 @@
  * e.g. given: 43261596 (0b00000010100101000001111010011100),
  *     return: 964176192(0b00111001011110000010100101000000)
  *
+ * the point is: bitwise is very sharp in bit move, so it is not for in-place process, use an int32 or 64 to be the base
  * */
 #include <iostream>
 
