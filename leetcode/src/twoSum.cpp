@@ -13,14 +13,14 @@ using namespace std;
 class Solution{
 public:
     /**
-     * e.g. {2,4,5,8,11,15,17}
+     * e.g. {2,4,5,8,12,17,24}
      * 2 sum matrix:
-     *    2+2, 2+4, 2+5, 2+8, 2+11,  2+15,  2+17
-     *         4+4, 4+5, 4+8, 4+11,  4+15,  4+17
-     *              5+5, 5+8, 5+11,  5+15,  5+17
-     *                   8+8, 8+11,  8+15,  8+17
-     *                        11+11, 11+15, 11+17
-     *                               15+15, 15+17
+     *    2+2, 2+4, 2+5, 2+8, 2+12,  2+17,  2+24
+     *         4+4, 4+5, 4+8, 4+12,  4+17,  4+24
+     *              5+5, 5+8, 5+12,  5+17,  5+24
+     *                   8+8, 8+12,  8+17,  8+24
+     *                        12+12, 12+17, 12+24
+     *                               17+17, 17+24
      * firstly binary search along the diagonal
      * secondly, binary search vertically in each column from left to right
      * time in O(lgn*lgn)
@@ -31,7 +31,7 @@ public:
         const int n = numbers.size();
         int ui = 0, uj = 1, vi = n-2, vj = n-1; // vi and vj are inclusive edge
         int mi = 0, mj = 1;
-        // 1st binary search along the diagonal
+        // firstly binary search along the diagonal
         while(ui <= vi && uj <= vj) {
             mi = (ui + vi)/2;
             mj = mi + 1;
@@ -50,7 +50,7 @@ public:
             }
         }
 
-        // vertical binary search in columns
+        // secondly vertical binary search in columns
         while(uj < n) {
             uj = vj = mj + 1;
             ui = 0;
@@ -70,6 +70,25 @@ public:
                 } else {
                     break;
                 }
+            }
+
+            // regress to horizontal binary search in row0
+            if (vi == 0) {
+                vj = n-1;
+                mi = ui = 0;
+                while(uj <= vj) {
+                    mj = (uj + vj)/2;
+                    if (get2Sum(numbers, mi, mj) == target) {
+                        res.push_back(mi + 1);
+                        res.push_back(mj + 1);
+                        return res;
+                    } else if (get2Sum(numbers, mi, mj) > target) {
+                        vj = mj;
+                    } else {
+                        uj = mj+1;
+                    }
+                }
+                break;  // no need to enter vertical binary search again
             }
         }
         return res;

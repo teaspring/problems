@@ -44,7 +44,7 @@ TEST(twoSumTest, Positive_01){
 TEST(twoSumTest, Positive_02){
     Solution s;
 
-    int arr[] = {2, 4, 5, 8, 11, 15, 17};
+    int arr[] = {2, 4, 5, 8, 12, 17, 24};
     const int n = sizeof(arr) / sizeof(int);
     vector<int> nums(arr, arr + n);
 
@@ -61,19 +61,37 @@ TEST(twoSumTest, Positive_02){
     EXPECT_EQ(expected, s.twoSum(nums, target));
     expected.clear();
 
-    target = 16;
+    target = 17;
     expected.push_back(3);
     expected.push_back(5);
     EXPECT_EQ(expected, s.twoSum(nums, target));
     expected.clear();
 
     target = 19;
-    expected.push_back(4);
+    expected.push_back(1);
+    expected.push_back(6);
+    EXPECT_EQ(expected, s.twoSum(nums, target));
+    expected.clear();
+
+    target = 14;
+    expected.push_back(1);
     expected.push_back(5);
     EXPECT_EQ(expected, s.twoSum(nums, target));
     expected.clear();
 
-    target = 25;
+    target = 26;
+    expected.push_back(1);
+    expected.push_back(7);
+    EXPECT_EQ(expected, s.twoSum(nums, target));
+    expected.clear();
+
+    target = 21;
+    expected.push_back(2);
+    expected.push_back(6);
+    EXPECT_EQ(expected, s.twoSum(nums, target));
+    expected.clear();
+
+    target = 32;
     expected.push_back(4);
     expected.push_back(7);
     EXPECT_EQ(expected, s.twoSum(nums, target));
