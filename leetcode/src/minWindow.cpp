@@ -30,10 +30,10 @@ public:
             if(hasFound[(int)S[j]] <= need2Find[(int)S[j]])    count++;
 
             if(count == m){
-                for(;;i++){ // move left bound to narrow the window
+                for(;; ++i){ // move left bound to narrow the window
                     if(need2Find[(int)S[i]] == 0)    continue;
 
-                    if(hasFound[(int)S[i]] <= need2Find[(int)S[i]]){ // cannot narrow
+                    if(hasFound[(int)S[i]] == need2Find[(int)S[i]]){ // cannot narrow
                         break;
                     }else{
                         hasFound[(int)S[i]]--;

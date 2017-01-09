@@ -17,7 +17,7 @@ T* BST<T>::search(BSTNode<T>* p, const T& el) const{ //binary search tree; and t
       else if(el < p->key)
         p = p->left;
       else
-        p=p->right;
+        p = p->right;
     return 0;
 }
 
@@ -46,29 +46,26 @@ void BST<T>::breadthFirst(){
 //recursive version
 template<class T>
 void BST<T>::inorder(BSTNode<T> *p){
-    if(p!=0){
-        inorder(p->left);
-        visit(p);
-        inorder(p->right);
-    }      
+    if(!p)    return;
+    inorder(p->left);
+    visit(p);
+    inorder(p->right);
 }
 
 template<class T>
 void BST<T>::preorder(BSTNode<T> *p){
-    if(p!=0){
-        visit(p);
-        preorder(p->left);
-        preorder(p->right);
-    }
+    if(!p)    return;
+    visit(p);
+    preorder(p->left);
+    preorder(p->right);
 }
 
 template<class T>
 void BST<T>::postorder(BSTNode<T> *p){
-    if(p!=0){
-        postorder(p->left);
-        postorder(p->right);
-        visit(p);
-    }
+    if(!p)    return;
+    postorder(p->left);
+    postorder(p->right);
+    visit(p);
 }
 
 /*
@@ -76,20 +73,23 @@ void BST<T>::postorder(BSTNode<T> *p){
  * */
 template<class T>
 void BST<T>::iterativePreorder(){
-    if(root == 0)    return;
+    if(!root)    return;
+
     stack<BSTNode<T>*> stk;
     BSTNode<T> *p = root;
     stk.push(p);
+
     while(!stk.empty()){
         p = stk.top();
         stk.pop();
         visit(p);
-        if(p->right != 0)
-          stk.push(p->right);        //push right to stack before left as left will be poped before right
-        if(p->left != 0)
+
+        if(p->right)
+          stk.push(p->right);   // push right to stack before left as left will be pop before right
+        if(p->left)
           stk.push(p->left);                
     }
-    p = 0;
+    p = NULL;
     return;
 }
 
@@ -98,23 +98,27 @@ void BST<T>::iterativePreorder(){
  * */
 template<class T>
 void BST<T>::iterativePostorder(){
+    if(!root)    return;
+
     stack<BSTNode<T>*> stk;
-    BSTNode<T> *p = root, *q = root;    //q is last visited node
-    if(root == 0)    return;
+    BSTNode<T> *p = root, *q = root; // q is last visited node
     while(1){
-        while(p->left != 0){
+        while(p->left){
             stk.push(p);                            
-            p = p->left;        //go down to left most leaf
+            p = p->left;  // go down to left most leaf
         }
-        while(p->right == 0 || p->right == q){    //without right child,or right child is visited already
+
+        while(!(p->right) || p->right == q){  // no right child, or right child is visited already
             visit(p);                
             q = p;
-            if(stk.empty())    return;   //only one exit clause
+
+            if(stk.empty())    return;
             p = stk.top();
             stk.pop();
         }
-        stk.push(p);    //mid node with unvisited right child is pushed again, now access right child
-        p = p->right;   //access right child as a new subtree
+
+        stk.push(p);    // mid node with unvisited right child is pushed again, now access right child
+        p = p->right;   // access right child as a new subtree
     }      
 }
 
@@ -126,20 +130,22 @@ void BST<T>::iterativeInorder(){
     stack<BSTNode<T>*> stk;
     BSTNode<T> *p = root;
     while(1){                 
-        while(p->left != 0){        //go to left most leaf
+        while(p->left){  // go to left most leaf
             stk.push(p);
             p = p->left;
         }
-        visit(p);   //visited as V
-        while(p->right==0){
-            if(stk.empty())    return;//only one exit clause
+        visit(p);   // visited as V
+
+        while(!(p->right)){
+            if(stk.empty())    return;  // only one exit clause
+
             p = stk.top();
             stk.pop();
-            visit(p);
+            break;
         }
         p = p->right;
     }
-    p = 0;
+    p = NULL;
     return;
 }
 
@@ -153,21 +159,21 @@ void BST<T>::iterativeInorder(){
 template<class T>
 void BST<T>::MorrisInorder(){
     BSTNode<T> *p = root, *tmp;
-    while(p != 0){
-        if(p->left == 0){       //node without  hidden left child, "true" leaf
+    while(p){
+        if(!(p->left)){  // node without  hidden left child, "true" leaf
             visit(p);
-            p = p->right;        //LV->R
+            p = p->right;   // LV->R
         }else{
             tmp = p->left;
-            while(tmp->right != 0 && tmp->right != p){   //tmp stops as right most leaf of left subtree or parent of p
+            while(tmp->right && tmp->right != p){   //tmp stops as right most leaf of left subtree or parent of p
                 tmp = tmp->right;
             }
-            if(tmp->right == 0){        //rightmost leaf
+            if(!(tmp->right)){        //rightmost leaf
                 tmp->right = p;         //tmp becomes temporary parent of p means it is visited prior to p
                 p = p->left;            
             }else{                      //othwise tmp is temporary parent of p and tmp is output already 
                 visit(p);               //visit p and fallback tmp
-                tmp->right = 0;         
+                tmp->right = NULL;
                 p = p->right;           //downgrade to right subtree LV->R  
             }
         }
@@ -178,14 +184,14 @@ void BST<T>::MorrisInorder(){
 template<class T>
 void BST<T>::deleteByMerging(BSTNode<T>*& node){
     BSTNode<T> *tmp = node;
-    if(node != 0){
+    if(node){
         if(!node->right){        //has no right, promote left no matter null 
             node = node->left;
         }else if(!node->left){    //has no left, promote right
             node = node->right;
         }else{                    //replace with rightmost of left subtree
             tmp = node->left;
-            while(tmp->right != 0){
+            while(tmp->right){
                 tmp = tmp->right;
             }
             tmp->right = node->right;
@@ -198,10 +204,9 @@ void BST<T>::deleteByMerging(BSTNode<T>*& node){
 
 template<class T>
 void BST<T>::findAndDeleteByMerging(const T& el){
-    BSTNode<T> *node = root, *prev =0;
-    while(node != 0){
-        if(node->key == el)
-          break;
+    BSTNode<T> *node = root, *prev = NULL;
+    while(node){
+        if(node->key == el)    break;
         prev = node;
         if(node->key < el){
             node = node->right;
@@ -209,7 +214,8 @@ void BST<T>::findAndDeleteByMerging(const T& el){
             node = node->left;
         }
     }
-    if(node != 0 && node->key == el){   //prev is parent of node
+
+    if(node && node->key == el){   //prev is parent of node
         if(node == root){
             deleteByMerging(node);
         }else if(prev->left == node){
@@ -217,7 +223,7 @@ void BST<T>::findAndDeleteByMerging(const T& el){
         }else{
             deleteByMerging(prev->right);
         }
-    }else if(root != 0){
+    }else if(root){
         cout << "key " << el << " is not in the tree\n";
     }else{
         cout << "the tree is empty\n";

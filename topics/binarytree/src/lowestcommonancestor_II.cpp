@@ -12,7 +12,8 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include <unordered_set>    //told by backward_warning.h, it is replacement of <ext/hash_set> in c++0x
+#include <cmath>
+#include <unordered_set>  // told by backward_warning.h, it is replacement of <ext/hash_set> in c++0x
 
 using namespace std;
 
@@ -25,65 +26,65 @@ struct node{
     virtual ~node(){}
 };
 
-/*
- * solution 1
- * */
-node* LCA_01(node *root, node *p, node *q){
-    unordered_set<node*> visited;            //instead of hash_set
-    while(p || q){
-        if(p){
-            if(!visited.insert(p).second)    //pair<iterator, bool> unordered_set::insert(T _value) 
-              return p; //insert p failed(p exists in the table)
-            p = p->parent;
+class Solution{
+
+public:
+    node* LCA_01(node *root, node *p, node *q){
+        unordered_set<node*> visited;   // instead of hash_set
+        while(p || q){
+            if(p){
+                if(!visited.insert(p).second) {   // pair<iterator, bool> unordered_set::insert(T _value)
+                    return p; // insert p failed(p exists in the table)
+                }
+                p = p->parent;
+            }
+
+            if(q){
+                if(!visited.insert(q).second) {
+                    return q; //insert q failed(q exists in the table)
+                }
+                q = q->parent;
+            }
         }
-        if(q){
-            if(!visited.insert(q).second)
-              return q; //insert q failed(q exists in the table)
+        return 0;
+    }
+
+    node* LCA_02(node *p, node *q){
+        int h1 = getHeight(p);
+        int h2 = getHeight(q);
+        if(h1 > h2){  // assume h2 > h1, and q is deeper than p
+            myswap<node*>(&p, &q);
+        }
+
+        int dh = abs(h2 - h1);
+        for(int h = 0; h < dh; h++) {
+            q = q->parent;    // boost lower q to depth of p
+        }
+
+        while(p && q){
+            if(p == q)    return p;
+            p = p->parent;
             q = q->parent;
         }
-    }
-    return 0;
-}
-
-/*
- * solution 2
- * */
-int getHeight(node *p){        //height of root is 1
-    int height=0;
-    while(p){
-        height++;
-        p = p->parent;
-    }
-    return height;
-}
-
-template<typename T>
-void myswap(T* pa, T* pb){
-    T tmp = *pb;
-    *pb = *pa;
-    *pa = tmp;
-    tmp = 0;
-}
-
-node *LCA(node *p, node *q){
-    int h1 = getHeight(p);
-    int h2 = getHeight(q);
-    if(h1 > h2){
-        myswap<int>(&h1, &h2);
-        myswap<node*>(&p, &q);
+        return 0;    //p and q are not in one tree
     }
 
-    int dh = h2 - h1;    //invariant: h1 <= h2, p is higher than q
-    for(int h=0;h<dh;h++)
-      q = q->parent;        //boost lower q to depth of p
-    while(p && q){
-        if(p == q)    return p;
-        p = p->parent;
-        q = q->parent;
+private:
+    // height of root is 1
+    int getHeight(node *p){
+        int height = 0;
+        while(p){
+            height++;
+            p = p->parent;
+        }
+        return height;
     }
-    return 0;    //p and q are not in one tree
-} 
 
-int main(int, char**){
-    return 0;
-}
+    template<typename T>
+    void myswap(T* pa, T* pb){
+        T tmp = *pb;
+        *pb = *pa;
+        *pa = tmp;
+        tmp = 0;
+    }
+};
