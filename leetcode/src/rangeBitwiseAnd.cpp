@@ -11,7 +11,7 @@ public:
     // Solution:
     // 0101 (5)
     // 0110 (6)
-    // 0111 (7) we can find that if the bit of all numbers have '0', the AND result of that bit is 0
+    // 0111 (7) we can find that if one bit of all numbers have one '0', this bit of AND result is 0
     int rangeBitwiseAnd(int m, int n) {
         if(m == n)    return m;
 
