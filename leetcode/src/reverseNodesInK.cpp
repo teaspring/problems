@@ -1,5 +1,5 @@
 /*
- * given a SLL, reverse the nodes of k at a time, return its modified head.if number less than k, remain them.
+ * given a SLL, reverse k nodes once and keep on doing it. if count of nodes to reverse less than k, remain them.
  *
  * e.g 1->2->3->4->5,
  * k = 2, return 2->1->4->3->5
@@ -11,31 +11,23 @@
 #include "../include/preliminary.h"
 
 class Solution{
-
 public:
-    /*
-     *
-     * */
     ListNode* reverseKGroups(ListNode *head, int k){
         if(!head || k < 2)    return head;
 
-        ListNode *pre = NULL, *h = head, *post = NULL;
-
+        ListNode *pre = NULL, *h = head;
         head = NULL;
-
-        while(h != NULL){
+        while(h){
             ListNode *ln = h;
 
             int i = 1;
-            for(; i < k && ln->next != NULL; ++i){
+            for(; i < k && ln->next; ++i){
                 ln = ln->next;
             }
-
             if(i < k)    break;  // remaining nodes is less than k
 
-            post = ln->next;
-
-            ListNode* nh = reverse(h, post);
+            ListNode *post = ln->next;
+            ListNode *nh = reverse(h, post);
 
             if(!pre){
                 head = nh;
@@ -44,13 +36,10 @@ public:
             }
 
             pre = h;  // after reverse, h becomes exclusive prev of next partial SLL
-
             h = post; // inclusive head of next partial SLL
         }
 
-        if(!head)    return h;  // whole length is less than k, nothing happened
-
-        return head;
+        return head ? head : h;  // head == NULL means whole length is less than k, nothing happened
     }
 
 private:
@@ -62,21 +51,14 @@ private:
     ListNode* reverse(ListNode *h, ListNode *post){
         if(!h)    return NULL;
 
-        ListNode *l1 = h, *l2 = h->next, *after = l2->next;
-
+        ListNode *l1 = h, *l2 = h->next;
         while(l2 != post){  // once loop clause to process l2
-
+            ListNode *after = l2->next;
             l2->next = l1;
 
             l1 = l2;
-
             l2 = after;
-
-            if(!after)    break;
-
-            after = l2->next;
         }
-
         h->next = post;
 
         return l1;

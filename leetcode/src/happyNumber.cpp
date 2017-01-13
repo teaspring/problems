@@ -17,9 +17,9 @@ public:
         int fast = n;
         do{
             slow = digitSquareSum(slow);
+            fast = digitSquareSum(fast); // 2X runner
             fast = digitSquareSum(fast);
-            fast = digitSquareSum(fast);
-        } while (slow != fast);
+        } while (fast != 1 && slow != fast);
         return fast == 1;
     }
 
