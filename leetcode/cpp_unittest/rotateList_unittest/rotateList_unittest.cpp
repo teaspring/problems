@@ -3,8 +3,7 @@
 
 /*
  * rotateList.cpp:
- * ListNode* rotateRight_01(ListNode* head, int k)
- * ListNode* rotateRight_02(ListNode* head, int k)
+ * ListNode* rotateRight(ListNode* head, int k)
  *
  * perliminary.cpp:
  * ListNode* createSLL(int*, int n)
@@ -25,8 +24,8 @@ void assertList(ListNode *expected, ListNode *result){
     EXPECT_EQ(NULL, h2);
 }
 
-/* ------------rotateRight_01() test cases ---------------- */
-TEST(rotateRight01_Test, Positive01){
+/* ------------rotateRight() test cases ---------------- */
+TEST(rotateRight_Test, Positive01){
     Solution s;
 
     int A[] = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -34,7 +33,7 @@ TEST(rotateRight01_Test, Positive01){
     ListNode *l1 = createSLL(A, n1);
 
     int k = 3;
-    ListNode *result = s.rotateRight_01(l1, k);
+    ListNode *result = s.rotateRight(l1, k);
 
     int B[] = {6, 7, 8, 1, 2, 3, 4, 5};
     const int n2 = sizeof(B) / sizeof(int);
@@ -46,7 +45,7 @@ TEST(rotateRight01_Test, Positive01){
     delSLL(result);
 }
 
-TEST(rotateRight01_Test, Positive02){
+TEST(rotateRight_Test, Positive02){
     Solution s;
 
     int A[] = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -54,7 +53,7 @@ TEST(rotateRight01_Test, Positive02){
     ListNode *l1 = createSLL(A, n1);
 
     int k = 7;
-    ListNode *result = s.rotateRight_01(l1, k);
+    ListNode *result = s.rotateRight(l1, k);
 
     int B[] = {2, 3, 4, 5, 6, 7, 8, 1};
     const int n2 = sizeof(B) / sizeof(int);
@@ -66,7 +65,7 @@ TEST(rotateRight01_Test, Positive02){
     delSLL(result);
 }
 
-TEST(rotateRight01_Test, Negative01){
+TEST(rotateRight_Test, Negative01){
     Solution s;
 
     int A[] = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -74,7 +73,7 @@ TEST(rotateRight01_Test, Negative01){
     ListNode *l1 = createSLL(A, n1);
 
     int k = 8;
-    ListNode *result = s.rotateRight_01(l1, k);
+    ListNode *result = s.rotateRight(l1, k);
 
     int B[] = {1, 2, 3, 4, 5, 6, 7, 8};
     const int n2 = sizeof(B) / sizeof(int);
@@ -86,7 +85,7 @@ TEST(rotateRight01_Test, Negative01){
     delSLL(result);
 }
 
-TEST(rotateRight01_Test, Negative02){
+TEST(rotateRight_Test, Negative02){
     Solution s;
 
     int A[] = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -94,90 +93,9 @@ TEST(rotateRight01_Test, Negative02){
     ListNode *l1 = createSLL(A, n1);
 
     int k = 9;
-    ListNode *result = s.rotateRight_01(l1, k);
+    ListNode *result = s.rotateRight(l1, k);
 
-    int B[] = {1, 2, 3, 4, 5, 6, 7, 8};
-    const int n2 = sizeof(B) / sizeof(int);
-    ListNode *expected = createSLL(B, n2);
-
-    assertList(expected, result);
-
-    delSLL(expected);
-    delSLL(result);
-}
-
-/* ------------rotateRight_02() test cases ---------------- */
-TEST(rotateRight02_Test, Positive01){
-    Solution s;
-
-    int A[] = {1, 2, 3, 4, 5, 6, 7, 8};
-    const int n1 = sizeof(A) / sizeof(int);
-    ListNode *l1 = createSLL(A, n1);
-
-    int k = 3;
-    ListNode *result = s.rotateRight_02(l1, k);
-
-    int B[] = {6, 7, 8, 1, 2, 3, 4, 5};
-    const int n2 = sizeof(B) / sizeof(int);
-    ListNode *expected = createSLL(B, n2);
-
-    assertList(expected, result);
-
-    delSLL(expected);
-    delSLL(result);
-}
-
-TEST(rotateRight02_Test, Positive02){
-    Solution s;
-
-    int A[] = {1, 2, 3, 4, 5, 6, 7, 8};
-    const int n1 = sizeof(A) / sizeof(int);
-    ListNode *l1 = createSLL(A, n1);
-
-    int k = 7;
-    ListNode *result = s.rotateRight_01(l1, k);
-
-    int B[] = {2, 3, 4, 5, 6, 7, 8, 1};
-    const int n2 = sizeof(B) / sizeof(int);
-    ListNode *expected = createSLL(B, n2);
-
-    assertList(expected, result);
-
-    delSLL(expected);
-    delSLL(result);
-}
-
-TEST(rotateRight02_Test, Negative01){
-    Solution s;
-
-    int A[] = {1, 2, 3, 4, 5, 6, 7, 8};
-    const int n1 = sizeof(A) / sizeof(int);
-    ListNode *l1 = createSLL(A, n1);
-
-    int k = 8;
-    ListNode *result = s.rotateRight_02(l1, k);
-
-    int B[] = {1, 2, 3, 4, 5, 6, 7, 8};
-    const int n2 = sizeof(B) / sizeof(int);
-    ListNode *expected = createSLL(B, n2);
-
-    assertList(expected, result);
-
-    delSLL(expected);
-    delSLL(result);
-}
-
-TEST(rotateRight02_Test, Negative02){
-    Solution s;
-
-    int A[] = {1, 2, 3, 4, 5, 6, 7, 8};
-    const int n1 = sizeof(A) / sizeof(int);
-    ListNode *l1 = createSLL(A, n1);
-
-    int k = 9;
-    ListNode *result = s.rotateRight_02(l1, k);
-
-    int B[] = {2, 3, 4, 5, 6, 7, 8, 1};
+    int B[] = {8, 1, 2, 3, 4, 5, 6, 7};
     const int n2 = sizeof(B) / sizeof(int);
     ListNode *expected = createSLL(B, n2);
 
