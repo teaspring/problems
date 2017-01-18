@@ -1,7 +1,8 @@
 /*
- * a matrix is made up of '1' and '0', find the maximum rectangle which ONLY contains '1'
+ * Problem: a matrix is made up of '1' and '0', find the maximum rectangle which ONLY contains '1'
  *
- * [1, 2, 4, 0, 2], every int has one unit of width. max area is 4
+ * Sub prolem: given integer array which int val is expressed as height of unit width, get the maximum rectangle area
+ * E.g. [1, 2, 4, 0, 2], every int has one unit of width. max area is 4
  */
 
 #include "../include/preliminary.h"
@@ -28,7 +29,7 @@ public:
                 }
             }
             vector<int> height(horizon, horizon + n);
-            int tmp = largestRectangleArea(height);
+            int tmp = largestRectangleInArray(height);
             res = max(res, tmp);
 
             height.clear();
@@ -36,24 +37,25 @@ public:
         return res;
     }
 
-    int largestRectangleArea(const vector<int>& heights){ //max rectangle in one array, time is O(n)
-        const int n = heights.size();
-        if(n == 0)    return 0;
+    // sub problem: get max rectangle area in int array, time in O(n)
+    int largestRectangleInArray(const vector<int>& heights){
+        if(heights.empty())    return 0;
 
         int res = 0;
+        const int n = heights.size();
         stack<int> stk; // store index
 
         for(int i = 0; i <= n; i++){  // include i == n avoids the appendix process
             int h = (i == n ? 0 : heights[i]);
-            while(!stk.empty() && heights[stk.top()] > h){ // before lower height push to stack, pop higher height
-                int p = stk.top();                         // and calculate their rectangle
+            while(!stk.empty() && heights[stk.top()] > h){ // before push lower height to stack, pop higher height
+                int idx = stk.top();                       // and calculate its rectangle. this while-loop in time O(1)
                 stk.pop();
 
-                if(!stk.empty() && heights[stk.top()] == heights[p])    continue;
+                if(!stk.empty() && heights[stk.top()] == heights[idx])    continue;
 
                 int start = (stk.empty() ? -1 : stk.top());  // start is exclusive left index
 
-                int tmp = (i-1 - start) * heights[p]; // i-1 is inclusive right index
+                int tmp = (i-1 - start) * heights[idx]; // i-1 is inclusive right index
                 res = max(res, tmp);
             }
             stk.push(i); // push height which is greater than or equal to [stk.top()]
