@@ -13,7 +13,7 @@
  * it is not bi-directional mapping, but no two chars can map one same char
  * */
 #include <iostream>
-#include <string>
+#include <string> // string::operator[] and ::at() to get char
 #include <cstring> // memset()
 #include <set>
 
