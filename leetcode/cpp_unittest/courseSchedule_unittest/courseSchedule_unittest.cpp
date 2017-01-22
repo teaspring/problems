@@ -85,3 +85,28 @@ TEST(findOrderTest, Positive01){
     prerequisites.clear();
 }
 
+TEST(findOrderTest, Positive02){
+    Solution s;
+    vector<pair<int, int> > prerequisites;
+    pair<int, int> pre1(5, 8);
+    prerequisites.push_back(pre1);
+    pair<int, int> pre2(3, 5);
+    prerequisites.push_back(pre2);
+    pair<int, int> pre3(1, 9);
+    prerequisites.push_back(pre3);
+    pair<int, int> pre4(4, 5);
+    prerequisites.push_back(pre4);
+    pair<int, int> pre5(0, 2);
+    prerequisites.push_back(pre5);
+    pair<int, int> pre6(1, 9); // duplicate prerequisite relation
+    prerequisites.push_back(pre6);
+    pair<int, int> pre7(7, 8);
+    prerequisites.push_back(pre7);
+    pair<int, int> pre8(4, 9);
+    prerequisites.push_back(pre8);
+
+    int num = 10;
+    vector<int> res = s.findOrder(num, prerequisites);
+    assertTopoOrder(num, prerequisites, res);
+    prerequisites.clear();
+}

@@ -10,6 +10,10 @@
  * there may be 1+ available orders, return either one is OK; if it is impossible to finish all courses, return empty array
  * '4, [1,0], [2,0], [3,1], [3,2]' => either [0,1,2,3] or [0,2,1,3] is fine
  *
+ * Implicit conditions:
+ * 1.each base course can have multiple prerequisite relations, and each course as prerequisite can have multiple forward courses
+ * 2.in argument prerequistes vector<pair<int, int>>, there may be duplicate pairs !
+ *
  * analysis: the prerequisite pair<a, b> does not mean a must be following b, but to tell b should be taken in front of a. The relationships
  * reminds one of directed graphs, and the problem reduces to a topological sort order of courses.
  * */
@@ -42,7 +46,7 @@ public:
         return true;
     }
 
-    // a heavy containered problem/solution
+    // heavy containered problem/solution
     vector<int> findOrder(int numCourses, vector<pair<int, int> >& prerequisites) {
         vector<unordered_set<int> > graph = make_graph(numCourses, prerequisites);
         vector<int> degrees = compute_indegree(graph);
