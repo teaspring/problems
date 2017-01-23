@@ -85,8 +85,7 @@ public:
         if(Rows == 0)    return 0;
         const int Cols = grid[0].size();
 
-        int tags[Rows][Cols];
-        memset(tags, 0, sizeof(tags));
+        vector<vector<int> > tags(Rows, vector<int>(Cols, 0)); // int tags[Rows][Cols]
 
         int islands = 0;
         for(int i = 0; i < Rows; i++) {

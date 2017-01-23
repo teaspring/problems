@@ -10,15 +10,12 @@
 class Solution{
 public:
     int maximumRectangle(vector<vector<char> >& matrix){ //to project 2D matrix to 1D array eventually
-        if(matrix.empty())    return 0;
+        if(matrix.empty() || matrix[0].empty())    return 0;
 
         const int m = matrix.size();
         const int n = matrix[0].size();
         int res = 0;
-        if(n == 0)    return 0;
-
-        int horizon[n];
-        memset(horizon, 0, sizeof(horizon));
+        vector<int> horizon(n, 0);
 
         for(int i = 0; i < m; i++){ // each row
             for(int j = 0; j < n; j++){
@@ -28,11 +25,9 @@ public:
                     horizon[j] = 0;
                 }
             }
-            vector<int> height(horizon, horizon + n);
-            int tmp = largestRectangleInArray(height);
-            res = max(res, tmp);
 
-            height.clear();
+            int tmp = largestRectangleInArray(horizon);
+            res = max(res, tmp);
         }
         return res;
     }

@@ -17,11 +17,7 @@
 using namespace std;
 
 class Solution{
-
 public:
-    /*
-     *
-     * */
     bool exist(const vector<vector<char> >& board, const string& word){
         if(word.empty())    return true;
         if(board.empty() || board[0].empty())    return false;
@@ -42,15 +38,13 @@ public:
             }
         }
 
-        int used[m*n];
-        memset(used, 0, sizeof(used));
-
+        vector<int> used(m*n, 0);
         vector<int> options = pos[(int)word[0]];
         const int t = options.size();
+
         for(int i = 0; i < t; i++){
             used[options[i]] = 1;
-            if(searchOneChar(pos, word, 1, options[i], used, m, n))
-                return true;
+            if(searchOneChar(pos, word, 1, options[i], used, m, n))    return true;
             used[options[i]] = 0;
         }
         return false;
@@ -60,8 +54,13 @@ private:
     /*
      * check next optional char whether is next to current char
      * */
-    bool searchOneChar(vector<int> pos[], const string& word, int charIdx,
-                int currpos, int *used, int rows, int cols){
+    bool searchOneChar(vector<int> pos[],
+                       const string& word,
+                       int charIdx,
+                       int currpos,
+                       vector<int>& used,  // int[m*n]
+                       int rows,
+                       int cols){
         if(charIdx == (int)word.size())    return true;
 
         char ch = word[charIdx];

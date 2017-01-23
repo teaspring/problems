@@ -6,12 +6,10 @@
  *
  * Manacher provides a time O(n) solution, smart and elegent
  * */
-#include "stdio.h"
 #include <iostream>
 #include <string>
 #include <cstring>
-#include <fstream>
-#include <cmath>
+#include <vector>
 
 using namespace std;
 
@@ -23,8 +21,7 @@ public:
     string maxpalindrome(const string& str){
         const int n = str.size();
 
-        int dp[n][n+1]; // dp[i][j] means palindrome length of str starting at i with length of j
-        memset(dp, 0, sizeof(dp));
+        vector<vector<int> > dp(n, vector<int>(n+1, 0)); // int dp[n][n+1], dp[i][j] means palindrome length of str starting at i with length of j
         for(int i = 0; i < n; ++i){
             dp[i][1] = 1;
         }
@@ -60,8 +57,7 @@ public:
         const int n = S.size();
         const int N = 2 * n + 1;
 
-        char pMix[N]; // extend char[n] to char[2*n+1] by inserting dummy char '#'
-        memset(pMix, 0, sizeof(pMix));
+        vector<char> pMix(N, 0); // extend char[n] to char[2*n+1] by inserting dummy char '#'
 
         pMix[0] = '#';
         for(int i = 0, k = 1; i < n || k < N; k++){
@@ -72,8 +68,7 @@ public:
             }
         }
 
-        int p[N]; // p[i] means radius of longest palindrome centering at [i], which include center
-        memset(p, 0, sizeof(p));
+        vector<int> p(N, 0); // p[i] means radius of longest palindrome centering at [i], which include center
         p[0] = 1;
 
         int id = 0;  // center of longest palindrome
@@ -114,24 +109,3 @@ public:
 
 /* unit test is in ../cpp_unittest/longestPalindrome_unittest */
 
-/*
-int main(int argc, char** args){
-    if(0 && argc > 1){
-        fstream infile(args[1]);
-        if(!infile){
-            cerr<<"cannot open file";
-            infile.close();
-            return 0;
-        }
-
-        const int N = 10001;
-        char cstr[N];
-        memset(cstr, 0, sizeof(cstr));
-
-        infile.getline(cstr, N);
-        printf("%s\n", longestPalindrome(cstr).c_str());
-        infile.close();
-    }
-    return 0;
-}
-*/

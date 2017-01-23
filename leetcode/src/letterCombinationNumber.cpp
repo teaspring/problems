@@ -51,7 +51,6 @@ public:
                 canParse = false;
                 break;
             }
-
             number[i] = atoi(&ch);
         }
 
@@ -60,8 +59,7 @@ public:
             return res;
         }
 
-        int index[n];
-        memset(index, 0, sizeof(index));
+        vector<int> index(n, 0);
 
         /*
          * alternative solution is push optional char to vector<char> like stack<>
@@ -74,9 +72,7 @@ public:
 
             for(int i = 0; i < n; i++){
                 if(number[i] == 1)    continue;
-
-                // index[] initialized value is 0
-                cstr[i] = character[number[i]][index[i]];
+                cstr[i] = character[number[i]][index[i]]; // index[] initialized value is 0
             }
 
             res.push_back(string(cstr));
@@ -92,11 +88,9 @@ public:
                 k--;
             }
 
-            if(k < 0)        break;
-
+            if(k < 0)    break;
             index[k]++;
         }
-
         return res;
     }
 };

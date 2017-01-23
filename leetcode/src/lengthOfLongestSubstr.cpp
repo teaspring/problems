@@ -4,8 +4,8 @@
  * */
 
 #include <string>
-#include <cstring>
-#include <algorithm>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -27,8 +27,7 @@ public:
         }
         pos[str[0] - 'a'] = 0;
 
-        int lengths[n]; // longest substr without any duplicate char ending at [i]
-        memset(lengths, 0, sizeof(lengths));
+        vector<int> lengths(n, 0); // longest substr without any duplicate char ending at [i]
         lengths[0] = 1;
 
         for(int i = 1; i < n; i++){

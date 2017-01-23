@@ -7,10 +7,11 @@
  * ababa/abaaba
  * aaaaa/aabaaaabaaaaa
  * */
-#include "stdio.h"
+#include <cstdio>
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ class Solution{
     * with KMP algorithm, perform preprocess pattern P to get int prefix[P]
     * prefix[i] = l means prefix with length l of s can be suffix of s, while s is prefix with length i+1 of pattern
     * */
-    void setPrefix(const char *pattern, int *prefix){ // prefix should be [n]
+    void setPrefix(const char *pattern, vector<int>& prefix){ // prefix should be [n]
         const int n = strlen(pattern);
         prefix[0] = 0;
         for(int i = 1; i < n; i++){
@@ -46,8 +47,7 @@ public:
         if(m == 0)    return str;
         if(n < m || n == 0)    return NULL;
 
-        int prefix[m];
-        memset(prefix, 0, sizeof(prefix)/sizeof(int));
+        vector<int> prefix(m, 0);
         setPrefix(pattern, prefix); // get prefix array
 
         int i = 0, s = 0; // i is cursor offset in str while s is pattern offset in str

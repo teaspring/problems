@@ -53,10 +53,7 @@ private:
     void make_vpalin(const string& str, vector<vector<int> >& vpalin){
         const int n = str.size();
 
-        int dp[n][n+1]; // dp[i][j] tells whether s.substr(i,j-i) is palindrome or not, both of i and j are char index among str
-        for(int i = 0; i < n; i++){
-            memset(dp[i], 0, sizeof(dp[i]));
-        }
+        vector<vector<int> > dp(n, vector<int>(n+1, 0)); // int dp[n][n+1], dp[i][j] tells whether s.substr(i,j-i) is palindrome or not, both of i and j are char index among str
 
         for(int i = 0; i < n; i++){
             dp[i][1] = 1;
@@ -73,7 +70,6 @@ private:
                 }
             }
         }
-
         return;
     }
 

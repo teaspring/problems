@@ -14,7 +14,6 @@
  * */
 #include <iostream>
 #include <string> // string::operator[] and ::at() to get char
-#include <cstring> // memset()
 #include <set>
 
 using namespace std;

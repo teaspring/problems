@@ -5,6 +5,7 @@
  * */
 #include <string>
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
@@ -21,9 +22,8 @@ public:
         const int n = s2.size();
 
         // first check them via the char set
-        int arr1[256], arr2[256];
-        memset(arr1, 0, sizeof(arr1));
-        memset(arr2, 0, sizeof(arr2));
+        vector<int> arr1(256, 0);
+        vector<int> arr2(256, 0);
 
         for(int i=0; i < m; i++)    arr1[(int)s1[i]]++;
         for(int i=0; i < n; i++)    arr1[(int)s2[i]]++;
@@ -35,8 +35,7 @@ public:
 
         // validation via DP
         // dp[i][j] == 1 means s1.sub(0,i) and s2.sub(0,j) interleaves s3.sub(0, i+j), both of i and j are lengths
-        bool dp[m+1][n+1];
-        memset(dp, 0, sizeof(dp));
+        vector<vector<bool> > dp(m+1, vector<bool>(n+1, 0)); // bool dp[m+1][n+1]
         dp[0][0] = true;
 
         for(int i = 1; i <= m && s1[i-1] == s3[i-1]; i++){

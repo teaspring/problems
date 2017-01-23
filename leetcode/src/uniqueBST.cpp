@@ -5,6 +5,7 @@
  * */
 
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
@@ -17,9 +18,7 @@ public:
     int numTrees(int n){
         if(n < 1)    return 0;
 
-        int subs[n+1];
-        memset(subs, 0, sizeof(subs));
-
+        vector<int> subs(n+1, 0);
         subs[1] = subs[0] = 1;
 
         for(int i = 2; i <= n; ++i){ // i is totol node count in tree, 1-based
@@ -27,7 +26,6 @@ public:
                 subs[i] += subs[l] * subs[i-1 - l];  // left sub tree has l nodes while right sub tree has (i-1-l)
             }
         }
-
         return subs[n];
     }
 };

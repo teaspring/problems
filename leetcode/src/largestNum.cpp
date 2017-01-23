@@ -46,7 +46,6 @@ public:
 
             int l = vec.size();
             char* curr = new char[l+1];
-            memset(curr, 0, sizeof(curr));
             curr[l] = '\0';
 
             for(int j = 0; j < l; j++){  // save cstr of int in correct order

@@ -21,31 +21,25 @@ public:
     int minTotal_01(vector<vector<int> >& triangle){
         const int n = triangle.size();
 
-        int indice[n];  // start from {0,0,0,0...} the most left path
-        memset(indice, 0, sizeof(indice));
-
+        vector<int> indice(n, 0); // start from {0,0,0,0...} the most left path
         int res = sumPath(triangle, indice);
 
         while(1){
             int i = n-1;
-
             while(i > 0){
                 if(indice[i] == indice[i-1]){
                     indice[i]++;
                     break;
                 }
-
                 --i;
             }
 
             if(i == 0)    break;
 
             int k = indice[i];
-
             for(int j = i+1; j < n; j++){ // take care the permutation, reset the following integers eqaul to indice[i]
                 indice[j] = k;
             }
-
             res = min(res, sumPath(triangle, indice));
         }
 
@@ -93,14 +87,13 @@ private:
     /*
      * used by solution 1
      * */
-    int sumPath(const vector<vector<int> >& triangle, int* indice){
+    int sumPath(const vector<vector<int> >& triangle, vector<int>& indice){
         const int n = triangle.size();
         int sum = 0;
 
         for(int i = 0; i < n; ++i){
             sum += triangle[i][indice[i]];
         }
-
         return sum;
     }
 };
