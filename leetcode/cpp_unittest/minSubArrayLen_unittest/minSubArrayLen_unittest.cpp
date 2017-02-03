@@ -71,3 +71,20 @@ TEST(minSubArrayLen02_Test, Positive_03){
     EXPECT_EQ(expected, s.minSubArrayLen_02(sum, nums));
     nums.clear();
 }
+
+TEST(minSubArrayLen02_Test, Positive_04){
+    Solution s;
+
+    int arr[] = {1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0};
+    const int n = sizeof(arr) / sizeof(int);
+    vector<int> nums(arr, arr + n);
+
+    int sum = 2;
+    int expected = 5;
+    EXPECT_EQ(expected, s.minSubArrayLen_02(sum, nums));
+
+    sum = 3;
+    expected = 10;
+    EXPECT_EQ(expected, s.minSubArrayLen_02(sum, nums));
+    nums.clear();
+}

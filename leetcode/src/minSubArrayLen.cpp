@@ -42,13 +42,12 @@ public:
         while(u < v) {
             int m = (u + v) >> 1;
             int sum1 = maxSubArrayFixedLen(nums, m);
-            int sum2 = maxSubArrayFixedLen(nums, m-1);
+            int sum2 = maxSubArrayFixedLen(nums, m-1); // sum2 <= sum1 definitely
             if(sum2 < s && s <= sum1)    return m;
+
             if(s <= sum2) {
                 v = m;
-            } else if (sum1 <= s) {
-                u = m+1;
-            } else {
+            } else { // sum1 <= s
                 u = m+1;
             }
         }
