@@ -50,6 +50,25 @@ TEST(canFinishTest, Negative02){
     prerequisites.clear();
 }
 
+// this case tests N base <-> 1 pre, and 1 base <-> N pre
+TEST(canFinishTest, Negative03){
+    Solution s;
+    vector<pair<int, int> > prerequisites;
+    pair<int, int> pre1(1, 2);
+    prerequisites.push_back(pre1);
+    pair<int, int> pre2(1, 3);
+    prerequisites.push_back(pre2);
+    pair<int, int> pre3(2, 4);
+    prerequisites.push_back(pre3);
+    pair<int, int> pre4(4, 1);
+    prerequisites.push_back(pre4);
+    pair<int, int> pre5(0, 4);
+    prerequisites.push_back(pre5);
+
+    EXPECT_FALSE(s.canFinish(5, prerequisites));
+    prerequisites.clear();
+}
+
 /*
  * vector<int> findOrder(int numCourses, vector<pair<int, int> >& prerequisits)
  * */

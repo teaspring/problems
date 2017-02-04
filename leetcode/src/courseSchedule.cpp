@@ -29,20 +29,33 @@ using namespace std;
 
 class Solution{
 public:
+    // if only map<base, pre> is used, it can not handle case of 1 base <-> N pre, while pairs of same base will be covered
+    // so that the correct solution is to use map<base, pre> and map<pre, base> both
     bool canFinish(int numCourses, vector<pair<int, int> >& prerequisites) {
-        unordered_map<int, int> mp; // with pair<base, prerequi>, in map, base as key, and prerequisite as value
-        const int n = prerequisites.size();
-        for(int i = 0; i < n; ++i) {
-            int pre = prerequisites[i].second, base = prerequisites[i].first;
-            if(pre > numCourses - 1 || base > numCourses - 1)    return false;
+        unordered_map<int, int> mp; // with pair<base, pre>, it is base as key, and pre as value in map<>
+        for(auto pa : prerequisites) {
+            int base = pa.first, pre = pa.second;
+            if(base > numCourses - 1 || pre > numCourses - 1)    return false;
 
             unordered_map<int, int>::iterator it = mp.find(pre);
             while(it != mp.end()) {
-                if(it->second == base)    return false;
+                if(it->second == base)    return false; // there is a dependence cycle
                 it = mp.find(it->second);
             }
             mp[base] = pre;
         }
+
+        mp.clear(); // reset to push pair<pre, base>, it is pre as key and base as value in map<>
+        for(auto pa : prerequisites) {
+            int base = pa.first, pre = pa.second;
+            unordered_map<int, int>::iterator it = mp.find(base);
+            while(it != mp.end()) {
+                if(it->second == pre)    return false; // there is a dependence cycle
+                it = mp.find(it->second);
+            }
+            mp[pre] = base;
+        }
+
         return true;
     }
 
