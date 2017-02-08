@@ -22,7 +22,7 @@ using namespace std;
 
 class Solution{
 public:
-    // depth-first search
+    // depth-first search, not work
     int numIslands_error_01(vector<vector<char> >& grid) {
         const int Rows = grid.size();
         if(Rows == 0)    return 0;
@@ -79,7 +79,7 @@ public:
         return islands;
     }
 
-    // BFS
+    // BFS, not work
     int numIslands_error_02(vector<vector<char> >& grid) {
         const int Rows = grid.size();
         if(Rows == 0)    return 0;
