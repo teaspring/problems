@@ -2,17 +2,17 @@
  * Problem I:
  * given a matrix composed of char, search a word whether exists in it.
  * Note:
- * 1. there can be duplicate char in board
- * 2. the word flow can go right/up/down
+ * 1. the word can be constructed from adjacent letter cells, which means horizontally and vertically(up/down/left/right)
+ * 2. one letter cannot be used more than once
  *
  * [ABCD,
  *  DEFC]
- * ABE:  true
- * DF: false
+ * ABE: true
+ * DBCF: false
  *---------------------------------------------------------------------------------------
  * Problem II:
- * given a 2D board and a list of words from the dictionary, find all words in the board
- * Each word must be constructed from the letters of sequentially adjacent cell, where 'adjacent' cells means horizontally or vertically
+ * given a 2D board and a list of words from the dictionary, find all words in the board.
+ * Each word must be constructed from the letters of sequentially adjacent cell, where 'adjacent' cells means horizontally or vertically(right/left/up/down)
  * one letter cell cannot be used more than once in a word. all inputs are lowercase letters a-z
  *
  * ['o','a','a','n';
@@ -32,39 +32,50 @@ using namespace std;
 // for exist():bool, and raw versioned findWords():vector<string>
 class Solution1{
 public:
-    bool exist(const vector<vector<char> >& board, const string& word){
+    // initial version, can work, but not good enough
+    bool exist_01(vector<vector<char> >& board, const string& word){
         if(word.empty())    return true;
-        if(board.empty() || board[0].empty())    return false;
+        if(board.empty())    return false;
 
-        const int m = board.size();
-        const int n = board[0].size();
-        const int l = word.size();
-        if(l > m*n)    return false;   // out of range
+        const int Rows = board.size();
+        const int Cols = board[0].size();
+        const int len = word.size();
+        if(len > Rows * Cols)    return false;   // out of range
 
-        vector<int> pos[256];
-        for(int i = 0; i < 256; i++){ // support char search in O(1)
-            pos[i] = vector<int>();
-        }
+        vector<vector<int> > pos(256, vector<int>()); // support char search in O(1)
 
-        for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
-                pos[(int)board[i][j]].push_back(i * n + j); // save occurance positions of char on board
+        for(int i = 0; i < Rows; i++){
+            for(int j = 0; j < Cols; j++){
+                pos[(int)board[i][j]].push_back(i * Cols + j); // save occurance positions of char on board
             }
         }
 
-        vector<int> used(m*n, 0);
+        vector<int> used(Rows * Cols, 0);
         vector<int> options = pos[(int)word[0]];
-        const int t = options.size();
-
-        for(int i = 0; i < t; i++){
+        for(int i = 0; i < (int)options.size(); i++){
             used[options[i]] = 1;
-            if(searchOneChar(pos, word, 1, options[i], used, m, n))    return true;
+            if(searchOneChar(pos, word, 1, options[i], used, Rows, Cols))    return true;
             used[options[i]] = 0;
         }
         return false;
     }
 
+    // idea from findWords()
+    bool exist(vector<vector<char> >& board, const string& word) {
+        if(board.empty())    return false;
+
+        const int Rows = board.size();
+        const int Cols = board[0].size();
+        for(int i = 0; i < Rows; ++i) {
+            for(int j = 0; j < Cols; ++j) {
+                if(checkNextChar(board, i, j, word, 0))    return true;
+            }
+        }
+        return false;
+    }
+
     // several points to pay attention:
+    // 0. words[] may has duplicate word
     // 1. if one word is found already, how to stop searching remaining area?
     // 2. how to separate the covered area and not yet area?
     // 3. how to avoid useless search of one word if its prefix is confirmed not existing?
@@ -79,7 +90,7 @@ public:
         const int Cols = board[0].size();
         set<string> result; // use set<> to avoid duplicated search
 
-        for(string word : words) {
+        for(string word : words) { // the drawback of this solution is this level loop, it will be extermely redundant for large words[]
             vector<vector<bool> > covered(Rows, vector<bool>(Cols, false)); // tags to tell covered cells
             for(int i = 0; i < Rows; ++i) {
                 for(int j = 0; j < Cols; ++j) {
@@ -94,13 +105,14 @@ private:
     /*
      * check next optional char whether is next to current char
      * */
-    bool searchOneChar(vector<int> pos[],
+    bool searchOneChar(vector<vector<int> >& pos,
                        const string& word,
                        int charIdx,
                        int currpos,
                        vector<int>& used,  // int[m*n]
                        int rows,
                        int cols){
+
         if(charIdx == (int)word.size())    return true;
 
         char ch = word[charIdx];
@@ -125,15 +137,33 @@ private:
         return false;
     }
 
-    // process adjacent cells recursively
+    // spawned from findNextChar()
+    bool checkNextChar(vector<vector<char> >& grid, int i, int j, const string& word, int idx) {
+        if(i < 0 || i >= (int)grid.size() || j < 0 || j >= (int)grid[0].size())    return false;
+        const int len = word.size();
+        if(grid[i][j] != word[idx])    return false; // idx increases by 1 once from 0, so it must be less than len
+
+        if(idx == len - 1)    return true;
+
+        int charIdx = grid[i][j] - 'A';
+        grid[i][j] = '*';
+        bool result = checkNextChar(grid, i-1, j, word, idx+1) ||
+                      checkNextChar(grid, i, j-1, word, idx+1) ||
+                      checkNextChar(grid, i+1, j, word, idx+1) ||
+                      checkNextChar(grid, i, j+1, word, idx+1);
+        grid[i][j] = 'A' + charIdx;
+        return result;
+    }
+
+    // check adjacent cells recursively
     void findNextChar(vector<vector<char> >& grid, int i, int j, vector<vector<bool> >& covered,
                 const string& word, int idx, set<string>& result) {
 
         if(result.find(word) != result.end())    return; // word has been in <result> already
 
+        if(i < 0 || i >= (int)grid.size() || j < 0 || j >= (int)grid[0].size() || covered[i][j])    return;
         const int len = word.size();
-        if(i < 0 || i >= (int)grid.size() || j < 0 || j >= (int)grid[0].size() || covered[i][j] || idx >= len || grid[i][j] != word[idx])
-            return;
+        if(grid[i][j] != word[idx])    return; // idx increases by 1 once from 0, so it must be less than len
 
         covered[i][j] = true;
         if(idx == len - 1) {
@@ -172,14 +202,14 @@ private:
 private:
     void insertWord(Trie* root, const vector<string>& words, int idx) {
         Trie *node = root;
-        root->prefixCount++; // ??
+        root->prefixCount++; // after all words are inserted, root0->prefixCount is count of words
         for(int i = 0; i < (int)words[idx].size(); ++i) {
             int childID = words[idx][i] - 'a';
             if(!node->children[childID]) {
                 node->children[childID] = new Trie();
             }
             node = node->children[childID];
-            node->prefixCount++;
+            node->prefixCount++; // after all words are inserted, prefixCount of one node tells how many words has prefix of this node
         }
         node->isLeaf = true;
         node->wordIdx = idx;
@@ -195,25 +225,25 @@ private:
     }
 
     // @arg words is used to pick up the string to save in result<> with idx
-    int dfsTrie(vector<string>& res, Trie *root, vector<vector<char> >& board, vector<string>& words, int row, int col) {
+    int dfsTrie(vector<string>& res, Trie *root, vector<vector<char> >& board, int row, int col, vector<string>& words) {
         int detected = 0;
         if(root->isLeaf) {
             ++detected;
-            root->isLeaf = false; // ??
+            root->isLeaf = false; // reset to avoid this if-block is executed for 1+ times for that very node
             res.push_back(words[root->wordIdx]);
         }
 
         if(row < 0 || row >= (int)board.size() || col < 0 || col >= (int)board[0].size() || board[row][col] == '*')
             return detected;
         int charIdx = board[row][col] - 'a';
-        if(!root->children[charIdx] || root->children[charIdx]->prefixCount <= 0)    return detected;
+        if(!(root->children[charIdx]) || root->children[charIdx]->prefixCount <= 0)    return detected;
 
         board[row][col] = '*'; // drown the island :)
-        detected += dfsTrie(res, root->children[charIdx], board, words, row-1, col) +
-                    dfsTrie(res, root->children[charIdx], board, words, row, col-1) +
-                    dfsTrie(res, root->children[charIdx], board, words, row+1, col) +
-                    dfsTrie(res, root->children[charIdx], board, words, row, col+1);
-        root->prefixCount -= detected; // ??
+        detected += dfsTrie(res, root->children[charIdx], board, row-1, col, words) +
+                    dfsTrie(res, root->children[charIdx], board, row, col-1, words) +
+                    dfsTrie(res, root->children[charIdx], board, row+1, col, words) +
+                    dfsTrie(res, root->children[charIdx], board, row, col+1, words);
+        root->prefixCount -= detected; // smart counter !!!
 
         board[row][col] = 'a' + charIdx; // recover the char
         return detected;
@@ -228,7 +258,7 @@ public:
         Trie *root = buildTrie(words);
         for(int i = 0; i < M && root->prefixCount; ++i) {
             for(int j = 0; j < N; ++j) {
-                dfsTrie(res, root, board, words, i, j);
+                dfsTrie(res, root, board, i, j, words);
             }
         }
         delete root;

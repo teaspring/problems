@@ -3,7 +3,7 @@
 #include <algorithm>
 
 // bool exist(const vector<vector<char> >& board, const string& word)
-TEST(searchWordTest, Positive01){
+TEST(searchWordI_exist01_Test, Positive01){
     Solution1 s;
 
     const int rows = 3, cols = 4;
@@ -17,17 +17,52 @@ TEST(searchWordTest, Positive01){
         board.push_back(vector<char>(arr[i], arr[i] + cols));
     }
 
-    string word1("BCE");
+    string word1("BCEDA");
+    EXPECT_FALSE(s.exist_01(board, word1));
+
+    string word2("CFBABF");
+    EXPECT_FALSE(s.exist_01(board, word2));
+
+    string word3("HCFBACB");
+    EXPECT_TRUE(s.exist_01(board, word3));
+
+    string word4("BCABABC");
+    EXPECT_TRUE(s.exist_01(board, word4));
+
+    string word5("BCABABD");
+    EXPECT_FALSE(s.exist_01(board, word5));
+
+    board.clear();
+}
+
+TEST(searchWordI_exist_Test, Positive01){
+    Solution1 s;
+
+    const int rows = 3, cols = 4;
+    char arr[][cols] = {
+        {'A', 'B', 'C', 'D'},
+        {'B', 'F', 'C', 'H'},
+        {'A', 'C', 'B', 'A'}};
+
+    vector<vector<char> > board;
+    for(int i = 0; i < rows; i++){
+        board.push_back(vector<char>(arr[i], arr[i] + cols));
+    }
+
+    string word1("BCEDA");
     EXPECT_FALSE(s.exist(board, word1));
 
-    string word2("CFA");
+    string word2("CFBABF");
     EXPECT_FALSE(s.exist(board, word2));
 
-    string word3("BABA");
+    string word3("HCFBACB");
     EXPECT_TRUE(s.exist(board, word3));
 
-    string word4("BCCB");
+    string word4("BCABABC");
     EXPECT_TRUE(s.exist(board, word4));
+
+    string word5("BCABABD");
+    EXPECT_FALSE(s.exist(board, word5));
 
     board.clear();
 }
@@ -71,12 +106,14 @@ TEST(searchWordII_Solution1_Test, Positive01){
     words.push_back("pea");
     words.push_back("eat");
     words.push_back("rain");
+    words.push_back("khieoaa");
 
     vector<string> result = s.findWords(board, words);
 
     vector<string> expected;
     expected.push_back("oath");
     expected.push_back("eat");
+    expected.push_back("khieoaa");
 
     assertTwoStrVectors(expected, result);
     board.clear();
