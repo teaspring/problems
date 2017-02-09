@@ -32,40 +32,12 @@ using namespace std;
 // for exist():bool, and raw versioned findWords():vector<string>
 class Solution1{
 public:
-    // initial version, can work, but not good enough
-    bool exist_01(vector<vector<char> >& board, const string& word){
-        if(word.empty())    return true;
-        if(board.empty())    return false;
-
-        const int Rows = board.size();
-        const int Cols = board[0].size();
-        const int len = word.size();
-        if(len > Rows * Cols)    return false;   // out of range
-
-        vector<vector<int> > pos(256, vector<int>()); // support char search in O(1)
-
-        for(int i = 0; i < Rows; i++){
-            for(int j = 0; j < Cols; j++){
-                pos[(int)board[i][j]].push_back(i * Cols + j); // save occurance positions of char on board
-            }
-        }
-
-        vector<int> used(Rows * Cols, 0);
-        vector<int> options = pos[(int)word[0]];
-        for(int i = 0; i < (int)options.size(); i++){
-            used[options[i]] = 1;
-            if(searchOneChar(pos, word, 1, options[i], used, Rows, Cols))    return true;
-            used[options[i]] = 0;
-        }
-        return false;
-    }
-
     // idea from findWords()
     bool exist(vector<vector<char> >& board, const string& word) {
         if(board.empty())    return false;
-
         const int Rows = board.size();
         const int Cols = board[0].size();
+
         for(int i = 0; i < Rows; ++i) {
             for(int j = 0; j < Cols; ++j) {
                 if(checkNextChar(board, i, j, word, 0))    return true;
@@ -83,18 +55,18 @@ public:
     // ['a','e','a','d';
     //  'a','b','c','a';
     //  'd','a','c','d'], with words ["aaaaaaaaa","aaaaaaaab","aaaaaaaaac"...]
-    //  insight: it needs to have some preprocess about the @arg words, Trie as the best data structure to do it
+    // insight: it needs to have some preprocess about the @arg words, Trie as the best data structure to do it
+    // lesson learned: tags matrix covered[][] is wrong which will miss the earlier reviewed cells
     vector<string> findWords(vector<vector<char> >& board, vector<string>& words) {
         if(board.empty())    return vector<string>();
         const int Rows = board.size();
         const int Cols = board[0].size();
         set<string> result; // use set<> to avoid duplicated search
 
-        for(string word : words) { // the drawback of this solution is this level loop, it will be extermely redundant for large words[]
-            vector<vector<bool> > covered(Rows, vector<bool>(Cols, false)); // tags to tell covered cells
+        for(string word : words) { // this level loop leads to drawback of this solution, it will be extermely redundant for large words[]
             for(int i = 0; i < Rows; ++i) {
                 for(int j = 0; j < Cols; ++j) {
-                    findNextChar(board, i, j, covered, word, 0, result);
+                    findNextChar(board, i, j, word, 0, result);
                 }
             }
         }
@@ -102,79 +74,41 @@ public:
     }
 
 private:
-    /*
-     * check next optional char whether is next to current char
-     * */
-    bool searchOneChar(vector<vector<int> >& pos,
-                       const string& word,
-                       int charIdx,
-                       int currpos,
-                       vector<int>& used,  // int[m*n]
-                       int rows,
-                       int cols){
-
-        if(charIdx == (int)word.size())    return true;
-
-        char ch = word[charIdx];
-        int r = currpos / cols, c = currpos % cols;
-
-        vector<int> options = pos[(int)ch];
-        const int n = options.size();
-
-        for(int i = 0; i < n; i++){
-            int nr = options[i] / cols;
-            int nc = options[i] % cols;
-            if(abs(nr - r) + abs(nc - c) != 1 || used[options[i]] == 1)  // check if not successive, if used already
-                continue;
-
-            used[options[i]] = 1;
-
-            if(searchOneChar(pos, word, charIdx + 1, options[i], used, rows, cols))
-                return true;
-
-            used[options[i]] = 0;
-        }
-        return false;
-    }
-
     // spawned from findNextChar()
     bool checkNextChar(vector<vector<char> >& grid, int i, int j, const string& word, int idx) {
         if(i < 0 || i >= (int)grid.size() || j < 0 || j >= (int)grid[0].size())    return false;
-        const int len = word.size();
-        if(grid[i][j] != word[idx])    return false; // idx increases by 1 once from 0, so it must be less than len
+        if(grid[i][j] == '*' || grid[i][j] != word[idx])    return false; // idx increases by 1 once from 0, so it must be less than len
 
-        if(idx == len - 1)    return true;
+        if(idx == (int)word.size() - 1)    return true;
 
         int charIdx = grid[i][j] - 'A';
-        grid[i][j] = '*';
+        grid[i][j] = '*'; // drown the cell
         bool result = checkNextChar(grid, i-1, j, word, idx+1) ||
                       checkNextChar(grid, i, j-1, word, idx+1) ||
                       checkNextChar(grid, i+1, j, word, idx+1) ||
                       checkNextChar(grid, i, j+1, word, idx+1);
-        grid[i][j] = 'A' + charIdx;
+        grid[i][j] = 'A' + charIdx; // recover the cell
         return result;
     }
 
     // check adjacent cells recursively
-    void findNextChar(vector<vector<char> >& grid, int i, int j, vector<vector<bool> >& covered,
-                const string& word, int idx, set<string>& result) {
-
+    void findNextChar(vector<vector<char> >& grid, int i, int j, const string& word, int idx, set<string>& result) {
         if(result.find(word) != result.end())    return; // word has been in <result> already
+        if(i < 0 || i >= (int)grid.size() || j < 0 || j >= (int)grid[0].size())    return;
+        if(grid[i][j] == '*' || grid[i][j] != word[idx])    return; // idx increases by 1 once from 0, so it must be less than len
 
-        if(i < 0 || i >= (int)grid.size() || j < 0 || j >= (int)grid[0].size() || covered[i][j])    return;
-        const int len = word.size();
-        if(grid[i][j] != word[idx])    return; // idx increases by 1 once from 0, so it must be less than len
-
-        covered[i][j] = true;
-        if(idx == len - 1) {
+        if(idx == (int)word.size() - 1) {
             result.insert(word);
             return;
         }
 
-        findNextChar(grid, i-1, j, covered, word, idx+1, result);
-        findNextChar(grid, i, j-1, covered, word, idx+1, result);
-        findNextChar(grid, i+1, j, covered, word, idx+1, result);
-        findNextChar(grid, i, j+1, covered, word, idx+1, result);
+        int charIdx = grid[i][j] - 'a';
+        grid[i][j] = '*'; // drown the cell
+        findNextChar(grid, i-1, j, word, idx+1, result);
+        findNextChar(grid, i, j-1, word, idx+1, result);
+        findNextChar(grid, i+1, j, word, idx+1, result);
+        findNextChar(grid, i, j+1, word, idx+1, result);
+        grid[i][j] = 'a' + charIdx; // recover the cell
     }
 };
 

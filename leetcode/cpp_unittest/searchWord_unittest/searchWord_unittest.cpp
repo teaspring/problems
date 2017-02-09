@@ -2,40 +2,8 @@
 #include "gtest/gtest.h"
 #include <algorithm>
 
-// bool exist(const vector<vector<char> >& board, const string& word)
-TEST(searchWordI_exist01_Test, Positive01){
-    Solution1 s;
-
-    const int rows = 3, cols = 4;
-    char arr[][cols] = {
-        {'A', 'B', 'C', 'D'},
-        {'B', 'F', 'C', 'H'},
-        {'A', 'C', 'B', 'A'}};
-
-    vector<vector<char> > board;
-    for(int i = 0; i < rows; i++){
-        board.push_back(vector<char>(arr[i], arr[i] + cols));
-    }
-
-    string word1("BCEDA");
-    EXPECT_FALSE(s.exist_01(board, word1));
-
-    string word2("CFBABF");
-    EXPECT_FALSE(s.exist_01(board, word2));
-
-    string word3("HCFBACB");
-    EXPECT_TRUE(s.exist_01(board, word3));
-
-    string word4("BCABABC");
-    EXPECT_TRUE(s.exist_01(board, word4));
-
-    string word5("BCABABD");
-    EXPECT_FALSE(s.exist_01(board, word5));
-
-    board.clear();
-}
-
-TEST(searchWordI_exist_Test, Positive01){
+// bool exist(vector<vector<char> >& board, const string& word)
+TEST(searchWordI_Test, Positive01){
     Solution1 s;
 
     const int rows = 3, cols = 4;
@@ -58,7 +26,7 @@ TEST(searchWordI_exist_Test, Positive01){
     string word3("HCFBACB");
     EXPECT_TRUE(s.exist(board, word3));
 
-    string word4("BCABABC");
+    string word4("BCABABC"); // this case can test the error of tag matrix covered[][] in src
     EXPECT_TRUE(s.exist(board, word4));
 
     string word5("BCABABD");
@@ -67,7 +35,7 @@ TEST(searchWordI_exist_Test, Positive01){
     board.clear();
 }
 
-// facilitate methods to help to assert string vector
+// facility methods to help to assert string vector
 bool comparestr(string str1, string str2){ // comparator of two strings in ascending order
     return strcmp(str1.c_str(), str2.c_str()) <= 0;
 }
@@ -104,7 +72,7 @@ TEST(searchWordII_Solution1_Test, Positive01){
     vector<string> words;
     words.push_back("oath");
     words.push_back("pea");
-    words.push_back("eat");
+    words.push_back("eateo");
     words.push_back("rain");
     words.push_back("khieoaa");
 
@@ -112,7 +80,7 @@ TEST(searchWordII_Solution1_Test, Positive01){
 
     vector<string> expected;
     expected.push_back("oath");
-    expected.push_back("eat");
+    expected.push_back("eateo"); // this case can test the error of tag matrix covered[][] in src
     expected.push_back("khieoaa");
 
     assertTwoStrVectors(expected, result);
