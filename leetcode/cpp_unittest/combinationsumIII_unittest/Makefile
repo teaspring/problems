@@ -32,7 +32,7 @@ CXXFLAGS += -g -Wall -Wextra
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = combinationsumII_unittest
+TESTS = combinationsumIII_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -80,13 +80,13 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $@: own name of the target
 # $^: names of the dependencies
 #
-combinationsumII.o: $(GTEST_HEADERS)
+combinationsumIII.o: $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/combinationsumII.cpp
+		$(USER_DIR)/src/combinationsumIII.cpp
 
-combinationsumII_unittest.o : $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/combinationsumII_unittest.cpp
+combinationsumIII_unittest.o : $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/combinationsumIII_unittest.cpp
 
-combinationsumII_unittest : combinationsumII.o combinationsumII_unittest.o gtest_main.a
+combinationsumIII_unittest : combinationsumIII.o combinationsumIII_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $^ -o $@
 

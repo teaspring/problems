@@ -12,24 +12,26 @@ using namespace std;
 class Solution{
 public:
     vector<vector<int> > combinations(int n, int k){
-        vector<int> pot;
         vector<vector<int> > result;
+        vector<int> pot(k, 0);
         combineOnce(pot, k, 1, n, result);
         return result;
     }
 
 private:
-    void combineOnce(vector<int>& curr, int k, int start, int end, vector<vector<int> >& res){
-        if(k == 0){
+    // optional integers among [1,n]
+    void combineOnce(vector<int>& curr, int r, int start, int end, vector<vector<int> >& res){
+        if(r == 0){
             res.push_back(curr);
             return;
         }
-        if(start > end)    return;
+        const int k = curr.size();
+        if(start > end || k < r)    return;
 
         for(int i = start; i <= end; ++i){
-            curr.push_back(i);
-            combineOnce(curr, k-1, i+1, end, res);
-            curr.pop_back();
+            curr[k-r] = i;
+            combineOnce(curr, r-1, i+1, end, res);
+            curr[k-r] = 0;
         }
         return;
     }
