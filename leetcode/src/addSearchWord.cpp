@@ -76,10 +76,12 @@ private:
         const int n = key.size();
         char ch = key[0];
         if(ch != '.') { // primary letter a-z
-            findSubStr(p->next[ch - 'a'], options, key.substr(1, n-1));
+            TrieNode *q = p->next[ch - 'a'];
+            if(q)    findSubStr(q, options, key.substr(1, n-1));
         } else {
             for(int j = 0; j < 26; ++j) { // key[i] is '.'
-                findSubStr(p->next[j], options, key.substr(1, n-1));
+                TrieNode *q = p->next[j];
+                if(q)    findSubStr(q, options, key.substr(1, n-1));
             }
         }
     }
