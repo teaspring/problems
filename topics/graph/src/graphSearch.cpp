@@ -44,7 +44,7 @@ public:
         while(!_stack.empty()){
             Point* parent = _stack.top();
 
-            Point* child = FindNextChild(parent);
+            Point* child = findNextChild(parent);
 
             if(NULL != child){
                 child->Cov = Probed;
@@ -61,10 +61,7 @@ public:
     }
 
 private:
-    /*
-     * used by DFS01()
-     * */
-    Point* FindNextChild(Point* pParent){
+    Point* findNextChild(Point* pParent){
         if(pParent->Cov == Covered)        return NULL;
 
         Point *pp = pParent->Left;
