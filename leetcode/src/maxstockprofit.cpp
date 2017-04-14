@@ -15,18 +15,14 @@ public:
         const int n = prices.size();
         if(n < 2)    return 0;
 
-        int history[n];
-        memset(history, 0, sizeof(history));
-
+        vector<int> history(n, 0);
         int low = prices[0];
         for(int i=1; i < n; ++i){
             low = min(low, prices[i]);
             history[i] = max(history[i-1], prices[i] - low); // max profit for days [0, i] with 1 transaction, day i can sell out
         }
 
-        int future[n];
-        memset(future, 0, sizeof(future));
-
+        vector<int> future(n, 0);
         int high = prices[n-1], sum = 0;
         for(int i = n-2; i >= 0; --i){
             high = max(high, prices[i]);
@@ -48,8 +44,7 @@ public:
         if (k >= cnt)    return sum;
 
         const int n = prices.size();
-        int dp[k+1][n+1]; // dp[i][j] means max profit among days[1...n] with i transactions mostly
-        memset(dp, 0, sizeof(dp));
+        vector<vector<int> > dp(k+1, vector<int>(n+1, 0)); // int dp[k+1][n+1] dp[i][j] means max profit among days[1...n] with i transactions mostly
 
         int low = prices[0];
         for(int i=1; i < n; ++i) {  // init dp[1][]
@@ -57,8 +52,7 @@ public:
             dp[1][i+1] = max(dp[1][i], prices[i] - low);
         }
 
-        int future[n][n+1];  // future[i][j] means max profit among days[i...j] with 1 transaction
-        memset(future, 0, sizeof(future));
+        vector<vector<int> > future(n, vector<int>(n+1, 0)); // int future[n][n+1] means max profit among days[i...j] with 1 transaction
 
         for(int j = 2; j <= n; j++) {
             int high = prices[j-1];
@@ -90,8 +84,7 @@ public:
         if (k >= cnt)    return sum;
 
         const int n = prices.size();
-        int dp[k+1][n];  // dp[i][j] means max profit of mostly i-1 transactions among prices[0...j-1]
-        memset(dp, 0, sizeof(dp));
+        vector<vector<int> > dp(k+1, vector<int>(n, 0)); // int dp[k+1][n] means max profit of mostly i-1 transactions among prices[0...j-1]
 
         for(int i=1; i <= k; i++) {
             int tmpMax = 0 - prices[0]; // tmpMax means max profit of mostly i-1 transactions among prices[0...j-1], and buy at prices[j] to be ready for later

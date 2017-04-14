@@ -28,11 +28,11 @@ CPPFLAGS += -I$(GTEST_DIR)/include
 CPPFLAGS += -I$(USER_DIR)/src
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -std=c++0x
+CXXFLAGS += -g -Wall -Wextra
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = searchWord_unittest
+TESTS = isomorphicStrings_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -80,13 +80,12 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $@: own name of the target
 # $^: names of the dependencies
 #
-searchWord.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/searchWord.cpp $(USER_DIR)/src/preliminary.cpp
+isomorphicStrings.o: $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/isomorphicStrings.cpp
 
-searchWord_unittest.o : $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/searchWord_unittest.cpp
+isomorphicStrings_unittest.o : $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/isomorphicStrings_unittest.cpp
 
-searchWord_unittest : searchWord.o searchWord_unittest.o gtest_main.a
+isomorphicStrings_unittest : isomorphicStrings.o isomorphicStrings_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $^ -o $@
 

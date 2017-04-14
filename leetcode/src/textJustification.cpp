@@ -20,7 +20,6 @@ public:
         const int n = words.size();
         vector<string> res;
         int i = 0;
-
         while(i < n){
             int solidL = words[i].size();
             int gap = 1, cw = 1;
@@ -33,8 +32,7 @@ public:
             }
 
             // construct the interval spaces array
-            int intervals[cw]; // in this line, cw words, (cw-1) valid intervals. create int[cw] to facilitate iterate
-            memset(intervals, 0, sizeof(intervals));
+            vector<int> intervals(cw, 0); // in this line, cw words, (cw-1) valid intervals. create int[cw] to facilitate iterate
 
             int rest = L - solidL;
             if(cw == 1){
@@ -46,7 +44,6 @@ public:
                 for(int j = 1; j < cw - 1; j++){
                     intervals[j] = evenSpace;
                 }
-
                 intervals[cw - 1] = 0;
             }
 
@@ -60,7 +57,7 @@ private:
     /*
     * NOTE: distribute benefit in left slots evenly!!
     * * */
-    string fillLine(vector<string>& words, int L, int start, int count, int* spaces){
+    string fillLine(vector<string>& words, int L, int start, int count, vector<int>& spaces){
         char arr[L+1];
         memset(arr, 0, sizeof(arr));
 

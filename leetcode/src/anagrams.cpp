@@ -40,7 +40,7 @@ public:
 
     string wordkey(const string& word){ // count sort word, as its key
         char A[26];
-        memset(A, 0, sizeof(char)*26);
+        memset(A, 0, sizeof(A));
 
         const int n = word.size();
         for(int i = 0; i < n; i++){
@@ -52,7 +52,7 @@ public:
         }
 
         char B[n+1];
-        memset(B, 0, sizeof(B) / sizeof(char));
+        memset(B, 0, sizeof(B));
 
         for(int i = 0; i < n; i++){
             int chIndex = word[i] - 'a';

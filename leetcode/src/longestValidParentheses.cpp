@@ -25,10 +25,7 @@ public:
         const int n = s.size();
         if(n < 2)    return 0;
 
-        int dp[n][n+1]; // longest valid length for substring [i, i + l)
-        for(int i = 0; i < n; i++){
-            memset(dp[i], 0, sizeof(dp[i]) / sizeof(int));
-        }
+        vector<vector<int> > dp(n, vector<int>(n+1, 0)); // int dp[n][n+1]
 
         for(int l = 2; l <= n; ++l){
             for(int i = 0; i + l <= n; ++i){
@@ -60,13 +57,9 @@ public:
         const int n = s.size();
         if(n < 2)    return 0;
 
-        int pTwo[n];   // pTwo[i] means valid parentheses length of substr starting at [i] with length 2
-        memset(pTwo, 0, sizeof(pTwo) / sizeof(int));
+        vector<int> pTwo(n, 0);   // pTwo[i] means valid parentheses length of substr starting at [i] with length 2
 
-        int dp[n][3];     // dp[][0],[][1],[][2] are arrays for substr starting at [i] with length l-2, l-1, l
-        for(int i = 0; i < n; i++){
-            memset(dp[i], 0, sizeof(dp[i]) / sizeof(int));
-        }
+        vector<vector<int> > dp(n, vector<int>(3, 0)); // int dp[n][3], dp[][0],[][1],[][2] are arrays for substr starting at [i] with length l-2, l-1, l
 
         for(int i = 0; i < n; ++i){
             if(s[i] == '(' && s[i+1] == ')'){

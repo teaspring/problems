@@ -25,7 +25,6 @@ public:
      * this solution come from the idea of "minWindow", with a sliding window range
      * */
     vector<int> findSubstring(const string& S, vector<string>& L){
-
         if(S.empty() || L.empty())    return vector<int>();
 
         const int m = L.size();
@@ -34,7 +33,6 @@ public:
         if(n < l * m)    return vector<int>();
 
         vector<int> res;
-
         map<string, int> need2Find, hasFound;  // string is used as key for search in O(1)
         for(int i = 0; i < m; i++){
             if(need2Find.count(L[i]) == 0){
@@ -45,9 +43,7 @@ public:
         }
 
         int cnt = 0; // accumulated count of valid words
-
-        int used[n];    // store beginning
-        memset(used, 0, sizeof(used));
+        vector<int> used(n, 0);    // store beginning
 
         for(int k = 0; k <= n - l*m; k++){ // k is beginning of new concatenation of length l*m
             if(used[k] != 0)    continue;  // skip the begin index which has been checked
@@ -84,7 +80,6 @@ public:
                         if(hasFound[head] == need2Find[head])    break; // cannot move forward i
 
                         if(used[i] == 0)    used[i] = -1; // i is not valid begin of concatenation of l*m
-
                         i += l;
                         hasFound[head]--;
                     }
@@ -96,7 +91,6 @@ public:
                         }
                     }else{ // j+l-i > l*m, so i has to move forward
                         if(used[i] == 0)    used[i] = -1;
-
                         i += l;
                         hasFound[S.substr(i, l)]--;
                         cnt--;

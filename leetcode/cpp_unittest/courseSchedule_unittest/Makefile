@@ -32,7 +32,7 @@ CXXFLAGS += -g -Wall -Wextra -std=c++0x
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = searchWord_unittest
+TESTS = courseSchedule_unittest
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -80,13 +80,12 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $@: own name of the target
 # $^: names of the dependencies
 #
-searchWord.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/searchWord.cpp $(USER_DIR)/src/preliminary.cpp
+courseSchedule.o: $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/courseSchedule.cpp
 
-searchWord_unittest.o : $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/searchWord_unittest.cpp
+courseSchedule_unittest.o : $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/courseSchedule_unittest.cpp
 
-searchWord_unittest : searchWord.o searchWord_unittest.o gtest_main.a
+courseSchedule_unittest : courseSchedule.o courseSchedule_unittest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $^ -o $@
 

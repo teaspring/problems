@@ -82,7 +82,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 #
 combinationsumII.o: $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/combinationsumII.cpp $(USER_DIR)/src/preliminary.cpp
+		$(USER_DIR)/src/combinationsumII.cpp
 
 combinationsumII_unittest.o : $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/combinationsumII_unittest.cpp

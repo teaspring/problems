@@ -13,9 +13,7 @@ public:
         const int m = grid.size();    // rows
         const int n = grid[0].size(); // cols
 
-        int dp[m][n];
-        memset(dp, 0, sizeof(dp));
-
+        vector<vector<int> > dp(m, vector<int>(n, 0)); // int dp[m][n]
         dp[0][0] = grid[0][0];
 
         for(int i = 1; i < m; ++i){

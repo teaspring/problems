@@ -34,8 +34,7 @@ private:
         if(n == 0 || start < 0 || start >= n || end <= start || end > n)
           return 0;
 
-        int robbery[n]; // robbery[i] means max robbery among nums[0..j], no matter nums[i] is held or not
-        memset(robbery, 0, sizeof(robbery));
+        vector<int> robbery(n, 0); // robbery[i] means max robbery among nums[0..j], no matter nums[i] is held or not
         robbery[start] = nums[start];
 
         for(int i = start; i < end; ++i) {

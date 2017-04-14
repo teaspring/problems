@@ -4,6 +4,7 @@
  */
 
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
@@ -20,9 +21,8 @@ public:
     /*
      * DP
      * */
-    int uniquePaths_02(int m, int n){
-        int dp[m][n];
-        memset(dp, 0, sizeof(dp));
+    int uniquePaths_02(const int m, const int n){
+        vector<vector<int> > dp(m, vector<int>(n, 0)); // int dp[m][n]
 
         for(int i = 0; i < m; ++i){
             dp[i][0] = 1;

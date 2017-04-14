@@ -12,10 +12,9 @@
  *      dp[i-1][j-1] + (word1[i] == word2[j] ? 0 : 1)   # replacement
  * }
  */
-
-#include <cstring>
 #include <string>
-#include <algorithm>
+#include <vector>
+#include <iostream>  // min()
 
 using namespace std;
 
@@ -27,9 +26,7 @@ public:
 
         const int m = word1.size();
         const int n = word2.size();
-
-        int dp[m+1][n+1];  // dimension is length of word1/word2
-        memset(dp, 0, sizeof(dp)); // dp[0][0] = 0 naturally
+        vector<vector<int> > dp(m+1, vector<int>(n+1, 0)); // int dp[m+1][n+1], dimension is length of word1/word2, dp[0][0] = 0 naturally
 
         for(int i = 1; i < m+1; ++i){
             dp[i][0] = i;

@@ -5,8 +5,11 @@
  * 2.all numbers are positive integers with repeated value in possible
  * 3.all elements in a combination must be non-decending order without duplicate combinations.
  * */
-#include "../include/preliminary.h"
+#include <iostream>
+#include <vector>
 #include <algorithm>
+
+using namespace std;
 
 class Solution{
 
@@ -20,6 +23,26 @@ public:
     }
 
 private:
+    void plusSum(vector<vector<int> >& res, const vector<int>& candidates, vector<int>& vec, int target){
+        if(target == 0){
+            res.push_back(index2Values(candidates, vec));
+            return;
+        }
+
+        const int n = candidates.size();
+        int start = vec.empty() ? 0 : vec[vec.size() - 1] + 1;
+        for(int i = start; i < n; ++i){
+            if(target < candidates[i])        break;
+
+            if(i > start &&  candidates[i] == candidates[i-1])    continue;  // skip duplicat combinations
+
+            vec.push_back(i); // vec<> stores the index in candidates<>
+            plusSum(res, candidates, vec, target - candidates[i]);
+            vec.pop_back();
+        }
+        return;
+    }
+
     vector<int> index2Values(const vector<int>& candidates, vector<int>& indexes){
         vector<int> values;
         int n = indexes.size();
@@ -28,26 +51,4 @@ private:
         }
         return values;
     }
-
-    void plusSum(vector<vector<int> >& res, const vector<int>& candidates, vector<int>& vec, int target){
-        if(target == 0){
-            res.push_back(index2Values(candidates, vec));
-            return;
-        }
-
-        int n = candidates.size();
-        int start = vec.empty() ? 0 : vec[vec.size()-1] + 1;
-        for(int i = start; i < n; ++i){
-            if(target < candidates[i])        break;
-
-            if(i > start &&  candidates[i] == candidates[i-1])    continue;  // skip duplicat combinations
-
-            vec.push_back(i);
-            plusSum(res, candidates, vec, target - candidates[i]);
-            vec.pop_back();
-        }
-        return;
-    }
-
-    /* unit test is in ../cpp_unittest/combinationsumII_unittest */
 };

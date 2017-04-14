@@ -22,14 +22,12 @@ public:
         if(digits.empty())    return vector<int>();
 
         const int m = digits.size();
-
         int n = m + 1;
 
         int arr[n];
         memset(arr, 0, sizeof(arr));
 
         int i = m-1, j = n-1, over = 1;
-
         for(; i >= 0; --i, --j){
             int curr = digits[i] + over;
             arr[j] = curr % 10;
@@ -37,7 +35,6 @@ public:
         }
 
         if(over)    arr[j--] = 1;  // [j] the most significant digit
-
         return vector<int>(arr + j + 1, arr + n);
     }
 };

@@ -16,35 +16,32 @@ class Solution{
 
 public:
     vector<vector<int> > combinationSum(vector<int>& candidates, int target){
-        sort(candidates.begin(), candidates.end());  //sort candidates in ascending order 
+        sort(candidates.begin(), candidates.end());  //sort candidates in ascending order
+
         vector<vector<int> > res;
         vector<int> vec;
-
         plusSum(res, candidates, vec, -1, target);
         return res;
     }
 
 private:
-    void plusSum(vector<vector<int> >& res, const vector<int>& candidates,
-                vector<int>& vec, int lastIdx, int target){
+    void plusSum(vector<vector<int> >& res, const vector<int>& candidates, vector<int>& vec, int lastIdx, int target){
         if(target == 0){
             res.push_back(vec);
             return;
         }
 
-        const int n = candidates.size();
-
         int start = lastIdx < 0 ? 0 : lastIdx;
+        const int n = candidates.size();
 
         for(int i = start; i < n; ++i){
             int d = candidates[i];
             if(target < d)    break;
 
-            vec.push_back(d);
+            vec.push_back(d); // vec<> stores the val in candidates<>
             plusSum(res, candidates, vec, i, target - d);
             vec.pop_back();
         }
     }
 };
 
-/* unit test is in ../cpp_unittest/combinationsum_unittest */

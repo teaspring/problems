@@ -11,9 +11,6 @@ using namespace std;
 class Solution{
 
 public:
-    /*
-     *
-     * */
     int uniquePathsWithObstacles(vector<vector<int> >& obstacleGrid){
         if(obstacleGrid.empty())    return 0;
         const int m = obstacleGrid.size();
@@ -21,8 +18,7 @@ public:
         if(obstacleGrid[0].empty())    return 0;
         const int n = obstacleGrid[0].size();
 
-        int dp[m][n];
-        memset(dp, 0, sizeof(dp));
+        vector<vector<int> > dp(m, vector<int>(n, 0)); // int dp[m][n];
 
         for(int i = 0; i < m; ++i){
             bool cannot =

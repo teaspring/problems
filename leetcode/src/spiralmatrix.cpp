@@ -15,14 +15,12 @@
  * 8 9 4
  * 7 6 5
  * */
-
 #include <vector>
 #include <cstring>
 
 using namespace std;
 
 class Solution{
-
 public:
     /*
      * solution 1 to problem I
@@ -85,14 +83,11 @@ public:
      * obviously it should operate on a int[][], and initialize vector<<> > to return
      * */
     vector<vector<int> > generateMatrix(int n, int m){
-        vector<vector<int> > matrix;
-        if(n < 1)        return matrix;
+        if(n < 1)    return vector<vector<int> >();
 
-        int mat[n][m];
-        memset(mat, 0, sizeof(mat)/sizeof(int));
+        vector<vector<int> > mat(n, vector<int>(m, 0)); // int mat[n][m];
 
         int lineLengths[] = {m, n-1};
-
         const int xStep[] = {0, 1, 0, -1};
         const int yStep[] = {1, 0, -1, 0};
         int mode = 0, val = 1;
@@ -112,11 +107,7 @@ public:
             lineLengths[mode % 2]--;
             mode++;
         }
-
-        for(int i = 0; i < n; i++){
-            matrix.push_back(vector<int>(mat[i], mat[i] + m));
-        }
-        return matrix;
+        return mat;
     }
 
 private:

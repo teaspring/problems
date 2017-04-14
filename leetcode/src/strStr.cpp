@@ -7,30 +7,33 @@
  * ababa/abaaba
  * aaaaa/aabaaaabaaaaa
  * */
-#include "stdio.h"
+#include <cstdio>
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
 class Solution{
     /*
     * with KMP algorithm, perform preprocess pattern P to get int prefix[P]
-    * prefix[i] = l means prefix with length l of s can be suffix of s, while s is prefix with length i+1 of pattern
+    * prefix[i] = l means prefix with length l of s can be suffix of s, while s is i+1 length prefix of @pattern
     * */
-    void setPrefix(const char *pattern, int *prefix){ // prefix should be [n]
+    void setPrefix(const char *pattern, vector<int>& prefix){ // prefix[] has n size
         const int n = strlen(pattern);
         prefix[0] = 0;
         for(int i = 1; i < n; i++){
             int k = prefix[i-1]; // index is 0-based, and length is 1-based. so k = prefix[i-1] is the next char index to compare
-            for(; pattern[k] != pattern[i] && k > 0; k = prefix[k-1]);
+            for(; k > 0 && pattern[k] != pattern[i]; k = prefix[k-1]);
 
             if(pattern[k] == pattern[i]){
                 prefix[i] = k + 1;
             }else{
                 prefix[i] = 0;
             }
+			// above block can be rewritten as:
+			// prefix[i] = k + (pattern[k] == pattern[i]);
         }
         return;
     }
@@ -46,8 +49,7 @@ public:
         if(m == 0)    return str;
         if(n < m || n == 0)    return NULL;
 
-        int prefix[m];
-        memset(prefix, 0, sizeof(prefix)/sizeof(int));
+        vector<int> prefix(m, 0);
         setPrefix(pattern, prefix); // get prefix array
 
         int i = 0, s = 0; // i is cursor offset in str while s is pattern offset in str

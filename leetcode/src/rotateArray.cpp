@@ -16,13 +16,12 @@ public:
         k %= n;
         if(k == 0)    return;
 
-        int arr[n];
-        memset(arr, 0, sizeof(arr));
+        vector<int> arr(n, 0);
         for(int i = 0; i < n; ++i) {
             int idx = (i + k) % n;
             arr[idx] = nums[i];
         }
-        nums = vector<int>(arr, arr + n);
+        nums = arr;
         return;
     }
 };

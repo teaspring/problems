@@ -4,41 +4,41 @@
 /*
  * int Solution::maximumRectangle(vector<vector<char> >&)
  *
- * int Solution::largestRectangleArea(vector<int>&)
+ * int Solution::largestRectangleInArray(vector<int>&)
  * */
 
-TEST(largestRectangleAreaTest, Positive01){
+TEST(largestRectangleInArrayTest, Positive01){
     Solution s;
 
     int arr[] = {1, 2, 2, 3, 2};
     vector<int> heights(arr, arr + sizeof(arr)/sizeof(int));
 
     int expected = 8;
-    EXPECT_EQ(expected, s.largestRectangleArea(heights));
+    EXPECT_EQ(expected, s.largestRectangleInArray(heights));
 
     heights.clear();
 }
 
-TEST(largestRectangleAreaTest, Positive02){
+TEST(largestRectangleInArrayTest, Positive02){
     Solution s;
 
     int arr[] = {1, 2, 1, 4, 3};
     vector<int> heights(arr, arr + sizeof(arr)/sizeof(int));
 
     int expected = 6;
-    EXPECT_EQ(expected, s.largestRectangleArea(heights));
+    EXPECT_EQ(expected, s.largestRectangleInArray(heights));
 
     heights.clear();
 }
 
-TEST(largestRectangleAreaTest, Positive03){
+TEST(largestRectangleInArrayTest, Positive03){
     Solution s;
 
     int arr[] = {1, 2, 2, 3, 2, 2, 1, 2};
     vector<int> heights(arr, arr + sizeof(arr)/sizeof(int));
 
     int expected = 10;
-    EXPECT_EQ(expected, s.largestRectangleArea(heights));
+    EXPECT_EQ(expected, s.largestRectangleInArray(heights));
 
     heights.clear();
 }
