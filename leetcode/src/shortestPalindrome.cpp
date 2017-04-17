@@ -34,10 +34,9 @@ public:
             prefix[i] = k + (pattern[k] == pattern[i]);
         }
 
-        // if without '#' in mid of pattern, in case "aaa" => "aaaaaa", prefix[L] = 4. while n = 3, it turns to rev_s.substr(0, -1)!
+        // if without '#' in mid of pattern, in case "aa" => "aaaa", prefix[L] = 3. while n = 2, it turns to rev_s.substr(0, -1)
         // string::substr(pos, len) for len < 0, it returns the whole str
-        // if we have '#' in mid, "aaa" => "aaa#aaa", prefix[L] = 3
+        // if we have '#' in mid, "aa" => "aa#aa", prefix[L] = 2. while n = 2, it turns to rev_s.substr(0, 0)
         return rev_s.substr(0, n - prefix[L-1]) + s;
     }
 };
-
