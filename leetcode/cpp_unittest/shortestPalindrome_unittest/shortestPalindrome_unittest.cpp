@@ -22,12 +22,20 @@ TEST(shortestPalindromeTest, Positive02){
 TEST(shortestPalindromeTest, Edge01){
     Solution s;
 
-    const char *str = "aaaa";
-    const char *expected = "aaaa";
+    const char *str = "aa";
+    const char *expected = "aa";
     EXPECT_EQ(expected, s.shortestPalindrome(str));
 }
 
 TEST(shortestPalindromeTest, Edge02){
+    Solution s;
+
+    const char *str = "ab";
+    const char *expected = "bab";
+    EXPECT_EQ(expected, s.shortestPalindrome(str));
+}
+
+TEST(shortestPalindromeTest, Edge03){
     Solution s;
 
     const char *str = "aaa";
