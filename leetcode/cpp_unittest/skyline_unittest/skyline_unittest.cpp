@@ -157,6 +157,9 @@ TEST(skylineTwoBuildings_Test, Positive06){
 }
 
 /*---------- multiple buildings case -------------*/
+/*
+ * good test case, [2,6,1] is placed ahead of [2,5,3] in purpose, although it is illegal to the strict sort
+ * */
 TEST(skylineMultiBuildings_Test, Positive01){
     Solution s;
 
@@ -176,7 +179,13 @@ TEST(skylineMultiBuildings_Test, Positive01){
     expected.push_back(pair<int, int>(2, 3));
     expected.push_back(pair<int, int>(5, 1));
     expected.push_back(pair<int, int>(6, 0));
-
+    /*
+    cout << "expected: ";
+    for(int i = 0; i < (int)expected.size(); ++i) {
+        cout << '[' << expected[i].first << ',' << expected[i].second << "], ";
+    }
+    cout << endl;
+    */
     vector<pair<int, int>> result = s.getSkyline(buildings);
     EXPECT_TRUE(equalsVectorPairs(expected, result));
 }
@@ -307,24 +316,7 @@ TEST(skylineMultiBuildings_Test, Positive05){
     expected.push_back(pair<int, int>(13, 1));
     expected.push_back(pair<int, int>(14, 0));
 
-    /*
-    cout << "expected: ";
-    for(int i = 0; i < (int)expected.size(); ++i) {
-        cout << '[' << expected[i].first << ',' << expected[i].second << "], ";
-    }
-    cout << endl;
-    */
-
     vector<pair<int, int>> result = s.getSkyline(buildings);
-
-    /*
-    cout << "result: ";
-    for(int i = 0; i < (int)result.size(); ++i) {
-        cout << '[' << result[i].first << ',' << result[i].second << "], ";
-    }
-    cout << endl;
-    */
-
     EXPECT_TRUE(equalsVectorPairs(expected, result));
 }
 
