@@ -75,11 +75,11 @@ def displaySLL(head):
     if head is None:
         return
     else:
-        print head.val,
+        print(head.val)
     while head.next is not None:
         head = head.next
-        print ' -> %d' % head.val,
-    print ''
+        print(' -> %d' % head.val)
+    print('')
 
 # Not in need now: from sortList import Solution
 

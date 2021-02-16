@@ -1,106 +1,48 @@
-# !/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# permutation and combination
-
 import os, sys
-from copy import copy
 
-# generate permutation
-def perm(items, n=None):
-    if n is None:
+def perm(items: [], n: int):
+    ''' 实现列表排列: 原地递归, 返回迭代器
+    '''
+    if n <= 0:
         n = len(items)
     for i in range(len(items)):
         v = items[i:i+1]
         if n == 1:
-            yield v
+            yield v  # v is []
         else:
             rest = items[:i] + items[i+1:]  # rest always has n-1 elements
-            for p in perm(rest, n-1):       # recurse
+            for p in perm(rest, n-1):
                 yield v + p
 
-# recurse for C++ style
-def perm_02(items):
-    res = []
-    res.append(copy(items))   # initial status must be processed precedingly
-    recur_02(items, 0, len(items), res)
-    return res
-
-def recur_02(items, start, end, res):
-    if start >= end:
-        return
-    recur_02(items, start+1, end, res)
-    for i in range(start+1, end):
-        items[start], items[i] = items[i], items[start]   # swap
-        res.append(copy(items))    # shallow copy
-        recur_02(items, start+1, end, res)
-        items[i], items[start] = items[start], items[i]   # fallback
-
-# convert C++ style solution(recur_02) to python style with 'yield'
-# @return it returns a list instead of a generator !
-def perm_03(items):
-    return map(copy, recur_03(items, 0, len(items)))
-
-# @return: with 'yield', it returns generator(iterator) !
-def recur_03(items, start, end):
-    if start == 0:
-        yield items
-    if start < end-1:
-        for x in recur_03(items, start+1, end):
-            yield x
-    for i in range(start+1, end):
-        items[i], items[start] = items[start], items[i]   # swap
-        yield items
-        for x in recur_03(items, start+1, end):
-            yield x
-        items[i], items[start] = items[start], items[i]   # fallback
-
-def comb(items, n=None):
-    if n is None:
+def comb(items: [], n: int):
+    ''' 实现列表组合: 原地递归, 返回迭代器
+    '''
+    if n <= 0:
         n = len(items)
     for i in range(len(items)):
         v = items[i:i+1]
         if n == 1:
-            yield v
+            yield v  # v is []
         else:
-            rest = items[i+1:]    # if rest has no element, following code will not yield any more
+            rest = items[i+1:]
             for c in comb(rest, n-1):
                 yield v + c
 
-def test_01():
-    if len(sys.argv) < 2:
-        items = '1234'
-    else:
-        items = sys.argv[1]
-
-    if len(sys.argv) < 3:
-        n = None
-    else:
-        n = int(sys.argv[2])
-
-    ps = perm(items, n)
-    print 'permutation:'
-    for p in ps:
-        print p
-    print '-'*20
-
-    cs = comb(items, n)
-    print 'combination:'
-    for c in cs:
-        print c
-
-def test_02():
-    res = perm_02(range(4))
-    for p in res:
-        print p
-    print len(res)
-
-def test_03():
-    res = perm_03(range(4))
-    for p in res:
-        print p
-    print len(res)
 
 if __name__ == '__main__':
-    # test_01()
-    test_03()
+    n, m = 4, 3
+    items = list(range(0,n))
+
+    # test case 1: permutation
+    res = perm(items, m)
+    print('--------permutation of P({},{}) is:'.format(n, m))
+    for p in res:
+        print(p)
+
+    # test case 2: combination
+    res = comb(items, m)
+    print('--------combination of C({},{}) is:'.format(n, m))
+    for c in res:
+        print(c)
