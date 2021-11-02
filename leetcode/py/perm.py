@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import os, sys
+from typing import Dict, List
 
-def perm(items: [], n: int):
+def perm(items: List[int], n: int):
     ''' 实现列表排列: 原地递归, 返回迭代器
     '''
     if n <= 0:
@@ -16,7 +17,7 @@ def perm(items: [], n: int):
             for p in perm(rest, n-1):
                 yield v + p
 
-def comb(items: [], n: int):
+def comb(items: List[int], n: int):
     ''' 实现列表组合: 原地递归, 返回迭代器
     '''
     if n <= 0:
