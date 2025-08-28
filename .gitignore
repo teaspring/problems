@@ -23,3 +23,6 @@ packages/
 
 # Visual Studio Code
 .vscode/
+
+# .sln for this project
+problems.sln
