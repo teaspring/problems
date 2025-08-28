@@ -1,5 +1,25 @@
-
-# C++
+# C++ compiled object
 *.o
 *.so
 *.a
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build Results
+[Bb]in/
+[Oo]bj/
+
+# Packages
+packages/
+*.nupkg
+
+# Rider
+.idea/
+
+# Visual Studio Code
+.vscode/
