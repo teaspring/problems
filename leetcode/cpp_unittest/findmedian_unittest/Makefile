@@ -28,7 +28,7 @@ CPPFLAGS += -I$(GTEST_DIR)/include
 CPPFLAGS += -I$(USER_DIR)/src
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra
+CXXFLAGS += -g -Wall -Wextra -std=c++20
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -80,9 +80,8 @@ gtest_main.a : gtest-all.o gtest_main.o
 # $@: own name of the target
 # $^: names of the dependencies
 #
-findmedian.o: $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c \
-		$(USER_DIR)/src/findmedian.cpp
+findmedian.o:
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(USER_DIR)/src/findmedian.cpp
 
 findmedian_unittest.o : $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(UNITTEST_DIR)/findmedian_unittest.cpp

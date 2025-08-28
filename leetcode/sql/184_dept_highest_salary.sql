@@ -54,3 +54,18 @@ from Employee empl, (
         group by dept.id
         order by empl.salary desc) dts
 where empl.salary = dts.max_salary and empl.departmentId = dts.deptId
+
+
+/* solution2, better performance
+1. inner join instead of subquery
+2. less nested query
+*/
+select d.name as Department,
+       e.name as Employee,
+       e.salary as Salary
+from Employee e
+inner join (
+    select departmentId, max(salary) as max_salary
+    from Employee
+    group by departmentId
+) as dts on e.salary = dts.max_salary and e.departmentId = dts.departmentId

@@ -98,6 +98,7 @@ private:
 
     // return vector<int> tells how many prerequisites of one base char
     // graph's size is numCourses
+    // if NO vetex with indegree=0 can be found, it indicates there is cycle in the graph
     vector<int> compute_indegree(vector<unordered_set<int> >& graph) {
         vector<int> degrees(graph.size(), 0);
         for(auto neighbors : graph) {

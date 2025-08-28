@@ -33,49 +33,35 @@ bool isContained(vector<int>& nums, int idx) {
  * int findPeakElement(vector<int>&)
  * */
 TEST(findPeakElementTest, Positive01){
-    int arr[] = {5, 4, 3, 2, 1};
-    const int n = sizeof(arr) / sizeof(int);
-    vector<int> nums(arr, arr + n);
-
+    vector<int> nums{5, 4, 3, 2, 1};
     Solution s;
     EXPECT_EQ(0, s.findPeakElement(nums));
     nums.clear();
 }
 
 TEST(findPeakElementTest, Positive02){
-    int arr[] = {4, 3, 2, 1};
-    const int n = sizeof(arr) / sizeof(int);
-    vector<int> nums(arr, arr + n);
-
+    vector<int> nums{4, 3, 2, 1};
     Solution s;
     EXPECT_EQ(0, s.findPeakElement(nums));
     nums.clear();
 }
 
 TEST(findPeakElementTest, Positive03){
-    int arr[] = {1, 2, 3, 4};
-    const int n = sizeof(arr) / sizeof(int);
-    vector<int> nums(arr, arr + n);
-
+    vector<int> nums{1, 2, 3, 4};
     Solution s;
     EXPECT_EQ(3, s.findPeakElement(nums));
     nums.clear();
 }
 
 TEST(findPeakElementTest, Positive04){
-    int arr[] = {1, 2, 3};
-    const int n = sizeof(arr) / sizeof(int);
-    vector<int> nums(arr, arr + n);
-
+    vector<int> nums{1, 2, 3};
     Solution s;
     EXPECT_EQ(2, s.findPeakElement(nums));
     nums.clear();
 }
 
 TEST(findPeakElementTest, Positive05){
-    int arr[] = {5, 3, 2, 1, 4};
-    const int n = sizeof(arr) / sizeof(int);
-    vector<int> nums(arr, arr + n);
+    vector<int> nums{5, 3, 2, 1, 4};
     vector<int> allPeaks = findAllPeaks(nums);
 
     Solution s;
@@ -85,40 +71,28 @@ TEST(findPeakElementTest, Positive05){
 }
 
 TEST(findPeakElementTest, Positive06){
-    int arr[] = {1, 5, 1};
-    const int n = sizeof(arr) / sizeof(int);
-    vector<int> nums(arr, arr + n);
-
+    vector<int> nums{1, 5, 1};
     Solution s;
     EXPECT_EQ(1, s.findPeakElement(nums));
     nums.clear();
 }
 
 TEST(findPeakElementTest, Positive07){
-    int arr[] = {1, 1, 5, 1};
-    const int n = sizeof(arr) / sizeof(int);
-    vector<int> nums(arr, arr + n);
-
+    vector<int> nums{1, 1, 5, 1};
     Solution s;
     EXPECT_EQ(2, s.findPeakElement(nums));
     nums.clear();
 }
 
 TEST(findPeakElementTest, Positive08){
-    int arr[] = {1, 5, 1, 1};
-    const int n = sizeof(arr) / sizeof(int);
-    vector<int> nums(arr, arr + n);
-
+    vector<int> nums{1, 5, 1, 1};
     Solution s;
     EXPECT_EQ(1, s.findPeakElement(nums));
     nums.clear();
 }
 
 TEST(findPeakElementTest, Edge01){
-    int arr[] = {1};
-    const int n = sizeof(arr) / sizeof(int);
-    vector<int> nums(arr, arr + n);
-
+    vector<int> nums{1};
     Solution s;
     EXPECT_EQ(0, s.findPeakElement(nums));
     nums.clear();

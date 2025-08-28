@@ -32,3 +32,9 @@ where c.id not in (
     inner join Orders o1
     where c1.id = o1.customerId)
 ;
+
+
+select name from Customers
+where id not in (
+    select unique customerId from Orders
+);

@@ -21,5 +21,5 @@ The query result format is in the following example.
 select distinct email as "Email"
 from Person
 group by email
-having count(email) > 1
+having count(id) > 1
 ;

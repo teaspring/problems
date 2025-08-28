@@ -1,14 +1,13 @@
 /*
 * Apr 2022, XXX interview, SQL question
 
-* given employee table, with columns name, id, dept_id, salary;  department table, with columns id, name, location.
-* ask to list the department and its employee numbers, including the department without employee
+* given employee table: columns name, id, dept_id, salary;
+* department table: columns id, name, location.
+* ask to list the department and its employee numbers, if the department has no employee return 0 as its employee number
 */
 
 /*
-* NOTE:
-1. among the output, if count(*), the department withtout actual staff will also output 1; so it must be count(empl.id)
-2. difference between "group by dept.id" and "group by empl.dept_id" ? the output order may differ; if "group by dept.id", the output is in order of dept.id
+NOTE: No need of wrapping up count(empl.id) via ifnull(). if there is no employee in that department, count(empl.id) will return 0.
 */
 select dept.name as Department, count(empl.id) as Staffs
 from Department dept

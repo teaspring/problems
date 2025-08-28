@@ -180,7 +180,7 @@ public:
         head = tmp->next;
         tmp->next = NULL;
 
-        minHead = tmp->minNext;
+        minHead = tmp->minNext; // need to compare head->minNext and tmp->minNext!
         tmp->minNext = NULL;
         delete tmp;
         return;

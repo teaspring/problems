@@ -24,7 +24,10 @@ where a.salary > (select salary from Employee as b where a.managerId = b.id)
 ;
 
 
-/* use inner join instead of nested where clause; and put left table to compare using id */
+/* solution2 with higher performance:
+1. use inner join instead of subquery
+2. put the table using primary key on left or right?
+*/
 select e2.name as 'Employee'
 from Employee e1
 inner join Employee e2 on e1.id = e2.managerId

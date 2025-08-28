@@ -25,10 +25,10 @@ After running your script, the answer shown is the Person table. The driver will
 delete from Person
 where id not in (
     select min(p1.id)
-    from (select * from Person) as p1
+    from Person as p1
     group by p1.email
     order by p1.id
-);
+); /* this nested subquery keeps the email without duplicate as well */
 
 /*
 * using Cartesian Join also called cross json, better to read but as slow as 4 times of above solution's runtime

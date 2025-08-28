@@ -13,6 +13,7 @@ Write an SQL query to find all numbers that appear at least three times consecut
 Return the result table in any order.
 */
 
+/* column [id] can be used as a known var within the query! */
 select distinct num as ConsecutiveNums
 from Logs
 where (id+1, num) in (select * from Logs)

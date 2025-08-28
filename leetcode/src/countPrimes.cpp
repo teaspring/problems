@@ -22,7 +22,7 @@ public:
         vector<bool> passed(n, false);
         int upper = sqrt(n); // use sqrt(n) as upper bound to prevent overflow of i*i
 
-        for(int i = 3; i < n; i += 2) {
+        for(int i = 3; i < n; i += 2) { // only be odd(even number NOT prime)
             if(!passed[i]) {
                 sum++;
                 if(i > upper)    continue;

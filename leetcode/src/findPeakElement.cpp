@@ -18,9 +18,9 @@ public:
             if((m == 0 || nums[m] > nums[m-1])
                 && (m == n-1 || nums[m] > nums[m+1])) {
                 return m;
-            } else if(nums[m] < nums[u]) {
+            } else if(nums[m] < nums[u]) { // why not [m] < [m-1] ?
                 v = m;
-            } else if(nums[m] < nums[v-1]) {
+            } else if(nums[m] < nums[v-1]) { // why not [m] < [m+1]
                 u = m+1;
             } else {
                 u += 1;
