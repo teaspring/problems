@@ -112,5 +112,4 @@ class TestSortList(unittest.TestCase):
             t = t.next
 
 if __name__ == '__main__':
-    # test_out()
-    unittest_main()
+    unittest.main()

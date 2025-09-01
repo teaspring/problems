@@ -46,7 +46,7 @@
  * Message length ≤ 250 chars (i.e. message1, message2 and message3 lengths are ≤ 500 hexadecimal digits)
  * */
 
-import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 class HackingRobberCity {
@@ -63,11 +63,9 @@ class HackingRobberCity {
         byte[] byteArr1 = hexStr2ByteArray(str1);
         byte[] byteArr2 = hexStr2ByteArray(str2);
         // XOR between two byte[]
-        Object[] afterXor = IntStream.range(0, byteArr1.length)
-                .mapToObj(i -> (byte)(byteArr1[i] ^ byteArr2[i])) // Stream<Byte>
-                .toArray(); // supposed to be Byte[]
-        // convert to hexadecimal string
-        return byteArray2HexadecimalStr(afterXor);
+        return IntStream.range(0, byteArr1.length)
+                .mapToObj(i -> String.format("%02x", (byte)(byteArr1[i] ^ byteArr2[i]))) // 0xFF -> "FF"
+                .collect(Collectors.joining());
     }
 
     // hexadecimal with base-16: 00=0, FF=255 which uses 0-9 and A-F/a-f to represent value 0-15
@@ -81,16 +79,6 @@ class HackingRobberCity {
                     + Character.digit(hexStr.charAt(i + 1), 16));
         }
         return data;
-    }
-
-    // convert byte[] to Hexadecimal string in order to output
-    private String byteArray2HexadecimalStr(Object[] byteArray) {
-        StringBuilder hexBuilder = new StringBuilder();
-        for (Object b : byteArray) {
-            // e.g 0xFF -> "FF"
-            hexBuilder.append(String.format("%02x", (byte)b));
-        }
-        return hexBuilder.toString();
     }
 
     // hexadecimal with base-16: 00=0, FF=255

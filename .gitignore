@@ -26,3 +26,11 @@ packages/
 
 # .sln for this project
 problems.sln
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+*.venv

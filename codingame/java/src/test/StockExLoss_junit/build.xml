@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<project name="JUNIT" default="test" basedir=".">
+  <property environment="env"/>
+  <!-- directories -->
+  <property name="init.dir" location="../../main"/>
+  <property name="src.dir" location="src"/>
+  <property name="test.dir" location="tests"/>
+  <!-- classes built from both src.dir and test.dir -->
+  <property name="build.dir" location="build"/>
+  <!-- global directory of dependency jar -->
+  <property name="lib.dir" location="${env.IDE_JAR}"/>
+  <path id="classpath">
+    <pathelement location="${lib.dir}/junit-4.13.2.jar"/>
+    <pathelement location="${lib.dir}/hamcrest-3.0.jar"/>
+    <pathelement location="${build.dir}"/>
+  </path>
+  <!-- init to copy files -->
+  <target name="init">
+    <copy file="${init.dir}/StockExLoss.java" todir="${src.dir}"/>
+    <copy file="StockExLossTest.java" todir="${test.dir}"/>
+    <mkdir dir="${build.dir}"/>
+  </target>
+  <!-- clean -->
+  <target name="clean">
+    <delete dir="${src.dir}"/>
+    <delete dir="${test.dir}"/>
+    <delete dir="${build.dir}"/>
+    <delete>
+       <fileset dir="." includes="*Test.xml" />
+       <fileset dir="." includes="*Test.txt" />
+    </delete>
+  </target>
+  <!-- compile -->
+  <target name="compile" depends="clean, init">
+    <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+    <javac srcdir="${test.dir}" destdir="${build.dir}" includeantruntime="false">
+      <classpath>
+        <pathelement location="${build.dir}"/>
+        <path refid="classpath"/>
+      </classpath>
+    </javac>
+  </target>
+  <!-- test -->
+  <target name="test" depends="compile">
+    <junit printsummary="on" haltonfailure="yes" fork="true" showoutput="true">
+      <classpath refid="classpath"/>
+      <batchtest>
+        <fileset dir="${test.dir}">
+          <include name="**/*Test.java"/>
+        </fileset>
+      </batchtest>
+      <!-- output TEST-*Test.txt with result -->
+      <formatter type="plain"/>
+    </junit>
+  </target>
+</project>
