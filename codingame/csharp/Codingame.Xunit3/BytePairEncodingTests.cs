@@ -1,12 +1,11 @@
 using Xunit;
-using Codingame;
 
-namespace Codingame.Tests;
+namespace Codingame.Xunit3;
 
-public class BytePairEncoding
+public class BytePairEncodingTests
 {
     [Fact]
-    public void Test1()
+    public void BytePairEncode_Simple()
     {
         var bpe = new Codingame.BytePairEncoding();
         List<string> encodingRules;
@@ -18,15 +17,12 @@ public class BytePairEncoding
     }
 
     [Fact]
-    public void Test2()
-    { 
+    public void BytePairEncode_Long()
+    {
         var bpe = new Codingame.BytePairEncoding();
+        // arrange
         string msg = "cdeaafdhhhcdecbfcbhfhdhhccfhedeadggchefhgcaffgdcagdfedaghgceafbdccegbfggafhdffbhahgadeabccabhfgeceff";
-        List<string> encodingRules;
-        var result = bpe.Process1(msg, out encodingRules);
-        // assert
         var expectedRes = "cXYQhcZcbfcWVQUVeXdgTheVTYSdcPOedPhTeYbdUegbSgYhOfWahgaXbUaWSeceff";
-        Assert.Equal(expectedRes, result);
         var expectedRules = new List<string>
         {
             "Z = de",
@@ -42,6 +38,13 @@ public class BytePairEncoding
             "P = ag",
             "O = df"
         };
+        // act
+        List<string> encodingRules;
+        var result = bpe.Process1(msg, out encodingRules);
+        // assert
+        Assert.Equal(expectedRes, result);
+        Assert.IsType<List<string>>(encodingRules);
         Assert.Equal(expectedRules, encodingRules);
     }
 }
+// $ dotnet run -v n[ormal]

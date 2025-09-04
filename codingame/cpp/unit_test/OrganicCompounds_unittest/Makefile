@@ -58,6 +58,8 @@ gtest-all.o : $(GTEST_SRCS_)
 gtest_main.o : $(GTEST_SRCS_)
 	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c $(GTEST_DIR)/src/gtest_main.cc
 
+# below == "ar rcs gtest.a gtest-all.o" here "ar" is archiver, "rcs" are ARFLAGS
+# r for insert into archive, c for create archive, s for write an index to archive
 gtest.a : gtest-all.o
 	$(AR) $(ARFLAGS) $@ $^
 

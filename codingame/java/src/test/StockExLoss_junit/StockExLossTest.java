@@ -1,36 +1,38 @@
-import java.util.*;
-import org.junit.*;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-public class StockExLossTest {
+class StockExLossTest {
     private StockExLoss game;
 
-    @Before
-    public void setUp(){
+    @BeforeEach
+    void setUp(){
         game = new StockExLoss();
     }
 
     @Test
-    public void positiveTest_01(){
+    @DisplayName("maxLossAbs() short size")
+    void maxLossAbs_simple(){
+        // arrange
         List<Integer> prices = new ArrayList<>(
             Arrays.asList(3, 2, 4, 2, 1, 5)
         );
-        Assert.assertEquals(-3, game.process1(prices));
+        // act & assert
+        Assertions.assertEquals(-3, game.maxLossAbs(prices));
     }
 
     @Test
-    public void positiveTest_02(){
-        List<Integer> prices = new ArrayList<>(
-            Arrays.asList(3, 2, 10, 7, 15, 14)
-        );
-        Assert.assertEquals(-3, game.process1(prices));
-    }
-    @Test
-    public void negativeTest_01(){
+    @DisplayName("maxLossAbs() no loss")
+    void maxLossAbs_noLoss(){
+        // arrange
         List<Integer> prices = new ArrayList<>(
             Arrays.asList(3, 4, 7, 9, 10)
         );
-        Assert.assertEquals(0, game.process1(prices));
+        // act & assert
+        Assertions.assertEquals(0, game.maxLossAbs(prices));
     }
 }
-

@@ -51,7 +51,8 @@ import java.util.stream.IntStream;
 
 class HackingRobberCity {
 
-    public String process1(String msg1, String msg2, String msg3) {
+    // bulky implementation based on byte array   
+    public String processBulkyBytes(String msg1, String msg2, String msg3) {
         // process
         String tmp = xorTwoHexadecimalStr(msg1, msg2); // tmp = msg1 xor msg2 = B
         String resHexStr = xorTwoHexadecimalStr(tmp, msg3); // res = tmp xor msg3 = C
@@ -94,34 +95,35 @@ class HackingRobberCity {
         return String.valueOf(charArr);
     }
 
-    // another implementation
-    public String process2(String msg1, String msg2, String msg3) {
+    /*------ another implementation ------*/
+    public String processIntForByte(String msg1, String msg2, String msg3) {
         String tmp = xor(msg1, msg2);
         return decode(xor(tmp, msg3));
     }
 
+    // xor data type of int(represent 2 digits of hex byte), return hex string
     private String xor(String hexStr1, String hexStr2) {
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < hexStr1.length(); i += 2) {
             int nA = Integer.parseInt(hexStr1.substring(i, i+2), 16);
             int nB = Integer.parseInt(hexStr2.substring(i, i+2), 16);
+            // xor integers is equivalent to xor bytes
             String hex = Integer.toHexString(nA ^ nB);
-            // ensure 2 digits via padding
+            // ensure 2 digits by padding
             hex = hex.length() == 1 ? "0" + hex : hex;
             builder.append(hex);
         }
         return builder.toString();
     }
 
+    // decode hex string to ASCII string
     private String decode(String a) {
         StringBuilder out = new StringBuilder();
-        for(int i = 0; i < a.length(); i+=2) {
-            // "FF" -> 255
+        for(int i = 0; i < a.length(); i += 2) {
+            // 0x"41" -> 65 -> ASCII 'A'
             int n = Integer.parseInt(a.substring(i, i+2), 16);
-            // ASCII 65 -> "A"
             out.append((char)n);
         }
         return out.toString();
     }
 }
-// spend 2 hrs
