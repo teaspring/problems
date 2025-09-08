@@ -2,6 +2,9 @@
 #include <cstring>
 #include <cctype>
 #include <map>
+#include <algorithm>
+#include <iostream>
+#include <format>
 
 using namespace std;
 
@@ -19,6 +22,29 @@ class Solution
             res[it - src.cbegin()] = shift_char(*it, -delta, islower(*it));
         }
         decrypted = string(res);
+    }
+
+    // from the forum
+    void decrypt_by_freq_2(string& msg)
+    {
+        int f[26]{};
+        for(auto c : msg){
+            if(isalpha(c)){
+                f[tolower(c) - 'a']++;
+            }
+        }
+        string alphabet {"abcdefghijklmnopqrstuvwxyz"};
+        int maxPos = max_element(f, f+26) - f;
+        // it assumes 'e' is always the most common alphabet char (bug!)
+        rotate(alphabet.begin(), alphabet.begin() + (26 + 4 - maxPos) % 26, alphabet.end()); // 'e' - 'a' == 4
+        for(auto& c : msg)
+        {
+            if(isalpha(c)){
+                char d = alphabet[tolower(c) - 'a'];
+                if(isupper(c)) c = toupper(d);
+                else c = d;
+            }
+        }
     }
 
     private:

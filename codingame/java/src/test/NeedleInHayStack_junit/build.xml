@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<project name="CodingameProblemJunit" default="test" basedir=".">
+  <property environment="env"/>
+  <property name="ego.name" value="NeedleInHayStack"/>
+  <!-- directories -->
+  <property name="init.dir" location="../../main"/>
+  <property name="src.dir" location="src"/>
+  <property name="test.dir" location="tests"/>
+  <!-- classes built from both src.dir and test.dir -->
+  <property name="build.dir" location="build"/>
+  <property name="testreport.dir" location="testreport"/>
+  <!-- external directory of dependency jar -->
+  <property name="lib.dir" location="${env.IDE_JAR}"/>
+  <path id="classpath">
+    <pathelement location="${build.dir}"/>
+    <fileset dir="${lib.dir}">
+      <!-- Junit5 -->
+      <include name="junit-platform-launcher-1.13.4.jar"/>
+      <include name="junit-platform-engine-1.13.4.jar"/>
+      <include name="junit-platform-commons-1.13.4.jar"/>
+      <include name="junit-jupiter-api-5.13.4.jar"/>
+      <include name="junit-jupiter-engine-5.13.4.jar"/>
+      <include name="junit-jupiter-params-5.13.4.jar"/>
+      <include name="apiguardian-api-1.1.2.jar"/>
+      <include name="opentest4j-1.3.0.jar"/>
+      <include name="hamcrest-3.0.jar"/>
+      <!-- ant-junitlauncher.jar is in $ANT_HOME/lib-->
+    </fileset>
+  </path>
+  <!-- init to copy files -->
+  <target name="init">
+    <copy file="${init.dir}/${ego.name}.java" todir="${src.dir}"/>
+    <copy file="${ego.name}Test.java" todir="${test.dir}"/>
+  </target>
+  <!-- clean -->
+  <target name="clean">
+    <delete dir="${src.dir}"/>
+    <delete dir="${test.dir}"/>
+    <delete dir="${build.dir}"/>
+    <delete dir="${testreport.dir}"/>
+  </target>
+  <!-- compile -->
+  <target name="compile" depends="clean, init">
+    <mkdir dir="${build.dir}"/>
+    <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+    <javac srcdir="${test.dir}" destdir="${build.dir}" includeantruntime="false">
+      <classpath>
+        <pathelement location="${build.dir}"/>
+        <path refid="classpath"/>
+      </classpath>
+    </javac>
+  </target>
+  <!-- test -->
+  <target name="test" depends="compile">
+    <mkdir dir="${testreport.dir}"/>
+    <junitlauncher printsummary="true" haltOnFailure="true">
+      <!-- dir of junit jars to load junitlauncher -->
+      <classpath refid="classpath"/>
+      <testclasses outputdir="${testreport.dir}">
+        <fileset dir="${build.dir}">
+          <include name="**/*Test.class"/>
+        </fileset>
+        <listener type="legacy-brief" sendSysOut="true" sendSysErr="true" outputDir="${testreport.dir}"/>
+      </testclasses>
+    </junitlauncher>
+  </target>
+</project>

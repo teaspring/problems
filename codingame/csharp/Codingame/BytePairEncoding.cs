@@ -23,7 +23,7 @@ public class BytePairEncoding
                 }
                 else
                 {
-                    myDict[bytePair] = (int)myDict[bytePair] + 1;
+                    myDict[bytePair] = Convert.ToInt32(myDict[bytePair]) + 1;
                 }
                 skippedDupli = false;
             }
@@ -36,7 +36,7 @@ public class BytePairEncoding
         // query by LINQ
         var mostLeftBytePair =
             myDict.Cast<DictionaryEntry>()
-                .Where(x => (int)x.Value > 1)  // filter
+                .Where(x => Convert.ToInt32(x.Value) > 1)  // filter
                 .OrderByDescending(x => x.Value) // order by descending
                 .Select(x => x.Key)
                 .FirstOrDefault();

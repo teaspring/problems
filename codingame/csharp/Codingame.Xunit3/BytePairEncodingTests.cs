@@ -8,8 +8,7 @@ public class BytePairEncodingTests
     public void BytePairEncode_Simple()
     {
         var bpe = new Codingame.BytePairEncoding();
-        List<string> encodingRules;
-        var result = bpe.Process1("aaabdaaabac", out encodingRules);
+        var result = bpe.Process1("aaabdaaabac", out List<string> encodingRules);
         // assert
         Assert.Equal("XdXac", result);
         var expectedRules = new List<string> { "Z = aa", "Y = Za", "X = Yb" };
@@ -39,8 +38,7 @@ public class BytePairEncodingTests
             "O = df"
         };
         // act
-        List<string> encodingRules;
-        var result = bpe.Process1(msg, out encodingRules);
+        var result = bpe.Process1(msg, out List<string> encodingRules);
         // assert
         Assert.Equal(expectedRes, result);
         Assert.IsType<List<string>>(encodingRules);
