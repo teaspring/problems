@@ -10,10 +10,10 @@ TEST(NeedleInHayStackTest, ShortHayStack)
     string msg("aaaaddaaabbbbbc");
     // act & assert
     Solution s;
-    EXPECT_EQ("8 14", s.find_needle_in_haystack(msg, "a-c"));
-    EXPECT_EQ("8 14", s.find_needle_in_haystack(msg, "c,a ,  b"));
-    EXPECT_EQ("3 4", s.find_needle_in_haystack(msg, "d, a"));
-    EXPECT_EQ("8 14", s.find_needle_in_haystack(msg, "a-c"));
+    EXPECT_EQ("8 14", s.find_needle_in_haystack_2(msg, "a-c"));
+    EXPECT_EQ("8 14", s.find_needle_in_haystack_2(msg, "c,a ,  b"));
+    EXPECT_EQ("3 4", s.find_needle_in_haystack_2(msg, "d, a"));
+    EXPECT_EQ("8 14", s.find_needle_in_haystack_2(msg, "a-c"));
 }
 
 TEST(NeedleInHayStackTest, LongHayStack)
@@ -38,7 +38,7 @@ TEST(NeedleInHayStackTest, LongHayStack)
     string msg = ss.str();
     // act & assert
     Solution s;
-    EXPECT_EQ("695 734", s.find_needle_in_haystack(msg, "1,6,2,t,h,o-u"));
-    EXPECT_EQ("1260 1308", s.find_needle_in_haystack(msg, "a-n,o,p,y,9,2"));
-    EXPECT_EQ("1916 1974", s.find_needle_in_haystack(msg, "c,i,l,y,t,u-x"));
+    EXPECT_EQ("695 734", s.find_needle_in_haystack_1(msg, "1,6,2,t,h,o-u"));
+    EXPECT_EQ("1260 1308", s.find_needle_in_haystack_1(msg, "a-n,o,p,y,9,2"));
+    EXPECT_EQ("1916 1974", s.find_needle_in_haystack_1(msg, "c,i,l,y,t,u-x"));
 }
