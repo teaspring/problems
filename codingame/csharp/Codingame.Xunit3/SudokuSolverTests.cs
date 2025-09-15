@@ -34,7 +34,7 @@ public class SudokuSolverTests
             "685423791",
             "734519628"
         ];
-        for (var i = 0; i < 9; i++)
+        for (var i = 0; i < expected.Length; i++)
         {
             Assert.Equal(expected[i], board[i]);
         }
@@ -70,7 +70,7 @@ public class SudokuSolverTests
             "438526917",
             "796318452"
         ];
-        for (var i = 0; i < 9; i++)
+        for (var i = 0; i < expected.Length; i++)
         {
             Assert.Equal(expected[i], board[i]);
         }
