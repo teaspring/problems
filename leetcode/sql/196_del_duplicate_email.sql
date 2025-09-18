@@ -27,12 +27,17 @@ where id not in (
     select min(p1.id)
     from Person as p1
     group by p1.email
-    order by p1.id
 ); /* this nested subquery keeps the email without duplicate as well */
 
 /*
 * using Cartesian Join also called cross json, better to read but as slow as 4 times of above solution's runtime
 * "from table_1, table_2" play role of " table_1 cross join table_2"
+* NOTE: delete must operate upon a table, not a view or CTE
 */
-delete p1 from person p1, person p2 
-where p1.email = p2.email and p1.id > p2.id;
+delete from person
+where id in (
+	select p1.id from Person p1
+	join Person p2
+	on p1.email = p2.email
+	where p1.id > p2.id
+)

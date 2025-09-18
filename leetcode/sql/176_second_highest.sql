@@ -26,4 +26,11 @@ from (
 ;
 
 /* solution 2, better to read but slower */
-select max(Salary) from Employee where Salary < (select max(Salary) from Employee);
+select max(salary) from Employee
+where salary < (select max(salary) from Employee);
+
+/* solution 3, simple and fast */
+select distinct salary from Employee
+order by Salary desc
+limit 1 offset 1;
+/* limit <count> offset <skip> */

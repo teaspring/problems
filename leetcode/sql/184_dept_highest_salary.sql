@@ -41,31 +41,19 @@ all the employees which shares the highest salary in one department should be re
 otherwise, there would be error like:
     expected:  HR|Jim|6000, IT|Max|6000;  output: HR|Jim|6000, IT|Max|6000, HR|Max|6000, IT|Jim|6000 ...
 */
-select dts.department as Department,
-        empl.name as Employee,
-        dts.max_salary as Salary
-from Employee empl, (
-        select dept.name as department,
-            dept.id as deptId,
-            max(empl.salary) as max_salary
-        from Department dept
-        inner join Employee empl
-        on dept.id = empl.departmentId
-        group by dept.id
-        order by empl.salary desc) dts
-where empl.salary = dts.max_salary and empl.departmentId = dts.deptId
 
-
-/* solution2, better performance
+/*
 1. inner join instead of subquery
 2. less nested query
 */
-select d.name as Department,
+select dts.DeptName as Department,
        e.name as Employee,
        e.salary as Salary
 from Employee e
 inner join (
-    select departmentId, max(salary) as max_salary
-    from Employee
-    group by departmentId
-) as dts on e.salary = dts.max_salary and e.departmentId = dts.departmentId
+	select d.id as DeptId, d.name as DeptName, max(e2.salary) as MaxSalary
+	from Department d
+	left join Employee e2
+	on e2.dept_id = d.id
+	group by d.id
+) as dts on e.salary = dts.MaxSalary and e.departmentId = dts.DeptId

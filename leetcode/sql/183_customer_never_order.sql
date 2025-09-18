@@ -24,17 +24,14 @@ Write an SQL query to report all customers who never order anything.
 Return the result table in any order.
 */
 
-select c.name as "Customers"
-from Customers c
-where c.id not in (
-    select c1.id
-    from Customers c1
-    inner join Orders o1
-    where c1.id = o1.customerId)
+select c.name from Customers c
+left join Orders o
+on c.id = o.customerId
+group by c.id
+having count(o.id) = 0
 ;
 
-
-select name from Customers
-where id not in (
-    select unique customerId from Orders
+select c.name from Customers c
+where c.id not in (
+    select distinct customerId from Orders
 );
